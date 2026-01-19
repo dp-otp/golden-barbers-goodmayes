@@ -70,38 +70,56 @@
             }
         }
 
-        /* Hero Crown Emblem */
-        .hero-crown-emblem {
+        /* Services Preview Section - Logo Background */
+        .services-preview {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .services-preview::before {
+            content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 400px;
+            width: 600px;
+            height: 600px;
+            background-image: url('logo-removebg-preview.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
             opacity: 1;
-            z-index: 1;
-            animation: crownFloat 6s ease-in-out infinite;
+            z-index: 0;
+            animation: logoFloat 8s ease-in-out infinite;
             pointer-events: none;
-            filter: drop-shadow(0 20px 60px rgba(212, 175, 55, 0.4));
         }
 
-        @keyframes crownFloat {
+        @keyframes logoFloat {
             0%, 100% {
-                transform: translate(-50%, -50%) translateY(0) scale(1);
+                transform: translate(-50%, -50%) scale(1);
             }
             50% {
-                transform: translate(-50%, -50%) translateY(-30px) scale(1.05);
+                transform: translate(-50%, -50%) scale(1.08);
             }
+        }
+
+        .services-preview .container {
+            position: relative;
+            z-index: 1;
         }
 
         @media (max-width: 968px) {
-            .hero-crown-emblem {
-                font-size: 250px;
+            .services-preview::before {
+                width: 400px;
+                height: 400px;
             }
         }
 
         @media (max-width: 480px) {
-            .hero-crown-emblem {
-                font-size: 180px;
+            .services-preview::before {
+                width: 300px;
+                height: 300px;
+                opacity: 0.8;
             }
         }
 
@@ -448,7 +466,6 @@
                 <img src="download (9).jpg" alt="Barber cutting" class="hero-bg-img hero-bg-img-2">
                 <img src="download (16).jpg" alt="Scissor work" class="hero-bg-img hero-bg-img-3">
             </div>
-            <div class="hero-crown-emblem">👑</div>
         </div>
         <div class="container">
             <div class="hero-content">
