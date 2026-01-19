@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Barbers Goodmayes - Premium Barbershop in London</title>
+    <meta name="description" content="Golden Barbers Goodmayes - Professional barbershop in Ilford, London. Traditional cuts, modern fades, beard grooming, and hot towel shaves.">
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            background: #1a1a1a;
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d4af37;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav .logo .logo-wrapper {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav .logo img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #d4af37;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #d4af37;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23222" width="1200" height="600"/><path fill="%23333" d="M0 300L50 280L100 290L150 270L200 285L250 275L300 295L350 280L400 290L450 285L500 275L550 290L600 280L650 295L700 285L750 290L800 280L850 285L900 295L950 280L1000 290L1050 285L1100 275L1150 290L1200 280V600H0Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 60px;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: #d4af37;
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn:hover {
+            background: #c19b2b;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.6);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1a1a1a;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #d4af37;
+        }
+
+        /* About Section */
+        #about {
+            background: #f8f8f8;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .about-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .about-image-placeholder {
+            width: 100%;
+            max-width: 300px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .about-logo {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            object-position: center;
+            clip-path: circle(42% at center);
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #d4af37;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .service-card p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        /* Gallery Section */
+        #gallery {
+            background: #f8f8f8;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            height: 300px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #444 100%);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d4af37;
+            font-size: 2rem;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .team-photo {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #333 0%, #555 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d4af37;
+            font-size: 3rem;
+        }
+
+        .team-info {
+            padding: 1.5rem;
+        }
+
+        .team-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .team-info p {
+            color: #666;
+        }
+
+        /* Contact Section */
+        #contact {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        #contact h2 {
+            color: white;
+        }
+
+        #contact h2::after {
+            background: #d4af37;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .info-icon {
+            font-size: 2rem;
+            color: #d4af37;
+            min-width: 40px;
+        }
+
+        .info-text h3 {
+            margin-bottom: 0.5rem;
+            color: #d4af37;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            color: #d4af37;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 1rem;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-size: 1rem;
+            background: #2a2a2a;
+            color: white;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0a0a;
+            color: white;
+            text-align: center;
+            padding: 2rem 20px;
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-links a {
+            color: #d4af37;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            nav .logo .logo-wrapper {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+                min-height: 40px;
+                flex-shrink: 0;
+            }
+
+            nav .logo img {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+                min-height: 40px;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            nav ul {
+                position: fixed;
+                left: -100%;
+                top: 60px;
+                flex-direction: column;
+                background: #1a1a1a;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0,0,0,0.5);
+                padding: 2rem 0;
+                gap: 0;
+            }
+
+            nav ul.active {
+                left: 0;
+            }
+
+            nav ul li {
+                padding: 1rem 0;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            #about {
+                padding-top: 6rem;
+            }
+
+            .about-content {
+                flex-direction: column;
+            }
+
+            .about-image {
+                order: -1;
+                margin-bottom: 1rem;
+            }
+
+            .about-image-placeholder {
+                width: 100%;
+                max-width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .about-logo {
+                width: 100%;
+                height: auto;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .gallery-item {
+                height: 250px;
+                font-size: 4rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Smooth Scroll Offset for Fixed Nav */
+        section {
+            scroll-margin-top: 80px;
+        }
+        /* ============================================
+           PREMIUM ANIMATIONS & EFFECTS
+           ============================================ */
+
+        /* Smooth fade-in on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger animation for service cards */
+        .service-card {
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-card.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .service-card:nth-child(1).visible { transition-delay: 0.1s; }
+        .service-card:nth-child(2).visible { transition-delay: 0.2s; }
+        .service-card:nth-child(3).visible { transition-delay: 0.3s; }
+        .service-card:nth-child(4).visible { transition-delay: 0.4s; }
+        .service-card:nth-child(5).visible { transition-delay: 0.5s; }
+        .service-card:nth-child(6).visible { transition-delay: 0.6s; }
+
+        /* Enhanced hover effects */
+        .service-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Parallax hero effect */
+        .hero {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%);
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { transform: translateX(0) translateY(0); opacity: 0.5; }
+            50% { transform: translateX(-10px) translateY(-10px); opacity: 0.8; }
+        }
+
+        /* Smooth gallery image reveal */
+        .gallery-item {
+            opacity: 0;
+            transform: scale(0.9) rotate(2deg);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gallery-item.visible {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05) rotate(-1deg);
+            z-index: 10;
+        }
+
+        /* Team member cards animation */
+        .team-member {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.6s ease;
+        }
+
+        .team-member.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .team-member:nth-child(even) {
+            transform: translateX(30px);
+        }
+
+        .team-member:nth-child(even).visible {
+            transform: translateX(0);
+        }
+
+        /* Floating animation for decorative elements */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        nav .logo .logo-wrapper {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Smooth navigation */
+        nav {
+            backdrop-filter: blur(10px);
+            background: rgba(26, 26, 26, 0.95);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.5rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Section titles animation */
+        h2 {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        h2.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Shimmer effect on hover for prices */
+        .price {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .price::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .service-card:hover .price::after {
+            left: 100%;
+        }
+
+        /* Contact form inputs */
+        input, textarea, select {
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Loading animation for page */
+        @keyframes fadeInPage {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        body {
+            animation: fadeInPage 0.6s ease-in;
+        }
+
+        /* Smooth color transitions */
+        * {
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+    </style>
+    <script>
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all elements with animations
+            document.querySelectorAll('.fade-in, .service-card, .gallery-item, .team-member, h2').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Navigation scroll effect
+            window.addEventListener('scroll', function() {
+                const nav = document.querySelector('nav');
+                if (window.scrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo"><div class="logo-wrapper"><img src="logo.png" alt="Golden Barbers Logo"></div> Golden Barbers Goodmayes</div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul id="navMenu">
+                <li><a href="#home" onclick="closeMenu()">Home</a></li>
+                <li><a href="#about" onclick="closeMenu()">About</a></li>
+                <li><a href="#services" onclick="closeMenu()">Services</a></li>
+                <li><a href="#gallery" onclick="closeMenu()">Gallery</a></li>
+                <li><a href="#team" onclick="closeMenu()">Team</a></li>
+                <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Golden Barbers Goodmayes</h1>
+            <p>Where Tradition Meets Style</p>
+            <a href="#contact" class="btn">Book Appointment</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="fade-in">About Us</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Welcome to Golden Barbers Goodmayes, your neighborhood's premier barbershop since 2010. We combine traditional barbering techniques with modern styles to give you the perfect look.</p>
+                    <p>Our skilled barbers are dedicated to providing exceptional service in a relaxed, friendly atmosphere. Whether you're looking for a classic cut, a modern fade, or a fresh beard trim, we've got you covered.</p>
+                    <p>We believe that a great haircut is more than just a service—it's an experience. Step into our chair and leave feeling confident and refreshed.</p>
+                </div>
+                <div class="about-image">
+                    <div class="about-image-placeholder">
+                        <img src="logo-removebg-preview.png" alt="Golden Barbers Logo" class="about-logo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="container">
+            <h2 class="fade-in">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">✂️</div>
+                    <h3>Classic Haircut</h3>
+                    <p>Traditional cuts that never go out of style. Perfect for the gentleman who appreciates timeless elegance.</p>
+                    <div class="price">£25</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💈</div>
+                    <h3>Modern Fade</h3>
+                    <p>Contemporary styles with precision fades. Stay on-trend with our expert barbers.</p>
+                    <div class="price">£30</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🧔</div>
+                    <h3>Beard Trim & Shape</h3>
+                    <p>Professional beard grooming to complement your style. Keep your facial hair looking sharp.</p>
+                    <div class="price">£15</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🪒</div>
+                    <h3>Hot Towel Shave</h3>
+                    <p>Luxurious straight razor shave with hot towels. Experience the ultimate grooming tradition.</p>
+                    <div class="price">£35</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">👦</div>
+                    <h3>Kids Cut</h3>
+                    <p>Gentle, patient service for our younger clients. Making haircuts fun for kids!</p>
+                    <div class="price">£20</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">⭐</div>
+                    <h3>Premium Package</h3>
+                    <p>Haircut, beard trim, and hot towel shave. The complete grooming experience.</p>
+                    <div class="price">£65</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="container">
+            <h2 class="fade-in">Our Work</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">📸</div>
+                <div class="gallery-item">📸</div>
+                <div class="gallery-item">📸</div>
+                <div class="gallery-item">📸</div>
+                <div class="gallery-item">📸</div>
+                <div class="gallery-item">📸</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team">
+        <div class="container">
+            <h2 class="fade-in">Meet Our Barbers</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-photo">👨‍💼</div>
+                    <div class="team-info">
+                        <h3>Mike Johnson</h3>
+                        <p>Master Barber - 15 years experience</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-photo">👨‍💼</div>
+                    <div class="team-info">
+                        <h3>Alex Rodriguez</h3>
+                        <p>Senior Barber - 10 years experience</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-photo">👨‍💼</div>
+                    <div class="team-info">
+                        <h3>Chris Taylor</h3>
+                        <p>Barber - 7 years experience</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-photo">👨‍💼</div>
+                    <div class="team-info">
+                        <h3>David Chen</h3>
+                        <p>Barber - 5 years experience</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="fade-in">Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div class="info-text">
+                            <h3>Location</h3>
+                            <p>14 Goodmayes Rd<br>London, Ilford IG3 9UN</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📞</div>
+                        <div class="info-text">
+                            <h3>Phone</h3>
+                            <p>020 8598 9920</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">⏰</div>
+                        <div class="info-text">
+                            <h3>Hours</h3>
+                            <p>Mon - Sat: 9:30 AM - 8:00 PM<br>
+                               Sun: 9:30 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">✉️</div>
+                        <div class="info-text">
+                            <h3>Email</h3>
+                            <p>ltdgoldenbarbers@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="#" title="Facebook">📘</a>
+                <a href="#" title="Instagram">📷</a>
+                <a href="#" title="Twitter">🐦</a>
+            </div>
+            <p>&copy; 2026 Golden Barbers Goodmayes. All rights reserved.</p>
+            <p>Designed with care for the modern gentleman.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle mobile menu
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking a link
+        function closeMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.remove('active');
+        }
+
+        // Handle form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const message = document.getElementById('message').value;
+
+            alert(`Thank you, ${name}! We've received your message and will contact you soon at ${email}.`);
+
+            // Clear form
+            event.target.reset();
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
