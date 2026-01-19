@@ -82,8 +82,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
+            width: 1000px;
+            height: 1000px;
             background-image: url('logo-removebg-preview.png');
             background-size: contain;
             background-position: center;
@@ -92,6 +92,7 @@
             z-index: 0;
             animation: logoFloat 8s ease-in-out infinite;
             pointer-events: none;
+            clip-path: circle(42% at center);
         }
 
         @keyframes logoFloat {
@@ -110,15 +111,15 @@
 
         @media (max-width: 968px) {
             .services-preview::before {
-                width: 400px;
-                height: 400px;
+                width: 700px;
+                height: 700px;
             }
         }
 
         @media (max-width: 480px) {
             .services-preview::before {
-                width: 300px;
-                height: 300px;
+                width: 500px;
+                height: 500px;
                 opacity: 0.8;
             }
         }
