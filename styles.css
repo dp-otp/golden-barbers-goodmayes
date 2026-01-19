@@ -448,27 +448,6 @@ p {
     z-index: 0;
 }
 
-.hero-bg::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 1200px;
-    height: 1200px;
-    background-image: url('../logo-removebg-preview.png');
-    background-size: 75%;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.15;
-    animation: logoFloat 8s ease-in-out infinite;
-    pointer-events: none;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    filter: contrast(1.2) brightness(1.1) saturate(1.1);
-    clip-path: circle(32% at 50% 50%);
-}
-
 .hero-bg::after {
     content: '';
     position: absolute;
@@ -486,20 +465,9 @@ p {
     50% { opacity: 1; transform: scale(1.1); }
 }
 
-@keyframes logoFloat {
-    0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.15;
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.08);
-        opacity: 0.22;
-    }
-}
-
 .hero-content {
     text-align: center;
-    z-index: 1;
+    z-index: 2;
     position: relative;
     max-width: 1000px;
 }
@@ -786,12 +754,6 @@ p {
     .grid-2 {
         grid-template-columns: 1fr;
     }
-
-    .hero-bg::before {
-        width: 850px;
-        height: 850px;
-        clip-path: circle(32% at 50% 50%);
-    }
 }
 
 @media (max-width: 768px) {
@@ -841,13 +803,6 @@ p {
     .hero {
         min-height: 90vh;
         padding-top: 100px;
-    }
-
-    .hero-bg::before {
-        width: 600px;
-        height: 600px;
-        opacity: 0.12;
-        clip-path: circle(32% at 50% 50%);
     }
 
     .hero-eyebrow {
@@ -981,12 +936,6 @@ p {
         --space-lg: 2rem;
         --space-xl: 3rem;
         --space-2xl: 4rem;
-    }
-
-    .hero-bg::before {
-        width: 470px;
-        height: 470px;
-        clip-path: circle(32% at 50% 50%);
     }
 
     .trust-grid {

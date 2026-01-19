@@ -70,6 +70,41 @@
             }
         }
 
+        /* Hero Crown Emblem */
+        .hero-crown-emblem {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 400px;
+            opacity: 1;
+            z-index: 1;
+            animation: crownFloat 6s ease-in-out infinite;
+            pointer-events: none;
+            filter: drop-shadow(0 20px 60px rgba(212, 175, 55, 0.4));
+        }
+
+        @keyframes crownFloat {
+            0%, 100% {
+                transform: translate(-50%, -50%) translateY(0) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) translateY(-30px) scale(1.05);
+            }
+        }
+
+        @media (max-width: 968px) {
+            .hero-crown-emblem {
+                font-size: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-crown-emblem {
+                font-size: 180px;
+            }
+        }
+
         /* Trust Section */
         .trust-section {
             background: var(--dark-elevated);
@@ -383,7 +418,7 @@
         <div class="container">
             <div class="nav-inner">
                 <a href="index.html" class="nav-logo">
-                    <img src="../logo.png" alt="Golden Barbers" class="nav-logo-img">
+                    <img src="logo-removebg-preview.png" alt="Golden Barbers" class="nav-logo-img">
                     <span class="nav-logo-text">Golden Barbers</span>
                 </a>
 
@@ -413,6 +448,7 @@
                 <img src="download (9).jpg" alt="Barber cutting" class="hero-bg-img hero-bg-img-2">
                 <img src="download (16).jpg" alt="Scissor work" class="hero-bg-img hero-bg-img-3">
             </div>
+            <div class="hero-crown-emblem">👑</div>
         </div>
         <div class="container">
             <div class="hero-content">
