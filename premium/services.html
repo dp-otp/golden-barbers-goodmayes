@@ -809,6 +809,269 @@
                 gap: 30px;
             }
         }
+
+        /* ============================================
+           BOOKING MODAL
+           ============================================ */
+        .booking-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 20px;
+        }
+
+        .booking-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .booking-modal-content {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(30px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .booking-modal.active .booking-modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--white);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: var(--gold);
+            color: var(--black);
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            padding: 40px 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-service-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .modal-service-name {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .modal-service-price {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-service-duration {
+            font-size: 14px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        .modal-body {
+            padding: 30px 40px;
+        }
+
+        .modal-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .payment-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .payment-option:hover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateX(5px);
+        }
+
+        .payment-option-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .payment-option-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .payment-option-info p {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .payment-option-arrow {
+            margin-left: auto;
+            color: var(--gold);
+            font-size: 20px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover .payment-option-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .modal-divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            color: var(--gray);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .modal-divider::before,
+        .modal-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .walk-in-option {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .walk-in-option h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--gold);
+        }
+
+        .walk-in-option p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .walk-in-option .shop-address {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            font-size: 14px;
+            color: var(--white);
+        }
+
+        .modal-footer {
+            padding: 20px 40px 30px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-footer p {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .modal-footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .modal-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .booking-modal-content {
+                border-radius: 20px;
+            }
+
+            .modal-header,
+            .modal-body,
+            .modal-footer {
+                padding-left: 25px;
+                padding-right: 25px;
+            }
+
+            .modal-service-name {
+                font-size: 22px;
+            }
+
+            .modal-service-price {
+                font-size: 28px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1269,6 +1532,68 @@
         Book Now
     </a>
 
+    <!-- Booking Modal -->
+    <div class="booking-modal" id="bookingModal">
+        <div class="booking-modal-content">
+            <button class="modal-close" id="modalClose">✕</button>
+
+            <div class="modal-header">
+                <span class="modal-service-icon" id="modalIcon">👑</span>
+                <h2 class="modal-service-name" id="modalName">Service Name</h2>
+                <div class="modal-service-price" id="modalPrice">£0</div>
+                <p class="modal-service-duration" id="modalDuration">Duration</p>
+            </div>
+
+            <div class="modal-body">
+                <h3 class="modal-section-title">Book & Pay Online</h3>
+
+                <div class="payment-options">
+                    <a href="tel:02085989920" class="payment-option">
+                        <div class="payment-option-icon">📞</div>
+                        <div class="payment-option-info">
+                            <h4>Call to Book</h4>
+                            <p>Speak directly with our team</p>
+                        </div>
+                        <span class="payment-option-arrow">→</span>
+                    </a>
+
+                    <a href="https://wa.me/442085989920" target="_blank" class="payment-option">
+                        <div class="payment-option-icon">💬</div>
+                        <div class="payment-option-info">
+                            <h4>WhatsApp Booking</h4>
+                            <p>Quick and convenient messaging</p>
+                        </div>
+                        <span class="payment-option-arrow">→</span>
+                    </a>
+
+                    <a href="https://www.facebook.com/Goldenbarbers.goodmayes/" target="_blank" class="payment-option">
+                        <div class="payment-option-icon">📘</div>
+                        <div class="payment-option-info">
+                            <h4>Facebook Messenger</h4>
+                            <p>Book via our Facebook page</p>
+                        </div>
+                        <span class="payment-option-arrow">→</span>
+                    </a>
+                </div>
+
+                <div class="modal-divider">Or</div>
+
+                <div class="walk-in-option">
+                    <h4>Walk-ins Welcome</h4>
+                    <p>No appointment needed! Just pop in during our opening hours.</p>
+                    <div class="shop-address">
+                        📍 14 Goodmayes Rd, Ilford IG3 9UN<br>
+                        🕐 Mon-Sat: 9:30 AM - 8:00 PM | Sun: 9:30 AM - 6:00 PM
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <p>Questions? <a href="contact.html">Contact us</a> or call <a href="tel:02085989920">020 8598 9920</a></p>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Simple Cursor
         const cursor = document.querySelector('.cursor');
@@ -1398,6 +1723,54 @@
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
             });
+        });
+
+        // ============================================
+        // BOOKING MODAL FUNCTIONALITY
+        // ============================================
+        const bookingModal = document.getElementById('bookingModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalName = document.getElementById('modalName');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalDuration = document.getElementById('modalDuration');
+
+        function openBookingModal(serviceName, servicePrice, serviceDuration, serviceIcon) {
+            modalIcon.textContent = serviceIcon;
+            modalName.textContent = serviceName;
+            modalPrice.textContent = servicePrice;
+            modalDuration.textContent = serviceDuration;
+            bookingModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBookingModal() {
+            bookingModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Attach click handlers to all Book Now buttons
+        document.querySelectorAll('.service-cta').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const card = btn.closest('.service-card');
+                const icon = card.querySelector('.service-icon').textContent;
+                const name = card.querySelector('.service-title').textContent;
+                const price = card.querySelector('.service-price').textContent;
+                const duration = card.querySelector('.service-duration').textContent;
+                openBookingModal(name, price, duration, icon);
+            });
+        });
+
+        // Close modal events
+        modalClose.addEventListener('click', closeBookingModal);
+        bookingModal.addEventListener('click', (e) => {
+            if (e.target === bookingModal) closeBookingModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && bookingModal.classList.contains('active')) {
+                closeBookingModal();
+            }
         });
     </script>
 
