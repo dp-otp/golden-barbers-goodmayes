@@ -1149,10 +1149,24 @@
             color: var(--gray);
         }
 
+        .extra-price-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+        }
+
+        .extra-original-price {
+            font-size: 12px;
+            color: var(--gray);
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
         .extra-price {
             font-size: 15px;
             font-weight: 700;
-            color: var(--gold);
+            color: #22c55e;
         }
 
         /* Fake Discount Pricing - Crossed out original prices */
@@ -1988,9 +2002,9 @@
                     </div>
 
                     <!-- Add Extras Section -->
-                    <h3 class="modal-section-title">Enhance Your Experience</h3>
+                    <h3 class="modal-section-title">Enhance Your Experience <span style="color: #22c55e; font-size: 12px; font-weight: 600;">- SPECIAL BUNDLE PRICING</span></h3>
                     <div class="modal-extras" id="modalExtras">
-                        <div class="extra-item" data-extra="hottowel" data-price="3">
+                        <div class="extra-item" data-extra="hottowel" data-price="2" data-original="5">
                             <div class="extra-item-left">
                                 <div class="extra-checkbox">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -2002,9 +2016,12 @@
                                     <p>Relaxing Turkish hot towel</p>
                                 </div>
                             </div>
-                            <span class="extra-price">+£3</span>
+                            <div class="extra-price-wrap">
+                                <span class="extra-original-price">£5</span>
+                                <span class="extra-price">+£2</span>
+                            </div>
                         </div>
-                        <div class="extra-item" data-extra="headmassage" data-price="5">
+                        <div class="extra-item" data-extra="headmassage" data-price="3" data-original="8">
                             <div class="extra-item-left">
                                 <div class="extra-checkbox">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -2016,9 +2033,12 @@
                                     <p>Relaxing scalp massage</p>
                                 </div>
                             </div>
-                            <span class="extra-price">+£5</span>
+                            <div class="extra-price-wrap">
+                                <span class="extra-original-price">£8</span>
+                                <span class="extra-price">+£3</span>
+                            </div>
                         </div>
-                        <div class="extra-item" data-extra="earnosewax" data-price="6">
+                        <div class="extra-item" data-extra="earnosewax" data-price="4" data-original="10">
                             <div class="extra-item-left">
                                 <div class="extra-checkbox">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -2030,9 +2050,12 @@
                                     <p>Traditional flaming/waxing</p>
                                 </div>
                             </div>
-                            <span class="extra-price">+£6</span>
+                            <div class="extra-price-wrap">
+                                <span class="extra-original-price">£10</span>
+                                <span class="extra-price">+£4</span>
+                            </div>
                         </div>
-                        <div class="extra-item" data-extra="facemask" data-price="5">
+                        <div class="extra-item" data-extra="facemask" data-price="3" data-original="8">
                             <div class="extra-item-left">
                                 <div class="extra-checkbox">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -2044,7 +2067,10 @@
                                     <p>Deep cleansing facial</p>
                                 </div>
                             </div>
-                            <span class="extra-price">+£5</span>
+                            <div class="extra-price-wrap">
+                                <span class="extra-original-price">£8</span>
+                                <span class="extra-price">+£3</span>
+                            </div>
                         </div>
                     </div>
 
@@ -2342,13 +2368,15 @@
 
             // Extras
             let extrasTotal = 0;
+            let extrasSavings = 0;
             summaryExtras.innerHTML = '';
             selectedExtras.forEach(extra => {
                 const extraLine = document.createElement('div');
                 extraLine.className = 'order-line extra';
-                extraLine.innerHTML = `<span>+ ${extra.name}</span><span>£${extra.price.toFixed(2)}</span>`;
+                extraLine.innerHTML = `<span>+ ${extra.name}</span><span style="color: #22c55e;">£${extra.price.toFixed(2)}</span>`;
                 summaryExtras.appendChild(extraLine);
                 extrasTotal += extra.price;
+                extrasSavings += (extra.originalPrice - extra.price);
             });
 
             // Total
@@ -2360,9 +2388,10 @@
                 payAmount.textContent = '£' + total.toFixed(2);
             }
 
-            // Calculate savings (fake original price minus current)
-            const savings = currentOriginalPrice - currentServicePrice;
-            summaryDiscountAmount.textContent = '-£' + savings.toFixed(2);
+            // Calculate total savings (service + extras)
+            const serviceSavings = currentOriginalPrice - currentServicePrice;
+            const totalSavings = serviceSavings + extrasSavings;
+            summaryDiscountAmount.textContent = '-£' + totalSavings.toFixed(2);
         }
 
         function resetModal() {
@@ -2414,13 +2443,14 @@
             item.addEventListener('click', () => {
                 const extraName = item.querySelector('.extra-info h5').textContent;
                 const extraPrice = parseFloat(item.dataset.price);
+                const extraOriginal = parseFloat(item.dataset.original) || extraPrice;
 
                 if (item.classList.contains('selected')) {
                     item.classList.remove('selected');
                     selectedExtras = selectedExtras.filter(e => e.name !== extraName);
                 } else {
                     item.classList.add('selected');
-                    selectedExtras.push({ name: extraName, price: extraPrice });
+                    selectedExtras.push({ name: extraName, price: extraPrice, originalPrice: extraOriginal });
                 }
 
                 updateOrderSummary();
