@@ -584,11 +584,11 @@
             line-height: 1.5;
         }
 
-        /* Bottom Row Layout: 3-column grid matching main gallery */
+        /* Bottom Row Layout: matches 3-column main grid */
         .gallery-bottom-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: 1fr 1fr;
+            grid-template-rows: minmax(280px, auto) minmax(280px, auto);
             gap: 20px;
             max-width: 1400px;
             margin: 20px auto 0;
@@ -596,21 +596,16 @@
         }
 
         .gallery-bottom-row .gallery-item {
-            min-height: 280px;
+            min-height: 0;
         }
 
         .gallery-bottom-row .gallery-item.tall-right {
-            grid-column: 3;
+            grid-column: 2 / 4;
             grid-row: 1 / 3;
         }
 
         .gallery-bottom-row .gallery-item .gallery-item-inner {
             height: 100%;
-            min-height: 280px;
-        }
-
-        .gallery-bottom-row .gallery-item.tall-right .gallery-item-inner {
-            min-height: 580px;
         }
 
         .gallery-bottom-row .gallery-item img {
@@ -622,34 +617,27 @@
         @media (max-width: 1024px) {
             .gallery-bottom-row {
                 grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: auto auto auto;
             }
 
             .gallery-bottom-row .gallery-item.tall-right {
-                grid-column: 1 / 3;
-                grid-row: auto;
-            }
-
-            .gallery-bottom-row .gallery-item.tall-right .gallery-item-inner {
-                min-height: 400px;
+                grid-column: 2;
+                grid-row: 1 / 3;
             }
         }
 
         @media (max-width: 768px) {
             .gallery-bottom-row {
                 grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
             }
 
             .gallery-bottom-row .gallery-item.tall-right {
                 grid-column: 1;
+                grid-row: auto;
             }
 
             .gallery-bottom-row .gallery-item .gallery-item-inner {
                 min-height: 280px;
-            }
-
-            .gallery-bottom-row .gallery-item.tall-right .gallery-item-inner {
-                min-height: 350px;
             }
         }
 
@@ -1700,7 +1688,7 @@
 
         </div>
 
-        <!-- Bottom Row: 4 small items in columns 1-2, tall item in column 3 -->
+        <!-- Bottom Row: 2 small stacked left + 1 tall right -->
         <div class="gallery-bottom-row">
             <div class="gallery-item" data-category="fades">
                 <div class="gallery-item-inner">
@@ -1710,23 +1698,6 @@
                         <span class="gallery-item-category">Fades</span>
                         <h3 class="gallery-item-title">Sharp Lineup</h3>
                         <p class="gallery-item-desc">Precision edge work</p>
-                    </div>
-                    <div class="gallery-item-expand">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="gallery-item" data-category="shop">
-                <div class="gallery-item-inner">
-                    <img src="download (19).jpg" alt="The Golden Team" loading="lazy">
-                    <div class="gallery-item-overlay"></div>
-                    <div class="gallery-item-content">
-                        <span class="gallery-item-category">Team</span>
-                        <h3 class="gallery-item-title">The Golden Team</h3>
-                        <p class="gallery-item-desc">Our skilled barbers ready to serve you</p>
                     </div>
                     <div class="gallery-item-expand">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
@@ -1753,31 +1724,14 @@
                 </div>
             </div>
 
-            <div class="gallery-item" data-category="fades">
+            <div class="gallery-item" data-category="shop">
                 <div class="gallery-item-inner">
-                    <img src="download (5).jpg" alt="Clean Buzz Cut" loading="lazy">
+                    <img src="download (19).jpg" alt="The Golden Team" loading="lazy">
                     <div class="gallery-item-overlay"></div>
                     <div class="gallery-item-content">
-                        <span class="gallery-item-category">Fades</span>
-                        <h3 class="gallery-item-title">Clean Buzz Cut</h3>
-                        <p class="gallery-item-desc">Sharp and neat finish</p>
-                    </div>
-                    <div class="gallery-item-expand">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="gallery-item" data-category="fades">
-                <div class="gallery-item-inner">
-                    <img src="download (6).jpg" alt="Low Fade Style" loading="lazy">
-                    <div class="gallery-item-overlay"></div>
-                    <div class="gallery-item-content">
-                        <span class="gallery-item-category">Fades</span>
-                        <h3 class="gallery-item-title">Low Fade Style</h3>
-                        <p class="gallery-item-desc">Subtle gradient with clean lines</p>
+                        <span class="gallery-item-category">Team</span>
+                        <h3 class="gallery-item-title">The Golden Team</h3>
+                        <p class="gallery-item-desc">Our skilled barbers ready to serve you</p>
                     </div>
                     <div class="gallery-item-expand">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">

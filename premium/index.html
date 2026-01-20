@@ -876,7 +876,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0; /* Behind the hero content and blobs */
+            z-index: 1; /* Behind the hero content but visible */
             overflow: hidden;
         }
 
@@ -1758,6 +1758,80 @@
         }
 
         /* ============================================
+           MOBILE MENU
+           ============================================ */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .mobile-menu-links a {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .mobile-menu-links a:hover,
+        .mobile-menu-links a.active {
+            color: var(--gold);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-menu-close span {
+            position: absolute;
+            width: 30px;
+            height: 2px;
+            background: var(--white);
+        }
+
+        .mobile-menu-close span:first-child {
+            transform: rotate(45deg);
+        }
+
+        .mobile-menu-close span:last-child {
+            transform: rotate(-45deg);
+        }
+
+        /* ============================================
            BOOKING MODAL
            ============================================ */
         .booking-modal {
@@ -2061,6 +2135,22 @@
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close" aria-label="Close menu">
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-menu-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="services.html">Services</a>
+            <a href="about.html">About</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="contact.html">Contact</a>
+            <a href="services.html" style="color: var(--gold);">Book Now</a>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -2680,38 +2770,14 @@
         // MOBILE NAVIGATION
         // ============================================
         const navToggle = document.querySelector('.nav-toggle');
-        const navLinks = document.querySelector('.nav-links');
-        let menuOpen = false;
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
 
-        navToggle.addEventListener('click', () => {
-            menuOpen = !menuOpen;
+        navToggle.addEventListener('click', () => mobileMenu.classList.add('active'));
+        mobileMenuClose.addEventListener('click', () => mobileMenu.classList.remove('active'));
 
-            if (menuOpen) {
-                navLinks.style.display = 'flex';
-                navLinks.style.position = 'fixed';
-                navLinks.style.top = '100px';
-                navLinks.style.left = '20px';
-                navLinks.style.right = '20px';
-                navLinks.style.flexDirection = 'column';
-                navLinks.style.background = 'rgba(10, 10, 10, 0.98)';
-                navLinks.style.backdropFilter = 'blur(30px)';
-                navLinks.style.padding = '30px';
-                navLinks.style.borderRadius = '25px';
-                navLinks.style.gap = '20px';
-                navLinks.style.zIndex = '9999';
-                navLinks.style.border = '1px solid rgba(212, 175, 55, 0.2)';
-                navLinks.style.animation = 'fadeInUp 0.4s ease forwards';
-
-                // Animate hamburger to X
-                navToggle.children[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                navToggle.children[1].style.opacity = '0';
-                navToggle.children[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
-            } else {
-                navLinks.style.display = 'none';
-                navToggle.children[0].style.transform = 'none';
-                navToggle.children[1].style.opacity = '1';
-                navToggle.children[2].style.transform = 'none';
-            }
+        document.querySelectorAll('.mobile-menu-links a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.remove('active'));
         });
 
         // ============================================
