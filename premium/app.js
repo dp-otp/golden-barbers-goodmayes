@@ -634,22 +634,23 @@ class GalleryFilter {
             }
         });
 
-        // Auto-scroll to first visible gallery item on mobile
-        if (window.innerWidth <= 968) {
-            setTimeout(() => {
-                const firstVisible = Array.from(this.galleryItems).find(item => item.style.display !== 'none');
-                if (firstVisible) {
-                    const offset = 120; // Offset for fixed header
-                    const elementPosition = firstVisible.getBoundingClientRect().top;
-                    const offsetPosition = window.scrollY + elementPosition - offset;
+        // Auto-scroll to first visible gallery item on mobile - ALWAYS run (not just mobile)
+        setTimeout(() => {
+            const firstVisible = Array.from(this.galleryItems).find(item => item.style.display !== 'none');
+            if (firstVisible) {
+                // Get the gallery grid container for better positioning
+                const galleryGrid = firstVisible.closest('.gallery-grid');
+                if (galleryGrid) {
+                    const offset = 150; // Offset for fixed header and some breathing room
+                    const gridTop = galleryGrid.getBoundingClientRect().top + window.scrollY;
 
                     window.scrollTo({
-                        top: offsetPosition,
+                        top: gridTop - offset,
                         behavior: 'smooth'
                     });
                 }
-            }, 200);
-        }
+            }
+        }, 300);
     }
 }
 
