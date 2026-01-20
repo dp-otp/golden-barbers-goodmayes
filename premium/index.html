@@ -38,6 +38,7 @@
 
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
         body {
@@ -46,6 +47,8 @@
             color: var(--white);
             overflow-x: hidden;
             cursor: none;
+            position: relative;
+            width: 100%;
         }
 
         /* ============================================
@@ -1017,30 +1020,42 @@
             .showcase-panel-3 { left: 12%; right: 12%; height: 15%; }
         }
 
-        /* Mobile - Only show subtle bottom strip */
+        /* Mobile - Show all panels with adjusted sizes */
         @media (max-width: 768px) {
-            .showcase-panel-1,
+            .showcase-panel-1 {
+                width: 25%;
+                height: 30%;
+                opacity: 0.6;
+            }
             .showcase-panel-2 {
-                display: none;
+                width: 25%;
+                height: 30%;
+                opacity: 0.6;
             }
             .showcase-panel-3 {
                 left: 0;
                 right: 0;
-                height: 12%;
+                height: 15%;
                 opacity: 0.5;
             }
             .showcase-panel-3::after {
                 background: linear-gradient(to top, transparent 0%, rgba(0,0,0,1) 70%);
             }
-            .showcase-panel-3 .panel-border {
+            .showcase-panel .panel-border {
                 display: none;
             }
         }
 
         /* Small mobile */
         @media (max-width: 480px) {
+            .showcase-panel-1,
+            .showcase-panel-2 {
+                width: 20%;
+                height: 25%;
+                opacity: 0.5;
+            }
             .showcase-panel-3 {
-                height: 10%;
+                height: 12%;
                 opacity: 0.4;
             }
         }
@@ -1677,10 +1692,14 @@
 
             .nav {
                 width: calc(100% - 40px);
-                padding: 15px 25px;
+                padding: 12px 20px;
             }
 
             .nav-links {
+                display: none;
+            }
+
+            .nav-cta {
                 display: none;
             }
 
