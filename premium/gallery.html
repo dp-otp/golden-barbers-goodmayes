@@ -588,12 +588,10 @@
         .gallery-bottom-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto;
             gap: 20px;
             max-width: 1400px;
             margin: 20px auto 0;
             padding: 0 5%;
-            align-items: stretch;
         }
 
         .gallery-stacked-left {
@@ -602,24 +600,17 @@
             gap: 20px;
         }
 
-        .gallery-stacked-left .gallery-item {
+        .gallery-stacked-left .gallery-item,
+        .gallery-bottom-row .gallery-item.big-square {
             min-height: 0;
         }
 
-        .gallery-stacked-left .gallery-item .gallery-item-inner {
-            height: 100%;
-        }
-
-        .gallery-stacked-left .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
+        .gallery-stacked-left .gallery-item .gallery-item-inner,
         .gallery-bottom-row .gallery-item.big-square .gallery-item-inner {
             height: 100%;
         }
 
+        .gallery-stacked-left .gallery-item img,
         .gallery-bottom-row .gallery-item.big-square img {
             width: 100%;
             height: 100%;
@@ -1434,7 +1425,7 @@
     <section class="gallery-section">
         <div class="gallery-grid">
             <!-- Fades & Cuts -->
-            <div class="gallery-item tall" data-category="fades">
+            <div class="gallery-item" data-category="fades">
                 <div class="gallery-item-inner">
                     <img src="pic.jpg" alt="Clean Skin Fade" loading="lazy">
                     <div class="gallery-item-overlay"></div>
@@ -1504,23 +1495,6 @@
 
             <div class="gallery-item" data-category="fades">
                 <div class="gallery-item-inner">
-                    <img src="download (6).jpg" alt="Expert Fade Work" loading="lazy">
-                    <div class="gallery-item-overlay"></div>
-                    <div class="gallery-item-content">
-                        <span class="gallery-item-category">Fades</span>
-                        <h3 class="gallery-item-title">Expert Fade Work</h3>
-                        <p class="gallery-item-desc">Premium precision fading techniques</p>
-                    </div>
-                    <div class="gallery-item-expand">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="gallery-item" data-category="fades">
-                <div class="gallery-item-inner">
                     <img src="download (4).jpg" alt="Kids Classic Cut" loading="lazy">
                     <div class="gallery-item-overlay"></div>
                     <div class="gallery-item-content">
@@ -1553,14 +1527,14 @@
                 </div>
             </div>
 
-            <div class="gallery-item tall" data-category="beard">
+            <div class="gallery-item" data-category="beard">
                 <div class="gallery-item-inner">
-                    <img src="download (15).jpg" alt="Deluxe Hot Towel Shave" loading="lazy">
+                    <img src="download (15).jpg" alt="Face Wax Treatment" loading="lazy">
                     <div class="gallery-item-overlay"></div>
                     <div class="gallery-item-content">
-                        <span class="gallery-item-category">Shave</span>
-                        <h3 class="gallery-item-title">Deluxe Hot Towel Shave</h3>
-                        <p class="gallery-item-desc">Premium straight razor shave with hot towel</p>
+                        <span class="gallery-item-category">Grooming</span>
+                        <h3 class="gallery-item-title">Face Wax Treatment</h3>
+                        <p class="gallery-item-desc">Professional facial waxing for a clean finish</p>
                     </div>
                     <div class="gallery-item-expand">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
@@ -1604,7 +1578,7 @@
                 </div>
             </div>
 
-            <div class="gallery-item tall" data-category="transformations">
+            <div class="gallery-item" data-category="transformations">
                 <div class="gallery-item-inner">
                     <img src="download (22).jpg" alt="Turquoise Color Fade" loading="lazy">
                     <div class="gallery-item-overlay"></div>
