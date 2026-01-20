@@ -1023,26 +1023,30 @@
         /* Mobile - Show all panels with adjusted sizes */
         @media (max-width: 768px) {
             .showcase-panel-1 {
-                width: 25%;
-                height: 30%;
-                opacity: 0.6;
+                width: 30%;
+                height: 35%;
+                opacity: 0.8;
             }
             .showcase-panel-2 {
-                width: 25%;
-                height: 30%;
-                opacity: 0.6;
+                width: 30%;
+                height: 35%;
+                opacity: 0.8;
             }
             .showcase-panel-3 {
                 left: 0;
                 right: 0;
-                height: 15%;
-                opacity: 0.5;
+                height: 18%;
+                opacity: 0.7;
             }
             .showcase-panel-3::after {
-                background: linear-gradient(to top, transparent 0%, rgba(0,0,0,1) 70%);
+                background: linear-gradient(to top, transparent 0%, rgba(0,0,0,0.8) 70%);
             }
             .showcase-panel .panel-border {
                 display: none;
+            }
+            .hero-scroll {
+                left: 50%;
+                transform: translateX(-50%);
             }
         }
 
@@ -1050,13 +1054,18 @@
         @media (max-width: 480px) {
             .showcase-panel-1,
             .showcase-panel-2 {
-                width: 20%;
-                height: 25%;
-                opacity: 0.5;
+                width: 28%;
+                height: 30%;
+                opacity: 0.75;
             }
             .showcase-panel-3 {
-                height: 12%;
-                opacity: 0.4;
+                height: 15%;
+                opacity: 0.6;
+            }
+            .hero-scroll {
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 30px;
             }
         }
 
