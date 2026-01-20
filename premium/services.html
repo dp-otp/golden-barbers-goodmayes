@@ -1074,6 +1074,269 @@
                 font-size: 28px;
             }
         }
+
+        /* Enhanced Booking Modal - Extras & Discounts */
+        .modal-extras {
+            margin-bottom: 25px;
+        }
+
+        .extra-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .extra-item:hover {
+            background: rgba(212, 175, 55, 0.08);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .extra-item.selected {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: var(--gold);
+        }
+
+        .extra-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .extra-checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .extra-item.selected .extra-checkbox {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .extra-checkbox svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--black);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .extra-item.selected .extra-checkbox svg {
+            opacity: 1;
+        }
+
+        .extra-info h5 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .extra-info p {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .extra-price {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        /* Discount Code Section */
+        .discount-section {
+            margin-bottom: 25px;
+        }
+
+        .discount-input-wrap {
+            display: flex;
+            gap: 10px;
+        }
+
+        .discount-input {
+            flex: 1;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--white);
+            font-size: 14px;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .discount-input:focus {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .discount-input::placeholder {
+            color: var(--gray);
+        }
+
+        .discount-btn {
+            padding: 14px 24px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            color: var(--gold);
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .discount-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .discount-applied {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .discount-applied-text {
+            color: #22c55e;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .discount-remove {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0 5px;
+        }
+
+        .discount-error {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .order-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .order-line.extra {
+            color: var(--gray);
+            font-size: 13px;
+        }
+
+        .order-line.discount {
+            color: #22c55e;
+        }
+
+        .order-line.total {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 12px;
+            padding-top: 15px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .order-line.total .order-price {
+            color: var(--gold);
+            font-size: 24px;
+        }
+
+        /* Proceed Button */
+        .proceed-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            border: none;
+            border-radius: 14px;
+            color: var(--black);
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .proceed-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Payment Method Selection */
+        .payment-method-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .payment-method-btn {
+            padding: 15px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .payment-method-btn:hover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .payment-method-btn .method-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .payment-method-btn .method-name {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
@@ -1547,45 +1810,125 @@
             </div>
 
             <div class="modal-body">
-                <h3 class="modal-section-title">Book & Pay Online</h3>
-
-                <div class="payment-options">
-                    <a href="tel:02085989920" class="payment-option">
-                        <div class="payment-option-icon">📞</div>
-                        <div class="payment-option-info">
-                            <h4>Call to Book</h4>
-                            <p>Speak directly with our team</p>
+                <!-- Add Extras Section -->
+                <h3 class="modal-section-title">Add Extras</h3>
+                <div class="modal-extras" id="modalExtras">
+                    <div class="extra-item" data-extra="hottowel" data-price="3">
+                        <div class="extra-item-left">
+                            <div class="extra-checkbox">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="extra-info">
+                                <h5>Hot Towel Treatment</h5>
+                                <p>Relaxing Turkish hot towel</p>
+                            </div>
                         </div>
-                        <span class="payment-option-arrow">→</span>
-                    </a>
-
-                    <a href="https://wa.me/442085989920" target="_blank" class="payment-option">
-                        <div class="payment-option-icon">💬</div>
-                        <div class="payment-option-info">
-                            <h4>WhatsApp Booking</h4>
-                            <p>Quick and convenient messaging</p>
+                        <span class="extra-price">+£3</span>
+                    </div>
+                    <div class="extra-item" data-extra="headmassage" data-price="5">
+                        <div class="extra-item-left">
+                            <div class="extra-checkbox">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="extra-info">
+                                <h5>Head Massage</h5>
+                                <p>Relaxing scalp massage</p>
+                            </div>
                         </div>
-                        <span class="payment-option-arrow">→</span>
-                    </a>
-
-                    <a href="https://www.facebook.com/Goldenbarbers.goodmayes/" target="_blank" class="payment-option">
-                        <div class="payment-option-icon">📘</div>
-                        <div class="payment-option-info">
-                            <h4>Facebook Messenger</h4>
-                            <p>Book via our Facebook page</p>
+                        <span class="extra-price">+£5</span>
+                    </div>
+                    <div class="extra-item" data-extra="earnosewax" data-price="6">
+                        <div class="extra-item-left">
+                            <div class="extra-checkbox">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="extra-info">
+                                <h5>Ear & Nose Waxing</h5>
+                                <p>Traditional flaming/waxing</p>
+                            </div>
                         </div>
-                        <span class="payment-option-arrow">→</span>
-                    </a>
+                        <span class="extra-price">+£6</span>
+                    </div>
+                    <div class="extra-item" data-extra="facemask" data-price="5">
+                        <div class="extra-item-left">
+                            <div class="extra-checkbox">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="extra-info">
+                                <h5>Black/Mud Mask</h5>
+                                <p>Deep cleansing facial</p>
+                            </div>
+                        </div>
+                        <span class="extra-price">+£5</span>
+                    </div>
                 </div>
 
-                <div class="modal-divider">Or</div>
+                <!-- Discount Code Section -->
+                <h3 class="modal-section-title">Have a Discount Code?</h3>
+                <div class="discount-section">
+                    <div class="discount-input-wrap" id="discountInputWrap">
+                        <input type="text" class="discount-input" id="discountInput" placeholder="Enter code (e.g. GOLDEN10)">
+                        <button class="discount-btn" id="applyDiscount">Apply</button>
+                    </div>
+                    <div class="discount-applied" id="discountApplied" style="display: none;">
+                        <span class="discount-applied-text" id="discountText">GOLDEN10 - 10% off applied!</span>
+                        <button class="discount-remove" id="removeDiscount">✕</button>
+                    </div>
+                    <div class="discount-error" id="discountError" style="display: none;"></div>
+                </div>
 
-                <div class="walk-in-option">
-                    <h4>Walk-ins Welcome</h4>
-                    <p>No appointment needed! Just pop in during our opening hours.</p>
-                    <div class="shop-address">
-                        📍 14 Goodmayes Rd, Ilford IG3 9UN<br>
-                        🕐 Mon-Sat: 9:30 AM - 8:00 PM | Sun: 9:30 AM - 6:00 PM
+                <!-- Order Summary -->
+                <h3 class="modal-section-title">Order Summary</h3>
+                <div class="order-summary">
+                    <div class="order-line">
+                        <span class="order-item" id="summaryService">Service</span>
+                        <span class="order-price" id="summaryServicePrice">£0</span>
+                    </div>
+                    <div id="summaryExtras"></div>
+                    <div class="order-line discount" id="summaryDiscount" style="display: none;">
+                        <span>Discount</span>
+                        <span id="summaryDiscountAmount">-£0</span>
+                    </div>
+                    <div class="order-line total">
+                        <span>Total</span>
+                        <span class="order-price" id="summaryTotal">£0</span>
+                    </div>
+                </div>
+
+                <!-- Book Now Button -->
+                <button class="proceed-btn" id="proceedBooking">Proceed to Book</button>
+
+                <!-- Payment Methods (shown after proceed) -->
+                <div id="paymentMethods" style="display: none;">
+                    <h3 class="modal-section-title">Choose How to Book</h3>
+                    <div class="payment-method-grid">
+                        <a href="tel:02085989920" class="payment-method-btn">
+                            <span class="method-icon">📞</span>
+                            <span class="method-name">Call</span>
+                        </a>
+                        <a href="https://wa.me/442085989920" target="_blank" class="payment-method-btn">
+                            <span class="method-icon">💬</span>
+                            <span class="method-name">WhatsApp</span>
+                        </a>
+                        <a href="https://www.facebook.com/Goldenbarbers.goodmayes/" target="_blank" class="payment-method-btn">
+                            <span class="method-icon">📘</span>
+                            <span class="method-name">Facebook</span>
+                        </a>
+                    </div>
+                    <div class="walk-in-option">
+                        <h4>Or Walk In!</h4>
+                        <p>No appointment needed during opening hours.</p>
+                        <div class="shop-address">
+                            📍 14 Goodmayes Rd, Ilford IG3 9UN
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1728,7 +2071,7 @@
         });
 
         // ============================================
-        // BOOKING MODAL FUNCTIONALITY
+        // ENHANCED BOOKING MODAL FUNCTIONALITY
         // ============================================
         const bookingModal = document.getElementById('bookingModal');
         const modalClose = document.getElementById('modalClose');
@@ -1737,11 +2080,96 @@
         const modalPrice = document.getElementById('modalPrice');
         const modalDuration = document.getElementById('modalDuration');
 
+        // State
+        let currentServicePrice = 0;
+        let currentServiceName = '';
+        let selectedExtras = [];
+        let appliedDiscount = null;
+
+        // Discount codes
+        const discountCodes = {
+            'GOLDEN10': { type: 'percent', value: 10, label: '10% off' },
+            'NEWCLIENT': { type: 'percent', value: 15, label: '15% off for new clients' },
+            'COMBO5': { type: 'fixed', value: 5, label: '£5 off' },
+            'VIP20': { type: 'percent', value: 20, label: '20% VIP discount' }
+        };
+
+        function parsePrice(priceStr) {
+            // Handle prices like "£13", "£6.95", "£5 / £10", etc.
+            const match = priceStr.match(/£([\d.]+)/);
+            return match ? parseFloat(match[1]) : 0;
+        }
+
+        function updateOrderSummary() {
+            const summaryService = document.getElementById('summaryService');
+            const summaryServicePrice = document.getElementById('summaryServicePrice');
+            const summaryExtras = document.getElementById('summaryExtras');
+            const summaryDiscount = document.getElementById('summaryDiscount');
+            const summaryDiscountAmount = document.getElementById('summaryDiscountAmount');
+            const summaryTotal = document.getElementById('summaryTotal');
+
+            // Service
+            summaryService.textContent = currentServiceName;
+            summaryServicePrice.textContent = '£' + currentServicePrice.toFixed(2);
+
+            // Extras
+            let extrasTotal = 0;
+            summaryExtras.innerHTML = '';
+            selectedExtras.forEach(extra => {
+                const extraLine = document.createElement('div');
+                extraLine.className = 'order-line extra';
+                extraLine.innerHTML = `<span>+ ${extra.name}</span><span>£${extra.price.toFixed(2)}</span>`;
+                summaryExtras.appendChild(extraLine);
+                extrasTotal += extra.price;
+            });
+
+            // Subtotal before discount
+            let subtotal = currentServicePrice + extrasTotal;
+
+            // Discount
+            let discountAmount = 0;
+            if (appliedDiscount) {
+                if (appliedDiscount.type === 'percent') {
+                    discountAmount = subtotal * (appliedDiscount.value / 100);
+                } else {
+                    discountAmount = appliedDiscount.value;
+                }
+                summaryDiscount.style.display = 'flex';
+                summaryDiscountAmount.textContent = '-£' + discountAmount.toFixed(2);
+            } else {
+                summaryDiscount.style.display = 'none';
+            }
+
+            // Total
+            const total = Math.max(0, subtotal - discountAmount);
+            summaryTotal.textContent = '£' + total.toFixed(2);
+        }
+
+        function resetModal() {
+            selectedExtras = [];
+            appliedDiscount = null;
+            document.querySelectorAll('.extra-item').forEach(item => item.classList.remove('selected'));
+            document.getElementById('discountInput').value = '';
+            document.getElementById('discountApplied').style.display = 'none';
+            document.getElementById('discountInputWrap').style.display = 'flex';
+            document.getElementById('discountError').style.display = 'none';
+            document.getElementById('paymentMethods').style.display = 'none';
+            document.getElementById('proceedBooking').style.display = 'block';
+        }
+
         function openBookingModal(serviceName, servicePrice, serviceDuration, serviceIcon) {
+            resetModal();
+
             modalIcon.textContent = serviceIcon;
             modalName.textContent = serviceName;
             modalPrice.textContent = servicePrice;
             modalDuration.textContent = serviceDuration;
+
+            currentServiceName = serviceName;
+            currentServicePrice = parsePrice(servicePrice);
+
+            updateOrderSummary();
+
             bookingModal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -1750,6 +2178,57 @@
             bookingModal.classList.remove('active');
             document.body.style.overflow = '';
         }
+
+        // Extra items toggle
+        document.querySelectorAll('.extra-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const extraName = item.querySelector('.extra-info h5').textContent;
+                const extraPrice = parseFloat(item.dataset.price);
+
+                if (item.classList.contains('selected')) {
+                    item.classList.remove('selected');
+                    selectedExtras = selectedExtras.filter(e => e.name !== extraName);
+                } else {
+                    item.classList.add('selected');
+                    selectedExtras.push({ name: extraName, price: extraPrice });
+                }
+
+                updateOrderSummary();
+            });
+        });
+
+        // Discount code functionality
+        document.getElementById('applyDiscount').addEventListener('click', () => {
+            const code = document.getElementById('discountInput').value.trim().toUpperCase();
+            const errorEl = document.getElementById('discountError');
+
+            if (discountCodes[code]) {
+                appliedDiscount = discountCodes[code];
+                document.getElementById('discountText').textContent = `${code} - ${appliedDiscount.label} applied!`;
+                document.getElementById('discountApplied').style.display = 'flex';
+                document.getElementById('discountInputWrap').style.display = 'none';
+                errorEl.style.display = 'none';
+                updateOrderSummary();
+            } else {
+                errorEl.textContent = 'Invalid discount code. Try GOLDEN10 or NEWCLIENT';
+                errorEl.style.display = 'block';
+            }
+        });
+
+        document.getElementById('removeDiscount').addEventListener('click', () => {
+            appliedDiscount = null;
+            document.getElementById('discountApplied').style.display = 'none';
+            document.getElementById('discountInputWrap').style.display = 'flex';
+            document.getElementById('discountInput').value = '';
+            updateOrderSummary();
+        });
+
+        // Proceed to booking
+        document.getElementById('proceedBooking').addEventListener('click', () => {
+            document.getElementById('proceedBooking').style.display = 'none';
+            document.getElementById('paymentMethods').style.display = 'block';
+            document.getElementById('paymentMethods').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
 
         // Attach click handlers to all Book Now buttons
         document.querySelectorAll('.service-cta').forEach(btn => {

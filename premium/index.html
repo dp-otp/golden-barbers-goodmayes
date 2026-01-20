@@ -868,6 +868,7 @@
         /* ============================================
            CINEMATIC HERO SHOWCASE - LARGE PANELS
            ============================================ */
+        /* Hero Edge Photos - Subtle fade into background */
         .hero-showcase {
             position: absolute;
             top: 0;
@@ -875,7 +876,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 2;
+            z-index: 1;
             overflow: hidden;
         }
 
@@ -883,190 +884,164 @@
             position: absolute;
             overflow: hidden;
             opacity: 0;
-            animation: panelReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: panelReveal 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .showcase-panel img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(0.4) contrast(1.1) saturate(0.8);
-            opacity: 0.5;
-            transition: transform 8s ease, filter 0.5s ease, opacity 0.5s ease;
+            filter: brightness(0.8) contrast(1.05);
+            transition: transform 12s ease;
         }
 
-        .showcase-panel::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), transparent 60%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .showcase-panel::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* Left Panel - Large */
+        /* Left panel - fades to center */
         .showcase-panel-1 {
             left: 0;
-            top: 15%;
-            width: 28%;
-            height: 70%;
-            clip-path: polygon(0 0, 100% 5%, 95% 100%, 0 95%);
+            top: 0;
+            width: 22%;
+            height: 100%;
             animation-delay: 0.3s;
         }
 
-        .showcase-panel-1 img {
-            animation: panelZoom1 20s ease-in-out infinite;
+        .showcase-panel-1::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, transparent 0%, transparent 30%, rgba(0,0,0,1) 100%);
+            z-index: 2;
         }
 
-        /* Right Panel - Large */
+        .showcase-panel-1 img {
+            animation: panelZoom1 25s ease-in-out infinite;
+        }
+
+        /* Right panel - fades to center */
         .showcase-panel-2 {
             right: 0;
-            top: 10%;
-            width: 28%;
-            height: 75%;
-            clip-path: polygon(5% 0, 100% 5%, 100% 95%, 0 100%);
+            top: 0;
+            width: 22%;
+            height: 100%;
             animation-delay: 0.5s;
         }
 
-        .showcase-panel-2 img {
-            animation: panelZoom2 22s ease-in-out infinite;
+        .showcase-panel-2::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to left, transparent 0%, transparent 30%, rgba(0,0,0,1) 100%);
+            z-index: 2;
         }
 
-        /* Bottom Center Panel */
+        .showcase-panel-2 img {
+            animation: panelZoom2 28s ease-in-out infinite;
+        }
+
+        /* Bottom panel - fades upward */
         .showcase-panel-3 {
-            bottom: 5%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 35%;
-            height: 30%;
-            clip-path: polygon(5% 0, 95% 0, 100% 100%, 0 100%);
+            bottom: 0;
+            left: 22%;
+            right: 22%;
+            width: auto;
+            height: 25%;
             animation-delay: 0.7s;
         }
 
-        .showcase-panel-3 img {
-            animation: panelZoom3 18s ease-in-out infinite;
-        }
-
-        /* Panel Border Glow */
-        .showcase-panel .panel-border {
+        .showcase-panel-3::after {
+            content: '';
             position: absolute;
             inset: 0;
+            background: linear-gradient(to top, transparent 0%, transparent 20%, rgba(0,0,0,1) 100%);
             z-index: 2;
+        }
+
+        .showcase-panel-3 img {
+            animation: panelZoom3 22s ease-in-out infinite;
+        }
+
+        /* Subtle gold accent line on inner edge */
+        .showcase-panel .panel-border {
+            position: absolute;
+            z-index: 3;
             pointer-events: none;
         }
 
         .showcase-panel-1 .panel-border {
-            border-right: 3px solid rgba(212, 175, 55, 0.6);
-            box-shadow: inset -20px 0 60px rgba(212, 175, 55, 0.2);
+            right: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.4), transparent);
         }
 
         .showcase-panel-2 .panel-border {
-            border-left: 3px solid rgba(212, 175, 55, 0.6);
-            box-shadow: inset 20px 0 60px rgba(212, 175, 55, 0.2);
+            left: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.4), transparent);
         }
 
         .showcase-panel-3 .panel-border {
-            border-top: 3px solid rgba(212, 175, 55, 0.6);
-            box-shadow: inset 0 20px 60px rgba(212, 175, 55, 0.2);
+            top: 0;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.4), transparent);
         }
 
         @keyframes panelReveal {
-            from {
-                opacity: 0;
-                transform: scale(1.1);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .showcase-panel-3 {
-            animation: panelReveal3 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
-        }
-
-        @keyframes panelReveal3 {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) scale(1.1);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) scale(1);
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes panelZoom1 {
-            0%, 100% { transform: scale(1) translateX(0); }
-            50% { transform: scale(1.1) translateX(3%); }
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.08) translateY(-2%); }
         }
 
         @keyframes panelZoom2 {
-            0%, 100% { transform: scale(1.05) translateX(0); }
-            50% { transform: scale(1.15) translateX(-3%); }
+            0%, 100% { transform: scale(1.05) translateY(0); }
+            50% { transform: scale(1.12) translateY(2%); }
         }
 
         @keyframes panelZoom3 {
-            0%, 100% { transform: scale(1) translateY(0); }
-            50% { transform: scale(1.1) translateY(-5%); }
+            0%, 100% { transform: scale(1) translateX(0); }
+            50% { transform: scale(1.1) translateX(-2%); }
         }
 
         /* Tablet */
         @media (max-width: 1200px) {
-            .showcase-panel-1 { width: 25%; height: 60%; }
-            .showcase-panel-2 { width: 25%; height: 60%; }
-            .showcase-panel-3 { width: 40%; height: 25%; }
+            .showcase-panel-1 { width: 18%; }
+            .showcase-panel-2 { width: 18%; }
+            .showcase-panel-3 { left: 18%; right: 18%; height: 20%; }
         }
 
-        /* Mobile - Stack vertically as strips */
+        /* Mobile - Only show subtle top/bottom strips */
         @media (max-width: 768px) {
             .showcase-panel-1,
             .showcase-panel-2 {
-                width: 100%;
-                height: 20%;
-                clip-path: none;
-            }
-            .showcase-panel-1 {
-                top: 0;
-                left: 0;
-                opacity: 0.4;
-            }
-            .showcase-panel-1 .panel-border {
-                border-right: none;
-                border-bottom: 2px solid rgba(212, 175, 55, 0.4);
-                box-shadow: none;
-            }
-            .showcase-panel-2 {
-                top: auto;
-                bottom: 0;
-                right: 0;
-                opacity: 0.4;
-            }
-            .showcase-panel-2 .panel-border {
-                border-left: none;
-                border-top: 2px solid rgba(212, 175, 55, 0.4);
-                box-shadow: none;
+                display: none;
             }
             .showcase-panel-3 {
+                left: 0;
+                right: 0;
+                height: 15%;
+                opacity: 0.6;
+            }
+            .showcase-panel-3::after {
+                background: linear-gradient(to top, transparent 0%, rgba(0,0,0,1) 80%);
+            }
+            .showcase-panel-3 .panel-border {
                 display: none;
             }
         }
 
         /* Small mobile */
         @media (max-width: 480px) {
-            .showcase-panel-1,
-            .showcase-panel-2 {
-                height: 15%;
-                opacity: 0.3;
+            .showcase-panel-3 {
+                height: 12%;
+                opacity: 0.5;
             }
         }
 
