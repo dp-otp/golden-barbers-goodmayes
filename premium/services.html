@@ -1980,15 +1980,7 @@
             <div class="modal-header">
                 <span class="modal-service-icon" id="modalIcon">👑</span>
                 <h2 class="modal-service-name" id="modalName">Service Name</h2>
-                <!-- Fake discount pricing -->
-                <div class="fake-discount-badge">
-                    <span>🔥 Limited Time Offer</span>
-                </div>
-                <div class="price-comparison">
-                    <span class="original-price" id="modalOriginalPrice">£0</span>
-                    <span class="current-price" id="modalPrice">£0</span>
-                    <span class="savings-tag" id="modalSavings">Save £0</span>
-                </div>
+                <div class="modal-service-price" id="modalPrice">£0</div>
                 <p class="modal-service-duration" id="modalDuration">Duration</p>
             </div>
 
@@ -2082,8 +2074,8 @@
                             <span class="order-price" id="summaryServicePrice">£0</span>
                         </div>
                         <div id="summaryExtras"></div>
-                        <div class="order-line discount" id="summaryDiscount">
-                            <span>You Save</span>
+                        <div class="order-line discount" id="summaryDiscount" style="display: none;">
+                            <span>Extras Savings</span>
                             <span id="summaryDiscountAmount" style="color: #22c55e;">-£0</span>
                         </div>
                         <div class="order-line total">
@@ -2325,20 +2317,17 @@
         });
 
         // ============================================
-        // ENHANCED BOOKING MODAL WITH FAKE PRICING & PAYMENT FORM
+        // BOOKING MODAL WITH EXTRAS DISCOUNTS & PAYMENT FORM
         // ============================================
         const bookingModal = document.getElementById('bookingModal');
         const modalClose = document.getElementById('modalClose');
         const modalIcon = document.getElementById('modalIcon');
         const modalName = document.getElementById('modalName');
         const modalPrice = document.getElementById('modalPrice');
-        const modalOriginalPrice = document.getElementById('modalOriginalPrice');
-        const modalSavings = document.getElementById('modalSavings');
         const modalDuration = document.getElementById('modalDuration');
 
         // State
         let currentServicePrice = 0;
-        let currentOriginalPrice = 0;
         let currentServiceName = '';
         let selectedExtras = [];
 
@@ -2348,16 +2337,11 @@
             return match ? parseFloat(match[1]) : 0;
         }
 
-        // Calculate fake original price (15-25% higher)
-        function calculateOriginalPrice(currentPrice) {
-            const markup = 1 + (0.15 + Math.random() * 0.10); // 15-25% higher
-            return Math.ceil(currentPrice * markup);
-        }
-
         function updateOrderSummary() {
             const summaryService = document.getElementById('summaryService');
             const summaryServicePrice = document.getElementById('summaryServicePrice');
             const summaryExtras = document.getElementById('summaryExtras');
+            const summaryDiscount = document.getElementById('summaryDiscount');
             const summaryDiscountAmount = document.getElementById('summaryDiscountAmount');
             const summaryTotal = document.getElementById('summaryTotal');
             const payAmount = document.getElementById('payAmount');
@@ -2388,10 +2372,13 @@
                 payAmount.textContent = '£' + total.toFixed(2);
             }
 
-            // Calculate total savings (service + extras)
-            const serviceSavings = currentOriginalPrice - currentServicePrice;
-            const totalSavings = serviceSavings + extrasSavings;
-            summaryDiscountAmount.textContent = '-£' + totalSavings.toFixed(2);
+            // Only show savings if extras are selected
+            if (extrasSavings > 0) {
+                summaryDiscount.style.display = 'flex';
+                summaryDiscountAmount.textContent = '-£' + extrasSavings.toFixed(2);
+            } else {
+                summaryDiscount.style.display = 'none';
+            }
         }
 
         function resetModal() {
@@ -2415,17 +2402,11 @@
 
             modalIcon.textContent = serviceIcon;
             modalName.textContent = serviceName;
+            modalPrice.textContent = servicePrice;
             modalDuration.textContent = serviceDuration;
 
             currentServiceName = serviceName;
             currentServicePrice = parsePrice(servicePrice);
-            currentOriginalPrice = calculateOriginalPrice(currentServicePrice);
-
-            // Update fake pricing display
-            modalOriginalPrice.textContent = '£' + currentOriginalPrice.toFixed(2);
-            modalPrice.textContent = '£' + currentServicePrice.toFixed(2);
-            const savings = currentOriginalPrice - currentServicePrice;
-            modalSavings.textContent = 'Save £' + savings.toFixed(2);
 
             updateOrderSummary();
 
