@@ -172,6 +172,22 @@
             z-index: 1;
         }
 
+        @media (max-width: 968px) {
+            .services-preview::before {
+                width: 800px;
+                height: 800px;
+                clip-path: circle(40% at center);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .services-preview::before {
+                width: 500px;
+                height: 500px;
+                clip-path: circle(35% at center);
+            }
+        }
+
         .services-preview-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
