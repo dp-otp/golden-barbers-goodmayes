@@ -8,571 +8,1928 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="modals.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
-        /* Gallery Page Specific Styles */
-        .gallery-hero {
-            min-height: 60vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, transparent 100%);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-            padding-top: 120px;
-            text-align: center;
+        /* ============================================
+           $10K AGENCY DESIGN SYSTEM - GALLERY PAGE
+           ============================================ */
+
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --gold-dark: #b8960c;
+            --black: #0a0a0a;
+            --white: #ffffff;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-500: #737373;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-800: #262626;
+            --gray-900: #171717;
         }
 
-        .gallery-hero h1 {
-            font-size: clamp(3rem, 8vw, 5rem);
-            margin-bottom: 1.5rem;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .gallery-hero p {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto;
+        html {
+            scroll-behavior: smooth;
         }
 
-        /* Gallery Grid */
-        .gallery-section {
-            background: var(--dark-bg);
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            cursor: none;
         }
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+        a, button, input, [onclick] {
+            cursor: none;
         }
 
-        .gallery-item-interactive {
-            background: var(--dark-card);
-            border: 1px solid rgba(212, 175, 55, 0.1);
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
+        /* ============================================
+           CUSTOM CURSOR
+           ============================================ */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10001;
+            transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+            mix-blend-mode: difference;
         }
 
-        .gallery-item-interactive:hover {
-            transform: translateY(-5px);
+        .cursor-follower {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        .cursor.hover {
+            transform: scale(2);
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--gold-light);
+        }
+
+        .cursor.gallery-hover {
+            transform: scale(3);
+            background: rgba(212, 175, 55, 0.1);
             border-color: var(--gold);
-            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);
         }
 
-        .gallery-item-interactive img {
-            width: 100%;
-            height: 280px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.4s;
-        }
-
-        .gallery-item-interactive:hover img {
-            transform: scale(1.05);
-        }
-
-        .gallery-item-info {
-            padding: 1rem;
-            background: var(--dark-card);
-        }
-
-        .gallery-item-title {
-            font-size: 1rem;
-            font-weight: 600;
+        .cursor.gallery-hover::after {
+            content: '+';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: 700;
             color: var(--gold);
-            margin-bottom: 0.25rem;
         }
 
-        .gallery-item-description {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        /* Image Modal */
-        .image-modal {
-            display: none;
+        /* ============================================
+           NOISE OVERLAY
+           ============================================ */
+        .noise-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
         }
 
-        .image-modal.active {
-            display: flex;
-        }
-
-        .image-modal img {
-            max-width: 90%;
-            max-height: 90vh;
-            object-fit: contain;
-            border-radius: 10px;
-        }
-
-        .image-modal-close {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            background: rgba(212, 175, 55, 0.2);
-            border: 2px solid var(--gold);
-            border-radius: 50%;
-            color: var(--gold);
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .image-modal-close:hover {
-            background: var(--gold);
-            color: var(--dark-bg);
-            transform: rotate(90deg);
-        }
-
-        /* Instagram embed styling */
-        .gallery-item-interactive .instagram-media {
-            margin: 0 !important;
-            min-width: 100% !important;
-            max-width: 100% !important;
-            width: 100% !important;
-            border-radius: 20px !important;
-            overflow: hidden !important;
-        }
-
-        .gallery-placeholder {
+        .noise-overlay svg {
             width: 100%;
             height: 100%;
+        }
+
+        /* ============================================
+           FLOATING PARTICLES
+           ============================================ */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: particleFloat 20s infinite ease-in-out;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% {
+                transform: translateY(-100px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* ============================================
+           PAGE LOADER
+           ============================================ */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            z-index: 10002;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .page-loader.loaded {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
             text-align: center;
         }
 
-        .gallery-placeholder-icon {
-            font-size: 5rem;
-            margin-bottom: 1rem;
-            filter: grayscale(0.5);
-            transition: all 0.4s;
+        .loader-logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 2rem;
+            animation: loaderPulse 1.5s ease-in-out infinite;
         }
 
-        .gallery-item-interactive:hover .gallery-placeholder-icon {
-            filter: grayscale(0);
-            transform: scale(1.1);
+        @keyframes loaderPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
         }
 
-        .gallery-placeholder-text {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: var(--gray-800);
+            border-radius: 2px;
+            overflow: hidden;
         }
 
-        .gallery-category {
+        .loader-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            animation: loaderProgress 1.5s ease-in-out forwards;
+        }
+
+        @keyframes loaderProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* ============================================
+           FLOATING PILL NAVIGATION
+           ============================================ */
+        .floating-nav {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 12px 20px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 100px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .floating-nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .floating-nav.hidden {
+            transform: translateX(-50%) translateY(-100px);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            padding-right: 15px;
+            border-right: 1px solid rgba(212, 175, 55, 0.2);
+            margin-right: 8px;
+        }
+
+        .nav-logo img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .nav-logo span {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--white);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-link {
+            padding: 10px 18px;
             font-size: 0.875rem;
-            color: var(--gold);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-400);
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
         }
 
-        /* Filter Tabs */
-        .gallery-filters {
+        .nav-link:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link.active {
+            color: var(--black);
+            background: var(--gold);
+        }
+
+        .nav-cta {
+            margin-left: 8px;
+            padding: 12px 24px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--black);
+            background: var(--gold);
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--gold-light);
+            transform: scale(1.05);
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+            background: none;
+            border: none;
+            cursor: none;
+        }
+
+        .nav-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 160px 5% 100px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero-gradient {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+            animation: heroGradientMove 20s ease-in-out infinite;
+        }
+
+        @keyframes heroGradientMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(2%, 2%) rotate(2deg); }
+            66% { transform: translate(-2%, 1%) rotate(-2deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease forwards 0.3s;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeUp 0.8s ease forwards 0.5s;
+        }
+
+        .hero-title .highlight {
+            color: var(--gold);
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--gray-400);
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeUp 0.8s ease forwards 0.7s;
+        }
+
+        /* ============================================
+           GALLERY FILTERS
+           ============================================ */
+        .filters-section {
+            padding: 0 5% 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .filters-container {
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
             justify-content: center;
-            gap: 1rem;
-            margin-bottom: 3rem;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .filter-btn {
-            padding: 0.75rem 2rem;
-            background: transparent;
-            border: 2px solid rgba(212, 175, 55, 0.3);
-            border-radius: 50px;
-            color: var(--text-secondary);
-            font-weight: 600;
+            padding: 12px 28px;
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            color: var(--gray-400);
+            font-family: 'Outfit', sans-serif;
             font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            cursor: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .filter-btn:hover,
-        .filter-btn.active {
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
             background: var(--gold);
-            border-color: var(--gold);
-            color: var(--dark-bg);
-            transform: translateY(-2px);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
         }
 
-        /* Instagram CTA */
-        .instagram-cta {
-            background: var(--dark-elevated);
+        .filter-btn:hover {
+            color: var(--white);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .filter-btn.active {
+            color: var(--black);
+            border-color: var(--gold);
+        }
+
+        .filter-btn.active::before {
+            transform: scaleX(1);
+        }
+
+        /* ============================================
+           MASONRY GALLERY GRID
+           ============================================ */
+        .gallery-section {
+            padding: 0 5% 120px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .gallery-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--gray-900);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gallery-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item.hidden {
+            display: none;
+        }
+
+        /* Varying heights for masonry effect */
+        .gallery-item:nth-child(3n+1) { grid-row: span 1; }
+        .gallery-item:nth-child(3n+2) { grid-row: span 1; }
+        .gallery-item:nth-child(3n) { grid-row: span 1; }
+        .gallery-item.tall { grid-row: span 2; }
+
+        .gallery-item-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+        }
+
+        .gallery-item.tall .gallery-item-inner {
+            min-height: 620px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 40%, rgba(10, 10, 10, 0.9) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+        }
+
+        .gallery-item-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-item-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .gallery-item-category {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .gallery-item-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .gallery-item-desc {
+            font-size: 0.875rem;
+            color: var(--gray-400);
+            line-height: 1.5;
+        }
+
+        /* Corner expand icon */
+        .gallery-item-expand {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-item-expand {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .gallery-item-expand svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--gold);
+        }
+
+        /* ============================================
+           LIGHTBOX MODAL
+           ============================================ */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 10003;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+        }
+
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-info {
+            position: absolute;
+            bottom: -80px;
+            left: 0;
+            right: 0;
             text-align: center;
-            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .lightbox-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .lightbox-desc {
+            font-size: 1rem;
+            color: var(--gray-400);
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            color: var(--gold);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: var(--gold);
+            color: var(--black);
+            transform: rotate(90deg);
+        }
+
+        .lightbox-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-nav:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .lightbox-nav svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+        }
+
+        .lightbox-prev { left: 30px; }
+        .lightbox-next { right: 30px; }
+
+        /* ============================================
+           INSTAGRAM CTA SECTION
+           ============================================ */
+        .instagram-section {
+            padding: 120px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .instagram-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(240, 148, 51, 0.05) 0%, rgba(188, 24, 136, 0.05) 100%);
+        }
+
+        .instagram-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
         }
 
         .instagram-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1.5rem;
-            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            border-radius: 30px;
             background: linear-gradient(135deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-size: 3rem;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        .instagram-cta:hover .instagram-icon {
+        .instagram-section:hover .instagram-icon {
             transform: scale(1.1) rotate(5deg);
         }
 
+        .instagram-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        .instagram-title .gradient {
+            background: linear-gradient(135deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .instagram-desc {
+            font-size: 1.25rem;
+            color: var(--gray-400);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .instagram-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 36px;
+            background: linear-gradient(135deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+            color: var(--white);
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 100px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .instagram-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(220, 39, 67, 0.3);
+        }
+
+        .instagram-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* ============================================
+           CTA SECTION
+           ============================================ */
+        .cta-section {
+            padding: 150px 5%;
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .cta-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cta-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 60%);
+            animation: ctaGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes ctaGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 10;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-content h2 .highlight {
+            color: var(--gold);
+        }
+
+        .cta-content p {
+            font-size: 1.25rem;
+            color: var(--gray-400);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 40px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 100px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cta-button-primary {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .cta-button-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.4);
+        }
+
+        .cta-button-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-button-secondary:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            background: var(--gray-900);
+            padding: 80px 5% 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto 60px;
+        }
+
+        .footer-brand p {
+            color: var(--gray-400);
+            line-height: 1.7;
+            margin-top: 1rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-logo img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .footer-logo span {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .footer-col h4 {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-col a {
+            display: block;
+            color: var(--gray-400);
+            text-decoration: none;
+            padding: 8px 0;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: var(--gold);
+        }
+
+        .footer-col p {
+            color: var(--gray-400);
+            line-height: 1.7;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .footer-social a {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .footer-social a svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--white);
+            transition: fill 0.3s;
+        }
+
+        .footer-social a:hover svg {
+            fill: var(--black);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        /* ============================================
+           FLOATING CTA
+           ============================================ */
+        .floating-cta {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            padding: 16px 28px;
+            background: var(--gold);
+            color: var(--black);
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.4);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .floating-cta.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .floating-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.5);
+        }
+
+        /* ============================================
+           MOBILE RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .floating-nav {
+                padding: 10px 15px;
+            }
+
+            .nav-links, .nav-cta {
+                display: none;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+        }
+
         @media (max-width: 768px) {
+            .hero {
+                padding: 140px 5% 80px;
+            }
+
+            .hero-title {
+                font-size: clamp(2.5rem, 12vw, 5rem);
+            }
+
             .gallery-grid {
                 grid-template-columns: 1fr;
             }
 
-            .gallery-filters {
+            .gallery-item.tall .gallery-item-inner {
+                min-height: 400px;
+            }
+
+            .filters-container {
                 flex-direction: column;
                 align-items: stretch;
             }
 
             .filter-btn {
-                width: 100%;
+                text-align: center;
             }
+
+            .lightbox-nav {
+                display: none;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .mobile-menu-links a {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .mobile-menu-links a:hover,
+        .mobile-menu-links a.active {
+            color: var(--gold);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: none;
+            border: none;
+            cursor: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-menu-close span {
+            position: absolute;
+            width: 30px;
+            height: 2px;
+            background: var(--white);
+        }
+
+        .mobile-menu-close span:first-child {
+            transform: rotate(45deg);
+        }
+
+        .mobile-menu-close span:last-child {
+            transform: rotate(-45deg);
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="container">
-            <div class="nav-inner">
-                <a href="index.html" class="nav-logo">
-                    <img src="../logo.png" alt="Golden Barbers" class="nav-logo-img">
-                    <span class="nav-logo-text">Golden Barbers</span>
-                </a>
-
-                <ul class="nav-menu">
-                    <li><a href="index.html" class="nav-link">Home</a></li>
-                    <li><a href="services.html" class="nav-link">Services</a></li>
-                    <li><a href="about.html" class="nav-link">About</a></li>
-                    <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
-                    <li><a href="contact.html" class="nav-link">Contact</a></li>
-                    <li><a href="services.html" class="nav-cta"><span>Book Now</span></a></li>
-                </ul>
-
-                <div class="nav-hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
+    <!-- Page Loader -->
+    <div class="page-loader">
+        <div class="loader-content">
+            <img src="../logo-removebg-preview.png" alt="Golden Barbers" class="loader-logo">
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
             </div>
         </div>
+    </div>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay">
+        <svg>
+            <filter id="noiseFilter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/>
+            </filter>
+            <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
+        </svg>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Particles -->
+    <div class="particles">
+        <div class="particle" style="left: 5%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 15%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 25%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 35%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 45%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 55%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 65%; animation-delay: 2.5s;"></div>
+        <div class="particle" style="left: 75%; animation-delay: 4.5s;"></div>
+        <div class="particle" style="left: 85%; animation-delay: 1.5s;"></div>
+        <div class="particle" style="left: 95%; animation-delay: 3.5s;"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="floating-nav">
+        <a href="index.html" class="nav-logo">
+            <img src="../logo-removebg-preview.png" alt="Golden Barbers">
+            <span>Golden Barbers</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="services.html" class="nav-link">Services</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="gallery.html" class="nav-link active">Gallery</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+        <a href="services.html" class="nav-cta">Book Now</a>
+        <button class="nav-toggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </nav>
 
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close" aria-label="Close menu">
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-menu-links">
+            <a href="index.html">Home</a>
+            <a href="services.html">Services</a>
+            <a href="about.html">About</a>
+            <a href="gallery.html" class="active">Gallery</a>
+            <a href="contact.html">Contact</a>
+            <a href="services.html" style="color: var(--gold);">Book Now</a>
+        </div>
+    </div>
+
     <!-- Hero -->
-    <section class="gallery-hero">
-        <div class="container">
-            <div class="fade-in">
-                <h1>Our <span class="text-gradient">Work</span></h1>
-                <p>
-                    Every cut tells a story. Browse our portfolio of precision grooming and transformation.
-                </p>
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="hero-gradient"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>Portfolio</span>
             </div>
+            <h1 class="hero-title">Our <span class="highlight">Work</span></h1>
+            <p class="hero-subtitle">
+                Every cut tells a story. Browse our portfolio of precision grooming and transformations.
+            </p>
         </div>
     </section>
 
-    <!-- Gallery Section -->
-    <section class="section gallery-section">
-        <div class="container">
-            <div class="gallery-filters fade-in">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="fades">Fades & Cuts</button>
-                <button class="filter-btn" data-filter="beard">Beard & Grooming</button>
-                <button class="filter-btn" data-filter="transformations">Transformations</button>
-                <button class="filter-btn" data-filter="shop">The Shop</button>
-            </div>
+    <!-- Filters -->
+    <section class="filters-section">
+        <div class="filters-container">
+            <button class="filter-btn active" data-filter="all">All Work</button>
+            <button class="filter-btn" data-filter="fades">Fades & Cuts</button>
+            <button class="filter-btn" data-filter="beard">Beard & Grooming</button>
+            <button class="filter-btn" data-filter="transformations">Transformations</button>
+            <button class="filter-btn" data-filter="shop">The Shop</button>
+        </div>
+    </section>
 
-            <div class="gallery-grid">
-                <!-- Fades & Cuts -->
-                <div class="gallery-item-interactive scale-in" data-category="fades">
+    <!-- Gallery Grid -->
+    <section class="gallery-section">
+        <div class="gallery-grid">
+            <!-- Fades & Cuts -->
+            <div class="gallery-item tall" data-category="fades">
+                <div class="gallery-item-inner">
                     <img src="pic.jpg" alt="Clean Skin Fade" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Clean Skin Fade</div>
-                        <div class="gallery-item-description">Precision fade with sharp line work and smooth blend</div>
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">Clean Skin Fade</h3>
+                        <p class="gallery-item-desc">Precision fade with sharp line work and smooth blend</p>
                     </div>
-                </div>
-
-                <div class="gallery-item-interactive scale-in" data-category="fades">
-                    <img src="download (8).jpg" alt="High Top Fade Lineup" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">High Top Fade</div>
-                        <div class="gallery-item-description">Classic high top with crisp lineup and textured finish</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-interactive scale-in" data-category="fades">
-                    <img src="download (13).jpg" alt="Design & Patterns" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Custom Design Lines</div>
-                        <div class="gallery-item-description">Intricate patterns with tight curly fade blend</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-interactive scale-in" data-category="fades">
-                    <img src="download (21).jpg" alt="Taper Fade" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Blonde Curly Fade</div>
-                        <div class="gallery-item-description">Textured curls with smooth taper fade transition</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-interactive scale-in" data-category="fades">
-                    <img src="download (4).jpg" alt="Kids Cut" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Kids Classic Cut</div>
-                        <div class="gallery-item-description">Gentle, patient service for our younger clients</div>
-                    </div>
-                </div>
-
-                <!-- Beard & Grooming -->
-                <div class="gallery-item-interactive scale-in" data-category="beard">
-                    <img src="download (11).jpg" alt="Beard Trimming" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Precision Beard Trim</div>
-                        <div class="gallery-item-description">Expert shaping and grooming for the perfect beard line</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-interactive scale-in" data-category="beard">
-                    <img src="download (12).jpg" alt="Ear Flaming & Waxing" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Traditional Fire Technique</div>
-                        <div class="gallery-item-description">Authentic Turkish ear flaming for complete grooming</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-interactive scale-in" data-category="beard">
-                    <img src="download (15).jpg" alt="VIP Hot Towel Shave" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Deluxe Hot Towel Shave</div>
-                        <div class="gallery-item-description">Premium straight razor shave with hot towel treatment</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-interactive scale-in" data-category="beard">
-                    <img src="download (18).jpg" alt="Beard Styling" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Beard Styling & Fade</div>
-                        <div class="gallery-item-description">Complete beard styling with complementary skin fade</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-interactive scale-in" data-category="beard">
-                    <img src="download (23).jpg" alt="Hot Towel Treatment" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Hot Towel Service</div>
-                        <div class="gallery-item-description">Relaxing hot towel treatment and face massage</div>
-                    </div>
-                </div>
-
-                <!-- Transformations -->
-                <div class="gallery-item-interactive scale-in" data-category="transformations">
-                    <img src="download (22).jpg" alt="Hair Coloring" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Turquoise Color Fade</div>
-                        <div class="gallery-item-description">Bold color transformation with precision fade work</div>
-                    </div>
-                </div>
-
-                <!-- The Shop -->
-                <div class="gallery-item-interactive scale-in" data-category="shop">
-                    <img src="download (14).jpg" alt="Shop Interior" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Premium Interior</div>
-                        <div class="gallery-item-description">Our modern barbershop setup with professional stations</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-interactive scale-in" data-category="shop">
-                    <img src="download (17).jpg" alt="Golden Barbers Branding" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Golden Barbers Brand</div>
-                        <div class="gallery-item-description">Our signature branding and attention to detail</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-interactive scale-in" data-category="shop">
-                    <img src="download (20).jpg" alt="Shop Display" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Welcoming Atmosphere</div>
-                        <div class="gallery-item-description">Clean, professional environment for all our clients</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-interactive scale-in" data-category="shop">
-                    <img src="download (24).jpg" alt="Shop Exterior" loading="lazy">
-                    <div class="gallery-item-info">
-                        <div class="gallery-item-title">Our Goodmayes Location</div>
-                        <div class="gallery-item-description">14 Goodmayes Rd, Ilford - serving the community since 2020</div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </div>
                 </div>
             </div>
 
-            <!-- Image Modal -->
-            <div class="image-modal" id="imageModal">
-                <button class="image-modal-close" onclick="closeImageModal()">✕</button>
-                <img id="modalImage" src="" alt="">
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="download (8).jpg" alt="High Top Fade" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">High Top Fade</h3>
+                        <p class="gallery-item-desc">Classic high top with crisp lineup</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="download (13).jpg" alt="Custom Design Lines" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">Custom Design Lines</h3>
+                        <p class="gallery-item-desc">Intricate patterns with tight curly fade</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="download (21).jpg" alt="Blonde Curly Fade" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">Blonde Curly Fade</h3>
+                        <p class="gallery-item-desc">Textured curls with smooth taper fade</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item tall" data-category="beard">
+                <div class="gallery-item-inner">
+                    <img src="download (11).jpg" alt="Precision Beard Trim" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Beard</span>
+                        <h3 class="gallery-item-title">Precision Beard Trim</h3>
+                        <p class="gallery-item-desc">Expert shaping for the perfect beard line</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="download (4).jpg" alt="Kids Classic Cut" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Kids</span>
+                        <h3 class="gallery-item-title">Kids Classic Cut</h3>
+                        <p class="gallery-item-desc">Gentle service for younger clients</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="beard">
+                <div class="gallery-item-inner">
+                    <img src="download (12).jpg" alt="Traditional Fire Technique" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Grooming</span>
+                        <h3 class="gallery-item-title">Traditional Fire Technique</h3>
+                        <p class="gallery-item-desc">Authentic Turkish ear flaming</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item tall" data-category="beard">
+                <div class="gallery-item-inner">
+                    <img src="download (15).jpg" alt="Deluxe Hot Towel Shave" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Shave</span>
+                        <h3 class="gallery-item-title">Deluxe Hot Towel Shave</h3>
+                        <p class="gallery-item-desc">Premium straight razor shave with hot towel</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="beard">
+                <div class="gallery-item-inner">
+                    <img src="download (18).jpg" alt="Beard Styling & Fade" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Beard</span>
+                        <h3 class="gallery-item-title">Beard Styling & Fade</h3>
+                        <p class="gallery-item-desc">Complete beard styling with skin fade</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="beard">
+                <div class="gallery-item-inner">
+                    <img src="download (23).jpg" alt="Hot Towel Service" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Service</span>
+                        <h3 class="gallery-item-title">Hot Towel Service</h3>
+                        <p class="gallery-item-desc">Relaxing hot towel and face massage</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item tall" data-category="transformations">
+                <div class="gallery-item-inner">
+                    <img src="download (22).jpg" alt="Turquoise Color Fade" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Color</span>
+                        <h3 class="gallery-item-title">Turquoise Color Fade</h3>
+                        <p class="gallery-item-desc">Bold color transformation with precision fade</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="shop">
+                <div class="gallery-item-inner">
+                    <img src="download (14).jpg" alt="Premium Interior" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Shop</span>
+                        <h3 class="gallery-item-title">Premium Interior</h3>
+                        <p class="gallery-item-desc">Modern barbershop with professional stations</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="shop">
+                <div class="gallery-item-inner">
+                    <img src="download (17).jpg" alt="Golden Barbers Brand" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Brand</span>
+                        <h3 class="gallery-item-title">Golden Barbers Brand</h3>
+                        <p class="gallery-item-desc">Signature branding and attention to detail</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="shop">
+                <div class="gallery-item-inner">
+                    <img src="download (20).jpg" alt="Welcoming Atmosphere" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Shop</span>
+                        <h3 class="gallery-item-title">Welcoming Atmosphere</h3>
+                        <p class="gallery-item-desc">Clean, professional environment</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="shop">
+                <div class="gallery-item-inner">
+                    <img src="download (24).jpg" alt="Our Goodmayes Location" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Location</span>
+                        <h3 class="gallery-item-title">Our Goodmayes Location</h3>
+                        <p class="gallery-item-desc">14 Goodmayes Rd - serving since 2020</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Instagram CTA -->
-    <section class="section instagram-cta">
-        <div class="container">
-            <div class="fade-in" style="max-width: 700px; margin: 0 auto;">
-                <div class="instagram-icon">📷</div>
-                <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">
-                    Follow Us on <span class="text-gradient">Instagram</span>
-                </h2>
-                <p style="font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 2rem;">
-                    See our latest work, special offers, and behind-the-scenes content.
-                    Tag us in your fresh cut photos!
-                </p>
-                <a href="https://www.instagram.com/goldenbarbers_goodmayes/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large">
-                    <span>@goldenbarbers_goodmayes</span>
-                </a>
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" aria-label="Close">✕</button>
+        <button class="lightbox-nav lightbox-prev" aria-label="Previous">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </button>
+        <button class="lightbox-nav lightbox-next" aria-label="Next">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M9 18l6-6-6-6"/>
+            </svg>
+        </button>
+        <div class="lightbox-content">
+            <img class="lightbox-image" id="lightboxImage" src="" alt="">
+            <div class="lightbox-info">
+                <h3 class="lightbox-title" id="lightboxTitle"></h3>
+                <p class="lightbox-desc" id="lightboxDesc"></p>
             </div>
+        </div>
+    </div>
+
+    <!-- Instagram Section -->
+    <section class="instagram-section">
+        <div class="instagram-bg"></div>
+        <div class="instagram-content reveal">
+            <div class="instagram-icon">📸</div>
+            <h2 class="instagram-title">Follow Us on <span class="gradient">Instagram</span></h2>
+            <p class="instagram-desc">
+                See our latest work, special offers, and behind-the-scenes content. Tag us in your fresh cut photos!
+            </p>
+            <a href="https://www.instagram.com/goldenbarbers_goodmayes/" target="_blank" rel="noopener noreferrer" class="instagram-btn">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                @goldenbarbers_goodmayes
+            </a>
         </div>
     </section>
 
-    <!-- Ready to Book CTA -->
-    <section class="section" style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%); text-align: center; border-top: 1px solid rgba(212, 175, 55, 0.2);">
-        <div class="container">
-            <div class="fade-in" style="max-width: 700px; margin: 0 auto;">
-                <h2 style="font-size: 3rem; margin-bottom: 1.5rem;">
-                    Ready for Your <span class="text-gradient">Transformation?</span>
-                </h2>
-                <p style="font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 2.5rem;">
-                    Book your appointment online and join the Golden Barbers family.
-                </p>
-                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                    <a href="services.html" class="btn btn-primary btn-large">
-                        <span>Book Now</span>
-                    </a>
-                    <a href="contact.html" class="btn btn-secondary btn-large">
-                        <span>Contact Us</span>
-                    </a>
-                </div>
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-bg">
+            <div class="cta-glow"></div>
+        </div>
+        <div class="cta-content reveal">
+            <h2>Ready for Your <span class="highlight">Transformation?</span></h2>
+            <p>
+                Book your appointment online and join the Golden Barbers family.
+            </p>
+            <div class="cta-buttons">
+                <a href="services.html" class="cta-button cta-button-primary">Book Now</a>
+                <a href="contact.html" class="cta-button cta-button-secondary">Contact Us</a>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>Golden Barbers Goodmayes</h4>
-                    <p>Premium barbershop in the heart of Ilford, London. Where precision meets style.</p>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <img src="../logo-removebg-preview.png" alt="Golden Barbers">
+                    <span>Golden Barbers</span>
                 </div>
-
-                <div class="footer-col">
-                    <h4>Quick Links</h4>
-                    <a href="index.html">Home</a>
-                    <a href="services.html">Services</a>
-                    <a href="about.html">About</a>
-                    <a href="gallery.html">Gallery</a>
-                    <a href="contact.html">Contact</a>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Hours</h4>
-                    <p>Monday - Saturday<br>9:30 AM - 8:00 PM</p>
-                    <p>Sunday<br>9:30 AM - 6:00 PM</p>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Contact</h4>
-                    <p>14 Goodmayes Rd<br>London, Ilford IG3 9UN</p>
-                    <p>020 8598 9920</p>
-                    <p>ltdgoldenbarbers@gmail.com</p>
-                </div>
-            </div>
-
-            <div class="footer-social">
-                <h4>Follow Us</h4>
-                <div class="footer-social-links">
-                    <a href="https://www.facebook.com/Goldenbarbers.goodmayes/" target="_blank" rel="noopener noreferrer" class="footer-social-link facebook" title="Facebook">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <p>Premium barbershop in the heart of Ilford, London. Where precision meets style.</p>
+                <div class="footer-social">
+                    <a href="https://www.facebook.com/Goldenbarbers.goodmayes/" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                     </a>
-                    <a href="https://www.instagram.com/goldenbarbers_goodmayes/" target="_blank" rel="noopener noreferrer" class="footer-social-link instagram" title="Instagram">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    <a href="https://www.instagram.com/goldenbarbers_goodmayes/" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                     </a>
-                    <a href="https://www.tiktok.com/@thegoldenbarbers" target="_blank" rel="noopener noreferrer" class="footer-social-link tiktok" title="TikTok">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
+                    <a href="https://www.tiktok.com/@thegoldenbarbers" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
                     </a>
                 </div>
             </div>
 
-            <div class="footer-bottom">
-                <p>&copy; 2026 Golden Barbers Goodmayes. All rights reserved.</p>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="services.html">Services</a>
+                <a href="about.html">About</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="contact.html">Contact</a>
             </div>
+
+            <div class="footer-col">
+                <h4>Hours</h4>
+                <p>Monday - Saturday<br>9:30 AM - 8:00 PM</p>
+                <p style="margin-top: 1rem;">Sunday<br>9:30 AM - 6:00 PM</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>14 Goodmayes Rd<br>London, Ilford IG3 9UN</p>
+                <p style="margin-top: 1rem;">020 8598 9920</p>
+                <p>ltdgoldenbarbers@gmail.com</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Golden Barbers Goodmayes. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="app.js"></script>
+    <!-- Floating CTA -->
+    <a href="services.html" class="floating-cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        Book Now
+    </a>
+
+    <!-- JavaScript -->
     <script>
-        // Image modal functionality
-        document.querySelectorAll('.gallery-item-interactive img').forEach(img => {
-            img.addEventListener('click', function() {
-                const modal = document.getElementById('imageModal');
-                const modalImg = document.getElementById('modalImage');
-                modal.classList.add('active');
-                modalImg.src = this.src;
+        // Page Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.page-loader').classList.add('loaded');
+            }, 1500);
+        });
+
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        let followerX = 0, followerY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            followerX += (mouseX - followerX) * 0.1;
+            followerY += (mouseY - followerY) * 0.1;
+
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            cursorFollower.style.left = followerX + 'px';
+            cursorFollower.style.top = followerY + 'px';
+
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor hover effects
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        document.querySelectorAll('.gallery-item').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('gallery-hover');
+                cursor.classList.remove('hover');
+            });
+            el.addEventListener('mouseleave', () => cursor.classList.remove('gallery-hover'));
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+            cursorFollower.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
+            cursorFollower.style.opacity = '1';
+        });
+
+        // Navigation
+        const nav = document.querySelector('.floating-nav');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+
+            if (currentScrollY > lastScrollY && currentScrollY > 300) {
+                nav.classList.add('hidden');
+            } else {
+                nav.classList.remove('hidden');
+            }
+
+            lastScrollY = currentScrollY;
+
+            // Floating CTA
+            const floatingCta = document.querySelector('.floating-cta');
+            if (currentScrollY > 500) {
+                floatingCta.classList.add('visible');
+            } else {
+                floatingCta.classList.remove('visible');
+            }
+        });
+
+        // Mobile Menu
+        const navToggle = document.querySelector('.nav-toggle');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+
+        navToggle.addEventListener('click', () => mobileMenu.classList.add('active'));
+        mobileMenuClose.addEventListener('click', () => mobileMenu.classList.remove('active'));
+
+        document.querySelectorAll('.mobile-menu-links a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.remove('active'));
+        });
+
+        // Gallery Filter
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+
+                galleryItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.classList.remove('hidden');
+                        setTimeout(() => item.classList.add('visible'), 50);
+                    } else {
+                        item.classList.remove('visible');
+                        setTimeout(() => item.classList.add('hidden'), 300);
+                    }
+                });
             });
         });
 
-        function closeImageModal() {
-            document.getElementById('imageModal').classList.remove('active');
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxTitle = document.getElementById('lightboxTitle');
+        const lightboxDesc = document.getElementById('lightboxDesc');
+        let currentIndex = 0;
+        let visibleItems = [];
+
+        function updateVisibleItems() {
+            visibleItems = Array.from(galleryItems).filter(item => !item.classList.contains('hidden'));
         }
 
-        // Close on background click
-        document.getElementById('imageModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeImageModal();
-            }
+        function openLightbox(index) {
+            updateVisibleItems();
+            currentIndex = index;
+            const item = visibleItems[currentIndex];
+            const img = item.querySelector('img');
+            const title = item.querySelector('.gallery-item-title').textContent;
+            const desc = item.querySelector('.gallery-item-desc').textContent;
+
+            lightboxImage.src = img.src;
+            lightboxTitle.textContent = title;
+            lightboxDesc.textContent = desc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function navigateLightbox(direction) {
+            updateVisibleItems();
+            currentIndex = (currentIndex + direction + visibleItems.length) % visibleItems.length;
+            const item = visibleItems[currentIndex];
+            const img = item.querySelector('img');
+            const title = item.querySelector('.gallery-item-title').textContent;
+            const desc = item.querySelector('.gallery-item-desc').textContent;
+
+            lightboxImage.src = img.src;
+            lightboxTitle.textContent = title;
+            lightboxDesc.textContent = desc;
+        }
+
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                updateVisibleItems();
+                const visibleIndex = visibleItems.indexOf(item);
+                openLightbox(visibleIndex);
+            });
         });
 
-        // Close on ESC key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeImageModal();
-            }
+        document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+        document.querySelector('.lightbox-prev').addEventListener('click', () => navigateLightbox(-1));
+        document.querySelector('.lightbox-next').addEventListener('click', () => navigateLightbox(1));
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navigateLightbox(-1);
+            if (e.key === 'ArrowRight') navigateLightbox(1);
+        });
+
+        // Scroll Reveal
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.gallery-item, .reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Stagger gallery items
+        document.querySelectorAll('.gallery-item').forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.05}s`;
         });
     </script>
 
