@@ -584,15 +584,16 @@
             line-height: 1.5;
         }
 
-        /* Bottom Row Layout: 2 small + 1 tall filling gap */
+        /* Bottom Row Layout: 2 small side by side, tall one fills gap above */
         .gallery-bottom-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: 1fr 1fr;
+            grid-template-rows: 1fr;
             gap: 20px;
             max-width: 1400px;
-            margin: 20px auto 0;
+            margin: -300px auto 0;
             padding: 0 0;
+            position: relative;
         }
 
         .gallery-bottom-row .gallery-item {
@@ -600,8 +601,9 @@
         }
 
         .gallery-bottom-row .gallery-item.tall-right {
-            grid-row: 1 / 3;
             grid-column: 3;
+            margin-top: -320px;
+            height: calc(300px + 320px + 20px);
         }
 
         .gallery-bottom-row .gallery-item .gallery-item-inner {
@@ -610,7 +612,8 @@
         }
 
         .gallery-bottom-row .gallery-item.tall-right .gallery-item-inner {
-            min-height: 620px;
+            height: 100%;
+            min-height: 100%;
         }
 
         .gallery-bottom-row .gallery-item img {
@@ -623,11 +626,13 @@
             .gallery-bottom-row {
                 grid-template-columns: repeat(2, 1fr);
                 grid-template-rows: auto;
+                margin-top: 20px;
             }
 
             .gallery-bottom-row .gallery-item.tall-right {
-                grid-row: auto;
                 grid-column: auto;
+                margin-top: 0;
+                height: auto;
             }
 
             .gallery-bottom-row .gallery-item.tall-right .gallery-item-inner {
@@ -1692,7 +1697,7 @@
 
         </div>
 
-        <!-- Bottom Row: 4 items - 2x2 on left, 1 tall on right filling gap -->
+        <!-- Bottom Row: 2 small on left, 1 tall on right filling the gap -->
         <div class="gallery-bottom-row">
             <div class="gallery-item" data-category="fades">
                 <div class="gallery-item-inner">
@@ -1736,40 +1741,6 @@
                         <span class="gallery-item-category">Fades</span>
                         <h3 class="gallery-item-title">Modern Textured Cut</h3>
                         <p class="gallery-item-desc">Contemporary style with expert texturing</p>
-                    </div>
-                    <div class="gallery-item-expand">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="gallery-item" data-category="fades">
-                <div class="gallery-item-inner">
-                    <img src="download (5).jpg" alt="Classic Style" loading="lazy">
-                    <div class="gallery-item-overlay"></div>
-                    <div class="gallery-item-content">
-                        <span class="gallery-item-category">Fades</span>
-                        <h3 class="gallery-item-title">Classic Style</h3>
-                        <p class="gallery-item-desc">Timeless grooming</p>
-                    </div>
-                    <div class="gallery-item-expand">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="gallery-item" data-category="fades">
-                <div class="gallery-item-inner">
-                    <img src="download (6).jpg" alt="Fresh Cut" loading="lazy">
-                    <div class="gallery-item-overlay"></div>
-                    <div class="gallery-item-content">
-                        <span class="gallery-item-category">Fades</span>
-                        <h3 class="gallery-item-title">Fresh Cut</h3>
-                        <p class="gallery-item-desc">Clean and sharp finish</p>
                     </div>
                     <div class="gallery-item-expand">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
