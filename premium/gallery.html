@@ -584,6 +584,64 @@
             line-height: 1.5;
         }
 
+        /* Bottom Row Layout: Big square left, 2 stacked right */
+        .gallery-bottom-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            max-width: 1400px;
+            margin: 25px auto 0;
+            padding: 0 5%;
+        }
+
+        .gallery-bottom-row .gallery-item.big-square {
+            aspect-ratio: 1;
+        }
+
+        .gallery-bottom-row .gallery-item.big-square .gallery-item-inner {
+            height: 100%;
+            min-height: 400px;
+        }
+
+        .gallery-stacked-right {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .gallery-stacked-right .gallery-item {
+            flex: 1;
+        }
+
+        .gallery-stacked-right .gallery-item .gallery-item-inner {
+            height: 100%;
+            min-height: 185px;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-bottom-row {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-bottom-row .gallery-item.big-square .gallery-item-inner {
+                min-height: 300px;
+            }
+
+            .gallery-stacked-right {
+                flex-direction: row;
+            }
+
+            .gallery-stacked-right .gallery-item .gallery-item-inner {
+                min-height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-stacked-right {
+                flex-direction: column;
+            }
+        }
+
         /* Corner expand icon */
         .gallery-item-expand {
             position: absolute;
@@ -1425,14 +1483,14 @@
                 </div>
             </div>
 
-            <div class="gallery-item tall" data-category="beard">
+            <div class="gallery-item tall" data-category="fades">
                 <div class="gallery-item-inner">
-                    <img src="download (18).jpg" alt="Expert Beard Styling" loading="lazy">
+                    <img src="download (6).jpg" alt="Expert Fade Work" loading="lazy">
                     <div class="gallery-item-overlay"></div>
                     <div class="gallery-item-content">
-                        <span class="gallery-item-category">Beard</span>
-                        <h3 class="gallery-item-title">Expert Beard Styling</h3>
-                        <p class="gallery-item-desc">Premium beard shaping with skin fade</p>
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">Expert Fade Work</h3>
+                        <p class="gallery-item-desc">Premium precision fading techniques</p>
                     </div>
                     <div class="gallery-item-expand">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
@@ -1612,7 +1670,11 @@
                 </div>
             </div>
 
-            <div class="gallery-item tall" data-category="fades">
+        </div>
+
+        <!-- Bottom Row: Big square left, 2 stacked right -->
+        <div class="gallery-bottom-row">
+            <div class="gallery-item big-square" data-category="fades">
                 <div class="gallery-item-inner">
                     <img src="download (7).jpg" alt="Modern Textured Cut" loading="lazy">
                     <div class="gallery-item-overlay"></div>
@@ -1629,23 +1691,40 @@
                 </div>
             </div>
 
-            <div class="gallery-item" data-category="beard">
-                <div class="gallery-item-inner">
-                    <img src="download (11).jpg" alt="Classic Beard Trim" loading="lazy">
-                    <div class="gallery-item-overlay"></div>
-                    <div class="gallery-item-content">
-                        <span class="gallery-item-category">Beard</span>
-                        <h3 class="gallery-item-title">Classic Beard Trim</h3>
-                        <p class="gallery-item-desc">Clean lines and professional grooming</p>
+            <div class="gallery-stacked-right">
+                <div class="gallery-item" data-category="fades">
+                    <div class="gallery-item-inner">
+                        <img src="download (9).jpg" alt="Sharp Lineup" loading="lazy">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-content">
+                            <span class="gallery-item-category">Fades</span>
+                            <h3 class="gallery-item-title">Sharp Lineup</h3>
+                            <p class="gallery-item-desc">Precision edge work</p>
+                        </div>
+                        <div class="gallery-item-expand">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                            </svg>
+                        </div>
                     </div>
-                    <div class="gallery-item-expand">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                        </svg>
+                </div>
+                <div class="gallery-item" data-category="fades">
+                    <div class="gallery-item-inner">
+                        <img src="download (10).jpg" alt="Textured Crop" loading="lazy">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-content">
+                            <span class="gallery-item-category">Fades</span>
+                            <h3 class="gallery-item-title">Textured Crop</h3>
+                            <p class="gallery-item-desc">Modern textured styling</p>
+                        </div>
+                        <div class="gallery-item-expand">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 
