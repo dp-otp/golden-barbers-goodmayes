@@ -110,9 +110,14 @@
             animation: logoFloat 8s ease-in-out infinite;
             pointer-events: none;
             clip-path: circle(45% at center);
-            image-rendering: auto;
-            filter: contrast(1.15) brightness(1.05) saturate(0.95) hue-rotate(-3deg) blur(0.3px);
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            filter: contrast(1.2) brightness(1.1) saturate(0.9) hue-rotate(-5deg);
             will-change: transform;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
         }
 
         @keyframes logoFloat {
@@ -133,7 +138,7 @@
             .services-preview::before {
                 width: 900px;
                 height: 900px;
-                filter: contrast(1.15) brightness(1.05) saturate(0.95) hue-rotate(-3deg) blur(0.5px);
+                filter: contrast(1.2) brightness(1.1) saturate(0.9) hue-rotate(-5deg);
             }
         }
 
@@ -142,7 +147,7 @@
                 width: 600px;
                 height: 600px;
                 opacity: 0.9;
-                filter: contrast(1.15) brightness(1.05) saturate(0.95) hue-rotate(-3deg) blur(0.5px);
+                filter: contrast(1.2) brightness(1.1) saturate(0.9) hue-rotate(-5deg);
             }
         }
 

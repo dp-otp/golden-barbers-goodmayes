@@ -639,16 +639,16 @@ class GalleryFilter {
             setTimeout(() => {
                 const firstVisible = Array.from(this.galleryItems).find(item => item.style.display !== 'none');
                 if (firstVisible) {
-                    const offset = 100; // Offset for fixed header
-                    const elementPosition = firstVisible.getBoundingClientRect().top + window.pageYOffset;
-                    const offsetPosition = elementPosition - offset;
+                    const offset = 120; // Offset for fixed header
+                    const elementPosition = firstVisible.getBoundingClientRect().top;
+                    const offsetPosition = window.scrollY + elementPosition - offset;
 
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: 'smooth'
                     });
                 }
-            }, 100);
+            }, 200);
         }
     }
 }
