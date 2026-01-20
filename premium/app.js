@@ -633,6 +633,23 @@ class GalleryFilter {
                 item.style.display = 'none';
             }
         });
+
+        // Auto-scroll to first visible gallery item on mobile
+        if (window.innerWidth <= 968) {
+            setTimeout(() => {
+                const firstVisible = Array.from(this.galleryItems).find(item => item.style.display !== 'none');
+                if (firstVisible) {
+                    const offset = 100; // Offset for fixed header
+                    const elementPosition = firstVisible.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - offset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 100);
+        }
     }
 }
 

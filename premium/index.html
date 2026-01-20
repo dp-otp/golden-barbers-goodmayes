@@ -66,7 +66,24 @@
         @media (max-width: 968px) {
             .hero-bg-images {
                 grid-template-columns: 1fr;
-                opacity: 0.05;
+                opacity: 0.06;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .hero-bg-img {
+                height: 250px;
+                object-fit: cover;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-bg-images {
+                opacity: 0.08;
+            }
+
+            .hero-bg-img {
+                height: 200px;
             }
         }
 
