@@ -49,7 +49,7 @@
         }
 
         /* ============================================
-           CUSTOM CURSOR
+           CUSTOM CURSOR - MAGNETIC EFFECT
            ============================================ */
         .cursor {
             width: 20px;
@@ -59,8 +59,9 @@
             position: fixed;
             pointer-events: none;
             z-index: 99999;
-            transition: transform 0.1s ease, width 0.3s, height 0.3s, border 0.3s;
+            transition: transform 0.1s ease, width 0.3s, height 0.3s, border 0.3s, background 0.3s;
             transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
         }
 
         .cursor-follower {
@@ -71,15 +72,50 @@
             position: fixed;
             pointer-events: none;
             z-index: 99998;
-            transition: transform 0.15s ease;
+            transition: transform 0.15s ease, width 0.3s, height 0.3s;
             transform: translate(-50%, -50%);
         }
 
         .cursor.hover {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             border-color: var(--gold-light);
-            background: rgba(212, 175, 55, 0.1);
+            background: rgba(212, 175, 55, 0.15);
+            mix-blend-mode: normal;
+        }
+
+        .cursor.hover .cursor-text {
+            opacity: 1;
+        }
+
+        .cursor-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+
+        /* Magnetic Button Effect */
+        .magnetic-wrap {
+            display: inline-block;
+            position: relative;
+        }
+
+        .magnetic-area {
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            right: -50px;
+            bottom: -50px;
+            z-index: 1;
         }
 
         /* ============================================
@@ -611,6 +647,260 @@
         @keyframes scrollDown {
             0% { top: 0; opacity: 1; }
             100% { top: 100%; opacity: 0; }
+        }
+
+        /* ============================================
+           TEXT SCRAMBLE / GLITCH EFFECT
+           ============================================ */
+        .glitch-text {
+            position: relative;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .glitch-text:hover::before {
+            animation: glitch1 0.3s infinite;
+            color: #ff00ff;
+            opacity: 0.8;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        }
+
+        .glitch-text:hover::after {
+            animation: glitch2 0.3s infinite;
+            color: #00ffff;
+            opacity: 0.8;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitch1 {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+
+        @keyframes glitch2 {
+            0% { transform: translate(0); }
+            20% { transform: translate(3px, -3px); }
+            40% { transform: translate(3px, 3px); }
+            60% { transform: translate(-3px, -3px); }
+            80% { transform: translate(-3px, 3px); }
+            100% { transform: translate(0); }
+        }
+
+        /* ============================================
+           SMOOTH REVEAL SECTIONS
+           ============================================ */
+        .reveal-section {
+            opacity: 0;
+            transform: translateY(100px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-section.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger children */
+        .stagger-reveal > * {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .stagger-reveal.revealed > *:nth-child(1) { transition-delay: 0.1s; }
+        .stagger-reveal.revealed > *:nth-child(2) { transition-delay: 0.2s; }
+        .stagger-reveal.revealed > *:nth-child(3) { transition-delay: 0.3s; }
+        .stagger-reveal.revealed > *:nth-child(4) { transition-delay: 0.4s; }
+        .stagger-reveal.revealed > *:nth-child(5) { transition-delay: 0.5s; }
+        .stagger-reveal.revealed > *:nth-child(6) { transition-delay: 0.6s; }
+
+        .stagger-reveal.revealed > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           PARALLAX MOUSE MOVEMENT
+           ============================================ */
+        .parallax-container {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .parallax-layer {
+            transition: transform 0.3s ease-out;
+            will-change: transform;
+        }
+
+        /* ============================================
+           LIQUID/MORPH BUTTONS
+           ============================================ */
+        .btn-liquid {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-liquid::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--gold-light);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1), height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+        }
+
+        .btn-liquid:hover::before {
+            width: 300%;
+            height: 300%;
+        }
+
+        /* ============================================
+           NOISE TEXTURE OVERLAY
+           ============================================ */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 99990;
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            animation: noiseMove 0.5s steps(10) infinite;
+        }
+
+        @keyframes noiseMove {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -5%); }
+            20% { transform: translate(-10%, 5%); }
+            30% { transform: translate(5%, -10%); }
+            40% { transform: translate(-5%, 15%); }
+            50% { transform: translate(-10%, 5%); }
+            60% { transform: translate(15%, 0); }
+            70% { transform: translate(0, 10%); }
+            80% { transform: translate(-15%, 0); }
+            90% { transform: translate(10%, 5%); }
+        }
+
+        /* ============================================
+           HORIZONTAL SCROLL TEXT
+           ============================================ */
+        .horizontal-text {
+            position: fixed;
+            bottom: 50px;
+            left: 0;
+            font-size: 200px;
+            font-weight: 900;
+            color: rgba(212, 175, 55, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            animation: horizontalScroll 30s linear infinite;
+        }
+
+        @keyframes horizontalScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ============================================
+           SPLIT LINE DECORATIONS
+           ============================================ */
+        .split-line {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .split-line-bar {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+        }
+
+        .split-line-bar:last-child {
+            background: linear-gradient(90deg, transparent, var(--gold));
+        }
+
+        .split-line-text {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        /* ============================================
+           FLOATING PARTICLES
+           ============================================ */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: floatParticle 15s linear infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 20s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: -2s; animation-duration: 18s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: -4s; animation-duration: 22s; }
+        .particle:nth-child(4) { left: 40%; animation-delay: -1s; animation-duration: 16s; }
+        .particle:nth-child(5) { left: 50%; animation-delay: -3s; animation-duration: 24s; }
+        .particle:nth-child(6) { left: 60%; animation-delay: -5s; animation-duration: 19s; }
+        .particle:nth-child(7) { left: 70%; animation-delay: -2s; animation-duration: 21s; }
+        .particle:nth-child(8) { left: 80%; animation-delay: -4s; animation-duration: 17s; }
+        .particle:nth-child(9) { left: 90%; animation-delay: -1s; animation-duration: 23s; }
+        .particle:nth-child(10) { left: 15%; animation-delay: -3s; animation-duration: 25s; }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
         }
 
         /* ============================================
@@ -1325,8 +1615,30 @@
 </head>
 <body>
 
+    <!-- Noise Texture Overlay -->
+    <div class="noise-overlay"></div>
+
+    <!-- Floating Particles -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Horizontal Scrolling Text Background -->
+    <div class="horizontal-text">GOLDEN BARBERS • PREMIUM GROOMING • GOLDEN BARBERS • PREMIUM GROOMING • </div>
+
     <!-- Custom Cursor -->
-    <div class="cursor"></div>
+    <div class="cursor">
+        <span class="cursor-text">View</span>
+    </div>
     <div class="cursor-follower"></div>
 
     <!-- Page Loader -->
@@ -1381,9 +1693,9 @@
                 <span>Premium Grooming Since 2020</span>
             </div>
 
-            <h1 class="hero-title">
-                <span class="hero-title-line"><span>Where <span class="gold">Precision</span></span></span>
-                <span class="hero-title-line"><span>Meets <span class="gold">Style</span></span></span>
+            <h1 class="hero-title parallax-layer" data-speed="0.05">
+                <span class="hero-title-line"><span>Where <span class="gold glitch-text" data-text="Precision">Precision</span></span></span>
+                <span class="hero-title-line"><span>Meets <span class="gold glitch-text" data-text="Style">Style</span></span></span>
             </h1>
 
             <p class="hero-subtitle">
@@ -1689,100 +2001,421 @@
     </a>
 
     <script>
-        // Page Loader
+        // ============================================
+        // PAGE LOADER - CINEMATIC ENTRANCE
+        // ============================================
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.querySelector('.loader').classList.add('hidden');
-            }, 2000);
+                // Trigger entrance animations after loader
+                setTimeout(() => {
+                    document.body.classList.add('loaded');
+                }, 500);
+            }, 2500);
         });
 
-        // Custom Cursor
+        // ============================================
+        // SMOOTH CURSOR WITH MAGNETIC EFFECT
+        // ============================================
         const cursor = document.querySelector('.cursor');
         const cursorFollower = document.querySelector('.cursor-follower');
+        const cursorText = document.querySelector('.cursor-text');
+
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        let followerX = 0, followerY = 0;
 
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-
-            setTimeout(() => {
-                cursorFollower.style.left = e.clientX + 'px';
-                cursorFollower.style.top = e.clientY + 'px';
-            }, 50);
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
 
-        // Cursor hover effect
+        // Smooth cursor animation loop
+        function animateCursor() {
+            // Smooth lerp for main cursor
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+
+            // Slower lerp for follower
+            followerX += (mouseX - followerX) * 0.08;
+            followerY += (mouseY - followerY) * 0.08;
+            cursorFollower.style.left = followerX + 'px';
+            cursorFollower.style.top = followerY + 'px';
+
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor hover effects with text
         const hoverElements = document.querySelectorAll('a, button, .service-card, .testimonial-card');
         hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+                if (el.classList.contains('service-card')) {
+                    cursorText.textContent = 'View';
+                } else if (el.tagName === 'A' || el.tagName === 'BUTTON') {
+                    cursorText.textContent = 'Click';
+                }
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
         });
 
-        // Service card mouse tracking for glow effect
+        // ============================================
+        // MAGNETIC BUTTON EFFECT
+        // ============================================
+        document.querySelectorAll('.btn, .nav-cta, .floating-cta').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // ============================================
+        // SERVICE CARD 3D TILT + GLOW
+        // ============================================
         document.querySelectorAll('.service-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width) * 100;
-                const y = ((e.clientY - rect.top) / rect.height) * 100;
-                card.style.setProperty('--mouse-x', x + '%');
-                card.style.setProperty('--mouse-y', y + '%');
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+                card.style.setProperty('--mouse-x', (x / rect.width) * 100 + '%');
+                card.style.setProperty('--mouse-y', (y / rect.height) * 100 + '%');
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
             });
         });
 
-        // Nav scroll effect
-        let lastScroll = 0;
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('.nav');
-            const currentScroll = window.pageYOffset;
+        // ============================================
+        // PARALLAX MOUSE MOVEMENT
+        // ============================================
+        const parallaxLayers = document.querySelectorAll('.parallax-layer');
+        const heroBlobs = document.querySelectorAll('.hero-blob');
 
-            if (currentScroll > 100) {
-                nav.style.background = 'rgba(10, 10, 10, 0.95)';
-                nav.style.top = currentScroll > lastScroll ? '-100px' : '30px';
-            } else {
-                nav.style.background = 'rgba(20, 20, 20, 0.8)';
-                nav.style.top = '30px';
-            }
-            lastScroll = currentScroll;
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX - window.innerWidth / 2) / window.innerWidth;
+            const y = (e.clientY - window.innerHeight / 2) / window.innerHeight;
+
+            parallaxLayers.forEach(layer => {
+                const speed = layer.dataset.speed || 0.05;
+                layer.style.transform = `translate(${x * speed * 100}px, ${y * speed * 100}px)`;
+            });
+
+            heroBlobs.forEach((blob, index) => {
+                const speed = (index + 1) * 20;
+                blob.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
         });
 
-        // Mobile nav toggle
-        const navToggle = document.querySelector('.nav-toggle');
-        const navLinks = document.querySelector('.nav-links');
-
-        navToggle.addEventListener('click', () => {
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            navLinks.style.position = 'fixed';
-            navLinks.style.top = '100px';
-            navLinks.style.left = '20px';
-            navLinks.style.right = '20px';
-            navLinks.style.flexDirection = 'column';
-            navLinks.style.background = 'rgba(20, 20, 20, 0.98)';
-            navLinks.style.padding = '30px';
-            navLinks.style.borderRadius = '20px';
-            navLinks.style.gap = '20px';
-            navLinks.style.zIndex = '9999';
-        });
-
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
+        // ============================================
+        // SCROLL-TRIGGERED ANIMATIONS
+        // ============================================
+        const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.classList.add('revealed');
                 }
             });
-        }, observerOptions);
-
-        document.querySelectorAll('.service-card, .stat-item, .section-header').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(50px)';
-            el.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-            observer.observe(el);
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
         });
+
+        document.querySelectorAll('.reveal-section, .stagger-reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // Stagger animation for service cards and stats
+        const staggerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const cards = entry.target.querySelectorAll('.service-card, .stat-item');
+                    cards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, index * 150);
+                    });
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.services-grid, .stats-grid').forEach(grid => {
+            grid.querySelectorAll('.service-card, .stat-item').forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(80px)';
+                item.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+            });
+            staggerObserver.observe(grid);
+        });
+
+        // Section headers animation
+        document.querySelectorAll('.section-header').forEach(header => {
+            header.style.opacity = '0';
+            header.style.transform = 'translateY(60px)';
+            header.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';
+
+            const headerObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            headerObserver.observe(header);
+        });
+
+        // ============================================
+        // SMART NAVIGATION
+        // ============================================
+        let lastScroll = 0;
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const nav = document.querySelector('.nav');
+                    const currentScroll = window.pageYOffset;
+
+                    if (currentScroll > 100) {
+                        nav.style.background = 'rgba(10, 10, 10, 0.95)';
+                        nav.style.backdropFilter = 'blur(30px)';
+                        nav.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.5)';
+
+                        if (currentScroll > lastScroll && currentScroll > 200) {
+                            nav.style.transform = 'translateX(-50%) translateY(-150%)';
+                        } else {
+                            nav.style.transform = 'translateX(-50%) translateY(0)';
+                        }
+                    } else {
+                        nav.style.background = 'rgba(20, 20, 20, 0.8)';
+                        nav.style.boxShadow = 'none';
+                        nav.style.transform = 'translateX(-50%) translateY(0)';
+                    }
+
+                    lastScroll = currentScroll;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // ============================================
+        // MOBILE NAVIGATION
+        // ============================================
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        let menuOpen = false;
+
+        navToggle.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+
+            if (menuOpen) {
+                navLinks.style.display = 'flex';
+                navLinks.style.position = 'fixed';
+                navLinks.style.top = '100px';
+                navLinks.style.left = '20px';
+                navLinks.style.right = '20px';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.background = 'rgba(10, 10, 10, 0.98)';
+                navLinks.style.backdropFilter = 'blur(30px)';
+                navLinks.style.padding = '30px';
+                navLinks.style.borderRadius = '25px';
+                navLinks.style.gap = '20px';
+                navLinks.style.zIndex = '9999';
+                navLinks.style.border = '1px solid rgba(212, 175, 55, 0.2)';
+                navLinks.style.animation = 'fadeInUp 0.4s ease forwards';
+
+                // Animate hamburger to X
+                navToggle.children[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                navToggle.children[1].style.opacity = '0';
+                navToggle.children[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
+            } else {
+                navLinks.style.display = 'none';
+                navToggle.children[0].style.transform = 'none';
+                navToggle.children[1].style.opacity = '1';
+                navToggle.children[2].style.transform = 'none';
+            }
+        });
+
+        // ============================================
+        // TEXT SCRAMBLE EFFECT
+        // ============================================
+        class TextScramble {
+            constructor(el) {
+                this.el = el;
+                this.chars = '!<>-_\\/[]{}—=+*^?#________';
+                this.update = this.update.bind(this);
+            }
+
+            setText(newText) {
+                const oldText = this.el.innerText;
+                const length = Math.max(oldText.length, newText.length);
+                const promise = new Promise(resolve => this.resolve = resolve);
+                this.queue = [];
+
+                for (let i = 0; i < length; i++) {
+                    const from = oldText[i] || '';
+                    const to = newText[i] || '';
+                    const start = Math.floor(Math.random() * 40);
+                    const end = start + Math.floor(Math.random() * 40);
+                    this.queue.push({ from, to, start, end });
+                }
+
+                cancelAnimationFrame(this.frameRequest);
+                this.frame = 0;
+                this.update();
+                return promise;
+            }
+
+            update() {
+                let output = '';
+                let complete = 0;
+
+                for (let i = 0, n = this.queue.length; i < n; i++) {
+                    let { from, to, start, end, char } = this.queue[i];
+
+                    if (this.frame >= end) {
+                        complete++;
+                        output += to;
+                    } else if (this.frame >= start) {
+                        if (!char || Math.random() < 0.28) {
+                            char = this.chars[Math.floor(Math.random() * this.chars.length)];
+                            this.queue[i].char = char;
+                        }
+                        output += `<span style="color: var(--gold);">${char}</span>`;
+                    } else {
+                        output += from;
+                    }
+                }
+
+                this.el.innerHTML = output;
+
+                if (complete === this.queue.length) {
+                    this.resolve();
+                } else {
+                    this.frameRequest = requestAnimationFrame(this.update);
+                    this.frame++;
+                }
+            }
+        }
+
+        // Apply scramble effect to marquee items on hover
+        document.querySelectorAll('.marquee-item').forEach(item => {
+            const originalText = item.textContent.replace('★', '').trim();
+            const fx = new TextScramble(item);
+
+            item.addEventListener('mouseenter', () => {
+                fx.setText(originalText);
+            });
+        });
+
+        // ============================================
+        // SMOOTH SCROLL
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ============================================
+        // COUNTER ANIMATION FOR STATS
+        // ============================================
+        function animateCounter(el, target, suffix = '') {
+            let current = 0;
+            const increment = target / 60;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    el.textContent = target + suffix;
+                    clearInterval(timer);
+                } else {
+                    el.textContent = Math.floor(current) + suffix;
+                }
+            }, 16);
+        }
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumbers = entry.target.querySelectorAll('.stat-number');
+                    statNumbers.forEach(stat => {
+                        const text = stat.textContent;
+                        if (text.includes('K')) {
+                            animateCounter(stat, parseInt(text), 'K+');
+                        } else if (text.includes('+')) {
+                            animateCounter(stat, parseInt(text), '+');
+                        } else if (text.includes('.')) {
+                            // Handle decimal like 4.9
+                            let current = 0;
+                            const target = parseFloat(text);
+                            const increment = target / 60;
+                            const timer = setInterval(() => {
+                                current += increment;
+                                if (current >= target) {
+                                    stat.textContent = target.toFixed(1);
+                                    clearInterval(timer);
+                                } else {
+                                    stat.textContent = current.toFixed(1);
+                                }
+                            }, 16);
+                        } else {
+                            animateCounter(stat, parseInt(text), '+');
+                        }
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stats').forEach(section => {
+            statsObserver.observe(section);
+        });
+
+        // ============================================
+        // PRELOAD CRITICAL RESOURCES
+        // ============================================
+        const imagesToPreload = [
+            '../logo-removebg-preview.png',
+            '../logo.png'
+        ];
+
+        imagesToPreload.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+
+        console.log('%c GOLDEN BARBERS ', 'background: linear-gradient(135deg, #d4af37, #f5d778); color: #000; font-size: 20px; font-weight: bold; padding: 10px 20px; border-radius: 5px;');
+        console.log('%c Premium $10K Agency Design ', 'color: #d4af37; font-size: 12px;');
     </script>
 
 </body>
