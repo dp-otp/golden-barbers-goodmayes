@@ -584,61 +584,6 @@
             line-height: 1.5;
         }
 
-        /* Bottom Row Layout: 2 small side by side + 1 tall on right */
-        .gallery-bottom-row {
-            display: flex;
-            gap: 20px;
-            max-width: 1400px;
-            margin: 20px auto 0;
-        }
-
-        .gallery-bottom-row .gallery-item {
-            flex: 1;
-            min-height: 300px;
-        }
-
-        .gallery-bottom-row .gallery-item.tall-right {
-            flex: 1;
-        }
-
-        .gallery-bottom-row .gallery-item .gallery-item-inner {
-            height: 100%;
-            min-height: 300px;
-        }
-
-        .gallery-bottom-row .gallery-item.tall-right .gallery-item-inner {
-            min-height: 300px;
-        }
-
-        .gallery-bottom-row .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        @media (max-width: 1024px) {
-            .gallery-bottom-row {
-                flex-wrap: wrap;
-            }
-
-            .gallery-bottom-row .gallery-item {
-                flex: 1 1 calc(50% - 10px);
-            }
-
-            .gallery-bottom-row .gallery-item.tall-right {
-                flex: 1 1 100%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .gallery-bottom-row .gallery-item {
-                flex: 1 1 100%;
-            }
-
-            .gallery-bottom-row .gallery-item .gallery-item-inner {
-                min-height: 280px;
-            }
-        }
 
         /* Corner expand icon */
         .gallery-item-expand {
@@ -1685,10 +1630,24 @@
                 </div>
             </div>
 
-        </div>
+            <!-- Tall image to fill the gap on the right -->
+            <div class="gallery-item tall" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="download (7).jpg" alt="Modern Textured Cut" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">Modern Textured Cut</h3>
+                        <p class="gallery-item-desc">Contemporary style with expert texturing</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Bottom Row: 2 small on left, 1 tall on right filling the gap -->
-        <div class="gallery-bottom-row">
             <div class="gallery-item" data-category="fades">
                 <div class="gallery-item-inner">
                     <img src="download (9).jpg" alt="Sharp Lineup" loading="lazy">
@@ -1723,22 +1682,6 @@
                 </div>
             </div>
 
-            <div class="gallery-item tall-right" data-category="fades">
-                <div class="gallery-item-inner">
-                    <img src="download (7).jpg" alt="Modern Textured Cut" loading="lazy">
-                    <div class="gallery-item-overlay"></div>
-                    <div class="gallery-item-content">
-                        <span class="gallery-item-category">Fades</span>
-                        <h3 class="gallery-item-title">Modern Textured Cut</h3>
-                        <p class="gallery-item-desc">Contemporary style with expert texturing</p>
-                    </div>
-                    <div class="gallery-item-expand">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
