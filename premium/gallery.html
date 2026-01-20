@@ -592,22 +592,22 @@
             max-width: 1400px;
             margin: 20px auto 0;
             padding: 0 5%;
-            align-items: start;
         }
 
         .gallery-stacked-left {
             display: flex;
             flex-direction: column;
             gap: 20px;
+            height: 100%;
         }
 
         .gallery-stacked-left .gallery-item {
-            aspect-ratio: 16/9;
+            flex: 1;
+            min-height: 0;
         }
 
         .gallery-stacked-left .gallery-item .gallery-item-inner {
             height: 100%;
-            min-height: 0;
         }
 
         .gallery-stacked-left .gallery-item img {
@@ -622,7 +622,12 @@
 
         .gallery-bottom-row .gallery-item.big-square .gallery-item-inner {
             height: 100%;
-            min-height: 0;
+        }
+
+        .gallery-bottom-row .gallery-item.big-square img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         @media (max-width: 768px) {
@@ -1503,12 +1508,12 @@
 
             <div class="gallery-item" data-category="fades">
                 <div class="gallery-item-inner">
-                    <img src="download (6).jpg" alt="Expert Fade Work" loading="lazy">
+                    <img src="download (5).jpg" alt="Sharp Fade" loading="lazy">
                     <div class="gallery-item-overlay"></div>
                     <div class="gallery-item-content">
                         <span class="gallery-item-category">Fades</span>
-                        <h3 class="gallery-item-title">Expert Fade Work</h3>
-                        <p class="gallery-item-desc">Premium precision fading techniques</p>
+                        <h3 class="gallery-item-title">Sharp Fade</h3>
+                        <p class="gallery-item-desc">Clean lines with seamless blend</p>
                     </div>
                     <div class="gallery-item-expand">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
