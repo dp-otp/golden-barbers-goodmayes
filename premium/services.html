@@ -58,11 +58,43 @@
             background: var(--dark-card);
             border: 1px solid rgba(212, 175, 55, 0.1);
             border-radius: 24px;
-            padding: 2.5rem;
+            padding: 0;
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
             overflow: hidden;
+        }
+
+        .service-card-image-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card-image-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, var(--dark-card));
+            pointer-events: none;
+        }
+
+        .service-card-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s;
+        }
+
+        .service-card-interactive:hover .service-card-image {
+            transform: scale(1.05);
+        }
+
+        .service-card-content {
+            padding: 2rem;
         }
 
         .service-card-interactive::before {
@@ -280,102 +312,127 @@
                     <div class="service-card-interactive scale-in"
                          data-duration="60 min"
                          data-addons='[{"name":"Ear / nose flaming & waxing","price":"£6.00","duration":"+10 min","description":"Hair removal & styling"}]'>
-                        <span class="service-badge">Premium</span>
-                        <span class="service-card-icon">👑</span>
-                        <h3 class="service-card-title">Golden Luxury</h3>
-                        <p class="service-card-description">
-                            Our signature luxury experience. Hair cut, wash, blow dry, hot towel shave, flaming, face mask, ear and nose wax, massage & style.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£29.00</div>
-                                <div class="service-card-duration">60 minutes</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="download (13).jpg" alt="Golden Luxury Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-badge">Premium</span>
+                            <span class="service-card-icon">👑</span>
+                            <h3 class="service-card-title">Golden Luxury</h3>
+                            <p class="service-card-description">
+                                Our signature luxury experience. Hair cut, wash, blow dry, hot towel shave, flaming, face mask, ear and nose wax, massage & style.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£29.00</div>
+                                    <div class="service-card-duration">60 minutes</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="service-card-interactive scale-in"
                          data-duration="45 min"
                          data-addons='[{"name":"Beard trim with machine","price":"£6.95","duration":"+10 min","description":"Clean machine trim"}]'>
-                        <span class="service-badge">Most Popular</span>
-                        <span class="service-card-icon">✂️</span>
-                        <h3 class="service-card-title">Hair Cut, Hair Bundle + Style</h3>
-                        <p class="service-card-description">
-                            Complete hair cut service with professional styling. Hair cut, hair wash, blow dry, hot towel shave, flaming & style.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£22.00</div>
-                                <div class="service-card-duration">45 minutes</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="download (8).jpg" alt="Hair Cut Bundle Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-badge">Most Popular</span>
+                            <span class="service-card-icon">✂️</span>
+                            <h3 class="service-card-title">Hair Cut, Hair Bundle + Style</h3>
+                            <p class="service-card-description">
+                                Complete hair cut service with professional styling. Hair cut, hair wash, blow dry, hot towel shave, flaming & style.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£22.00</div>
+                                    <div class="service-card-duration">45 minutes</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="service-card-interactive scale-in"
                          data-duration="30 min"
                          data-addons='[{"name":"Beard trim with machine","price":"£6.95","duration":"+10 min","description":"Clean machine trim"}]'>
-                        <span class="service-card-icon">💈</span>
-                        <h3 class="service-card-title">Gents Cut</h3>
-                        <p class="service-card-description">
-                            Classic gents haircut with both skin & style. Precision cutting and professional finishing.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£13.95</div>
-                                <div class="service-card-duration">30 minutes</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="download (9).jpg" alt="Gents Cut Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-card-icon">💈</span>
+                            <h3 class="service-card-title">Gents Cut</h3>
+                            <p class="service-card-description">
+                                Classic gents haircut with both skin & style. Precision cutting and professional finishing.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£13.95</div>
+                                    <div class="service-card-duration">30 minutes</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="service-card-interactive scale-in"
                          data-duration="40 min"
                          data-addons='[{"name":"Patterns and design","price":"£5.00 / £10.00","duration":"+15 min","description":"Custom designs"}]'>
-                        <span class="service-card-icon">🎯</span>
-                        <h3 class="service-card-title">Skin Fade</h3>
-                        <p class="service-card-description">
-                            Fade, skin fade, taper, or blow & waves. Executed with precision and attention to detail.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£15.95</div>
-                                <div class="service-card-duration">40 minutes</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="pic.jpg" alt="Skin Fade Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-card-icon">🎯</span>
+                            <h3 class="service-card-title">Skin Fade</h3>
+                            <p class="service-card-description">
+                                Fade, skin fade, taper, or blow & waves. Executed with precision and attention to detail.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£15.95</div>
+                                    <div class="service-card-duration">40 minutes</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="service-card-interactive scale-in"
                          data-duration="20 min"
                          data-addons='[]'>
-                        <span class="service-card-icon">👦</span>
-                        <h3 class="service-card-title">Under 10s Cut</h3>
-                        <p class="service-card-description">
-                            Gentle, patient haircuts for children under 10. We make the experience fun and comfortable.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£9.95</div>
-                                <div class="service-card-duration">20 minutes</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="download (4).jpg" alt="Kids Cut Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-card-icon">👦</span>
+                            <h3 class="service-card-title">Under 10s Cut</h3>
+                            <p class="service-card-description">
+                                Gentle, patient haircuts for children under 10. We make the experience fun and comfortable.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£9.95</div>
+                                    <div class="service-card-duration">20 minutes</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -394,81 +451,101 @@
                     <div class="service-card-interactive scale-in"
                          data-duration="15 min"
                          data-addons='[]'>
-                        <span class="service-card-icon">🧔</span>
-                        <h3 class="service-card-title">Beard Trim with Machine</h3>
-                        <p class="service-card-description">
-                            Professional beard trim using clippers. Quick, clean, and precise grooming for your facial hair.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£6.95</div>
-                                <div class="service-card-duration">15 minutes</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="download (11).jpg" alt="Beard Trim Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-card-icon">🧔</span>
+                            <h3 class="service-card-title">Beard Trim with Machine</h3>
+                            <p class="service-card-description">
+                                Professional beard trim using clippers. Quick, clean, and precise grooming for your facial hair.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£6.95</div>
+                                    <div class="service-card-duration">15 minutes</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="service-card-interactive scale-in"
                          data-duration="15 min"
                          data-addons='[]'>
-                        <span class="service-card-icon">🪒</span>
-                        <h3 class="service-card-title">Traditional Turkish Hot Towel</h3>
-                        <p class="service-card-description">
-                            Authentic Turkish hot towel service. Black or mud face mask and hot towel.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£5.00</div>
-                                <div class="service-card-duration">15 minutes</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="download (23).jpg" alt="Turkish Hot Towel Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-card-icon">🪒</span>
+                            <h3 class="service-card-title">Traditional Turkish Hot Towel</h3>
+                            <p class="service-card-description">
+                                Authentic Turkish hot towel service. Black or mud face mask and hot towel.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£5.00</div>
+                                    <div class="service-card-duration">15 minutes</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="service-card-interactive scale-in"
                          data-duration="25 min"
                          data-addons='[]'>
-                        <span class="service-badge">Premium</span>
-                        <span class="service-card-icon">🔥</span>
-                        <h3 class="service-card-title">Deluxe Hot Towel Shave</h3>
-                        <p class="service-card-description">
-                            Premium shaving experience. Shave top lip, face & massage.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£11.00</div>
-                                <div class="service-card-duration">25 minutes</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="download (15).jpg" alt="Deluxe Hot Towel Shave Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-badge">Premium</span>
+                            <span class="service-card-icon">🔥</span>
+                            <h3 class="service-card-title">Deluxe Hot Towel Shave</h3>
+                            <p class="service-card-description">
+                                Premium shaving experience. Shave top lip, face & massage.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£11.00</div>
+                                    <div class="service-card-duration">25 minutes</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="service-card-interactive scale-in"
                          data-duration="20 min"
                          data-addons='[]'>
-                        <span class="service-card-icon">💆</span>
-                        <h3 class="service-card-title">Headshave</h3>
-                        <p class="service-card-description">
-                            Complete head shave with hot towel finish and massage.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£12.95</div>
-                                <div class="service-card-duration">20 minutes</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="download (18).jpg" alt="Headshave Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-card-icon">💆</span>
+                            <h3 class="service-card-title">Headshave</h3>
+                            <p class="service-card-description">
+                                Complete head shave with hot towel finish and massage.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£12.95</div>
+                                    <div class="service-card-duration">20 minutes</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -487,80 +564,100 @@
                     <div class="service-card-interactive scale-in"
                          data-duration="10 min"
                          data-addons='[]'>
-                        <span class="service-card-icon">🔥</span>
-                        <h3 class="service-card-title">Ear / Nose Flaming & Waxing</h3>
-                        <p class="service-card-description">
-                            Traditional ear and nose hair removal with flaming and waxing techniques.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£6.00</div>
-                                <div class="service-card-duration">10 minutes</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="download (12).jpg" alt="Ear Nose Flaming Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-card-icon">🔥</span>
+                            <h3 class="service-card-title">Ear / Nose Flaming & Waxing</h3>
+                            <p class="service-card-description">
+                                Traditional ear and nose hair removal with flaming and waxing techniques.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£6.00</div>
+                                    <div class="service-card-duration">10 minutes</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="service-card-interactive scale-in"
                          data-duration="15 min"
                          data-addons='[]'>
-                        <span class="service-card-icon">✨</span>
-                        <h3 class="service-card-title">Patterns and Design</h3>
-                        <p class="service-card-description">
-                            Custom hair patterns and designs to personalize your look.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£5.00 - £10.00</div>
-                                <div class="service-card-duration">15 minutes</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="download (21).jpg" alt="Patterns and Design Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-card-icon">✨</span>
+                            <h3 class="service-card-title">Patterns and Design</h3>
+                            <p class="service-card-description">
+                                Custom hair patterns and designs to personalize your look.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£5.00 - £10.00</div>
+                                    <div class="service-card-duration">15 minutes</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="service-card-interactive scale-in"
                          data-duration="10 min"
                          data-addons='[]'>
-                        <span class="service-card-icon">💆</span>
-                        <h3 class="service-card-title">Head Massage</h3>
-                        <p class="service-card-description">
-                            Relaxing head massage to complete your grooming experience.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£5.00</div>
-                                <div class="service-card-duration">10 minutes</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="download (16).jpg" alt="Head Massage Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-card-icon">💆</span>
+                            <h3 class="service-card-title">Head Massage</h3>
+                            <p class="service-card-description">
+                                Relaxing head massage to complete your grooming experience.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£5.00</div>
+                                    <div class="service-card-duration">10 minutes</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="service-card-interactive scale-in"
                          data-duration="5 min"
                          data-addons='[]'>
-                        <span class="service-card-icon">🎨</span>
-                        <h3 class="service-card-title">Colour / Textures</h3>
-                        <p class="service-card-description">
-                            Hair coloring for beard, head, or both. Custom color application.
-                        </p>
-                        <div class="service-card-meta">
-                            <div>
-                                <div class="service-card-price">£5.00 - £15.00</div>
-                                <div class="service-card-duration">Varies</div>
-                            </div>
-                            <button class="service-card-cta">View Details</button>
+                        <div class="service-card-image-wrapper">
+                            <img src="download (22).jpg" alt="Color and Textures Service" class="service-card-image">
                         </div>
-                        <div class="service-click-hint">
-                            <span>→ Click to book & pay</span>
+                        <div class="service-card-content">
+                            <span class="service-card-icon">🎨</span>
+                            <h3 class="service-card-title">Colour / Textures</h3>
+                            <p class="service-card-description">
+                                Hair coloring for beard, head, or both. Custom color application.
+                            </p>
+                            <div class="service-card-meta">
+                                <div>
+                                    <div class="service-card-price">£5.00 - £15.00</div>
+                                    <div class="service-card-duration">Varies</div>
+                                </div>
+                                <button class="service-card-cta">View Details</button>
+                            </div>
+                            <div class="service-click-hint">
+                                <span>→ Click to book & pay</span>
+                            </div>
                         </div>
                     </div>
                 </div>
