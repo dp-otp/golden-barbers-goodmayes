@@ -592,22 +592,30 @@
             max-width: 1400px;
             margin: 20px auto 0;
             padding: 0 5%;
+            height: 620px;
         }
 
         .gallery-stacked-left {
             display: grid;
             grid-template-rows: 1fr 1fr;
             gap: 20px;
+            height: 100%;
         }
 
-        .gallery-stacked-left .gallery-item,
+        .gallery-stacked-left .gallery-item {
+            min-height: 0;
+            height: 100%;
+        }
+
         .gallery-bottom-row .gallery-item.big-square {
             min-height: 0;
+            height: 100%;
         }
 
         .gallery-stacked-left .gallery-item .gallery-item-inner,
         .gallery-bottom-row .gallery-item.big-square .gallery-item-inner {
             height: 100%;
+            min-height: 0;
         }
 
         .gallery-stacked-left .gallery-item img,
@@ -621,32 +629,37 @@
             .gallery-bottom-row {
                 grid-template-columns: 1fr;
                 gap: 15px;
+                height: auto;
             }
 
             .gallery-stacked-left {
                 order: 2;
-                flex-direction: row;
+                grid-template-rows: auto auto;
                 gap: 15px;
+                height: auto;
+            }
+
+            .gallery-stacked-left .gallery-item {
+                height: auto;
             }
 
             .gallery-stacked-left .gallery-item .gallery-item-inner {
                 min-height: 200px;
+                height: auto;
             }
 
             .gallery-bottom-row .gallery-item.big-square {
                 order: 1;
+                height: auto;
             }
 
             .gallery-bottom-row .gallery-item.big-square .gallery-item-inner {
                 min-height: 300px;
+                height: auto;
             }
         }
 
         @media (max-width: 480px) {
-            .gallery-stacked-left {
-                flex-direction: column;
-            }
-
             .gallery-stacked-left .gallery-item .gallery-item-inner {
                 min-height: 250px;
             }
@@ -1425,7 +1438,7 @@
     <section class="gallery-section">
         <div class="gallery-grid">
             <!-- Fades & Cuts -->
-            <div class="gallery-item" data-category="fades">
+            <div class="gallery-item tall" data-category="fades">
                 <div class="gallery-item-inner">
                     <img src="pic.jpg" alt="Clean Skin Fade" loading="lazy">
                     <div class="gallery-item-overlay"></div>
@@ -1544,7 +1557,7 @@
                 </div>
             </div>
 
-            <div class="gallery-item" data-category="beard">
+            <div class="gallery-item tall" data-category="beard">
                 <div class="gallery-item-inner">
                     <img src="download (18).jpg" alt="Beard Styling & Fade" loading="lazy">
                     <div class="gallery-item-overlay"></div>
@@ -1578,7 +1591,7 @@
                 </div>
             </div>
 
-            <div class="gallery-item" data-category="transformations">
+            <div class="gallery-item tall" data-category="transformations">
                 <div class="gallery-item-inner">
                     <img src="download (22).jpg" alt="Turquoise Color Fade" loading="lazy">
                     <div class="gallery-item-overlay"></div>
@@ -1595,7 +1608,7 @@
                 </div>
             </div>
 
-            <div class="gallery-item" data-category="shop">
+            <div class="gallery-item tall" data-category="shop">
                 <div class="gallery-item-inner">
                     <img src="download (14).jpg" alt="Premium Interior" loading="lazy">
                     <div class="gallery-item-overlay"></div>
