@@ -49,73 +49,33 @@
         }
 
         /* ============================================
-           CUSTOM CURSOR - MAGNETIC EFFECT
+           CUSTOM CURSOR - SIMPLE & ELEGANT
            ============================================ */
         .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--gold);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 99999;
-            transition: transform 0.1s ease, width 0.3s, height 0.3s, border 0.3s, background 0.3s;
-            transform: translate(-50%, -50%);
-            mix-blend-mode: difference;
-        }
-
-        .cursor-follower {
-            width: 8px;
-            height: 8px;
+            width: 12px;
+            height: 12px;
             background: var(--gold);
             border-radius: 50%;
             position: fixed;
             pointer-events: none;
-            z-index: 99998;
-            transition: transform 0.15s ease, width 0.3s, height 0.3s;
+            z-index: 99999;
+            transition: transform 0.2s ease, opacity 0.2s;
             transform: translate(-50%, -50%);
         }
 
         .cursor.hover {
-            width: 80px;
-            height: 80px;
-            border-color: var(--gold-light);
-            background: rgba(212, 175, 55, 0.15);
-            mix-blend-mode: normal;
+            transform: translate(-50%, -50%) scale(2);
+            opacity: 0.7;
         }
 
-        .cursor.hover .cursor-text {
-            opacity: 1;
-        }
-
-        .cursor-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--gold);
-            opacity: 0;
-            transition: opacity 0.3s;
-            white-space: nowrap;
-        }
-
-        /* Magnetic Button Effect */
-        .magnetic-wrap {
-            display: inline-block;
-            position: relative;
-        }
-
-        .magnetic-area {
-            position: absolute;
-            top: -50px;
-            left: -50px;
-            right: -50px;
-            bottom: -50px;
-            z-index: 1;
+        /* Hide custom cursor on touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            .cursor {
+                display: none;
+            }
+            body {
+                cursor: auto;
+            }
         }
 
         /* ============================================
@@ -913,81 +873,86 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 2;
+            z-index: 5;
             overflow: hidden;
         }
 
         .hero-photo {
             position: absolute;
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-            border: 2px solid rgba(212, 175, 55, 0.3);
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s;
-            animation: photoFloat 8s ease-in-out infinite;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            animation: photoFloat 6s ease-in-out infinite;
+            opacity: 0.9;
         }
 
         .hero-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: saturate(1.1) contrast(1.05);
         }
 
-        .hero-photo::before {
+        .hero-photo::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), transparent);
-            z-index: 1;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), transparent);
+            pointer-events: none;
         }
 
+        /* Desktop positioning */
         .hero-photo-1 {
-            width: 180px;
-            height: 240px;
-            top: 15%;
-            left: 5%;
+            width: 160px;
+            height: 210px;
+            top: 12%;
+            left: 3%;
             animation-delay: 0s;
-            transform: rotate(-8deg);
+            transform: rotate(-6deg);
+            --rotation: -6deg;
         }
 
         .hero-photo-2 {
-            width: 160px;
-            height: 200px;
-            top: 60%;
-            left: 8%;
-            animation-delay: -2s;
-            transform: rotate(5deg);
+            width: 140px;
+            height: 180px;
+            top: 58%;
+            left: 6%;
+            animation-delay: -1.5s;
+            transform: rotate(4deg);
+            --rotation: 4deg;
         }
 
         .hero-photo-3 {
-            width: 200px;
-            height: 280px;
-            top: 10%;
-            right: 5%;
-            animation-delay: -4s;
-            transform: rotate(8deg);
+            width: 170px;
+            height: 230px;
+            top: 8%;
+            right: 3%;
+            animation-delay: -3s;
+            transform: rotate(6deg);
+            --rotation: 6deg;
         }
 
         .hero-photo-4 {
-            width: 150px;
-            height: 190px;
-            top: 55%;
-            right: 10%;
-            animation-delay: -1s;
-            transform: rotate(-5deg);
+            width: 130px;
+            height: 170px;
+            top: 52%;
+            right: 8%;
+            animation-delay: -0.5s;
+            transform: rotate(-4deg);
+            --rotation: -4deg;
         }
 
         .hero-photo-5 {
-            width: 140px;
-            height: 180px;
-            bottom: 10%;
-            right: 25%;
-            animation-delay: -3s;
+            width: 120px;
+            height: 150px;
+            bottom: 8%;
+            right: 22%;
+            animation-delay: -2s;
             transform: rotate(3deg);
+            --rotation: 3deg;
         }
 
         @keyframes photoFloat {
@@ -995,37 +960,74 @@
                 transform: translateY(0) rotate(var(--rotation, 0deg));
             }
             50% {
-                transform: translateY(-20px) rotate(var(--rotation, 0deg));
+                transform: translateY(-15px) rotate(var(--rotation, 0deg));
             }
         }
 
-        .hero-photo-1 { --rotation: -8deg; }
-        .hero-photo-2 { --rotation: 5deg; }
-        .hero-photo-3 { --rotation: 8deg; }
-        .hero-photo-4 { --rotation: -5deg; }
-        .hero-photo-5 { --rotation: 3deg; }
-
-        .hero-photo:hover {
-            transform: scale(1.1) rotate(0deg) !important;
-            box-shadow: 0 40px 80px rgba(212, 175, 55, 0.4);
-            z-index: 100;
-            pointer-events: auto;
-        }
-
+        /* Tablet */
         @media (max-width: 1200px) {
             .hero-photo {
-                opacity: 0.7;
+                opacity: 0.85;
             }
-            .hero-photo-1 { width: 140px; height: 180px; }
-            .hero-photo-2 { width: 120px; height: 150px; }
-            .hero-photo-3 { width: 150px; height: 200px; }
-            .hero-photo-4 { width: 110px; height: 140px; }
+            .hero-photo-1 { width: 120px; height: 160px; left: 2%; }
+            .hero-photo-2 { width: 100px; height: 130px; left: 3%; }
+            .hero-photo-3 { width: 130px; height: 175px; right: 2%; }
+            .hero-photo-4 { width: 100px; height: 130px; right: 5%; }
             .hero-photo-5 { display: none; }
         }
 
+        /* Mobile - show smaller photos */
         @media (max-width: 768px) {
             .hero-photos {
+                display: block;
+            }
+            .hero-photo {
+                opacity: 0.6;
+                border-radius: 12px;
+            }
+            .hero-photo-1 {
+                width: 80px;
+                height: 100px;
+                top: 8%;
+                left: 2%;
+            }
+            .hero-photo-2 {
                 display: none;
+            }
+            .hero-photo-3 {
+                width: 85px;
+                height: 110px;
+                top: 5%;
+                right: 2%;
+            }
+            .hero-photo-4 {
+                width: 70px;
+                height: 90px;
+                top: auto;
+                bottom: 25%;
+                right: 3%;
+            }
+            .hero-photo-5 {
+                display: none;
+            }
+        }
+
+        /* Small mobile */
+        @media (max-width: 480px) {
+            .hero-photo {
+                opacity: 0.5;
+            }
+            .hero-photo-1 {
+                width: 60px;
+                height: 80px;
+            }
+            .hero-photo-3 {
+                width: 65px;
+                height: 85px;
+            }
+            .hero-photo-4 {
+                width: 55px;
+                height: 70px;
             }
         }
 
@@ -1648,7 +1650,7 @@
         }
 
         @media (max-width: 968px) {
-            .cursor, .cursor-follower {
+            .cursor {
                 display: none;
             }
 
@@ -1762,10 +1764,7 @@
     <div class="horizontal-text">GOLDEN BARBERS • PREMIUM GROOMING • GOLDEN BARBERS • PREMIUM GROOMING • </div>
 
     <!-- Custom Cursor -->
-    <div class="cursor">
-        <span class="cursor-text">View</span>
-    </div>
-    <div class="cursor-follower"></div>
+    <div class="cursor"></div>
 
     <!-- Page Loader -->
     <div class="loader">
@@ -2160,54 +2159,35 @@
         });
 
         // ============================================
-        // SMOOTH CURSOR WITH MAGNETIC EFFECT
+        // SIMPLE SMOOTH CURSOR
         // ============================================
         const cursor = document.querySelector('.cursor');
-        const cursorFollower = document.querySelector('.cursor-follower');
-        const cursorText = document.querySelector('.cursor-text');
-
         let mouseX = 0, mouseY = 0;
         let cursorX = 0, cursorY = 0;
-        let followerX = 0, followerY = 0;
 
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
 
-        // Smooth cursor animation loop
         function animateCursor() {
-            // Smooth lerp for main cursor
-            cursorX += (mouseX - cursorX) * 0.15;
-            cursorY += (mouseY - cursorY) * 0.15;
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
             cursor.style.left = cursorX + 'px';
             cursor.style.top = cursorY + 'px';
-
-            // Slower lerp for follower
-            followerX += (mouseX - followerX) * 0.08;
-            followerY += (mouseY - followerY) * 0.08;
-            cursorFollower.style.left = followerX + 'px';
-            cursorFollower.style.top = followerY + 'px';
-
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
 
-        // Cursor hover effects with text
-        const hoverElements = document.querySelectorAll('a, button, .service-card, .testimonial-card');
-        hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.classList.add('hover');
-                if (el.classList.contains('service-card')) {
-                    cursorText.textContent = 'View';
-                } else if (el.tagName === 'A' || el.tagName === 'BUTTON') {
-                    cursorText.textContent = 'Click';
-                }
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.classList.remove('hover');
-            });
+        // Cursor hover effects
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
         });
+
+        // Hide cursor when leaving window
+        document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
+        document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
 
         // ============================================
         // MAGNETIC BUTTON EFFECT
