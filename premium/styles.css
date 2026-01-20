@@ -451,22 +451,11 @@ p {
 .hero-bg::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 1200px;
-    height: 1200px;
-    background-image: url('../logo-removebg-preview.png');
-    background-size: 75%;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.15;
-    animation: logoFloat 8s ease-in-out infinite;
-    pointer-events: none;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    filter: contrast(1.2) brightness(1.1) saturate(1.1);
-    clip-path: circle(32% at 50% 50%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
 }
 
 .hero-bg::after {
@@ -844,10 +833,7 @@ p {
     }
 
     .hero-bg::before {
-        width: 600px;
-        height: 600px;
-        opacity: 0.12;
-        clip-path: circle(32% at 50% 50%);
+        background: transparent;
     }
 
     .hero-eyebrow {
