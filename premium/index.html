@@ -433,11 +433,14 @@
             align-items: center;
             gap: 10px;
             padding: 10px 25px;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.5);
             border-radius: 50px;
             margin-bottom: 40px;
             animation: fadeInUp 1s ease 0.2s both;
+            position: relative;
+            z-index: 11;
+            backdrop-filter: blur(10px);
         }
 
         .hero-badge-dot {
@@ -455,10 +458,11 @@
 
         .hero-badge span {
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 3px;
             text-transform: uppercase;
             color: var(--gold);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
         }
 
         /* Main headline with split animation */
