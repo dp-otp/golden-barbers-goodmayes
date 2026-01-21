@@ -438,9 +438,18 @@
             border-radius: 50px;
             margin-bottom: 40px;
             animation: fadeInUp 1s ease 0.2s both;
-            position: relative;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 11;
             backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .hero-badge {
+                top: 35%;
+            }
         }
 
         .hero-badge-dot {
@@ -1875,8 +1884,8 @@
                 padding: 120px 20px 100px;
             }
 
-            .hero-badge {
-                display: none;
+            .hero-content {
+                margin-top: 120px;
             }
 
             .btn {
