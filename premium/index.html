@@ -902,8 +902,8 @@
         .showcase-panel-1 {
             left: 0;
             top: 0;
-            width: 20%;
-            height: 55%;
+            width: 30%;
+            height: 60%;
             animation-delay: 0.3s;
         }
 
@@ -911,7 +911,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, transparent 0%, transparent 15%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,1) 100%);
+            background: linear-gradient(135deg, transparent 0%, transparent 30%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0.8) 100%);
             z-index: 2;
         }
 
@@ -923,8 +923,8 @@
         .showcase-panel-2 {
             right: 0;
             top: 0;
-            width: 20%;
-            height: 55%;
+            width: 30%;
+            height: 60%;
             animation-delay: 0.5s;
         }
 
@@ -932,7 +932,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(225deg, transparent 0%, transparent 15%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,1) 100%);
+            background: linear-gradient(225deg, transparent 0%, transparent 30%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0.8) 100%);
             z-index: 2;
         }
 
@@ -940,8 +940,30 @@
             animation: panelZoom2 28s ease-in-out infinite;
         }
 
-        /* Bottom center panel - below hero content */
+        /* Top center panel - team photo connecting the sides */
         .showcase-panel-3 {
+            top: 0;
+            left: 30%;
+            right: 30%;
+            width: 40%;
+            height: 45%;
+            animation-delay: 0.4s;
+        }
+
+        .showcase-panel-3::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 0%, transparent 20%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.9) 100%);
+            z-index: 2;
+        }
+
+        .showcase-panel-3 img {
+            animation: panelZoom3 22s ease-in-out infinite;
+        }
+
+        /* Bottom center panel - below hero content */
+        .showcase-panel-4 {
             bottom: 0;
             left: 15%;
             right: 15%;
@@ -950,7 +972,7 @@
             animation-delay: 0.7s;
         }
 
-        .showcase-panel-3::after {
+        .showcase-panel-4::after {
             content: '';
             position: absolute;
             inset: 0;
@@ -958,7 +980,7 @@
             z-index: 2;
         }
 
-        .showcase-panel-3 img {
+        .showcase-panel-4 img {
             animation: panelZoom3 22s ease-in-out infinite;
         }
 
@@ -1084,34 +1106,42 @@
 
         /* Tablet */
         @media (max-width: 1200px) {
-            .showcase-panel-1 { width: 12%; height: 40%; }
-            .showcase-panel-2 { width: 12%; height: 40%; }
-            .showcase-panel-3 { left: 12%; right: 12%; height: 15%; }
+            .showcase-panel-1 { width: 25%; height: 50%; }
+            .showcase-panel-2 { width: 25%; height: 50%; }
+            .showcase-panel-3 { width: 35%; height: 40%; }
+            .showcase-panel-4 { left: 12%; right: 12%; height: 15%; }
         }
 
         /* Mobile - Enhanced panels with fading and larger neon circle */
         @media (max-width: 768px) {
             .showcase-panel-1 {
-                width: 32%;
-                height: 38%;
+                width: 35%;
+                height: 45%;
             }
             .showcase-panel-1::after {
-                background: linear-gradient(135deg, transparent 0%, transparent 5%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,1) 100%);
+                background: linear-gradient(135deg, transparent 0%, transparent 20%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.8) 100%);
             }
             .showcase-panel-2 {
-                width: 32%;
-                height: 38%;
+                width: 35%;
+                height: 45%;
             }
             .showcase-panel-2::after {
-                background: linear-gradient(225deg, transparent 0%, transparent 5%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,1) 100%);
+                background: linear-gradient(225deg, transparent 0%, transparent 20%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.8) 100%);
             }
             .showcase-panel-3 {
+                width: 45%;
+                height: 35%;
+            }
+            .showcase-panel-3::after {
+                background: linear-gradient(to bottom, transparent 0%, transparent 10%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.8) 100%);
+            }
+            .showcase-panel-4 {
                 left: 0;
                 right: 0;
                 height: 18%;
                 opacity: 0.7;
             }
-            .showcase-panel-3::after {
+            .showcase-panel-4::after {
                 background: linear-gradient(to top, transparent 0%, rgba(0,0,0,0.8) 70%);
             }
             .showcase-panel .panel-border {
@@ -1135,10 +1165,14 @@
         @media (max-width: 480px) {
             .showcase-panel-1,
             .showcase-panel-2 {
-                width: 30%;
-                height: 33%;
+                width: 32%;
+                height: 40%;
             }
             .showcase-panel-3 {
+                width: 50%;
+                height: 30%;
+            }
+            .showcase-panel-4 {
                 height: 15%;
                 opacity: 0.6;
             }
@@ -2288,6 +2322,10 @@
                 <div class="panel-border"></div>
             </div>
             <div class="showcase-panel showcase-panel-3">
+                <img src="download (10).jpg" alt="Team Photo">
+                <div class="panel-border"></div>
+            </div>
+            <div class="showcase-panel showcase-panel-4">
                 <img src="download (16).jpg" alt="Precision Cuts">
                 <div class="panel-border"></div>
             </div>
