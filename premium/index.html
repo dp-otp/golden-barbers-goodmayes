@@ -1022,7 +1022,7 @@
                 inset 0 0 20px rgba(212, 175, 55, 0.3);
             z-index: 3;
             opacity: 0;
-            animation: neonReveal 2s ease-out 0.8s forwards;
+            animation: neonPulse 3s ease-in-out 1.5s infinite, neonReveal 2s ease-out 0.8s forwards;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1108,22 +1108,22 @@
         /* Mobile - Enhanced panels with fading and larger neon circle */
         @media (max-width: 768px) {
             .showcase-panel-1 {
-                width: 35%;
-                height: 60%;
+                width: 28%;
+                height: 45%;
             }
             .showcase-panel-1::after {
                 background: linear-gradient(135deg, transparent 0%, transparent 20%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.9) 100%);
             }
             .showcase-panel-2 {
-                width: 35%;
-                height: 60%;
+                width: 28%;
+                height: 45%;
             }
             .showcase-panel-2::after {
                 background: linear-gradient(225deg, transparent 0%, transparent 20%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.9) 100%);
             }
             .showcase-panel-3 {
-                width: 50%;
-                height: 60%;
+                width: 35%;
+                height: 45%;
             }
             .showcase-panel-3::after {
                 background: linear-gradient(to bottom, transparent 0%, transparent 10%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.9) 100%);
@@ -1137,19 +1137,18 @@
                 background: linear-gradient(to top, transparent 0%, rgba(0,0,0,0.8) 70%);
             }
             .showcase-panel .panel-border {
-                display: block;
-                opacity: 0.5;
+                display: none;
             }
             .hero-scroll {
                 display: none;
             }
             .showcase-neon-circle {
-                width: 220px;
-                height: 220px;
-                top: 6%;
+                width: 200px;
+                height: 200px;
+                top: 8%;
             }
             .showcase-neon-circle::before {
-                inset: -50px;
+                inset: -45px;
             }
         }
 
@@ -1157,23 +1156,23 @@
         @media (max-width: 480px) {
             .showcase-panel-1,
             .showcase-panel-2 {
-                width: 35%;
-                height: 60%;
+                width: 25%;
+                height: 40%;
             }
             .showcase-panel-3 {
-                width: 50%;
-                height: 60%;
+                width: 32%;
+                height: 40%;
             }
             .showcase-panel-4 {
                 height: 15%;
             }
             .showcase-neon-circle {
-                width: 180px;
-                height: 180px;
-                top: 8%;
+                width: 160px;
+                height: 160px;
+                top: 10%;
             }
             .showcase-neon-circle::before {
-                inset: -40px;
+                inset: -35px;
             }
         }
 
