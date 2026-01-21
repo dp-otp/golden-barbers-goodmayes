@@ -397,29 +397,27 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
+            width: 100%;
             height: 100%;
-            overflow: visible;
+            overflow: hidden;
             pointer-events: none;
-            margin-left: calc(-50vw + 50%);
         }
 
         .hero-line {
             position: absolute;
             height: 1px;
-            width: 100vw;
             background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
             animation: lineScan 8s linear infinite;
         }
 
-        .hero-line:nth-child(1) { top: 15%; animation-delay: 0s; }
-        .hero-line:nth-child(2) { top: 35%; animation-delay: -2s; }
-        .hero-line:nth-child(3) { top: 55%; animation-delay: -4s; }
-        .hero-line:nth-child(4) { top: 75%; animation-delay: -6s; }
+        .hero-line:nth-child(1) { top: 20%; animation-delay: 0s; }
+        .hero-line:nth-child(2) { top: 40%; animation-delay: -2s; }
+        .hero-line:nth-child(3) { top: 60%; animation-delay: -4s; }
+        .hero-line:nth-child(4) { top: 80%; animation-delay: -6s; }
 
         @keyframes lineScan {
-            0% { left: -100%; width: 100vw; }
-            100% { left: 100%; width: 100vw; }
+            0% { left: -100%; width: 100%; }
+            100% { left: 100%; width: 100%; }
         }
 
         .hero-content {
@@ -1880,9 +1878,8 @@
                 padding: 120px 20px 100px;
             }
 
-            .hero-badge span {
-                font-size: 10px;
-                letter-spacing: 2px;
+            .hero-badge {
+                display: none;
             }
 
             .btn {
