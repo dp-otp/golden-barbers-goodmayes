@@ -1115,72 +1115,30 @@
 
         /* Mobile - Enhanced panels with fading and larger neon circle */
         @media (max-width: 768px) {
-            .showcase-panel-1 {
-                width: 28%;
-                height: 45%;
-            }
-            .showcase-panel-1::after {
-                background: linear-gradient(135deg, transparent 0%, transparent 20%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.9) 100%);
-            }
-            .showcase-panel-2 {
-                width: 28%;
-                height: 45%;
-            }
-            .showcase-panel-2::after {
-                background: linear-gradient(225deg, transparent 0%, transparent 20%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.9) 100%);
-            }
-            .showcase-panel-3 {
-                width: 35%;
-                height: 45%;
-            }
-            .showcase-panel-3::after {
-                background: linear-gradient(to bottom, transparent 0%, transparent 10%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.9) 100%);
-            }
-            .showcase-panel-4 {
-                left: 0;
-                right: 0;
-                height: 18%;
-            }
-            .showcase-panel-4::after {
-                background: linear-gradient(to top, transparent 0%, rgba(0,0,0,0.8) 70%);
-            }
-            .showcase-panel .panel-border {
-                display: none;
-            }
-            .hero-scroll {
+            .hero-showcase {
                 display: none;
             }
             .showcase-neon-circle {
-                width: 200px;
-                height: 200px;
-                top: 8%;
+                width: 220px;
+                height: 220px;
+                top: 15%;
+                border: 3px solid rgba(212, 175, 55, 0.9);
+                background: radial-gradient(circle, rgba(0,0,0,0.7) 0%, transparent 70%);
             }
             .showcase-neon-circle::before {
-                inset: -45px;
+                inset: -50px;
             }
         }
 
         /* Small mobile */
         @media (max-width: 480px) {
-            .showcase-panel-1,
-            .showcase-panel-2 {
-                width: 25%;
-                height: 40%;
-            }
-            .showcase-panel-3 {
-                width: 32%;
-                height: 40%;
-            }
-            .showcase-panel-4 {
-                height: 15%;
-            }
             .showcase-neon-circle {
-                width: 160px;
-                height: 160px;
-                top: 10%;
+                width: 180px;
+                height: 180px;
+                top: 18%;
             }
             .showcase-neon-circle::before {
-                inset: -35px;
+                inset: -40px;
             }
         }
 
@@ -2329,7 +2287,7 @@
             </div>
             <!-- Golden Neon Circle with Logo -->
             <div class="showcase-neon-circle">
-                <img src="pic.jpg" alt="Golden Barbers">
+                <img src="../logo.png" alt="Golden Barbers">
             </div>
         </div>
 
