@@ -1114,15 +1114,17 @@
 
         /* Mobile - Enhanced panels with fading and larger neon circle */
         @media (max-width: 768px) {
-            .hero-showcase {
+            .showcase-panel-1,
+            .showcase-panel-2,
+            .showcase-panel-3,
+            .showcase-panel-4 {
                 display: none;
             }
             .showcase-neon-circle {
                 width: 220px;
                 height: 220px;
                 top: 15%;
-                border: 3px solid rgba(212, 175, 55, 0.9);
-                background: radial-gradient(circle, rgba(0,0,0,0.7) 0%, transparent 70%);
+                display: flex;
             }
             .showcase-neon-circle::before {
                 inset: -50px;
