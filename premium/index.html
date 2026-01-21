@@ -993,19 +993,19 @@
             background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.3), transparent);
         }
 
-        /* Golden neon circle outline in center with logo inside */
+        /* Golden neon circle outline in center with actual logo inside */
         .showcase-neon-circle {
             position: absolute;
-            top: 12%;
+            top: 8%;
             left: 50%;
             transform: translateX(-50%);
-            width: 140px;
-            height: 140px;
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
-            border: 2px solid rgba(212, 175, 55, 0.7);
+            border: 2px solid rgba(212, 175, 55, 0.8);
             box-shadow:
-                0 0 20px rgba(212, 175, 55, 0.5),
-                0 0 40px rgba(212, 175, 55, 0.3),
+                0 0 20px rgba(212, 175, 55, 0.6),
+                0 0 40px rgba(212, 175, 55, 0.4),
                 inset 0 0 15px rgba(212, 175, 55, 0.2);
             z-index: 5;
             opacity: 0;
@@ -1013,14 +1013,26 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, transparent 70%);
+        }
+
+        .showcase-neon-circle::before {
+            content: '';
+            position: absolute;
+            inset: -40px;
+            border-radius: 50%;
+            background: radial-gradient(circle, transparent 50%, rgba(0,0,0,1) 100%);
+            z-index: -1;
+            pointer-events: none;
         }
 
         .showcase-neon-circle img {
-            width: 85%;
-            height: 85%;
-            border-radius: 50%;
-            object-fit: cover;
-            filter: brightness(0.9) contrast(1.1);
+            width: 75%;
+            height: 75%;
+            object-fit: contain;
+            filter: brightness(1.1) contrast(1.1) drop-shadow(0 0 20px rgba(212, 175, 55, 0.3));
+            mask-image: radial-gradient(circle, black 60%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle, black 60%, transparent 100%);
         }
 
         @keyframes neonReveal {
@@ -1076,21 +1088,21 @@
             .showcase-panel-3 { left: 12%; right: 12%; height: 15%; }
         }
 
-        /* Mobile - Enhanced panels with fading and neon circle */
+        /* Mobile - Enhanced panels with fading and larger neon circle */
         @media (max-width: 768px) {
             .showcase-panel-1 {
-                width: 30%;
-                height: 35%;
+                width: 32%;
+                height: 38%;
             }
             .showcase-panel-1::after {
-                background: linear-gradient(135deg, transparent 0%, transparent 10%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,1) 100%);
+                background: linear-gradient(135deg, transparent 0%, transparent 5%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,1) 100%);
             }
             .showcase-panel-2 {
-                width: 30%;
-                height: 35%;
+                width: 32%;
+                height: 38%;
             }
             .showcase-panel-2::after {
-                background: linear-gradient(225deg, transparent 0%, transparent 10%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,1) 100%);
+                background: linear-gradient(225deg, transparent 0%, transparent 5%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,1) 100%);
             }
             .showcase-panel-3 {
                 left: 0;
@@ -1109,9 +1121,12 @@
                 display: none;
             }
             .showcase-neon-circle {
-                width: 100px;
-                height: 100px;
-                top: 10%;
+                width: 160px;
+                height: 160px;
+                top: 8%;
+            }
+            .showcase-neon-circle::before {
+                inset: -30px;
             }
         }
 
@@ -1119,16 +1134,19 @@
         @media (max-width: 480px) {
             .showcase-panel-1,
             .showcase-panel-2 {
-                width: 28%;
-                height: 30%;
+                width: 30%;
+                height: 33%;
             }
             .showcase-panel-3 {
                 height: 15%;
                 opacity: 0.6;
             }
             .showcase-neon-circle {
-                width: 85px;
-                height: 85px;
+                width: 130px;
+                height: 130px;
+            }
+            .showcase-neon-circle::before {
+                inset: -25px;
             }
         }
 
@@ -2273,7 +2291,7 @@
             </div>
             <!-- Golden Neon Circle with Logo -->
             <div class="showcase-neon-circle">
-                <img src="download (10).jpg" alt="Golden Barbers">
+                <img src="pic.jpg" alt="Golden Barbers">
             </div>
         </div>
 
