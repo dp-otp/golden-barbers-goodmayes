@@ -1115,17 +1115,39 @@
 
         /* Mobile - Enhanced panels with fading and larger neon circle */
         @media (max-width: 768px) {
-            .showcase-panel-1,
-            .showcase-panel-2,
-            .showcase-panel-3,
+            .showcase-panel-1 {
+                width: 30%;
+                height: 50%;
+            }
+            .showcase-panel-1::after {
+                background: linear-gradient(135deg, transparent 0%, transparent 20%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.9) 100%);
+            }
+            .showcase-panel-2 {
+                width: 30%;
+                height: 50%;
+            }
+            .showcase-panel-2::after {
+                background: linear-gradient(225deg, transparent 0%, transparent 20%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.9) 100%);
+            }
+            .showcase-panel-3 {
+                width: 40%;
+                height: 50%;
+            }
+            .showcase-panel-3::after {
+                background: linear-gradient(to bottom, transparent 0%, transparent 10%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.9) 100%);
+            }
             .showcase-panel-4 {
-                display: none;
+                left: 0;
+                right: 0;
+                height: 18%;
+            }
+            .showcase-panel-4::after {
+                background: linear-gradient(to top, transparent 0%, rgba(0,0,0,0.9) 70%);
             }
             .showcase-neon-circle {
                 width: 220px;
                 height: 220px;
-                top: 15%;
-                display: flex;
+                top: 10%;
             }
             .showcase-neon-circle::before {
                 inset: -50px;
@@ -1134,10 +1156,19 @@
 
         /* Small mobile */
         @media (max-width: 480px) {
+            .showcase-panel-1,
+            .showcase-panel-2 {
+                width: 28%;
+                height: 45%;
+            }
+            .showcase-panel-3 {
+                width: 38%;
+                height: 45%;
+            }
             .showcase-neon-circle {
                 width: 180px;
                 height: 180px;
-                top: 18%;
+                top: 12%;
             }
             .showcase-neon-circle::before {
                 inset: -40px;
