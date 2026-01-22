@@ -2000,28 +2000,33 @@
             bottom: 40px;
             left: 40px;
             z-index: 1000;
-            width: 60px;
-            height: 60px;
+            height: 50px;
+            padding: 0 20px 0 15px;
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            border-radius: 50%;
+            border-radius: 50px;
             border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 10px;
             box-shadow: 0 10px 40px rgba(212, 175, 55, 0.4);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .adam-chat-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
             box-shadow: 0 15px 50px rgba(212, 175, 55, 0.6);
         }
 
-        .adam-chat-btn span {
-            font-size: 28px;
+        .adam-chat-btn .adam-icon {
+            font-size: 24px;
+        }
+
+        .adam-chat-btn .adam-text {
+            font-size: 14px;
             color: var(--black);
-            font-weight: 800;
+            font-weight: 700;
+            white-space: nowrap;
         }
 
         .adam-chat-btn::after {
@@ -2278,12 +2283,20 @@
             .adam-chat-btn {
                 bottom: 20px;
                 left: 20px;
-                width: 55px;
-                height: 55px;
+                height: 45px;
+                padding: 0 15px 0 12px;
+            }
+
+            .adam-chat-btn .adam-icon {
+                font-size: 20px;
+            }
+
+            .adam-chat-btn .adam-text {
+                font-size: 12px;
             }
 
             .adam-chat-popup {
-                bottom: 90px;
+                bottom: 80px;
                 left: 15px;
                 right: 15px;
                 width: auto;
@@ -3712,16 +3725,17 @@
     </script>
 
     <!-- Adam Chat Widget -->
-    <button class="adam-chat-btn" id="adamChatBtn" title="Chat with Adam">
-        <span>A</span>
+    <button class="adam-chat-btn" id="adamChatBtn" title="Chat with Adam AI">
+        <span class="adam-icon">🤖</span>
+        <span class="adam-text">Ask Adam</span>
     </button>
 
     <div class="adam-chat-popup" id="adamChatPopup">
         <div class="adam-popup-header">
             <div class="adam-popup-info">
-                <div class="adam-popup-avatar">A</div>
+                <div class="adam-popup-avatar">🤖</div>
                 <div class="adam-popup-name">
-                    <h4>Adam</h4>
+                    <h4>Adam AI</h4>
                     <span>Online now</span>
                 </div>
             </div>
@@ -3730,7 +3744,7 @@
 
         <div class="adam-popup-messages" id="adamMessages">
             <div class="adam-msg bot">
-                <div class="adam-msg-avatar">A</div>
+                <div class="adam-msg-avatar">🤖</div>
                 <div class="adam-msg-content">
                     <p>Hey! I'm Adam, your Golden Barbers assistant. How can I help?</p>
                     <div class="adam-quick-btns">
@@ -3816,7 +3830,7 @@
             const div = document.createElement('div');
             div.className = `adam-msg ${isUser ? 'user' : 'bot'}`;
             div.innerHTML = `
-                <div class="adam-msg-avatar">${isUser ? '👤' : 'A'}</div>
+                <div class="adam-msg-avatar">${isUser ? '👤' : '🤖'}</div>
                 <div class="adam-msg-content"><p>${text}</p></div>
             `;
             adamMessages.appendChild(div);
