@@ -759,21 +759,30 @@
             <h3 style="color: #d4af37; margin-bottom: 20px;">Make Image Live</h3>
 
             <div style="margin-bottom: 20px;">
-                <label style="display: block; color: #888; font-size: 12px; margin-bottom: 8px; text-transform: uppercase;">Category</label>
-                <select id="liveCategory" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #fff; font-size: 14px;">
-                    <option value="fades" style="background: #1a1a1a; color: #fff;">Fades & Cuts</option>
-                    <option value="beard" style="background: #1a1a1a; color: #fff;">Beard & Grooming</option>
-                    <option value="transformations" style="background: #1a1a1a; color: #fff;">Transformations</option>
-                    <option value="shop" style="background: #1a1a1a; color: #fff;">The Shop</option>
-                </select>
+                <label style="display: block; color: #888; font-size: 12px; margin-bottom: 8px; text-transform: uppercase;">Category (select one or more)</label>
+                <div id="categoryOptions" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <button type="button" class="category-chip" data-category="fades" onclick="toggleCategory(this, 'fades')"
+                        style="padding: 10px 18px; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; color: #d4af37; font-size: 14px; cursor: pointer; transition: all 0.2s;">
+                        Fades & Cuts
+                    </button>
+                    <button type="button" class="category-chip" data-category="beard" onclick="toggleCategory(this, 'beard')"
+                        style="padding: 10px 18px; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; color: #d4af37; font-size: 14px; cursor: pointer; transition: all 0.2s;">
+                        Beard & Grooming
+                    </button>
+                    <button type="button" class="category-chip" data-category="transformations" onclick="toggleCategory(this, 'transformations')"
+                        style="padding: 10px 18px; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; color: #d4af37; font-size: 14px; cursor: pointer; transition: all 0.2s;">
+                        Transformations
+                    </button>
+                    <button type="button" class="category-chip" data-category="shop" onclick="toggleCategory(this, 'shop')"
+                        style="padding: 10px 18px; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; color: #d4af37; font-size: 14px; cursor: pointer; transition: all 0.2s;">
+                        The Shop
+                    </button>
+                </div>
             </div>
 
             <div style="margin-bottom: 20px;">
-                <label style="display: block; color: #888; font-size: 12px; margin-bottom: 8px; text-transform: uppercase;">Title (select one or more)</label>
-                <div id="titleOptions" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
-                    <!-- Title chips populated by JS based on category -->
-                </div>
-                <input type="text" id="liveTitleCustom" placeholder="Or type a custom title..." style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #fff; font-size: 14px;">
+                <label style="display: block; color: #888; font-size: 12px; margin-bottom: 8px; text-transform: uppercase;">Title</label>
+                <input type="text" id="liveTitle" placeholder="e.g. Clean Skin Fade" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #fff; font-size: 14px;">
             </div>
 
             <div style="margin-bottom: 20px;">
@@ -1104,45 +1113,33 @@
             'shop': 'Shop'
         };
 
-        // Title options by category
-        const titleOptions = {
-            'fades': ['Skin Fade', 'Mid Fade', 'Low Fade', 'High Fade', 'Taper Fade', 'Drop Fade', 'Burst Fade', 'Temple Fade', 'Scissor Cut', 'Textured Crop', 'French Crop', 'Buzz Cut', 'Line Up', 'Shape Up'],
-            'beard': ['Beard Trim', 'Beard Shape', 'Beard Fade', 'Full Beard', 'Goatee', 'Stubble', 'Hot Towel Shave', 'Beard Line Up', 'Beard Oil Treatment', 'Mustache Trim'],
-            'transformations': ['Color Transformation', 'Blonde', 'Platinum', 'Highlights', 'Lowlights', 'Full Color', 'Root Touch Up', 'Fashion Color', 'Grey Blending', 'Before & After'],
-            'shop': ['Shop Interior', 'Barber Station', 'Premium Interior', 'The Team', 'Atmosphere', 'Equipment', 'Products', 'Waiting Area']
-        };
+        // Selected categories array
+        let selectedCategories = [];
 
-        // Selected titles array
-        let selectedTitles = [];
-
-        // Render title chips based on category
-        function renderTitleChips(category) {
-            const container = document.getElementById('titleOptions');
-            const options = titleOptions[category] || [];
-            selectedTitles = []; // Reset selections
-
-            container.innerHTML = options.map(title => `
-                <button type="button" class="title-chip" onclick="toggleTitle(this, '${title}')"
-                    style="padding: 8px 14px; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; color: #d4af37; font-size: 13px; cursor: pointer; transition: all 0.2s;">
-                    ${title}
-                </button>
-            `).join('');
-        }
-
-        // Toggle title selection
-        function toggleTitle(btn, title) {
-            const index = selectedTitles.indexOf(title);
+        // Toggle category selection
+        function toggleCategory(btn, category) {
+            const index = selectedCategories.indexOf(category);
             if (index > -1) {
-                selectedTitles.splice(index, 1);
+                selectedCategories.splice(index, 1);
                 btn.style.background = 'rgba(212, 175, 55, 0.1)';
                 btn.style.color = '#d4af37';
                 btn.style.borderColor = 'rgba(212, 175, 55, 0.3)';
             } else {
-                selectedTitles.push(title);
+                selectedCategories.push(category);
                 btn.style.background = '#d4af37';
                 btn.style.color = '#000';
                 btn.style.borderColor = '#d4af37';
             }
+        }
+
+        // Reset category chips
+        function resetCategoryChips() {
+            selectedCategories = [];
+            document.querySelectorAll('.category-chip').forEach(btn => {
+                btn.style.background = 'rgba(212, 175, 55, 0.1)';
+                btn.style.color = '#d4af37';
+                btn.style.borderColor = 'rgba(212, 175, 55, 0.3)';
+            });
         }
 
         // Store live gallery data locally for quick checks
@@ -1203,21 +1200,13 @@
             pendingLiveImage = { id, url };
 
             // Reset form
-            document.getElementById('liveCategory').value = 'fades';
-            document.getElementById('liveTitleCustom').value = '';
+            resetCategoryChips();
+            document.getElementById('liveTitle').value = '';
             document.getElementById('liveDescription').value = '';
-            selectedTitles = [];
-            renderTitleChips('fades');
 
             // Show modal
             document.getElementById('makeLiveModal').style.display = 'flex';
         }
-
-        // Category change handler - update title chips
-        document.getElementById('liveCategory').addEventListener('change', function() {
-            renderTitleChips(this.value);
-            document.getElementById('liveTitleCustom').value = '';
-        });
 
         // Close modal
         function closeLiveModal() {
@@ -1229,20 +1218,16 @@
         function confirmMakeLive() {
             if (!pendingLiveImage) return;
 
-            const category = document.getElementById('liveCategory').value;
-            const customTitle = document.getElementById('liveTitleCustom').value.trim();
+            const title = document.getElementById('liveTitle').value.trim();
             const description = document.getElementById('liveDescription').value.trim();
 
-            // Build title from selected chips or custom input
-            let title = '';
-            if (selectedTitles.length > 0) {
-                title = selectedTitles.join(' + ');
-            } else if (customTitle) {
-                title = customTitle;
+            if (selectedCategories.length === 0) {
+                alert('Please select at least one category');
+                return;
             }
 
             if (!title) {
-                alert('Please select at least one title or enter a custom title');
+                alert('Please enter a title');
                 return;
             }
 
@@ -1250,6 +1235,10 @@
                 alert('Please enter a description');
                 return;
             }
+
+            // Use first selected category as primary, store all selected
+            const primaryCategory = selectedCategories[0];
+            const categoryLabel = selectedCategories.map(cat => categoryLabels[cat]).join(' + ');
 
             // Create safe key from id (Firebase doesn't allow certain characters)
             const safeKey = pendingLiveImage.id.replace(/[.#$\/\[\]]/g, '_');
@@ -1260,8 +1249,9 @@
                 url: pendingLiveImage.url,
                 title: title,
                 description: description,
-                category: category,
-                categoryLabel: categoryLabels[category],
+                category: primaryCategory,
+                categories: selectedCategories,
+                categoryLabel: categoryLabel,
                 createdAt: new Date().toISOString()
             }).then(() => {
                 // Close modal
