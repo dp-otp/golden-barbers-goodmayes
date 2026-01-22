@@ -769,8 +769,11 @@
             </div>
 
             <div style="margin-bottom: 20px;">
-                <label style="display: block; color: #888; font-size: 12px; margin-bottom: 8px; text-transform: uppercase;">Title</label>
-                <input type="text" id="liveTitle" placeholder="e.g. Clean Skin Fade" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #fff; font-size: 14px;">
+                <label style="display: block; color: #888; font-size: 12px; margin-bottom: 8px; text-transform: uppercase;">Title (select one or more)</label>
+                <div id="titleOptions" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                    <!-- Title chips populated by JS based on category -->
+                </div>
+                <input type="text" id="liveTitleCustom" placeholder="Or type a custom title..." style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #fff; font-size: 14px;">
             </div>
 
             <div style="margin-bottom: 20px;">
@@ -1101,6 +1104,47 @@
             'shop': 'Shop'
         };
 
+        // Title options by category
+        const titleOptions = {
+            'fades': ['Skin Fade', 'Mid Fade', 'Low Fade', 'High Fade', 'Taper Fade', 'Drop Fade', 'Burst Fade', 'Temple Fade', 'Scissor Cut', 'Textured Crop', 'French Crop', 'Buzz Cut', 'Line Up', 'Shape Up'],
+            'beard': ['Beard Trim', 'Beard Shape', 'Beard Fade', 'Full Beard', 'Goatee', 'Stubble', 'Hot Towel Shave', 'Beard Line Up', 'Beard Oil Treatment', 'Mustache Trim'],
+            'transformations': ['Color Transformation', 'Blonde', 'Platinum', 'Highlights', 'Lowlights', 'Full Color', 'Root Touch Up', 'Fashion Color', 'Grey Blending', 'Before & After'],
+            'shop': ['Shop Interior', 'Barber Station', 'Premium Interior', 'The Team', 'Atmosphere', 'Equipment', 'Products', 'Waiting Area']
+        };
+
+        // Selected titles array
+        let selectedTitles = [];
+
+        // Render title chips based on category
+        function renderTitleChips(category) {
+            const container = document.getElementById('titleOptions');
+            const options = titleOptions[category] || [];
+            selectedTitles = []; // Reset selections
+
+            container.innerHTML = options.map(title => `
+                <button type="button" class="title-chip" onclick="toggleTitle(this, '${title}')"
+                    style="padding: 8px 14px; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; color: #d4af37; font-size: 13px; cursor: pointer; transition: all 0.2s;">
+                    ${title}
+                </button>
+            `).join('');
+        }
+
+        // Toggle title selection
+        function toggleTitle(btn, title) {
+            const index = selectedTitles.indexOf(title);
+            if (index > -1) {
+                selectedTitles.splice(index, 1);
+                btn.style.background = 'rgba(212, 175, 55, 0.1)';
+                btn.style.color = '#d4af37';
+                btn.style.borderColor = 'rgba(212, 175, 55, 0.3)';
+            } else {
+                selectedTitles.push(title);
+                btn.style.background = '#d4af37';
+                btn.style.color = '#000';
+                btn.style.borderColor = '#d4af37';
+            }
+        }
+
         // Store live gallery data locally for quick checks
         let liveGalleryCache = [];
         let pendingLiveImage = null; // Store image data while modal is open
@@ -1160,12 +1204,20 @@
 
             // Reset form
             document.getElementById('liveCategory').value = 'fades';
-            document.getElementById('liveTitle').value = '';
+            document.getElementById('liveTitleCustom').value = '';
             document.getElementById('liveDescription').value = '';
+            selectedTitles = [];
+            renderTitleChips('fades');
 
             // Show modal
             document.getElementById('makeLiveModal').style.display = 'flex';
         }
+
+        // Category change handler - update title chips
+        document.getElementById('liveCategory').addEventListener('change', function() {
+            renderTitleChips(this.value);
+            document.getElementById('liveTitleCustom').value = '';
+        });
 
         // Close modal
         function closeLiveModal() {
@@ -1178,11 +1230,19 @@
             if (!pendingLiveImage) return;
 
             const category = document.getElementById('liveCategory').value;
-            const title = document.getElementById('liveTitle').value.trim();
+            const customTitle = document.getElementById('liveTitleCustom').value.trim();
             const description = document.getElementById('liveDescription').value.trim();
 
+            // Build title from selected chips or custom input
+            let title = '';
+            if (selectedTitles.length > 0) {
+                title = selectedTitles.join(' + ');
+            } else if (customTitle) {
+                title = customTitle;
+            }
+
             if (!title) {
-                alert('Please enter a title');
+                alert('Please select at least one title or enter a custom title');
                 return;
             }
 
