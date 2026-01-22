@@ -430,8 +430,9 @@
             <div class="qr-display" id="qrDisplay">
                 <div class="qr-display-amount" id="displayAmount">£0.00</div>
 
-                <div class="qr-code-container" id="qrCodeContainer">
-                    <img id="qrCodeImage" src="" alt="Payment QR Code" style="width: 250px; height: 250px; border-radius: 15px;">
+                <div class="qr-code-container" id="qrCodeContainer" style="min-height: 250px; display: flex; align-items: center; justify-content: center;">
+                    <img id="qrCodeImage" src="" alt="Payment QR Code" style="width: 250px; height: 250px; border-radius: 15px; display: none;">
+                    <div id="qrLoading" style="color: #888;">Generating QR Code...</div>
                 </div>
 
                 <div class="qr-payment-info">
@@ -521,7 +522,23 @@ Account No: ${bankDetails.accountNumber}`;
 
             // Generate QR code using QR Server API
             const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(paymentInfo)}`;
-            document.getElementById('qrCodeImage').src = qrCodeUrl;
+
+            const qrImg = document.getElementById('qrCodeImage');
+            const qrLoading = document.getElementById('qrLoading');
+
+            qrLoading.style.display = 'block';
+            qrImg.style.display = 'none';
+
+            qrImg.onload = function() {
+                qrLoading.style.display = 'none';
+                qrImg.style.display = 'block';
+            };
+
+            qrImg.onerror = function() {
+                qrLoading.textContent = 'Error loading QR code. Please try again.';
+            };
+
+            qrImg.src = qrCodeUrl;
         }
 
         // Copy to Clipboard
