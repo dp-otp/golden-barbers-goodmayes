@@ -497,6 +497,128 @@
         .payment-content.show {
             display: block;
         }
+
+        /* Add-ons Section */
+        .addons-section {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .addons-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .addons-header h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .addons-header span {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .addon-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .addon-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .addon-item:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .addon-item.added {
+            border-color: var(--green);
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .addon-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .addon-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .addon-desc {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .addon-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .addon-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .addon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            background: transparent;
+            color: var(--gold);
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .addon-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .addon-item.added .addon-btn {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--white);
+        }
+
+        .addon-item.added .addon-btn::after {
+            content: '✓';
+            font-size: 14px;
+        }
+
+        .addon-item.added .addon-btn span {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -526,6 +648,15 @@
                     <span class="order-total-label">Total</span>
                     <span class="order-total-amount" id="totalAmount">£0.00</span>
                 </div>
+            </div>
+
+            <!-- Add-ons Section -->
+            <div class="addons-section" id="addonsSection" style="display: none;">
+                <div class="addons-header">
+                    <h2>Add to your visit?</h2>
+                    <span>Quick extras</span>
+                </div>
+                <div class="addon-items" id="addonItems"></div>
             </div>
 
             <!-- Payment Section -->
@@ -665,6 +796,20 @@
             'hair-wash': { name: 'Hair Wash & Dry', price: 4 }
         };
 
+        // Add-ons that can be suggested (with descriptions)
+        var addons = {
+            'turkish-hot-towel': { name: 'Turkish Hot Towel', price: 3, desc: 'Relaxing hot towel treatment' },
+            'eyebrow-trim': { name: 'Eyebrow Trim', price: 3, desc: 'Neat, shaped eyebrows' },
+            'hair-wash': { name: 'Hair Wash & Dry', price: 4, desc: 'Refreshing wash & style' },
+            'face-mask': { name: 'Face Mask', price: 5, desc: 'Rejuvenating facial' },
+            'ear-nose-flaming': { name: 'Ear & Nose Flaming', price: 6, desc: 'Traditional hair removal' },
+            'face-wax': { name: 'Face Wax', price: 6, desc: 'Clean, smooth finish' },
+            'beard-trim': { name: 'Beard Trim', price: 6.95, desc: 'Professional beard shape' }
+        };
+
+        // Track which services customer already has
+        var selectedServiceIds = [];
+
         // ============================================
         // PARSE ORDER FROM URL
         // ============================================
@@ -703,13 +848,13 @@
 
         function init() {
             var servicesStr = getServicesFromUrl();
-            var serviceIds = servicesStr ? servicesStr.split(',') : [];
+            selectedServiceIds = servicesStr ? servicesStr.split(',') : [];
 
             // Parse services
-            serviceIds.forEach(function(id) {
+            selectedServiceIds.forEach(function(id) {
                 var service = services[id];
                 if (service) {
-                    orderItems.push(service);
+                    orderItems.push({ id: id, name: service.name, price: service.price });
                     orderTotal += service.price;
                 }
             });
@@ -723,6 +868,9 @@
 
             // Render order
             renderOrder();
+
+            // Render add-ons (excluding already selected services)
+            renderAddons();
 
             // Initialize Stripe
             initStripe();
@@ -742,11 +890,86 @@
             }).join('');
 
             // Update totals
+            updateTotals();
+        }
+
+        function updateTotals() {
             var totalStr = '£' + orderTotal.toFixed(2);
             document.getElementById('totalAmount').textContent = totalStr;
             document.getElementById('payBtnAmount').textContent = totalStr;
             document.getElementById('bankAmount').textContent = totalStr;
             document.getElementById('bankRef').textContent = reference;
+        }
+
+        // ============================================
+        // ADD-ONS
+        // ============================================
+        var addedAddons = [];
+
+        function renderAddons() {
+            var addonItemsEl = document.getElementById('addonItems');
+            var addonsSection = document.getElementById('addonsSection');
+
+            // Get available add-ons (not already in order)
+            var availableAddons = [];
+            for (var id in addons) {
+                // Skip if already in the original order
+                if (selectedServiceIds.indexOf(id) === -1) {
+                    availableAddons.push({ id: id, ...addons[id] });
+                }
+            }
+
+            // Show max 4 add-ons
+            availableAddons = availableAddons.slice(0, 4);
+
+            // If no add-ons available, hide section
+            if (availableAddons.length === 0) {
+                addonsSection.style.display = 'none';
+                return;
+            }
+
+            addonsSection.style.display = 'block';
+            addonItemsEl.innerHTML = availableAddons.map(function(addon) {
+                var isAdded = addedAddons.indexOf(addon.id) > -1;
+                return '<div class="addon-item' + (isAdded ? ' added' : '') + '" data-id="' + addon.id + '" onclick="toggleAddon(\'' + addon.id + '\')">' +
+                    '<div class="addon-info">' +
+                        '<span class="addon-name">' + addon.name + '</span>' +
+                        '<span class="addon-desc">' + addon.desc + '</span>' +
+                    '</div>' +
+                    '<div class="addon-right">' +
+                        '<span class="addon-price">+£' + addon.price.toFixed(2) + '</span>' +
+                        '<button class="addon-btn"><span>+</span></button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function toggleAddon(addonId) {
+            var addon = addons[addonId];
+            if (!addon) return;
+
+            var index = addedAddons.indexOf(addonId);
+            if (index > -1) {
+                // Remove addon
+                addedAddons.splice(index, 1);
+                orderTotal -= addon.price;
+
+                // Remove from order items
+                orderItems = orderItems.filter(function(item) {
+                    return item.id !== addonId;
+                });
+            } else {
+                // Add addon
+                addedAddons.push(addonId);
+                orderTotal += addon.price;
+
+                // Add to order items
+                orderItems.push({ id: addonId, name: addon.name, price: addon.price });
+            }
+
+            // Re-render
+            renderOrder();
+            renderAddons();
         }
 
         // ============================================
