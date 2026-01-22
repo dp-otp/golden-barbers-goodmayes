@@ -427,6 +427,42 @@
             opacity: 1;
         }
 
+        .gallery-item .live-btn {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            padding: 5px 10px;
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            border-radius: 5px;
+            color: #22c55e;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+
+        .gallery-item:hover .live-btn {
+            opacity: 1;
+        }
+
+        .gallery-item .live-btn:hover {
+            background: rgba(34, 197, 94, 0.4);
+        }
+
+        .gallery-item .live-btn.is-live {
+            background: #22c55e;
+            color: #000;
+            border-color: #22c55e;
+            opacity: 1;
+        }
+
+        .gallery-item.is-live {
+            border: 2px solid #22c55e;
+            border-radius: 10px;
+        }
+
         .gallery-empty {
             text-align: center;
             padding: 40px;
@@ -929,19 +965,27 @@
             }
 
             container.innerHTML = filtered.map(item => {
+                const isLive = isMediaLive(item.id);
+                const liveClass = isLive ? 'is-live' : '';
+                const liveBtn = isLive
+                    ? `<button class="live-btn is-live" onclick="removeLive('${item.id}')">Live</button>`
+                    : `<button class="live-btn" onclick="makeLive('${item.id}', '${item.url}', '${item.type}')">Make Live</button>`;
+
                 if (item.type === 'video') {
                     return `
-                        <div class="gallery-item">
+                        <div class="gallery-item ${liveClass}">
                             <video src="${item.url}" muted></video>
                             <button class="delete-btn" onclick="deleteMedia('${item.id}')">&times;</button>
+                            ${liveBtn}
                             <button class="copy-btn" onclick="copyUrl('${item.url}')">Copy URL</button>
                         </div>
                     `;
                 }
                 return `
-                    <div class="gallery-item">
+                    <div class="gallery-item ${liveClass}">
                         <img src="${item.url}" alt="Gallery image">
                         <button class="delete-btn" onclick="deleteMedia('${item.id}')">&times;</button>
+                        ${liveBtn}
                         <button class="copy-btn" onclick="copyUrl('${item.url}')">Copy URL</button>
                     </div>
                 `;
@@ -979,6 +1023,90 @@
             originalShowAdminPanel();
             loadGallery();
         };
+
+        // ============================================
+        // MAKE LIVE FUNCTIONALITY
+        // ============================================
+
+        // Auto-generate titles and descriptions for barber photos
+        const titleOptions = [
+            'Fresh Skin Fade', 'Sharp Lineup', 'Clean Cut', 'Precision Fade',
+            'Modern Style', 'Classic Taper', 'Expert Blend', 'Signature Cut',
+            'Premium Fade', 'Master Work', 'Sharp Edge', 'Clean Finish'
+        ];
+
+        const descOptions = [
+            'Precision fade with expert blending', 'Crisp lines and smooth transitions',
+            'Professional finish with attention to detail', 'Expert craftsmanship at its finest',
+            'Clean, sharp style by our master barbers', 'Another satisfied customer',
+            'Premium barbering at Golden Barbers', 'Flawless execution and styling'
+        ];
+
+        function generateTitle() {
+            return titleOptions[Math.floor(Math.random() * titleOptions.length)];
+        }
+
+        function generateDesc() {
+            return descOptions[Math.floor(Math.random() * descOptions.length)];
+        }
+
+        // Check if media is live
+        function isMediaLive(id) {
+            const liveGallery = JSON.parse(localStorage.getItem('goldenBarbers_liveGallery') || '[]');
+            return liveGallery.some(item => item.id === id);
+        }
+
+        // Make media live
+        function makeLive(id, url, type) {
+            if (type === 'video') {
+                alert('Videos cannot be added to the gallery yet. Only photos for now.');
+                return;
+            }
+
+            const liveGallery = JSON.parse(localStorage.getItem('goldenBarbers_liveGallery') || '[]');
+
+            // Check if already live
+            if (liveGallery.some(item => item.id === id)) {
+                alert('This image is already live on the gallery!');
+                return;
+            }
+
+            // Add to live gallery with auto-generated content
+            liveGallery.push({
+                id: id,
+                url: url,
+                title: generateTitle(),
+                description: generateDesc(),
+                category: 'fades',
+                categoryLabel: 'New',
+                createdAt: new Date().toISOString()
+            });
+
+            localStorage.setItem('goldenBarbers_liveGallery', JSON.stringify(liveGallery));
+
+            // Show success
+            const success = document.getElementById('gallerySuccess');
+            success.textContent = 'Image is now LIVE on the gallery page!';
+            success.classList.add('show');
+            setTimeout(() => {
+                success.classList.remove('show');
+                success.textContent = 'Media uploaded successfully!';
+            }, 3000);
+
+            // Refresh gallery to show updated status
+            loadGallery();
+        }
+
+        // Remove from live
+        function removeLive(id) {
+            if (!confirm('Remove this image from the live gallery?')) return;
+
+            let liveGallery = JSON.parse(localStorage.getItem('goldenBarbers_liveGallery') || '[]');
+            liveGallery = liveGallery.filter(item => item.id !== id);
+            localStorage.setItem('goldenBarbers_liveGallery', JSON.stringify(liveGallery));
+
+            loadGallery();
+        }
     </script>
 </body>
 </html>

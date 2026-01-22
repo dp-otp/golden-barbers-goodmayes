@@ -1385,7 +1385,7 @@
 
     <!-- Gallery Grid -->
     <section class="gallery-section">
-        <div class="gallery-grid">
+        <div class="gallery-grid" id="galleryGrid">
             <!-- Fades & Cuts -->
             <div class="gallery-item tall" data-category="fades">
                 <div class="gallery-item-inner">
@@ -2024,6 +2024,57 @@
         document.querySelectorAll('.gallery-item').forEach((item, index) => {
             item.style.transitionDelay = `${index * 0.05}s`;
         });
+
+        // ============================================
+        // LOAD CLOUDINARY LIVE GALLERY IMAGES
+        // ============================================
+        function loadLiveGalleryImages() {
+            const liveImages = JSON.parse(localStorage.getItem('goldenBarbers_liveGallery') || '[]');
+            if (liveImages.length === 0) return;
+
+            const galleryGrid = document.getElementById('galleryGrid');
+
+            liveImages.forEach((item, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.dataset.category = item.category || 'fades';
+
+                galleryItem.innerHTML = `
+                    <div class="gallery-item-inner">
+                        <img src="${item.url}" alt="${item.title}" loading="lazy">
+                        <div class="gallery-item-overlay"></div>
+                        <div class="gallery-item-content">
+                            <span class="gallery-item-category">${item.categoryLabel || 'New'}</span>
+                            <h3 class="gallery-item-title">${item.title}</h3>
+                            <p class="gallery-item-desc">${item.description}</p>
+                        </div>
+                        <div class="gallery-item-expand">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                            </svg>
+                        </div>
+                    </div>
+                `;
+
+                // Insert at the beginning of the gallery
+                galleryGrid.insertBefore(galleryItem, galleryGrid.firstChild);
+
+                // Add click handler for lightbox
+                galleryItem.addEventListener('click', () => {
+                    const allItems = document.querySelectorAll('.gallery-item');
+                    const visibleItems = Array.from(allItems).filter(i => !i.classList.contains('hidden'));
+                    const visibleIndex = visibleItems.indexOf(galleryItem);
+                    openLightbox(visibleIndex);
+                });
+
+                // Add to observer for animation
+                observer.observe(galleryItem);
+                galleryItem.style.transitionDelay = `${index * 0.05}s`;
+            });
+        }
+
+        // Load live images on page load
+        loadLiveGalleryImages();
     </script>
 
 </body>
