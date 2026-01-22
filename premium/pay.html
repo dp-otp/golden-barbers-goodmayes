@@ -379,17 +379,24 @@
             accountNumber: '58413368'
         };
 
-        // Parse URL parameters
-        function getUrlParams() {
-            var params = {};
+        // Parse URL - check hash first, then query params
+        function getServicesFromUrl() {
+            // Check hash first (shorter URLs)
+            var hash = window.location.hash.substring(1);
+            if (hash) {
+                return hash;
+            }
+            // Fallback to query params
             var search = window.location.search.substring(1);
             if (search) {
+                var params = {};
                 search.split('&').forEach(function(pair) {
                     var parts = pair.split('=');
                     params[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1] || '');
                 });
+                return params.services || '';
             }
-            return params;
+            return '';
         }
 
         // Generate reference number
@@ -419,11 +426,11 @@
 
         // Initialize page
         function init() {
-            var params = getUrlParams();
             var contentEl = document.getElementById('content');
 
-            // Parse services from URL
-            var serviceIds = params.services ? params.services.split(',') : [];
+            // Parse services from URL (hash or query param)
+            var servicesStr = getServicesFromUrl();
+            var serviceIds = servicesStr ? servicesStr.split(',') : [];
             var orderItems = [];
             var total = 0;
 
