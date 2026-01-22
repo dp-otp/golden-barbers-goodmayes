@@ -371,8 +371,8 @@
 
         /* Manage gallery grid needs more space */
         #manageGalleryGrid {
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
         }
 
         .gallery-item {
@@ -570,9 +570,16 @@
 
         /* Gallery Manage Item Buttons */
         .gallery-manage-item {
-            min-height: 220px;
+            min-height: 280px;
             position: relative;
             overflow: visible !important;
+            aspect-ratio: auto;
+        }
+
+        .gallery-manage-item img {
+            height: 150px;
+            width: 100%;
+            object-fit: cover;
         }
 
         .gallery-manage-btns {
@@ -581,13 +588,14 @@
             right: 8px;
             display: flex;
             gap: 6px;
-            flex-direction: column;
+            flex-direction: row;
             z-index: 10;
         }
 
         .gallery-manage-btns button {
             white-space: nowrap;
             box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            padding: 6px 12px !important;
         }
 
         @media (max-width: 768px) {
@@ -644,12 +652,21 @@
                 gap: 10px;
             }
 
+            #manageGalleryGrid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
             .gallery-item {
                 aspect-ratio: 1;
             }
 
             .gallery-manage-item {
-                min-height: 180px;
+                min-height: 240px;
+            }
+
+            .gallery-manage-item img {
+                height: 120px;
             }
 
             .gallery-manage-btns {
@@ -659,8 +676,8 @@
             }
 
             .gallery-manage-btns button {
-                padding: 5px 8px !important;
-                font-size: 10px !important;
+                padding: 5px 10px !important;
+                font-size: 11px !important;
             }
 
             .gallery-item .delete-btn,
@@ -717,26 +734,35 @@
                 gap: 8px;
             }
 
+            #manageGalleryGrid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
             .gallery-manage-item {
-                min-height: 160px;
+                min-height: 220px;
+            }
+
+            .gallery-manage-item img {
+                height: 100px;
             }
 
             .gallery-manage-btns {
-                flex-direction: column;
-                gap: 4px;
+                flex-direction: row;
+                gap: 5px;
             }
 
             .gallery-manage-btns button {
-                padding: 4px 6px !important;
-                font-size: 9px !important;
+                padding: 5px 8px !important;
+                font-size: 10px !important;
             }
 
             .gallery-item div[style*="bottom: 8px"] {
-                padding: 5px !important;
+                padding: 6px !important;
             }
 
             .gallery-item div[style*="bottom: 8px"] p {
-                font-size: 10px !important;
+                font-size: 11px !important;
             }
 
             .tab-btn {
@@ -1625,35 +1651,35 @@
         // LEARN = Used in knowledge.html (Learn page)
         // HOME = Used in index.html (Home page)
         const allGalleryPhotos = [
-            // === GALLERY PAGE PHOTOS (hardcoded in gallery.html) ===
-            { id: 'download-4', src: 'download (4).jpg', title: 'Kids Classic Cut', category: 'fades', usedIn: 'Gallery', inGallery: true },
+            // === GALLERY PAGE PHOTOS (also used on other pages) ===
+            // Gallery = gallery.html, Services = services.html, Learn = knowledge.html, Home = index.html
+            { id: 'download-4', src: 'download (4).jpg', title: 'Kids Classic Cut', category: 'fades', usedIn: 'Gallery, Services', inGallery: true },
             { id: 'download-7', src: 'download (7).jpg', title: 'Modern Textured Cut', category: 'fades', usedIn: 'Gallery, Learn, Home', inGallery: true },
-            { id: 'download-8', src: 'download (8).jpg', title: 'High Top Fade', category: 'fades', usedIn: 'Gallery, Learn', inGallery: true },
-            { id: 'download-9', src: 'download (9).jpg', title: 'Sharp Lineup', category: 'fades', usedIn: 'Gallery, Learn, Home', inGallery: true },
+            { id: 'download-8', src: 'download (8).jpg', title: 'High Top Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true },
+            { id: 'download-9', src: 'download (9).jpg', title: 'Sharp Lineup', category: 'fades', usedIn: 'Gallery, Services, Learn, Home', inGallery: true },
             { id: 'download-10', src: 'download (10).jpg', title: 'The Golden Team', category: 'shop', usedIn: 'Gallery, Home', inGallery: true },
-            { id: 'download-11', src: 'download (11).jpg', title: 'Traditional Fire Technique', category: 'beard', usedIn: 'Gallery, Learn', inGallery: true },
-            { id: 'download-12', src: 'download (12).jpg', title: 'Fire Wax Treatment', category: 'beard', usedIn: 'Gallery', inGallery: true },
-            { id: 'download-13', src: 'download (13).jpg', title: 'Custom Design Lines', category: 'fades', usedIn: 'Gallery', inGallery: true },
+            { id: 'download-11', src: 'download (11).jpg', title: 'Classic Taper Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true },
+            { id: 'download-12', src: 'download (12).jpg', title: 'Traditional Fire Technique', category: 'beard', usedIn: 'Gallery, Services', inGallery: true },
+            { id: 'download-13', src: 'download (13).jpg', title: 'Custom Design Lines', category: 'fades', usedIn: 'Gallery, Services', inGallery: true },
             { id: 'download-14', src: 'download (14).jpg', title: 'Premium Interior', category: 'shop', usedIn: 'Gallery', inGallery: true },
-            { id: 'download-15', src: 'download (15).jpg', title: 'Face Wax Treatment', category: 'beard', usedIn: 'Gallery', inGallery: true },
-            { id: 'download-18', src: 'download (18).jpg', title: 'Beard Styling & Fade', category: 'beard', usedIn: 'Gallery, Learn', inGallery: true },
+            { id: 'download-15', src: 'download (15).jpg', title: 'Face Wax Treatment', category: 'beard', usedIn: 'Gallery, Services', inGallery: true },
+            { id: 'download-18', src: 'download (18).jpg', title: 'Beard Styling & Fade', category: 'beard', usedIn: 'Gallery, Services, Learn', inGallery: true },
             { id: 'download-19', src: 'download (19).jpg', title: 'The Golden Team 2', category: 'shop', usedIn: 'Gallery', inGallery: true },
             { id: 'download-20', src: 'download (20).jpg', title: 'Welcoming Atmosphere', category: 'shop', usedIn: 'Gallery', inGallery: true },
-            { id: 'download-21', src: 'download (21).jpg', title: 'Blonde Curly Fade', category: 'fades', usedIn: 'Gallery, Learn', inGallery: true },
-            { id: 'download-22', src: 'download (22).jpg', title: 'Turquoise Color Fade', category: 'transformations', usedIn: 'Gallery, Learn', inGallery: true },
-            { id: 'download-23', src: 'download (23).jpg', title: 'Hot Towel Service', category: 'beard', usedIn: 'Gallery, Learn', inGallery: true },
+            { id: 'download-21', src: 'download (21).jpg', title: 'Blonde Curly Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true },
+            { id: 'download-22', src: 'download (22).jpg', title: 'Turquoise Color Fade', category: 'transformations', usedIn: 'Gallery, Services, Learn', inGallery: true },
+            { id: 'download-23', src: 'download (23).jpg', title: 'Hot Towel Service', category: 'beard', usedIn: 'Gallery, Services, Learn', inGallery: true },
             { id: 'download-24', src: 'download (24).jpg', title: 'Goodmayes Location', category: 'shop', usedIn: 'Gallery', inGallery: true },
+            { id: 'pic', src: 'pic.jpg', title: 'Clean Skin Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true },
+            { id: 'styled-cut', src: '../cde5b93b-f8ed-4cde-bbd3-dfe60b666732.jpg', title: 'Our Shop', category: 'shop', usedIn: 'Gallery', inGallery: true },
 
-            // === HOME PAGE ONLY ===
-            { id: 'download-16', src: 'download (16).jpg', title: 'Precision Cuts', category: '', usedIn: 'Home', inGallery: false },
+            // === SERVICES & HOME (not in gallery.html) ===
+            { id: 'download-16', src: 'download (16).jpg', title: 'Head Massage', category: '', usedIn: 'Services, Home', inGallery: false },
 
-            // === LEARN PAGE ONLY (local images) ===
-            { id: 'pic', src: 'pic.jpg', title: 'Clean Skin Fade', category: '', usedIn: 'Learn', inGallery: false },
+            // === LEARN PAGE ONLY ===
             { id: 'images', src: 'images.jpg', title: 'Confident Buzz Cut', category: '', usedIn: 'Learn', inGallery: false },
             { id: 'download-26', src: 'download (26).jpg', title: 'Hair Consultation', category: '', usedIn: 'Learn', inGallery: false },
             { id: 'download-27', src: 'download (27).jpg', title: 'Hair Health Tips', category: '', usedIn: 'Learn', inGallery: false },
-
-            // === LEARN PAGE (root folder images) ===
             { id: 'hqdefault', src: '../hqdefault.jpg', title: 'Hair Types Guide', category: '', usedIn: 'Learn', inGallery: false },
             { id: 'untitled-design', src: '../untitled-design-2023-11-07t193853-673-1600x900.webp', title: 'Scalp Care Guide', category: '', usedIn: 'Learn', inGallery: false },
             { id: 'hair-loss-tips', src: '../v4-460px-Treat-Male-Pattern-Hair-Loss-Step-11-Version-3.jpg', title: 'Hair Loss Treatment', category: '', usedIn: 'Learn', inGallery: false },
@@ -1669,8 +1695,7 @@
             { id: 'download-17', src: 'download (17).jpg', title: 'Barber at Work', category: '', usedIn: 'Unused', inGallery: false },
             { id: 'download-25', src: 'download (25).jpg', title: 'Client Result', category: '', usedIn: 'Unused', inGallery: false },
             { id: 'download-28', src: 'download (28).jpg', title: 'Extra Photo', category: '', usedIn: 'Unused', inGallery: false },
-            { id: 'instagram-post', src: '56490494_441941899910184_1535393151337681820_n.jpg', title: 'Instagram Post', category: '', usedIn: 'Unused', inGallery: false },
-            { id: 'styled-cut', src: '../cde5b93b-f8ed-4cde-bbd3-dfe60b666732.jpg', title: 'Styled Haircut', category: '', usedIn: 'Unused', inGallery: false }
+            { id: 'instagram-post', src: '56490494_441941899910184_1535393151337681820_n.jpg', title: 'Instagram Post', category: '', usedIn: 'Unused', inGallery: false }
         ];
 
         // Hidden photos stored in Firebase
