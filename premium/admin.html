@@ -8,6 +8,10 @@
     <!-- Cloudinary Upload Widget -->
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
     <style>
         /* Simple Admin Panel Styles */
         * {
@@ -606,11 +610,10 @@
                 <line x1="12" y1="17" x2="12.01" y2="17"></line>
             </svg>
             <div class="warning-content">
-                <h3>Development Mode</h3>
+                <h3>Firebase Connected</h3>
                 <p>
-                    This admin panel saves data to <strong>localStorage</strong> (browser storage only).
-                    For production, replace with a real database like <strong>Firebase</strong>, <strong>Supabase</strong>,
-                    or a custom backend API. Changes here will only affect this browser.
+                    This admin panel is now connected to <strong>Firebase</strong>. Gallery images you mark as "Live"
+                    will be visible to all visitors on the website, not just this browser.
                 </p>
             </div>
         </div>
@@ -711,6 +714,7 @@
                 <div class="tab-buttons">
                     <button class="tab-btn active" onclick="switchTab('photos')">Photos</button>
                     <button class="tab-btn" onclick="switchTab('videos')">Videos</button>
+                    <button onclick="clearAllLive()" style="margin-left: auto; padding: 10px 20px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); border-radius: 8px; color: #ef4444; cursor: pointer; font-weight: 600;">Clear All Live</button>
                 </div>
 
                 <!-- Upload Area -->
@@ -725,6 +729,12 @@
                 <!-- Gallery Grid -->
                 <div class="gallery-grid" id="galleryGrid">
                     <!-- Loaded dynamically -->
+                </div>
+
+                <!-- Live Images Section -->
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #22c55e; font-size: 16px;">Currently Live on Website:</h3>
+                <div class="gallery-grid" id="liveGalleryGrid" style="border-top: 1px solid rgba(34, 197, 94, 0.3); padding-top: 20px;">
+                    <!-- Live images loaded from Firebase -->
                 </div>
             </div>
 
@@ -741,6 +751,38 @@
 
         </div>
 
+    </div>
+
+    <!-- Make Live Modal -->
+    <div id="makeLiveModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center;">
+        <div style="background: #141414; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 15px; padding: 30px; max-width: 500px; width: 90%;">
+            <h3 style="color: #d4af37; margin-bottom: 20px;">Make Image Live</h3>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; color: #888; font-size: 12px; margin-bottom: 8px; text-transform: uppercase;">Category</label>
+                <select id="liveCategory" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #fff; font-size: 14px;">
+                    <option value="fades" style="background: #1a1a1a; color: #fff;">Fades & Cuts</option>
+                    <option value="beard" style="background: #1a1a1a; color: #fff;">Beard & Grooming</option>
+                    <option value="transformations" style="background: #1a1a1a; color: #fff;">Transformations</option>
+                    <option value="shop" style="background: #1a1a1a; color: #fff;">The Shop</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; color: #888; font-size: 12px; margin-bottom: 8px; text-transform: uppercase;">Title</label>
+                <input type="text" id="liveTitle" placeholder="e.g. Clean Skin Fade" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #fff; font-size: 14px;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; color: #888; font-size: 12px; margin-bottom: 8px; text-transform: uppercase;">Description</label>
+                <input type="text" id="liveDescription" placeholder="e.g. Precision fade with expert blending" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #fff; font-size: 14px;">
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button onclick="closeLiveModal()" style="flex: 1; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; cursor: pointer;">Cancel</button>
+                <button onclick="confirmMakeLive()" style="flex: 1; padding: 12px; background: #22c55e; border: none; border-radius: 8px; color: #000; font-weight: 700; cursor: pointer;">Make Live</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -883,6 +925,23 @@
         setInterval(loadBookings, 10000);
 
         // ============================================
+        // FIREBASE CONFIGURATION
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3eVAdYntGPTsvhAZn0sezj7aYTR9qLC4",
+            authDomain: "golden-barbers-e25db.firebaseapp.com",
+            databaseURL: "https://golden-barbers-e25db-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "golden-barbers-e25db",
+            storageBucket: "golden-barbers-e25db.firebasestorage.app",
+            messagingSenderId: "719034478402",
+            appId: "1:719034478402:web:d3b3042688795b34e422db"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // ============================================
         // CLOUDINARY GALLERY MANAGEMENT
         // ============================================
 
@@ -968,7 +1027,7 @@
                 const isLive = isMediaLive(item.id);
                 const liveClass = isLive ? 'is-live' : '';
                 const liveBtn = isLive
-                    ? `<button class="live-btn is-live" onclick="removeLive('${item.id}')">Live</button>`
+                    ? `<button class="live-btn is-live" onclick="removeLive('${item.id}')">Remove Live</button>`
                     : `<button class="live-btn" onclick="makeLive('${item.id}', '${item.url}', '${item.type}')">Make Live</button>`;
 
                 if (item.type === 'video') {
@@ -1000,13 +1059,19 @@
             loadGallery();
         }
 
-        // Delete media
+        // Delete media (also removes from Firebase if live)
         function deleteMedia(id) {
             if (!confirm('Delete this media?')) return;
 
+            // Remove from localStorage
             let media = JSON.parse(localStorage.getItem('goldenBarbers_gallery') || '[]');
             media = media.filter(item => item.id !== id);
             localStorage.setItem('goldenBarbers_gallery', JSON.stringify(media));
+
+            // Also remove from Firebase if it was live
+            const safeKey = id.replace(/[.#$\/\[\]]/g, '_');
+            database.ref('liveGallery/' + safeKey).remove();
+
             loadGallery();
         }
 
@@ -1028,85 +1093,165 @@
         // MAKE LIVE FUNCTIONALITY
         // ============================================
 
-        // Auto-generate titles and descriptions for barber photos
-        const titleOptions = [
-            'Fresh Skin Fade', 'Sharp Lineup', 'Clean Cut', 'Precision Fade',
-            'Modern Style', 'Classic Taper', 'Expert Blend', 'Signature Cut',
-            'Premium Fade', 'Master Work', 'Sharp Edge', 'Clean Finish'
-        ];
+        // Category labels for display
+        const categoryLabels = {
+            'fades': 'Fades',
+            'beard': 'Grooming',
+            'transformations': 'Color',
+            'shop': 'Shop'
+        };
 
-        const descOptions = [
-            'Precision fade with expert blending', 'Crisp lines and smooth transitions',
-            'Professional finish with attention to detail', 'Expert craftsmanship at its finest',
-            'Clean, sharp style by our master barbers', 'Another satisfied customer',
-            'Premium barbering at Golden Barbers', 'Flawless execution and styling'
-        ];
+        // Store live gallery data locally for quick checks
+        let liveGalleryCache = [];
+        let pendingLiveImage = null; // Store image data while modal is open
 
-        function generateTitle() {
-            return titleOptions[Math.floor(Math.random() * titleOptions.length)];
+        // Load live gallery from Firebase on startup
+        function loadLiveGalleryFromFirebase() {
+            database.ref('liveGallery').on('value', (snapshot) => {
+                const data = snapshot.val();
+                liveGalleryCache = data ? Object.values(data) : [];
+                loadGallery(); // Refresh gallery when data changes
+                displayLiveImages(); // Also update the live images section
+            });
         }
 
-        function generateDesc() {
-            return descOptions[Math.floor(Math.random() * descOptions.length)];
+        // Display live images from Firebase (separate section)
+        function displayLiveImages() {
+            const container = document.getElementById('liveGalleryGrid');
+            if (!container) return;
+
+            if (liveGalleryCache.length === 0) {
+                container.innerHTML = '<p style="color: #888; font-size: 14px;">No images currently live on the website.</p>';
+                return;
+            }
+
+            container.innerHTML = liveGalleryCache.map(item => `
+                <div class="gallery-item is-live">
+                    <img src="${item.url}" alt="${item.title}">
+                    <div style="position: absolute; bottom: 8px; left: 8px; right: 8px; background: rgba(0,0,0,0.8); padding: 8px; border-radius: 6px;">
+                        <p style="color: #d4af37; font-size: 12px; font-weight: 600; margin: 0;">${item.title}</p>
+                        <p style="color: #888; font-size: 10px; margin: 2px 0 0 0;">${item.categoryLabel || item.category}</p>
+                    </div>
+                    <button class="live-btn is-live" onclick="removeLive('${item.id}')" style="top: 8px; bottom: auto;">Remove</button>
+                </div>
+            `).join('');
         }
 
         // Check if media is live
         function isMediaLive(id) {
-            const liveGallery = JSON.parse(localStorage.getItem('goldenBarbers_liveGallery') || '[]');
-            return liveGallery.some(item => item.id === id);
+            return liveGalleryCache.some(item => item.id === id);
         }
 
-        // Make media live
+        // Open modal to make image live
         function makeLive(id, url, type) {
             if (type === 'video') {
                 alert('Videos cannot be added to the gallery yet. Only photos for now.');
                 return;
             }
 
-            const liveGallery = JSON.parse(localStorage.getItem('goldenBarbers_liveGallery') || '[]');
-
             // Check if already live
-            if (liveGallery.some(item => item.id === id)) {
+            if (isMediaLive(id)) {
                 alert('This image is already live on the gallery!');
                 return;
             }
 
-            // Add to live gallery with auto-generated content
-            liveGallery.push({
-                id: id,
-                url: url,
-                title: generateTitle(),
-                description: generateDesc(),
-                category: 'fades',
-                categoryLabel: 'New',
-                createdAt: new Date().toISOString()
-            });
+            // Store the image data
+            pendingLiveImage = { id, url };
 
-            localStorage.setItem('goldenBarbers_liveGallery', JSON.stringify(liveGallery));
+            // Reset form
+            document.getElementById('liveCategory').value = 'fades';
+            document.getElementById('liveTitle').value = '';
+            document.getElementById('liveDescription').value = '';
 
-            // Show success
-            const success = document.getElementById('gallerySuccess');
-            success.textContent = 'Image is now LIVE on the gallery page!';
-            success.classList.add('show');
-            setTimeout(() => {
-                success.classList.remove('show');
-                success.textContent = 'Media uploaded successfully!';
-            }, 3000);
-
-            // Refresh gallery to show updated status
-            loadGallery();
+            // Show modal
+            document.getElementById('makeLiveModal').style.display = 'flex';
         }
 
-        // Remove from live
+        // Close modal
+        function closeLiveModal() {
+            document.getElementById('makeLiveModal').style.display = 'none';
+            pendingLiveImage = null;
+        }
+
+        // Confirm and save to Firebase
+        function confirmMakeLive() {
+            if (!pendingLiveImage) return;
+
+            const category = document.getElementById('liveCategory').value;
+            const title = document.getElementById('liveTitle').value.trim();
+            const description = document.getElementById('liveDescription').value.trim();
+
+            if (!title) {
+                alert('Please enter a title');
+                return;
+            }
+
+            if (!description) {
+                alert('Please enter a description');
+                return;
+            }
+
+            // Create safe key from id (Firebase doesn't allow certain characters)
+            const safeKey = pendingLiveImage.id.replace(/[.#$\/\[\]]/g, '_');
+
+            // Add to Firebase
+            database.ref('liveGallery/' + safeKey).set({
+                id: pendingLiveImage.id,
+                url: pendingLiveImage.url,
+                title: title,
+                description: description,
+                category: category,
+                categoryLabel: categoryLabels[category],
+                createdAt: new Date().toISOString()
+            }).then(() => {
+                // Close modal
+                closeLiveModal();
+
+                // Show success
+                const success = document.getElementById('gallerySuccess');
+                success.textContent = 'Image is now LIVE on the gallery page!';
+                success.classList.add('show');
+                setTimeout(() => {
+                    success.classList.remove('show');
+                    success.textContent = 'Media uploaded successfully!';
+                }, 3000);
+            }).catch((error) => {
+                alert('Error saving to Firebase: ' + error.message);
+            });
+        }
+
+        // Remove from live (removes from Firebase)
         function removeLive(id) {
             if (!confirm('Remove this image from the live gallery?')) return;
 
-            let liveGallery = JSON.parse(localStorage.getItem('goldenBarbers_liveGallery') || '[]');
-            liveGallery = liveGallery.filter(item => item.id !== id);
-            localStorage.setItem('goldenBarbers_liveGallery', JSON.stringify(liveGallery));
+            const safeKey = id.replace(/[.#$\/\[\]]/g, '_');
 
-            loadGallery();
+            database.ref('liveGallery/' + safeKey).remove().then(() => {
+                // Gallery will auto-refresh via the 'on' listener
+            }).catch((error) => {
+                alert('Error removing from Firebase: ' + error.message);
+            });
         }
+
+        // Clear all live images from Firebase
+        function clearAllLive() {
+            if (!confirm('Remove ALL images from the live gallery? This will remove them from the public gallery page.')) return;
+
+            database.ref('liveGallery').remove().then(() => {
+                const success = document.getElementById('gallerySuccess');
+                success.textContent = 'All live images have been removed!';
+                success.classList.add('show');
+                setTimeout(() => {
+                    success.classList.remove('show');
+                    success.textContent = 'Media uploaded successfully!';
+                }, 3000);
+            }).catch((error) => {
+                alert('Error clearing live gallery: ' + error.message);
+            });
+        }
+
+        // Initialize Firebase listener
+        loadLiveGalleryFromFirebase();
     </script>
 </body>
 </html>
