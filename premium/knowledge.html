@@ -580,6 +580,49 @@
             color: var(--gold);
         }
 
+        /* Image Gallery */
+        .image-showcase {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 40px 0;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .image-showcase img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.4s, filter 0.4s;
+        }
+
+        .image-showcase img:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .image-showcase.two-col {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .image-showcase.two-col img {
+            height: 250px;
+        }
+
+        @media (max-width: 768px) {
+            .image-showcase {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .image-showcase img {
+                height: 150px;
+            }
+            .image-showcase.two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* FAQ Section */
         .faq-item {
             background: rgba(20, 20, 20, 0.6);
@@ -888,8 +931,8 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="knowledge.html" class="active">Knowledge</a></li>
-                <li><a href="adam.html">Adam AI</a></li>
+                <li><a href="knowledge.html" class="active">Learn</a></li>
+                <li><a href="adam.html"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 5px;"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>Adam AI</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
             <button class="mobile-toggle" id="mobileToggle">
@@ -907,8 +950,8 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="services.html">Services</a></li>
             <li><a href="gallery.html">Gallery</a></li>
-            <li><a href="knowledge.html" class="active">Knowledge</a></li>
-            <li><a href="adam.html">Adam AI</a></li>
+            <li><a href="knowledge.html" class="active">Learn</a></li>
+            <li><a href="adam.html"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 5px;"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>Adam AI</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </div>
@@ -976,6 +1019,12 @@
             <p class="content-text">
                 Choosing the right haircut is about more than following trends—it's about finding a style that <strong>complements your face shape</strong>, suits your lifestyle, and makes you feel confident. At Golden Barbers, we specialize in creating personalized looks that work for you.
             </p>
+
+            <div class="image-showcase">
+                <img src="pic.jpg" alt="Clean Skin Fade" loading="lazy">
+                <img src="download (11).jpg" alt="Classic Taper Fade" loading="lazy">
+                <img src="download (7).jpg" alt="Modern Textured Cut" loading="lazy">
+            </div>
 
             <div class="style-cards">
                 <div class="style-card">
@@ -1048,6 +1097,12 @@
                 The fade is the foundation of modern barbering. It's a technique that creates a <strong>seamless gradient</strong> from skin to longer hair, requiring precision, skill, and an artistic eye. Here's everything you need to know about fade haircuts.
             </p>
 
+            <div class="image-showcase">
+                <img src="download (8).jpg" alt="High Top Fade" loading="lazy">
+                <img src="download (9).jpg" alt="Sharp Lineup" loading="lazy">
+                <img src="download (22).jpg" alt="Coloured Fade" loading="lazy">
+            </div>
+
             <div class="info-cards">
                 <div class="info-card">
                     <div class="info-card-icon">⬇️</div>
@@ -1110,6 +1165,13 @@
             <p class="content-text">
                 A well-maintained beard can transform your appearance, but it requires consistent care and the right techniques. Whether you're growing your first beard or refining your existing one, these expert tips will help you achieve <strong>facial hair excellence</strong>.
             </p>
+
+            <!-- Beard Grooming Image Gallery -->
+            <div class="image-showcase">
+                <img src="download (18).jpg" alt="Professional Beard Styling" loading="lazy">
+                <img src="download (23).jpg" alt="Hot Towel Beard Service" loading="lazy">
+                <img src="download (19).jpg" alt="Sharp Beard Lineup" loading="lazy">
+            </div>
 
             <div class="style-cards">
                 <div class="style-card">
