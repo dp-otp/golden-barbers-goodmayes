@@ -11,6 +11,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+    <!-- Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+
     <style>
         :root {
             --gold: #d4af37;
@@ -23,6 +26,7 @@
             --gray: #888888;
             --gray-dark: #444444;
             --green: #22c55e;
+            --red: #ef4444;
         }
 
         * {
@@ -40,27 +44,26 @@
         }
 
         .container {
-            max-width: 500px;
+            max-width: 480px;
             margin: 0 auto;
         }
 
         /* Header */
         .header {
             text-align: center;
-            padding: 30px 0;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            margin-bottom: 30px;
+            padding: 20px 0;
+            margin-bottom: 20px;
         }
 
         .logo {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 15px;
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 12px;
             display: block;
         }
 
         .header h1 {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
             margin-bottom: 5px;
         }
@@ -71,37 +74,42 @@
 
         .header p {
             color: var(--gray);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         /* Order Summary */
         .order-card {
             background: rgba(20, 20, 20, 0.8);
             border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 16px;
+            padding: 20px;
             margin-bottom: 20px;
         }
 
-        .order-card h2 {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 20px;
+        .order-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .order-header h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .order-items {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .order-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -110,12 +118,12 @@
         }
 
         .order-item-name {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--white);
         }
 
         .order-item-price {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--gold);
         }
@@ -123,46 +131,214 @@
         .order-total {
             background: rgba(212, 175, 55, 0.1);
             border-radius: 12px;
-            padding: 20px;
-            text-align: center;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .order-total-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: var(--gray);
-            margin-bottom: 5px;
+            font-size: 16px;
+            font-weight: 600;
         }
 
         .order-total-amount {
-            font-size: 48px;
+            font-size: 28px;
             font-weight: 800;
             color: var(--gold);
         }
 
-        /* Bank Details Card */
-        .bank-card {
+        /* Payment Section */
+        .payment-section {
             background: rgba(20, 20, 20, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 16px;
+            padding: 20px;
             margin-bottom: 20px;
         }
 
-        .bank-card h2 {
-            font-size: 16px;
-            font-weight: 700;
+        .payment-section h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        /* Apple/Google Pay Buttons */
+        .express-checkout {
             margin-bottom: 20px;
+        }
+
+        #payment-request-button {
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .express-divider {
             display: flex;
             align-items: center;
+            margin: 20px 0;
+            color: var(--gray);
+            font-size: 13px;
+        }
+
+        .express-divider::before,
+        .express-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .express-divider span {
+            padding: 0 15px;
+        }
+
+        /* Card Form */
+        .card-form {
+            display: none;
+        }
+
+        .card-form.show {
+            display: block;
+        }
+
+        .form-row {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        #card-element {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            transition: border-color 0.3s;
+        }
+
+        #card-element.StripeElement--focus {
+            border-color: var(--gold);
+        }
+
+        #card-element.StripeElement--invalid {
+            border-color: var(--red);
+        }
+
+        #card-errors {
+            color: var(--red);
+            font-size: 13px;
+            margin-top: 8px;
+            min-height: 20px;
+        }
+
+        /* Pay Button */
+        .pay-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 10px;
+        }
+
+        .pay-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .pay-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .pay-btn .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top-color: var(--black);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        .pay-btn.loading .spinner {
+            display: block;
+        }
+
+        .pay-btn.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Bank Transfer Toggle */
+        .bank-toggle {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .bank-toggle-btn {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: underline;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .bank-toggle-btn:hover {
+            color: var(--white);
+        }
+
+        /* Bank Details */
+        .bank-details {
+            display: none;
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .bank-details.show {
+            display: block;
+        }
+
+        .bank-details h3 {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .bank-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
+            padding: 10px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -175,21 +351,14 @@
             color: var(--gray);
         }
 
-        .bank-value-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
         .bank-value {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
             font-family: monospace;
-            letter-spacing: 1px;
         }
 
         .copy-btn {
-            padding: 8px 12px;
+            padding: 6px 12px;
             background: rgba(212, 175, 55, 0.1);
             border: 1px solid rgba(212, 175, 55, 0.3);
             border-radius: 6px;
@@ -197,6 +366,7 @@
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
+            margin-left: 10px;
             transition: all 0.3s;
         }
 
@@ -210,90 +380,49 @@
             color: var(--white);
         }
 
-        /* Instructions */
-        .instructions {
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+        /* Success Screen */
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
         }
 
-        .instructions h3 {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 15px;
+        .success-screen.show {
+            display: block;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(34, 197, 94, 0.2);
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .instructions ol {
-            margin-left: 20px;
-            font-size: 13px;
-            line-height: 2;
-            color: var(--gray);
-        }
-
-        .instructions li {
-            margin-bottom: 5px;
-        }
-
-        /* Reference */
-        .reference {
-            text-align: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        .reference-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: var(--gray);
-            margin-bottom: 5px;
-        }
-
-        .reference-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--white);
-            font-family: monospace;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 30px 0;
-            color: var(--gray);
-            font-size: 12px;
-        }
-
-        .footer a {
-            color: var(--gold);
-            text-decoration: none;
-        }
-
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 50px;
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(212, 175, 55, 0.2);
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+            justify-content: center;
             margin: 0 auto 20px;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: var(--green);
+        }
+
+        .success-screen h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .success-screen p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        .success-amount {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--gold);
+            margin-bottom: 30px;
         }
 
         /* Error */
@@ -316,15 +445,57 @@
             font-size: 14px;
         }
 
-        .error-card a {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: var(--gold);
-            color: var(--black);
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--gray);
+            font-size: 12px;
+        }
+
+        .footer a {
+            color: var(--gold);
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--gray);
+            font-size: 12px;
+        }
+
+        .secure-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Loading */
+        .loading-screen {
+            text-align: center;
+            padding: 50px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(212, 175, 55, 0.2);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        /* Hide payment content until loaded */
+        .payment-content {
+            display: none;
+        }
+
+        .payment-content.show {
+            display: block;
         }
     </style>
 </head>
@@ -337,23 +508,146 @@
             <p>Goodmayes, Ilford</p>
         </div>
 
-        <!-- Content loaded by JavaScript -->
-        <div id="content">
-            <div class="loading">
-                <div class="loading-spinner"></div>
-                <p>Loading your order...</p>
+        <!-- Loading -->
+        <div id="loadingScreen" class="loading-screen">
+            <div class="loading-spinner"></div>
+            <p>Loading your order...</p>
+        </div>
+
+        <!-- Content -->
+        <div id="paymentContent" class="payment-content">
+            <!-- Order Summary -->
+            <div class="order-card">
+                <div class="order-header">
+                    <h2>Your Order</h2>
+                </div>
+                <div class="order-items" id="orderItems"></div>
+                <div class="order-total">
+                    <span class="order-total-label">Total</span>
+                    <span class="order-total-amount" id="totalAmount">£0.00</span>
+                </div>
+            </div>
+
+            <!-- Payment Section -->
+            <div class="payment-section" id="paymentSection">
+                <h2>Payment Method</h2>
+
+                <!-- Express Checkout (Apple/Google Pay) -->
+                <div class="express-checkout" id="expressCheckout">
+                    <div id="payment-request-button"></div>
+                </div>
+
+                <div class="express-divider" id="expressDivider" style="display: none;">
+                    <span>or pay with card</span>
+                </div>
+
+                <!-- Card Form -->
+                <div class="card-form show" id="cardForm">
+                    <div class="form-row">
+                        <label class="form-label">Card Details</label>
+                        <div id="card-element"></div>
+                        <div id="card-errors" role="alert"></div>
+                    </div>
+
+                    <button class="pay-btn" id="payBtn" type="button">
+                        <span class="spinner"></span>
+                        <span class="btn-text">Pay <span id="payBtnAmount">£0.00</span></span>
+                    </button>
+                </div>
+
+                <!-- Bank Transfer Toggle -->
+                <div class="bank-toggle">
+                    <button class="bank-toggle-btn" onclick="toggleBankDetails()">
+                        Other payment options
+                    </button>
+                </div>
+
+                <!-- Bank Details -->
+                <div class="bank-details" id="bankDetails">
+                    <h3>Bank Transfer</h3>
+                    <div class="bank-row">
+                        <span class="bank-label">Account Name</span>
+                        <span class="bank-value">GOLDEN BARBERS LTD</span>
+                    </div>
+                    <div class="bank-row">
+                        <span class="bank-label">Sort Code</span>
+                        <div>
+                            <span class="bank-value">30-98-97</span>
+                            <button class="copy-btn" onclick="copyText('309897', this)">Copy</button>
+                        </div>
+                    </div>
+                    <div class="bank-row">
+                        <span class="bank-label">Account Number</span>
+                        <div>
+                            <span class="bank-value">58413368</span>
+                            <button class="copy-btn" onclick="copyText('58413368', this)">Copy</button>
+                        </div>
+                    </div>
+                    <div class="bank-row">
+                        <span class="bank-label">Amount</span>
+                        <div>
+                            <span class="bank-value" id="bankAmount">£0.00</span>
+                            <button class="copy-btn" id="copyAmountBtn" onclick="copyAmount(this)">Copy</button>
+                        </div>
+                    </div>
+                    <div class="bank-row">
+                        <span class="bank-label">Reference</span>
+                        <div>
+                            <span class="bank-value" id="bankRef">-</span>
+                            <button class="copy-btn" id="copyRefBtn" onclick="copyRef(this)">Copy</button>
+                        </div>
+                    </div>
+                    <p style="color: var(--gray); font-size: 12px; margin-top: 15px; text-align: center;">
+                        After transferring, show confirmation to staff
+                    </p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <div class="secure-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0110 0v4"/>
+                    </svg>
+                    Secure payment powered by Stripe
+                </div>
+                <p>Questions? Call <a href="tel:02034324242">020 3432 4242</a></p>
             </div>
         </div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>Questions? Call us at <a href="tel:02034324242">020 3432 4242</a></p>
-            <p style="margin-top: 10px;">Thank you for choosing Golden Barbers</p>
+        <!-- Success Screen -->
+        <div class="success-screen" id="successScreen">
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M20 6L9 17l-5-5"/>
+                </svg>
+            </div>
+            <h2>Payment Successful!</h2>
+            <p>Thank you for your payment</p>
+            <div class="success-amount" id="successAmount">£0.00</div>
+            <p style="color: var(--gray); font-size: 14px;">Show this screen to staff</p>
+        </div>
+
+        <!-- Error Screen -->
+        <div id="errorScreen" style="display: none;">
+            <div class="error-card">
+                <h2>Invalid Order</h2>
+                <p>This payment link appears to be invalid or expired.</p>
+                <a href="services.html" style="display: inline-block; margin-top: 20px; padding: 12px 25px; background: var(--gold); color: var(--black); text-decoration: none; border-radius: 8px; font-weight: 600;">View Our Services</a>
+            </div>
         </div>
     </div>
 
     <script>
-        // Services data (same as admin-qr.html)
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        // TODO: Replace with your Stripe publishable key
+        // Get this from: https://dashboard.stripe.com/apikeys
+        var STRIPE_PUBLISHABLE_KEY = 'pk_test_YOUR_KEY_HERE';
+
+        // Services data
         var services = {
             'golden-luxury': { name: 'Golden Luxury', price: 45 },
             'golden-bundle': { name: 'Golden Bundle', price: 27 },
@@ -371,22 +665,12 @@
             'hair-wash': { name: 'Hair Wash & Dry', price: 4 }
         };
 
-        // Bank details
-        var bankDetails = {
-            name: 'GOLDEN BARBERS LTD',
-            sortCode: '30-98-97',
-            sortCodeClean: '309897',
-            accountNumber: '58413368'
-        };
-
-        // Parse URL - check hash first, then query params
+        // ============================================
+        // PARSE ORDER FROM URL
+        // ============================================
         function getServicesFromUrl() {
-            // Check hash first (shorter URLs)
             var hash = window.location.hash.substring(1);
-            if (hash) {
-                return hash;
-            }
-            // Fallback to query params
+            if (hash) return hash;
             var search = window.location.search.substring(1);
             if (search) {
                 var params = {};
@@ -399,22 +683,219 @@
             return '';
         }
 
-        // Generate reference number
         function generateReference() {
             var now = new Date();
-            var ref = 'GB' +
+            return 'GB' +
                 now.getFullYear().toString().slice(-2) +
                 ('0' + (now.getMonth() + 1)).slice(-2) +
                 ('0' + now.getDate()).slice(-2) +
                 ('0' + now.getHours()).slice(-2) +
                 ('0' + now.getMinutes()).slice(-2);
-            return ref;
         }
 
-        // Copy to clipboard
-        function copyToClipboard(text, btnId) {
+        // ============================================
+        // INIT
+        // ============================================
+        var orderTotal = 0;
+        var orderItems = [];
+        var reference = generateReference();
+        var stripe, elements, card;
+
+        function init() {
+            var servicesStr = getServicesFromUrl();
+            var serviceIds = servicesStr ? servicesStr.split(',') : [];
+
+            // Parse services
+            serviceIds.forEach(function(id) {
+                var service = services[id];
+                if (service) {
+                    orderItems.push(service);
+                    orderTotal += service.price;
+                }
+            });
+
+            // If no valid services, show error
+            if (orderItems.length === 0) {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('errorScreen').style.display = 'block';
+                return;
+            }
+
+            // Render order
+            renderOrder();
+
+            // Initialize Stripe
+            initStripe();
+
+            // Show payment content
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('paymentContent').classList.add('show');
+        }
+
+        function renderOrder() {
+            var orderItemsEl = document.getElementById('orderItems');
+            orderItemsEl.innerHTML = orderItems.map(function(item) {
+                return '<div class="order-item">' +
+                    '<span class="order-item-name">' + item.name + '</span>' +
+                    '<span class="order-item-price">£' + item.price.toFixed(2) + '</span>' +
+                '</div>';
+            }).join('');
+
+            // Update totals
+            var totalStr = '£' + orderTotal.toFixed(2);
+            document.getElementById('totalAmount').textContent = totalStr;
+            document.getElementById('payBtnAmount').textContent = totalStr;
+            document.getElementById('bankAmount').textContent = totalStr;
+            document.getElementById('bankRef').textContent = reference;
+        }
+
+        // ============================================
+        // STRIPE SETUP
+        // ============================================
+        function initStripe() {
+            // Check if Stripe key is configured
+            if (STRIPE_PUBLISHABLE_KEY === 'pk_test_YOUR_KEY_HERE') {
+                // Stripe not configured - show card form anyway for demo
+                console.log('Stripe not configured - demo mode');
+                document.getElementById('expressCheckout').style.display = 'none';
+                return;
+            }
+
+            stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+            elements = stripe.elements();
+
+            // Create card element
+            var style = {
+                base: {
+                    color: '#ffffff',
+                    fontFamily: '"Outfit", sans-serif',
+                    fontSmoothing: 'antialiased',
+                    fontSize: '16px',
+                    '::placeholder': {
+                        color: '#888888'
+                    }
+                },
+                invalid: {
+                    color: '#ef4444',
+                    iconColor: '#ef4444'
+                }
+            };
+
+            card = elements.create('card', { style: style });
+            card.mount('#card-element');
+
+            card.on('change', function(event) {
+                var displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+
+            // Setup Apple Pay / Google Pay
+            var paymentRequest = stripe.paymentRequest({
+                country: 'GB',
+                currency: 'gbp',
+                total: {
+                    label: 'Golden Barbers',
+                    amount: Math.round(orderTotal * 100)
+                },
+                requestPayerName: true,
+                requestPayerEmail: true
+            });
+
+            var prButton = elements.create('paymentRequestButton', {
+                paymentRequest: paymentRequest,
+                style: {
+                    paymentRequestButton: {
+                        type: 'default',
+                        theme: 'dark',
+                        height: '50px'
+                    }
+                }
+            });
+
+            // Check if Apple Pay / Google Pay is available
+            paymentRequest.canMakePayment().then(function(result) {
+                if (result) {
+                    prButton.mount('#payment-request-button');
+                    document.getElementById('expressDivider').style.display = 'flex';
+                } else {
+                    document.getElementById('expressCheckout').style.display = 'none';
+                }
+            });
+
+            // Handle Apple Pay / Google Pay
+            paymentRequest.on('paymentmethod', function(ev) {
+                // TODO: Create PaymentIntent on server and confirm
+                // For now, simulate success
+                ev.complete('success');
+                showSuccess();
+            });
+
+            // Handle card pay button
+            document.getElementById('payBtn').addEventListener('click', handleCardPayment);
+        }
+
+        function handleCardPayment() {
+            var payBtn = document.getElementById('payBtn');
+            payBtn.classList.add('loading');
+            payBtn.disabled = true;
+
+            // TODO: Create PaymentIntent on your server
+            // For now, simulate payment processing
+            setTimeout(function() {
+                // Simulate success
+                showSuccess();
+            }, 2000);
+
+            /* Real Stripe implementation:
+
+            // 1. Create PaymentIntent on your server
+            fetch('/create-payment-intent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    amount: Math.round(orderTotal * 100),
+                    services: orderItems.map(i => i.name).join(', ')
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                // 2. Confirm the payment
+                return stripe.confirmCardPayment(data.clientSecret, {
+                    payment_method: { card: card }
+                });
+            })
+            .then(result => {
+                if (result.error) {
+                    document.getElementById('card-errors').textContent = result.error.message;
+                    payBtn.classList.remove('loading');
+                    payBtn.disabled = false;
+                } else {
+                    showSuccess();
+                }
+            });
+            */
+        }
+
+        function showSuccess() {
+            document.getElementById('paymentContent').classList.remove('show');
+            document.getElementById('successScreen').classList.add('show');
+            document.getElementById('successAmount').textContent = '£' + orderTotal.toFixed(2);
+        }
+
+        // ============================================
+        // BANK TRANSFER
+        // ============================================
+        function toggleBankDetails() {
+            var details = document.getElementById('bankDetails');
+            details.classList.toggle('show');
+        }
+
+        function copyText(text, btn) {
             navigator.clipboard.writeText(text).then(function() {
-                var btn = document.getElementById(btnId);
                 btn.textContent = 'Copied!';
                 btn.classList.add('copied');
                 setTimeout(function() {
@@ -424,115 +905,18 @@
             });
         }
 
-        // Initialize page
-        function init() {
-            var contentEl = document.getElementById('content');
-
-            // Parse services from URL (hash or query param)
-            var servicesStr = getServicesFromUrl();
-            var serviceIds = servicesStr ? servicesStr.split(',') : [];
-            var orderItems = [];
-            var total = 0;
-
-            serviceIds.forEach(function(id) {
-                var service = services[id];
-                if (service) {
-                    orderItems.push(service);
-                    total += service.price;
-                }
-            });
-
-            // If no valid services, show error
-            if (orderItems.length === 0) {
-                contentEl.innerHTML =
-                    '<div class="error-card">' +
-                        '<h2>Invalid Order</h2>' +
-                        '<p>This payment link appears to be invalid or expired.</p>' +
-                        '<a href="services.html">View Our Services</a>' +
-                    '</div>';
-                return;
-            }
-
-            var reference = generateReference();
-
-            // Build order HTML
-            var orderItemsHtml = orderItems.map(function(item) {
-                return '<div class="order-item">' +
-                    '<span class="order-item-name">' + item.name + '</span>' +
-                    '<span class="order-item-price">£' + item.price.toFixed(2) + '</span>' +
-                '</div>';
-            }).join('');
-
-            contentEl.innerHTML =
-                // Order Summary
-                '<div class="order-card">' +
-                    '<h2>🧾 Your Order</h2>' +
-                    '<div class="order-items">' + orderItemsHtml + '</div>' +
-                    '<div class="order-total">' +
-                        '<div class="order-total-label">Total to Pay</div>' +
-                        '<div class="order-total-amount">£' + total.toFixed(2) + '</div>' +
-                    '</div>' +
-                '</div>' +
-
-                // Payment Reference
-                '<div class="reference">' +
-                    '<div class="reference-label">Payment Reference</div>' +
-                    '<div class="reference-value">' + reference + '</div>' +
-                '</div>' +
-
-                // Bank Details
-                '<div class="bank-card">' +
-                    '<h2>🏦 Bank Transfer Details</h2>' +
-                    '<div class="bank-row">' +
-                        '<span class="bank-label">Account Name</span>' +
-                        '<span class="bank-value">' + bankDetails.name + '</span>' +
-                    '</div>' +
-                    '<div class="bank-row">' +
-                        '<span class="bank-label">Sort Code</span>' +
-                        '<div class="bank-value-wrap">' +
-                            '<span class="bank-value">' + bankDetails.sortCode + '</span>' +
-                            '<button class="copy-btn" id="copySortCode" onclick="copyToClipboard(\'' + bankDetails.sortCodeClean + '\', \'copySortCode\')">Copy</button>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="bank-row">' +
-                        '<span class="bank-label">Account Number</span>' +
-                        '<div class="bank-value-wrap">' +
-                            '<span class="bank-value">' + bankDetails.accountNumber + '</span>' +
-                            '<button class="copy-btn" id="copyAccNum" onclick="copyToClipboard(\'' + bankDetails.accountNumber + '\', \'copyAccNum\')">Copy</button>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="bank-row">' +
-                        '<span class="bank-label">Amount</span>' +
-                        '<div class="bank-value-wrap">' +
-                            '<span class="bank-value">£' + total.toFixed(2) + '</span>' +
-                            '<button class="copy-btn" id="copyAmount" onclick="copyToClipboard(\'' + total.toFixed(2) + '\', \'copyAmount\')">Copy</button>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="bank-row">' +
-                        '<span class="bank-label">Reference</span>' +
-                        '<div class="bank-value-wrap">' +
-                            '<span class="bank-value">' + reference + '</span>' +
-                            '<button class="copy-btn" id="copyRef" onclick="copyToClipboard(\'' + reference + '\', \'copyRef\')">Copy</button>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>' +
-
-                // Instructions
-                '<div class="instructions">' +
-                    '<h3>📱 How to Pay</h3>' +
-                    '<ol>' +
-                        '<li>Open your banking app</li>' +
-                        '<li>Select "Send Money" or "Pay Someone"</li>' +
-                        '<li>Enter the bank details above</li>' +
-                        '<li>Use <strong>' + reference + '</strong> as reference</li>' +
-                        '<li>Send <strong>£' + total.toFixed(2) + '</strong></li>' +
-                        '<li>Show confirmation to staff</li>' +
-                    '</ol>' +
-                '</div>';
+        function copyAmount(btn) {
+            copyText(orderTotal.toFixed(2), btn);
         }
 
-        // Run on page load
-        setTimeout(init, 500);
+        function copyRef(btn) {
+            copyText(reference, btn);
+        }
+
+        // ============================================
+        // START
+        // ============================================
+        setTimeout(init, 300);
     </script>
 </body>
 </html>
