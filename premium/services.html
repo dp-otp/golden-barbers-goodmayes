@@ -2964,9 +2964,58 @@
             }
         }
 
+        // Mapping from modal extra IDs to cart service IDs
+        const extraToServiceMap = {
+            'hottowel': 'turkish-hot-towel',
+            'headmassage': 'head-massage',
+            'earnosewax': 'ear-nose-flaming',
+            'facemask': 'mask-treatment'
+        };
+
+        // Premium packages that include certain extras
+        // Golden Luxury includes: hot towel, ear flaming, face mask, massage
+        // Golden Bundle includes: hot towel, ear flaming, massage
+        const packageIncludes = {
+            'golden-luxury': ['hottowel', 'headmassage', 'earnosewax', 'facemask'],
+            'golden-bundle': ['hottowel', 'headmassage', 'earnosewax']
+        };
+
         function resetModal() {
             selectedExtras = [];
-            document.querySelectorAll('.extra-item').forEach(item => item.classList.remove('selected'));
+
+            // Get list of service IDs already in cart
+            const cartServiceIds = CartManager.services.map(s => s.id);
+
+            // Build list of extras that are already included via packages or direct selection
+            let includedExtras = [];
+
+            // Check if any packages are in cart
+            cartServiceIds.forEach(serviceId => {
+                if (packageIncludes[serviceId]) {
+                    includedExtras = includedExtras.concat(packageIncludes[serviceId]);
+                }
+            });
+
+            // Reset and filter extras based on what's in cart
+            document.querySelectorAll('.extra-item').forEach(item => {
+                item.classList.remove('selected');
+
+                const extraId = item.dataset.extra;
+
+                // Check if this extra is included in a package
+                if (includedExtras.includes(extraId)) {
+                    item.style.display = 'none';
+                    return;
+                }
+
+                // Check if this extra corresponds to a service already in cart
+                const correspondingServiceId = extraToServiceMap[extraId];
+                if (correspondingServiceId && cartServiceIds.includes(correspondingServiceId)) {
+                    item.style.display = 'none';
+                } else {
+                    item.style.display = 'flex';
+                }
+            });
 
             // Reset to summary view
             document.getElementById('bookingSummarySection').style.display = 'block';
