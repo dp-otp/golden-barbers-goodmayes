@@ -18,11 +18,92 @@
             background: #0a0a0a;
             color: #fff;
             padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+        }
+
+        .login-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #d4af37;
+            margin-bottom: 30px;
+        }
+
+        .login-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #d4af37;
+        }
+
+        .login-subtitle {
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .login-box {
+            background: #141414;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-box label {
+            display: block;
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 14px 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+
+        .login-error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
         }
 
         .admin-container {
             max-width: 1200px;
             margin: 0 auto;
+            display: none;
+        }
+
+        .admin-container.show {
+            display: block;
         }
 
         .admin-header {
@@ -290,6 +371,24 @@
             margin-top: 3px;
         }
 
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: rgba(212, 175, 55, 0.1);
+            color: #d4af37;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
         @media (max-width: 768px) {
             .admin-grid {
                 grid-template-columns: 1fr;
@@ -307,11 +406,26 @@
     </style>
 </head>
 <body>
-    <div class="admin-container">
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <img src="logo.png" alt="Golden Barbers" class="login-logo">
+        <h1 class="login-title">Admin Access</h1>
+        <p class="login-subtitle">Enter the admin password to continue</p>
+        <div class="login-box">
+            <label>Password</label>
+            <input type="password" id="passwordInput" placeholder="Enter admin password">
+            <p class="login-error" id="loginError">Incorrect password. Please try again.</p>
+            <button class="btn" onclick="checkPassword()">Access Admin Panel</button>
+        </div>
+    </div>
+
+    <!-- Admin Panel (hidden until logged in) -->
+    <div class="admin-container" id="adminPanel">
+        <button class="logout-btn" onclick="logout()">Logout</button>
 
         <!-- Header -->
         <div class="admin-header">
-            <h1>⚡ Admin Panel</h1>
+            <h1>Admin Panel</h1>
             <p>Golden Barbers Goodmayes - Content Management</p>
         </div>
 
@@ -323,7 +437,7 @@
                 <line x1="12" y1="17" x2="12.01" y2="17"></line>
             </svg>
             <div class="warning-content">
-                <h3>⚠️ Development Mode</h3>
+                <h3>Development Mode</h3>
                 <p>
                     This admin panel saves data to <strong>localStorage</strong> (browser storage only).
                     For production, replace with a real database like <strong>Firebase</strong>, <strong>Supabase</strong>,
@@ -337,7 +451,7 @@
 
             <!-- Business Settings -->
             <div class="admin-card">
-                <h2>🏪 Business Settings</h2>
+                <h2>Business Settings</h2>
                 <div id="businessSuccess" class="success-message">Settings saved!</div>
 
                 <form id="businessForm">
@@ -348,17 +462,17 @@
 
                     <div class="form-group">
                         <label>Phone Number</label>
-                        <input type="tel" id="businessPhone" value="+44 20 1234 5678">
+                        <input type="tel" id="businessPhone" value="+44 20 8598 9920">
                     </div>
 
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" id="businessEmail" value="bookings@goldenbarbers.com">
+                        <input type="email" id="businessEmail" value="ltdgoldenbarbers@gmail.com">
                     </div>
 
                     <div class="form-group">
                         <label>Address</label>
-                        <textarea id="businessAddress">123 High Street, Goodmayes, Ilford, IG3 8XY</textarea>
+                        <textarea id="businessAddress">14 Goodmayes Rd, London, Ilford IG3 9UN</textarea>
                     </div>
 
                     <button type="submit" class="btn">Save Settings</button>
@@ -367,51 +481,51 @@
 
             <!-- Opening Hours -->
             <div class="admin-card">
-                <h2>🕐 Opening Hours</h2>
+                <h2>Opening Hours</h2>
                 <div id="hoursSuccess" class="success-message">Hours updated!</div>
 
                 <form id="hoursForm">
                     <div class="hours-grid">
                         <div class="hours-row">
                             <span class="hours-day">Monday</span>
-                            <input type="time" id="monday-open" value="09:00">
-                            <input type="time" id="monday-close" value="19:00">
+                            <input type="time" id="monday-open" value="09:30">
+                            <input type="time" id="monday-close" value="20:00">
                             <input type="checkbox" id="monday-closed">
                         </div>
                         <div class="hours-row">
                             <span class="hours-day">Tuesday</span>
-                            <input type="time" id="tuesday-open" value="09:00">
-                            <input type="time" id="tuesday-close" value="19:00">
+                            <input type="time" id="tuesday-open" value="09:30">
+                            <input type="time" id="tuesday-close" value="20:00">
                             <input type="checkbox" id="tuesday-closed">
                         </div>
                         <div class="hours-row">
                             <span class="hours-day">Wednesday</span>
-                            <input type="time" id="wednesday-open" value="09:00">
-                            <input type="time" id="wednesday-close" value="19:00">
+                            <input type="time" id="wednesday-open" value="09:30">
+                            <input type="time" id="wednesday-close" value="20:00">
                             <input type="checkbox" id="wednesday-closed">
                         </div>
                         <div class="hours-row">
                             <span class="hours-day">Thursday</span>
-                            <input type="time" id="thursday-open" value="09:00">
+                            <input type="time" id="thursday-open" value="09:30">
                             <input type="time" id="thursday-close" value="20:00">
                             <input type="checkbox" id="thursday-closed">
                         </div>
                         <div class="hours-row">
                             <span class="hours-day">Friday</span>
-                            <input type="time" id="friday-open" value="09:00">
+                            <input type="time" id="friday-open" value="09:30">
                             <input type="time" id="friday-close" value="20:00">
                             <input type="checkbox" id="friday-closed">
                         </div>
                         <div class="hours-row">
                             <span class="hours-day">Saturday</span>
-                            <input type="time" id="saturday-open" value="08:00">
-                            <input type="time" id="saturday-close" value="18:00">
+                            <input type="time" id="saturday-open" value="09:30">
+                            <input type="time" id="saturday-close" value="20:00">
                             <input type="checkbox" id="saturday-closed">
                         </div>
                         <div class="hours-row">
                             <span class="hours-day">Sunday</span>
-                            <input type="time" id="sunday-open" value="10:00">
-                            <input type="time" id="sunday-close" value="16:00">
+                            <input type="time" id="sunday-open" value="09:30">
+                            <input type="time" id="sunday-close" value="18:00">
                             <input type="checkbox" id="sunday-closed">
                         </div>
                     </div>
@@ -422,7 +536,7 @@
 
             <!-- View Bookings -->
             <div class="admin-card" style="grid-column: 1 / -1;">
-                <h2>📅 Recent Bookings</h2>
+                <h2>Recent Bookings</h2>
                 <div class="bookings-list" id="bookingsList">
                     <!-- Loaded dynamically -->
                 </div>
@@ -436,6 +550,42 @@
     </div>
 
     <script>
+        // Password (simple client-side - for demo purposes)
+        const ADMIN_PASSWORD = 'Password123';
+
+        // Check if already logged in
+        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+            showAdminPanel();
+        }
+
+        // Password input enter key
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === ADMIN_PASSWORD) {
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                showAdminPanel();
+            } else {
+                document.getElementById('loginError').classList.add('show');
+            }
+        }
+
+        function showAdminPanel() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminPanel').classList.add('show');
+            loadData();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('adminLoggedIn');
+            location.reload();
+        }
+
         // Load existing data
         function loadData() {
             // Load business settings
@@ -534,9 +684,6 @@
                 loadBookings();
             }
         }
-
-        // Initialize
-        loadData();
 
         // Refresh bookings every 10 seconds
         setInterval(loadBookings, 10000);
