@@ -38,23 +38,21 @@
             background: var(--black);
             color: var(--white);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
         }
 
         /* Admin Dashboard */
         .admin-container {
             width: 100%;
-            max-width: 800px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .admin-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -86,94 +84,234 @@
             color: var(--black);
         }
 
-        /* QR Code Generator */
-        .qr-section {
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 25px;
-            padding: 40px;
+        /* Steps */
+        .steps {
+            display: flex;
+            gap: 20px;
             margin-bottom: 30px;
         }
 
-        .qr-section h2 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .qr-section h2 span {
-            font-size: 24px;
-        }
-
-        .amount-input-group {
-            margin-bottom: 25px;
-        }
-
-        .amount-input-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--gray);
-            margin-bottom: 10px;
-        }
-
-        .amount-input-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .amount-input-wrapper .currency {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--gold);
-        }
-
-        .amount-input-wrapper input {
+        .step {
             flex: 1;
-            padding: 16px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(212, 175, 55, 0.3);
+            padding: 15px;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            color: var(--white);
-            font-size: 28px;
-            font-weight: 700;
-            font-family: 'Outfit', sans-serif;
-            outline: none;
-            transition: border-color 0.3s;
+            text-align: center;
+            opacity: 0.5;
+            transition: all 0.3s;
         }
 
-        .amount-input-wrapper input:focus {
+        .step.active {
+            opacity: 1;
             border-color: var(--gold);
         }
 
-        .quick-amounts {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+        .step.completed {
+            opacity: 1;
+            border-color: var(--green);
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: var(--gray-dark);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .step.active .step-number {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .step.completed .step-number {
+            background: var(--green);
+            color: var(--white);
+        }
+
+        .step-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Services Grid */
+        .services-section {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+            padding: 25px;
             margin-bottom: 25px;
         }
 
-        .quick-amount {
-            padding: 12px 20px;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 10px;
-            color: var(--gold);
-            font-size: 16px;
-            font-weight: 600;
+        .services-section h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .service-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
             cursor: pointer;
             transition: all 0.3s;
         }
 
-        .quick-amount:hover {
-            background: rgba(212, 175, 55, 0.2);
+        .service-item:hover {
+            border-color: rgba(212, 175, 55, 0.5);
             transform: translateY(-2px);
         }
 
+        .service-item.selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .service-item.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background: var(--gold);
+            color: var(--black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .service-item {
+            position: relative;
+        }
+
+        .service-img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .service-info {
+            padding: 12px;
+        }
+
+        .service-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--white);
+        }
+
+        .service-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .service-duration {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        /* Cart Summary */
+        .cart-summary {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .cart-summary h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--gold);
+        }
+
+        .cart-items {
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-name {
+            font-size: 14px;
+        }
+
+        .cart-item-price {
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: var(--red);
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0 5px;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 30px;
+            color: var(--gray);
+        }
+
+        .cart-totals {
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .cart-total-row:last-child {
+            margin-bottom: 0;
+            padding-top: 10px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .cart-total-row:last-child span:last-child {
+            color: var(--gold);
+        }
+
+        /* Generate Button */
         .generate-btn {
             width: 100%;
             padding: 18px;
@@ -192,9 +330,14 @@
             gap: 10px;
         }
 
-        .generate-btn:hover {
+        .generate-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         /* QR Display */
@@ -204,7 +347,7 @@
             padding: 40px;
             background: var(--white);
             border-radius: 25px;
-            margin-top: 30px;
+            margin-top: 25px;
         }
 
         .qr-display.active {
@@ -215,43 +358,25 @@
             font-size: 48px;
             font-weight: 800;
             color: var(--black);
+            margin-bottom: 10px;
+        }
+
+        .qr-display-services {
+            color: var(--gray-dark);
+            font-size: 14px;
             margin-bottom: 20px;
         }
 
-        .qr-code-placeholder {
-            width: 250px;
-            height: 250px;
-            background: #f0f0f0;
-            border: 3px dashed #ccc;
-            border-radius: 15px;
-            margin: 0 auto 25px;
+        .qr-code-container {
+            min-height: 250px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: var(--gray-dark);
-        }
-
-        .qr-code-placeholder svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-
-        .qr-code-placeholder p {
-            font-size: 14px;
-            color: var(--gray);
-        }
-
-        .qr-payment-info {
-            color: var(--gray-dark);
-            font-size: 14px;
             margin-bottom: 20px;
         }
 
-        .qr-payment-info strong {
-            color: var(--black);
+        #qrCanvas {
+            border-radius: 15px;
         }
 
         .qr-instructions {
@@ -275,28 +400,43 @@
             line-height: 1.8;
         }
 
+        .new-order-btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .new-order-btn:hover {
+            background: var(--gray-dark);
+        }
+
         /* Bank Details */
         .bank-details {
             background: rgba(20, 20, 20, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
-            padding: 40px;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 25px;
         }
 
         .bank-details h2 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .bank-detail-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
+            padding: 12px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
@@ -310,204 +450,313 @@
         }
 
         .bank-detail-value {
-            font-size: 18px;
-            font-weight: 700;
-            font-family: monospace;
-            letter-spacing: 2px;
-        }
-
-        .copy-btn {
-            padding: 8px 15px;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 8px;
-            color: var(--gold);
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-left: 10px;
-            transition: all 0.3s;
-        }
-
-        .copy-btn:hover {
-            background: rgba(212, 175, 55, 0.2);
-        }
-
-        .copy-btn.copied {
-            background: var(--green);
-            border-color: var(--green);
-            color: var(--white);
-        }
-
-        /* Instructions Note */
-        .setup-note {
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
-        }
-
-        .setup-note h3 {
             font-size: 16px;
             font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .setup-note p {
-            font-size: 14px;
-            color: var(--gray);
-            line-height: 1.7;
-        }
-
-        .setup-note a {
-            color: var(--gold);
-            text-decoration: none;
-        }
-
-        .setup-note a:hover {
-            text-decoration: underline;
+            font-family: monospace;
+            letter-spacing: 1px;
         }
 
         /* Responsive */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .admin-header {
                 flex-direction: column;
-                gap: 20px;
+                gap: 15px;
                 text-align: center;
             }
 
-            .quick-amounts {
-                justify-content: center;
+            .steps {
+                flex-direction: column;
             }
 
-            .bank-detail-row {
-                flex-direction: column;
-                align-items: flex-start;
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .services-grid {
+                grid-template-columns: 1fr 1fr;
                 gap: 10px;
+            }
+
+            .service-img {
+                height: 80px;
+            }
+
+            .service-info {
+                padding: 10px;
+            }
+
+            .service-name {
+                font-size: 12px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Admin Dashboard (no login required) -->
     <div class="admin-container">
         <div class="admin-header">
             <h1><span>Golden Barbers</span> Payment</h1>
-            <a href="admin.html" class="back-btn">Admin Panel</a>
+            <a href="admin.html" class="back-btn">← Admin Panel</a>
         </div>
 
-        <!-- QR Code Generator -->
-        <div class="qr-section">
-            <h2><span>📱</span> Generate Payment QR Code</h2>
-
-            <div class="amount-input-group">
-                <label>Enter Payment Amount</label>
-                <div class="amount-input-wrapper">
-                    <span class="currency">£</span>
-                    <input type="number" id="amountInput" placeholder="0.00" step="0.01" min="0">
-                </div>
+        <!-- Steps -->
+        <div class="steps">
+            <div class="step active" id="step1">
+                <div class="step-number">1</div>
+                <div class="step-title">Select Services</div>
             </div>
-
-            <div class="quick-amounts">
-                <button class="quick-amount" onclick="setAmount(13.95)">£13.95</button>
-                <button class="quick-amount" onclick="setAmount(15.95)">£15.95</button>
-                <button class="quick-amount" onclick="setAmount(19.95)">£19.95</button>
-                <button class="quick-amount" onclick="setAmount(24.95)">£24.95</button>
-                <button class="quick-amount" onclick="setAmount(45.00)">£45.00</button>
+            <div class="step" id="step2">
+                <div class="step-number">2</div>
+                <div class="step-title">Review Cart</div>
             </div>
-
-            <button class="generate-btn" onclick="generateQR()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13 2h-2v2h2v2h2v-4h2v-2h-4v2zm0-2v-2h-2v2h2zm-4 4h2v2h-2v-2zm4 2h2v2h-2v-2zm2-2h2v2h-2v-2z"/>
-                </svg>
-                Generate QR Code
-            </button>
-
-            <div class="qr-display" id="qrDisplay">
-                <div class="qr-display-amount" id="displayAmount">£0.00</div>
-
-                <div class="qr-code-container" id="qrCodeContainer" style="min-height: 250px; display: flex; align-items: center; justify-content: center;">
-                    <canvas id="qrCanvas" style="border-radius: 15px;"></canvas>
-                    <div id="qrLoading" style="color: #888; display: none;">Generating QR Code...</div>
-                </div>
-
-                <div class="qr-payment-info">
-                    <p><strong>Golden Barbers Goodmayes</strong></p>
-                    <p>Payment via bank transfer</p>
-                </div>
-
-                <div class="qr-instructions">
-                    <h4>Customer Instructions:</h4>
-                    <ol>
-                        <li>Open your banking app</li>
-                        <li>Scan this QR code or use the bank details below</li>
-                        <li>Confirm the payment amount</li>
-                        <li>Show confirmation to staff</li>
-                    </ol>
-                </div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <div class="step-title">Show QR Code</div>
             </div>
         </div>
 
-        <!-- Bank Details -->
+        <!-- Haircuts Section -->
+        <div class="services-section">
+            <h2>✂️ Haircuts</h2>
+            <div class="services-grid" id="haircutsGrid"></div>
+        </div>
+
+        <!-- Beard & Shave Section -->
+        <div class="services-section">
+            <h2>🪒 Beard & Shave</h2>
+            <div class="services-grid" id="beardGrid"></div>
+        </div>
+
+        <!-- Add-ons Section -->
+        <div class="services-section">
+            <h2>✨ Add-Ons</h2>
+            <div class="services-grid" id="addonsGrid"></div>
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="cart-summary">
+            <h2>🛒 Order Summary</h2>
+            <div class="cart-items" id="cartItems">
+                <div class="cart-empty">No services selected yet</div>
+            </div>
+            <div class="cart-totals" id="cartTotals" style="display: none;">
+                <div class="cart-total-row">
+                    <span>Services</span>
+                    <span id="serviceCount">0</span>
+                </div>
+                <div class="cart-total-row">
+                    <span>Est. Time</span>
+                    <span id="totalTime">0 min</span>
+                </div>
+                <div class="cart-total-row">
+                    <span>Total</span>
+                    <span id="totalPrice">£0.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generate QR Button -->
+        <button class="generate-btn" id="generateBtn" onclick="generateQR()" disabled>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13 2h-2v2h2v2h2v-4h2v-2h-4v2zm0-2v-2h-2v2h2zm-4 4h2v2h-2v-2zm4 2h2v2h-2v-2zm2-2h2v2h-2v-2z"/>
+            </svg>
+            Generate Payment QR Code
+        </button>
+
+        <!-- QR Display -->
+        <div class="qr-display" id="qrDisplay">
+            <div class="qr-display-amount" id="displayAmount">£0.00</div>
+            <div class="qr-display-services" id="displayServices"></div>
+
+            <div class="qr-code-container">
+                <canvas id="qrCanvas"></canvas>
+            </div>
+
+            <div class="qr-instructions">
+                <h4>Customer Instructions:</h4>
+                <ol>
+                    <li>Scan this QR code with your phone camera</li>
+                    <li>You'll be taken to the payment page with your services</li>
+                    <li>Complete payment via bank transfer</li>
+                    <li>Show confirmation to staff</li>
+                </ol>
+            </div>
+
+            <button class="new-order-btn" onclick="startNewOrder()">Start New Order</button>
+        </div>
+
+        <!-- Bank Details Reference -->
         <div class="bank-details">
-            <h2><span>🏦</span> Bank Transfer Details</h2>
-
+            <h2>🏦 Bank Transfer Details</h2>
             <div class="bank-detail-row">
                 <span class="bank-detail-label">Account Name</span>
                 <span class="bank-detail-value">GOLDEN BARBERS LTD</span>
             </div>
-
             <div class="bank-detail-row">
                 <span class="bank-detail-label">Sort Code</span>
-                <div>
-                    <span class="bank-detail-value">30-98-97</span>
-                    <button class="copy-btn" onclick="copyToClipboard('309897', this)">Copy</button>
-                </div>
+                <span class="bank-detail-value">30-98-97</span>
             </div>
-
             <div class="bank-detail-row">
                 <span class="bank-detail-label">Account Number</span>
-                <div>
-                    <span class="bank-detail-value">58413368</span>
-                    <button class="copy-btn" onclick="copyToClipboard('58413368', this)">Copy</button>
-                </div>
+                <span class="bank-detail-value">58413368</span>
             </div>
-        </div>
-
-        <!-- Setup Note -->
-        <div class="setup-note">
-            <h3><span>💡</span> Stripe Integration Required</h3>
-            <p>
-                To enable real QR code payments that deposit directly to your bank account, you'll need to set up Stripe.
-                Stripe is free to create an account - they only charge a small fee per transaction (1.4% + 20p for UK cards).
-            </p>
-            <p style="margin-top: 10px;">
-                <a href="https://stripe.com" target="_blank">Create a free Stripe account &rarr;</a>
-            </p>
         </div>
     </div>
 
     <script>
-        // QR Code Generator - Pure JavaScript implementation
-        // Creates QR codes without any external dependencies
+        // ============================================
+        // SERVICES DATA
+        // ============================================
+        var services = {
+            haircuts: [
+                { id: 'golden-luxury', name: 'Golden Luxury', price: 45, duration: 60, img: 'download (21).jpg', desc: 'Full package with all treatments' },
+                { id: 'golden-bundle', name: 'Golden Bundle', price: 27, duration: 45, img: 'download (8).jpg', desc: 'Cut, shave, towel & massage' },
+                { id: 'gents-cut', name: 'Gents Cut', price: 13.95, duration: 30, img: 'download (9).jpg', desc: 'Cut, wash, blow dry & style' },
+                { id: 'skin-fade', name: 'Skin Fade', price: 15.95, duration: 40, img: 'pic.jpg', desc: 'Fade, ear flaming & wash' },
+                { id: 'head-shave', name: 'Head Shave', price: 12.95, duration: 20, img: 'download (18).jpg', desc: 'Cut throat shave & towel' },
+                { id: 'children-cut', name: 'Children Under 12', price: 8.95, duration: 20, img: 'download (4).jpg', desc: 'Gentle kids haircut' }
+            ],
+            beard: [
+                { id: 'deluxe-hot-towel', name: 'Deluxe Hot Towel Shave', price: 11, duration: 25, img: 'download (23).jpg', desc: 'Traditional razor shave' },
+                { id: 'beard-trim', name: 'Beard Trim (Machine)', price: 6.95, duration: 15, img: 'download (11).jpg', desc: 'Professional beard trim' },
+                { id: 'turkish-hot-towel', name: 'Turkish Hot Towel', price: 3, duration: 15, img: 'download (23).jpg', desc: 'Relaxing hot towel' }
+            ],
+            addons: [
+                { id: 'ear-nose-flaming', name: 'Ear & Nose Flaming', price: 6, duration: 10, img: 'download (12).jpg', desc: 'Traditional hair removal' },
+                { id: 'face-wax', name: 'Face Wax', price: 6, duration: 10, img: 'download (15).jpg', desc: 'Complete face waxing' },
+                { id: 'face-mask', name: 'Face Mask', price: 5, duration: 10, img: 'download (16).jpg', desc: 'Refreshing facial' },
+                { id: 'eyebrow-trim', name: 'Eyebrow Trim', price: 3, duration: 5, img: 'download (9).jpg', desc: 'Neat eyebrow shaping' },
+                { id: 'hair-wash', name: 'Hair Wash & Dry', price: 4, duration: 10, img: 'download (7).jpg', desc: 'Relaxing wash & style' }
+            ]
+        };
+
+        // Cart state
+        var cart = [];
+
+        // ============================================
+        // RENDER SERVICES
+        // ============================================
+        function renderServices() {
+            renderServiceGrid('haircutsGrid', services.haircuts);
+            renderServiceGrid('beardGrid', services.beard);
+            renderServiceGrid('addonsGrid', services.addons);
+        }
+
+        function renderServiceGrid(gridId, items) {
+            var grid = document.getElementById(gridId);
+            grid.innerHTML = items.map(function(service) {
+                var isSelected = cart.some(function(item) { return item.id === service.id; });
+                return '<div class="service-item' + (isSelected ? ' selected' : '') + '" onclick="toggleService(\'' + service.id + '\')" data-id="' + service.id + '">' +
+                    '<img class="service-img" src="' + service.img + '" alt="' + service.name + '" onerror="this.src=\'https://via.placeholder.com/200x100?text=' + encodeURIComponent(service.name) + '\'">' +
+                    '<div class="service-info">' +
+                        '<div class="service-name">' + service.name + '</div>' +
+                        '<div class="service-price">£' + service.price.toFixed(2) + '</div>' +
+                        '<div class="service-duration">' + service.duration + ' min</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        // ============================================
+        // CART MANAGEMENT
+        // ============================================
+        function findService(id) {
+            var allServices = services.haircuts.concat(services.beard).concat(services.addons);
+            return allServices.find(function(s) { return s.id === id; });
+        }
+
+        function toggleService(id) {
+            var index = cart.findIndex(function(item) { return item.id === id; });
+            if (index > -1) {
+                cart.splice(index, 1);
+            } else {
+                var service = findService(id);
+                if (service) {
+                    cart.push(service);
+                }
+            }
+            updateUI();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(function(item) { return item.id !== id; });
+            updateUI();
+        }
+
+        function updateUI() {
+            // Update service items
+            document.querySelectorAll('.service-item').forEach(function(el) {
+                var id = el.dataset.id;
+                var isSelected = cart.some(function(item) { return item.id === id; });
+                if (isSelected) {
+                    el.classList.add('selected');
+                } else {
+                    el.classList.remove('selected');
+                }
+            });
+
+            // Update cart display
+            var cartItemsEl = document.getElementById('cartItems');
+            var cartTotalsEl = document.getElementById('cartTotals');
+            var generateBtn = document.getElementById('generateBtn');
+
+            if (cart.length === 0) {
+                cartItemsEl.innerHTML = '<div class="cart-empty">No services selected yet</div>';
+                cartTotalsEl.style.display = 'none';
+                generateBtn.disabled = true;
+                updateSteps(1);
+            } else {
+                cartItemsEl.innerHTML = cart.map(function(item) {
+                    return '<div class="cart-item">' +
+                        '<span class="cart-item-name">' + item.name + '</span>' +
+                        '<span>' +
+                            '<span class="cart-item-price">£' + item.price.toFixed(2) + '</span>' +
+                            '<button class="cart-item-remove" onclick="removeFromCart(\'' + item.id + '\')">&times;</button>' +
+                        '</span>' +
+                    '</div>';
+                }).join('');
+
+                var totals = getCartTotals();
+                document.getElementById('serviceCount').textContent = cart.length + ' service' + (cart.length > 1 ? 's' : '');
+                document.getElementById('totalTime').textContent = totals.duration + ' min';
+                document.getElementById('totalPrice').textContent = '£' + totals.price.toFixed(2);
+                cartTotalsEl.style.display = 'block';
+                generateBtn.disabled = false;
+                updateSteps(2);
+            }
+        }
+
+        function getCartTotals() {
+            return cart.reduce(function(acc, item) {
+                return {
+                    price: acc.price + item.price,
+                    duration: acc.duration + item.duration
+                };
+            }, { price: 0, duration: 0 });
+        }
+
+        function updateSteps(currentStep) {
+            var steps = document.querySelectorAll('.step');
+            steps.forEach(function(step, index) {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < currentStep) {
+                    step.classList.add('completed');
+                } else if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        // ============================================
+        // QR CODE GENERATION
+        // ============================================
         var QRCode = (function() {
-            // QR Code constants
             var PAD0 = 0xEC, PAD1 = 0x11;
-
-            // Error correction levels
             var ECL = { L: 1, M: 0, Q: 3, H: 2 };
-
-            // Mode indicators
-            var MODE = { NUMERIC: 1, ALPHANUMERIC: 2, BYTE: 4 };
-
-            // Galois field math
             var EXP_TABLE = new Array(256);
             var LOG_TABLE = new Array(256);
+
             (function() {
                 var x = 1;
                 for (var i = 0; i < 255; i++) {
@@ -524,7 +773,6 @@
                 return EXP_TABLE[(LOG_TABLE[a] + LOG_TABLE[b]) % 255];
             }
 
-            // Polynomial operations
             function polyMul(p1, p2) {
                 var result = new Array(p1.length + p2.length - 1).fill(0);
                 for (var i = 0; i < p1.length; i++) {
@@ -549,7 +797,6 @@
                 return result;
             }
 
-            // Generate generator polynomial
             function getGenerator(n) {
                 var g = [1];
                 for (var i = 0; i < n; i++) {
@@ -558,17 +805,18 @@
                 return g;
             }
 
-            // QR Version info
             var VERSION_INFO = [
                 null,
                 [26, 19, 16, 13, 9, 7, 10, 7],
                 [44, 34, 28, 22, 16, 10, 16, 10],
                 [70, 55, 44, 34, 26, 15, 26, 15],
                 [100, 80, 64, 48, 36, 20, 36, 20],
-                [134, 108, 86, 62, 46, 26, 46, 26]
+                [134, 108, 86, 62, 46, 26, 46, 26],
+                [172, 136, 108, 76, 60, 36, 60, 36],
+                [196, 156, 124, 88, 66, 40, 66, 40],
+                [242, 194, 154, 110, 86, 48, 86, 48]
             ];
 
-            // Get capacity
             function getCapacity(version, ecl) {
                 var info = VERSION_INFO[version];
                 if (!info) return 0;
@@ -577,45 +825,31 @@
                 return totalBytes - ecBytes;
             }
 
-            // Choose version
             function chooseVersion(data, ecl) {
-                for (var v = 1; v <= 5; v++) {
+                for (var v = 1; v <= 8; v++) {
                     var cap = getCapacity(v, ecl);
                     if (data.length + 3 <= cap) return v;
                 }
-                return 5;
+                return 8;
             }
 
-            // Create data codewords
             function createDataCodewords(data, version, ecl) {
                 var capacity = getCapacity(version, ecl);
                 var bits = [];
-
-                // Mode indicator (byte mode)
                 bits.push(0, 1, 0, 0);
-
-                // Character count
                 var countBits = version < 10 ? 8 : 16;
                 for (var i = countBits - 1; i >= 0; i--) {
                     bits.push((data.length >> i) & 1);
                 }
-
-                // Data
                 for (var i = 0; i < data.length; i++) {
                     var c = data.charCodeAt(i);
                     for (var j = 7; j >= 0; j--) {
                         bits.push((c >> j) & 1);
                     }
                 }
-
-                // Terminator
                 var termLen = Math.min(4, capacity * 8 - bits.length);
                 for (var i = 0; i < termLen; i++) bits.push(0);
-
-                // Pad to byte boundary
                 while (bits.length % 8 !== 0) bits.push(0);
-
-                // Convert to bytes
                 var bytes = [];
                 for (var i = 0; i < bits.length; i += 8) {
                     var byte = 0;
@@ -624,34 +858,26 @@
                     }
                     bytes.push(byte);
                 }
-
-                // Pad bytes
                 var padIdx = 0;
                 while (bytes.length < capacity) {
                     bytes.push(padIdx % 2 === 0 ? PAD0 : PAD1);
                     padIdx++;
                 }
-
                 return bytes;
             }
 
-            // Add error correction
             function addErrorCorrection(data, version, ecl) {
                 var info = VERSION_INFO[version];
                 var ecBytes = info[4 + ecl];
                 var gen = getGenerator(ecBytes);
-
                 var extended = data.concat(new Array(ecBytes).fill(0));
                 var remainder = polyMod(extended, gen);
-
                 while (remainder.length < ecBytes) {
                     remainder.unshift(0);
                 }
-
                 return data.concat(remainder);
             }
 
-            // Create QR matrix
             function createMatrix(version) {
                 var size = version * 4 + 17;
                 var matrix = [];
@@ -661,11 +887,9 @@
                 return matrix;
             }
 
-            // Add finder patterns
             function addFinderPatterns(matrix) {
                 var size = matrix.length;
                 var positions = [[0, 0], [size - 7, 0], [0, size - 7]];
-
                 positions.forEach(function(pos) {
                     var r = pos[0], c = pos[1];
                     for (var dr = 0; dr < 7; dr++) {
@@ -676,20 +900,15 @@
                         }
                     }
                 });
-
-                // Separators
                 for (var i = 0; i < 8; i++) {
-                    // Top-left
                     if (i < size) {
                         if (matrix[7] && matrix[7][i] === null) matrix[7][i] = 0;
                         if (matrix[i] && matrix[i][7] === null) matrix[i][7] = 0;
                     }
-                    // Top-right
                     if (matrix[7] && size - 8 + i < size && matrix[7][size - 8 + i] === null)
                         matrix[7][size - 8 + i] = 0;
                     if (matrix[i] && matrix[i][size - 8] === null)
                         matrix[i][size - 8] = 0;
-                    // Bottom-left
                     if (matrix[size - 8] && matrix[size - 8][i] === null)
                         matrix[size - 8][i] = 0;
                     if (matrix[size - 8 + i] && matrix[size - 8 + i][7] === null)
@@ -697,7 +916,6 @@
                 }
             }
 
-            // Add timing patterns
             function addTimingPatterns(matrix) {
                 var size = matrix.length;
                 for (var i = 8; i < size - 8; i++) {
@@ -706,12 +924,9 @@
                 }
             }
 
-            // Add format info
             function addFormatInfo(matrix, ecl, mask) {
                 var size = matrix.length;
                 var formatBits = (ecl << 3) | mask;
-
-                // BCH encoding for format info
                 var g = 0x537;
                 var d = formatBits << 10;
                 while (d >= 0x400) {
@@ -719,26 +934,17 @@
                     d ^= g << shift;
                 }
                 formatBits = ((formatBits << 10) | d) ^ 0x5412;
-
-                // Place format bits
                 for (var i = 0; i < 15; i++) {
                     var bit = (formatBits >> i) & 1;
-
-                    // Around top-left finder
                     if (i < 6) matrix[i][8] = bit;
                     else if (i < 8) matrix[i + 1][8] = bit;
                     else matrix[8][14 - i] = bit;
-
-                    // Around other finders
                     if (i < 8) matrix[8][size - 1 - i] = bit;
                     else matrix[size - 15 + i][8] = bit;
                 }
-
-                // Dark module
                 matrix[size - 8][8] = 1;
             }
 
-            // Mask functions
             var MASKS = [
                 function(r, c) { return (r + c) % 2 === 0; },
                 function(r, c) { return r % 2 === 0; },
@@ -750,30 +956,22 @@
                 function(r, c) { return ((r+c) % 2 + (r*c) % 3) % 2 === 0; }
             ];
 
-            // Place data bits
             function placeData(matrix, data, mask) {
                 var size = matrix.length;
                 var bitIdx = 0;
                 var bits = [];
-
-                // Convert bytes to bits
                 for (var i = 0; i < data.length; i++) {
                     for (var j = 7; j >= 0; j--) {
                         bits.push((data[i] >> j) & 1);
                     }
                 }
-
-                // Place bits in zigzag pattern
                 var col = size - 1;
                 var goingUp = true;
-
                 while (col > 0) {
-                    if (col === 6) col--; // Skip timing column
-
+                    if (col === 6) col--;
                     for (var row = goingUp ? size - 1 : 0;
                          goingUp ? row >= 0 : row < size;
                          row += goingUp ? -1 : 1) {
-
                         for (var c = 0; c < 2; c++) {
                             var cc = col - c;
                             if (matrix[row][cc] === null) {
@@ -784,26 +982,21 @@
                             }
                         }
                     }
-
                     col -= 2;
                     goingUp = !goingUp;
                 }
             }
 
-            // Main encode function
             function encode(text, ecLevel) {
                 var ecl = ECL[ecLevel] !== undefined ? ECL[ecLevel] : ECL.M;
                 var version = chooseVersion(text, ecl);
                 var data = createDataCodewords(text, version, ecl);
                 var codewords = addErrorCorrection(data, version, ecl);
-
-                // Try all masks, use mask 0 for simplicity
                 var matrix = createMatrix(version);
                 addFinderPatterns(matrix);
                 addTimingPatterns(matrix);
                 addFormatInfo(matrix, ecl, 0);
                 placeData(matrix, codewords, 0);
-
                 return {
                     matrix: matrix,
                     size: matrix.length,
@@ -819,81 +1012,69 @@
             return { encode: encode };
         })();
 
-        // QR Code Functions
-        var bankDetails = {
-            accountName: 'GOLDEN BARBERS LTD',
-            sortCode: '30-98-97',
-            accountNumber: '58413368'
-        };
-
-        function setAmount(amount) {
-            document.getElementById('amountInput').value = amount.toFixed(2);
-        }
-
+        // ============================================
+        // GENERATE QR CODE
+        // ============================================
         function generateQR() {
-            var amountInput = document.getElementById('amountInput');
-            var amount = parseFloat(amountInput.value);
+            if (cart.length === 0) return;
 
-            if (isNaN(amount) || amount <= 0) {
-                alert('Please enter a valid amount');
-                return;
-            }
+            var totals = getCartTotals();
 
-            document.getElementById('displayAmount').textContent = '£' + amount.toFixed(2);
+            // Build URL with cart data
+            var cartData = cart.map(function(item) {
+                return item.id;
+            }).join(',');
+
+            var paymentUrl = 'https://dp-otp.github.io/golden-barbers-goodmayes/premium/pay.html?services=' + encodeURIComponent(cartData) + '&total=' + totals.price.toFixed(2);
+
+            // Update display
+            document.getElementById('displayAmount').textContent = '£' + totals.price.toFixed(2);
+            document.getElementById('displayServices').textContent = cart.map(function(item) { return item.name; }).join(' + ');
             document.getElementById('qrDisplay').classList.add('active');
-            document.getElementById('qrLoading').style.display = 'block';
-            document.getElementById('qrLoading').textContent = 'Generating QR Code...';
-            document.getElementById('qrCanvas').style.display = 'none';
-
-            // Create payment info text for QR code
-            var paymentInfo = 'Golden Barbers|' + amount.toFixed(2) + '|' + bankDetails.sortCode + '|' + bankDetails.accountNumber;
 
             // Generate QR code
-            setTimeout(function() {
-                try {
-                    var qr = QRCode.encode(paymentInfo, 'M');
-                    var canvas = document.getElementById('qrCanvas');
-                    var ctx = canvas.getContext('2d');
-                    var moduleCount = qr.getModuleCount();
-                    var cellSize = Math.floor(250 / moduleCount);
-                    var size = cellSize * moduleCount;
+            try {
+                var qr = QRCode.encode(paymentUrl, 'L');
+                var canvas = document.getElementById('qrCanvas');
+                var ctx = canvas.getContext('2d');
+                var moduleCount = qr.getModuleCount();
+                var cellSize = Math.floor(280 / moduleCount);
+                var size = cellSize * moduleCount;
 
-                    canvas.width = size;
-                    canvas.height = size;
+                canvas.width = size;
+                canvas.height = size;
 
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(0, 0, size, size);
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, size, size);
 
-                    ctx.fillStyle = '#000000';
-                    for (var row = 0; row < moduleCount; row++) {
-                        for (var col = 0; col < moduleCount; col++) {
-                            if (qr.isDark(row, col)) {
-                                ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
-                            }
+                ctx.fillStyle = '#000000';
+                for (var row = 0; row < moduleCount; row++) {
+                    for (var col = 0; col < moduleCount; col++) {
+                        if (qr.isDark(row, col)) {
+                            ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
                         }
                     }
-
-                    document.getElementById('qrCanvas').style.display = 'block';
-                    document.getElementById('qrLoading').style.display = 'none';
-                } catch (error) {
-                    console.error('QR Error:', error);
-                    document.getElementById('qrLoading').textContent = 'Error: ' + (error.message || 'Failed to generate QR');
-                    document.getElementById('qrLoading').style.display = 'block';
                 }
-            }, 100);
+
+                updateSteps(3);
+            } catch (error) {
+                console.error('QR Error:', error);
+                alert('Error generating QR code: ' + error.message);
+            }
         }
 
-        // Copy to Clipboard
-        function copyToClipboard(text, btn) {
-            navigator.clipboard.writeText(text).then(() => {
-                btn.textContent = 'Copied!';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = 'Copy';
-                    btn.classList.remove('copied');
-                }, 2000);
-            });
+        function startNewOrder() {
+            cart = [];
+            document.getElementById('qrDisplay').classList.remove('active');
+            updateUI();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // ============================================
+        // INIT
+        // ============================================
+        renderServices();
+        updateUI();
     </script>
 </body>
 </html>

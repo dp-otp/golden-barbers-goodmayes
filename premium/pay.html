@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay | Golden Barbers Goodmayes</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f5d778;
+            --gold-dark: #a88a2d;
+            --black: #000000;
+            --dark: #0a0a0a;
+            --dark-light: #141414;
+            --white: #ffffff;
+            --gray: #888888;
+            --gray-dark: #444444;
+            --green: #22c55e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            display: block;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .header h1 span {
+            color: var(--gold);
+        }
+
+        .header p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Order Summary */
+        .order-card {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .order-card h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .order-items {
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-item-name {
+            font-size: 14px;
+            color: var(--white);
+        }
+
+        .order-item-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .order-total {
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .order-total-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .order-total-amount {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        /* Bank Details Card */
+        .bank-card {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .bank-card h2 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bank-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .bank-row:last-child {
+            border-bottom: none;
+        }
+
+        .bank-label {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .bank-value-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bank-value {
+            font-size: 16px;
+            font-weight: 700;
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+
+        .copy-btn {
+            padding: 8px 12px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 6px;
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .copy-btn.copied {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--white);
+        }
+
+        /* Instructions */
+        .instructions {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .instructions h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            font-size: 13px;
+            line-height: 2;
+            color: var(--gray);
+        }
+
+        .instructions li {
+            margin-bottom: 5px;
+        }
+
+        /* Reference */
+        .reference {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .reference-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .reference-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--white);
+            font-family: monospace;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--gray);
+            font-size: 12px;
+        }
+
+        .footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 50px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(212, 175, 55, 0.2);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error */
+        .error-card {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .error-card h2 {
+            color: #ef4444;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .error-card p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .error-card a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: var(--gold);
+            color: var(--black);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="../logo.png" alt="Golden Barbers" class="logo" onerror="this.style.display='none'">
+            <h1><span>Golden</span> Barbers</h1>
+            <p>Goodmayes, Ilford</p>
+        </div>
+
+        <!-- Content loaded by JavaScript -->
+        <div id="content">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading your order...</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Questions? Call us at <a href="tel:02034324242">020 3432 4242</a></p>
+            <p style="margin-top: 10px;">Thank you for choosing Golden Barbers</p>
+        </div>
+    </div>
+
+    <script>
+        // Services data (same as admin-qr.html)
+        var services = {
+            'golden-luxury': { name: 'Golden Luxury', price: 45 },
+            'golden-bundle': { name: 'Golden Bundle', price: 27 },
+            'gents-cut': { name: 'Gents Cut', price: 13.95 },
+            'skin-fade': { name: 'Skin Fade', price: 15.95 },
+            'head-shave': { name: 'Head Shave', price: 12.95 },
+            'children-cut': { name: 'Children Under 12', price: 8.95 },
+            'deluxe-hot-towel': { name: 'Deluxe Hot Towel Shave', price: 11 },
+            'beard-trim': { name: 'Beard Trim (Machine)', price: 6.95 },
+            'turkish-hot-towel': { name: 'Turkish Hot Towel', price: 3 },
+            'ear-nose-flaming': { name: 'Ear & Nose Flaming', price: 6 },
+            'face-wax': { name: 'Face Wax', price: 6 },
+            'face-mask': { name: 'Face Mask', price: 5 },
+            'eyebrow-trim': { name: 'Eyebrow Trim', price: 3 },
+            'hair-wash': { name: 'Hair Wash & Dry', price: 4 }
+        };
+
+        // Bank details
+        var bankDetails = {
+            name: 'GOLDEN BARBERS LTD',
+            sortCode: '30-98-97',
+            sortCodeClean: '309897',
+            accountNumber: '58413368'
+        };
+
+        // Parse URL parameters
+        function getUrlParams() {
+            var params = {};
+            var search = window.location.search.substring(1);
+            if (search) {
+                search.split('&').forEach(function(pair) {
+                    var parts = pair.split('=');
+                    params[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1] || '');
+                });
+            }
+            return params;
+        }
+
+        // Generate reference number
+        function generateReference() {
+            var now = new Date();
+            var ref = 'GB' +
+                now.getFullYear().toString().slice(-2) +
+                ('0' + (now.getMonth() + 1)).slice(-2) +
+                ('0' + now.getDate()).slice(-2) +
+                ('0' + now.getHours()).slice(-2) +
+                ('0' + now.getMinutes()).slice(-2);
+            return ref;
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text, btnId) {
+            navigator.clipboard.writeText(text).then(function() {
+                var btn = document.getElementById(btnId);
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(function() {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Initialize page
+        function init() {
+            var params = getUrlParams();
+            var contentEl = document.getElementById('content');
+
+            // Parse services from URL
+            var serviceIds = params.services ? params.services.split(',') : [];
+            var orderItems = [];
+            var total = 0;
+
+            serviceIds.forEach(function(id) {
+                var service = services[id];
+                if (service) {
+                    orderItems.push(service);
+                    total += service.price;
+                }
+            });
+
+            // If no valid services, show error
+            if (orderItems.length === 0) {
+                contentEl.innerHTML =
+                    '<div class="error-card">' +
+                        '<h2>Invalid Order</h2>' +
+                        '<p>This payment link appears to be invalid or expired.</p>' +
+                        '<a href="services.html">View Our Services</a>' +
+                    '</div>';
+                return;
+            }
+
+            var reference = generateReference();
+
+            // Build order HTML
+            var orderItemsHtml = orderItems.map(function(item) {
+                return '<div class="order-item">' +
+                    '<span class="order-item-name">' + item.name + '</span>' +
+                    '<span class="order-item-price">£' + item.price.toFixed(2) + '</span>' +
+                '</div>';
+            }).join('');
+
+            contentEl.innerHTML =
+                // Order Summary
+                '<div class="order-card">' +
+                    '<h2>🧾 Your Order</h2>' +
+                    '<div class="order-items">' + orderItemsHtml + '</div>' +
+                    '<div class="order-total">' +
+                        '<div class="order-total-label">Total to Pay</div>' +
+                        '<div class="order-total-amount">£' + total.toFixed(2) + '</div>' +
+                    '</div>' +
+                '</div>' +
+
+                // Payment Reference
+                '<div class="reference">' +
+                    '<div class="reference-label">Payment Reference</div>' +
+                    '<div class="reference-value">' + reference + '</div>' +
+                '</div>' +
+
+                // Bank Details
+                '<div class="bank-card">' +
+                    '<h2>🏦 Bank Transfer Details</h2>' +
+                    '<div class="bank-row">' +
+                        '<span class="bank-label">Account Name</span>' +
+                        '<span class="bank-value">' + bankDetails.name + '</span>' +
+                    '</div>' +
+                    '<div class="bank-row">' +
+                        '<span class="bank-label">Sort Code</span>' +
+                        '<div class="bank-value-wrap">' +
+                            '<span class="bank-value">' + bankDetails.sortCode + '</span>' +
+                            '<button class="copy-btn" id="copySortCode" onclick="copyToClipboard(\'' + bankDetails.sortCodeClean + '\', \'copySortCode\')">Copy</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="bank-row">' +
+                        '<span class="bank-label">Account Number</span>' +
+                        '<div class="bank-value-wrap">' +
+                            '<span class="bank-value">' + bankDetails.accountNumber + '</span>' +
+                            '<button class="copy-btn" id="copyAccNum" onclick="copyToClipboard(\'' + bankDetails.accountNumber + '\', \'copyAccNum\')">Copy</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="bank-row">' +
+                        '<span class="bank-label">Amount</span>' +
+                        '<div class="bank-value-wrap">' +
+                            '<span class="bank-value">£' + total.toFixed(2) + '</span>' +
+                            '<button class="copy-btn" id="copyAmount" onclick="copyToClipboard(\'' + total.toFixed(2) + '\', \'copyAmount\')">Copy</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="bank-row">' +
+                        '<span class="bank-label">Reference</span>' +
+                        '<div class="bank-value-wrap">' +
+                            '<span class="bank-value">' + reference + '</span>' +
+                            '<button class="copy-btn" id="copyRef" onclick="copyToClipboard(\'' + reference + '\', \'copyRef\')">Copy</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+
+                // Instructions
+                '<div class="instructions">' +
+                    '<h3>📱 How to Pay</h3>' +
+                    '<ol>' +
+                        '<li>Open your banking app</li>' +
+                        '<li>Select "Send Money" or "Pay Someone"</li>' +
+                        '<li>Enter the bank details above</li>' +
+                        '<li>Use <strong>' + reference + '</strong> as reference</li>' +
+                        '<li>Send <strong>£' + total.toFixed(2) + '</strong></li>' +
+                        '<li>Show confirmation to staff</li>' +
+                    '</ol>' +
+                '</div>';
+        }
+
+        // Run on page load
+        setTimeout(init, 500);
+    </script>
+</body>
+</html>
