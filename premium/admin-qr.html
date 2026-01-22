@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Payment QR | Golden Barbers</title>
+    <title>Payment QR | Golden Barbers</title>
     <meta name="robots" content="noindex, nofollow">
 
     <!-- Fonts -->
@@ -43,104 +43,10 @@
             padding: 20px;
         }
 
-        /* Login Screen */
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .login-logo {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 30px;
-            border-radius: 50%;
-        }
-
-        .login-title {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
-
-        .login-subtitle {
-            color: var(--gray);
-            margin-bottom: 40px;
-        }
-
-        .login-form {
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px;
-        }
-
-        .login-form label {
-            display: block;
-            text-align: left;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--gray);
-        }
-
-        .login-form input {
-            width: 100%;
-            padding: 16px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: var(--white);
-            font-size: 16px;
-            font-family: 'Outfit', sans-serif;
-            margin-bottom: 25px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .login-form input:focus {
-            border-color: var(--gold);
-        }
-
-        .login-form button {
-            width: 100%;
-            padding: 16px;
-            background: var(--gold);
-            color: var(--black);
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            font-family: 'Outfit', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .login-form button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
-        }
-
-        .login-error {
-            color: var(--red);
-            font-size: 14px;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .login-error.show {
-            display: block;
-        }
-
         /* Admin Dashboard */
         .admin-container {
             width: 100%;
             max-width: 800px;
-            display: none;
-        }
-
-        .admin-container.active {
-            display: block;
         }
 
         .admin-header {
@@ -161,21 +67,22 @@
             color: var(--gold);
         }
 
-        .logout-btn {
+        .back-btn {
             padding: 10px 20px;
             background: transparent;
-            border: 1px solid var(--red);
-            color: var(--red);
+            border: 1px solid var(--gold);
+            color: var(--gold);
             border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            text-decoration: none;
         }
 
-        .logout-btn:hover {
-            background: var(--red);
-            color: var(--white);
+        .back-btn:hover {
+            background: var(--gold);
+            color: var(--black);
         }
 
         /* QR Code Generator */
@@ -486,25 +393,11 @@
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div class="login-container" id="loginContainer">
-        <img src="..\logo.png" alt="Golden Barbers" class="login-logo">
-        <h1 class="login-title">Admin Access</h1>
-        <p class="login-subtitle">Enter the admin password to continue</p>
-
-        <form class="login-form" id="loginForm">
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Enter admin password" autocomplete="off">
-            <button type="submit">Access Admin Panel</button>
-            <p class="login-error" id="loginError">Incorrect password. Please try again.</p>
-        </form>
-    </div>
-
-    <!-- Admin Dashboard -->
-    <div class="admin-container" id="adminContainer">
+    <!-- Admin Dashboard (no login required) -->
+    <div class="admin-container">
         <div class="admin-header">
-            <h1><span>Golden Barbers</span> Admin</h1>
-            <button class="logout-btn" onclick="logout()">Logout</button>
+            <h1><span>Golden Barbers</span> Payment</h1>
+            <a href="admin.html" class="back-btn">Admin Panel</a>
         </div>
 
         <!-- QR Code Generator -->
@@ -602,46 +495,6 @@
     </div>
 
     <script>
-        // Simple password protection (client-side only - for demo purposes)
-        // In production, this should be server-side authentication
-        const ADMIN_PASSWORD = 'golden2024'; // Change this password
-
-        const loginContainer = document.getElementById('loginContainer');
-        const adminContainer = document.getElementById('adminContainer');
-        const loginForm = document.getElementById('loginForm');
-        const loginError = document.getElementById('loginError');
-        const passwordInput = document.getElementById('password');
-
-        // Check if already logged in this session
-        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-            showAdmin();
-        }
-
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (passwordInput.value === ADMIN_PASSWORD) {
-                sessionStorage.setItem('adminLoggedIn', 'true');
-                showAdmin();
-            } else {
-                loginError.classList.add('show');
-                passwordInput.value = '';
-                passwordInput.focus();
-            }
-        });
-
-        function showAdmin() {
-            loginContainer.style.display = 'none';
-            adminContainer.classList.add('active');
-        }
-
-        function logout() {
-            sessionStorage.removeItem('adminLoggedIn');
-            adminContainer.classList.remove('active');
-            loginContainer.style.display = 'block';
-            passwordInput.value = '';
-            loginError.classList.remove('show');
-        }
-
         // QR Code Functions
         function setAmount(amount) {
             document.getElementById('amountInput').value = amount.toFixed(2);
