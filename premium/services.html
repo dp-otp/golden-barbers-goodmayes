@@ -2652,7 +2652,6 @@
         </div>
         <div class="cart-totals">
             <div><span>Total:</span> <span class="cart-total-price" id="cartTotalPrice">£0</span></div>
-            <div><span>Time:</span> <span class="cart-total-time" id="cartTotalTime">0 min</span></div>
         </div>
         <button class="cart-checkout-btn" onclick="openCartModal()">Review & Book</button>
         <button class="cart-clear-btn" onclick="CartManager.clear()">Clear Cart</button>
@@ -2864,7 +2863,6 @@
                 const cartSummary = document.getElementById('cartSummary');
                 const cartCount = document.getElementById('cartCount');
                 const cartTotalPrice = document.getElementById('cartTotalPrice');
-                const cartTotalTime = document.getElementById('cartTotalTime');
 
                 // Update floating widget
                 if (totals.count > 0) {
@@ -2875,7 +2873,6 @@
 
                 cartCount.textContent = totals.count;
                 cartTotalPrice.textContent = '£' + totals.price.toFixed(2);
-                cartTotalTime.textContent = totals.duration + ' min';
 
                 // Update service cards
                 document.querySelectorAll('.service-card[data-service-id]').forEach(card => {
@@ -2903,7 +2900,6 @@
         // ============================================
         const bookingModal = document.getElementById('bookingModal');
         const modalClose = document.getElementById('modalClose');
-        const modalIcon = document.getElementById('modalIcon');
         const modalName = document.getElementById('modalName');
         const modalPrice = document.getElementById('modalPrice');
 
@@ -2995,7 +2991,6 @@
 
             // Set modal header info based on cart
             const totals = CartManager.getTotals();
-            modalIcon.textContent = '🛒';
             modalName.textContent = totals.count + ' Service' + (totals.count > 1 ? 's' : '') + ' Selected';
             modalPrice.textContent = '£' + totals.price.toFixed(2);
 
