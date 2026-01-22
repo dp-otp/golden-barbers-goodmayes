@@ -3106,12 +3106,13 @@
                 e.preventDefault();
                 e.stopPropagation();
                 const card = btn.closest('.service-card');
+                const iconEl = card.querySelector('.service-icon');
                 const service = {
                     id: card.dataset.serviceId,
                     name: card.dataset.name,
                     price: parseFloat(card.dataset.price),
                     duration: parseInt(card.dataset.duration),
-                    icon: card.querySelector('.service-icon').textContent
+                    icon: iconEl ? iconEl.innerHTML : '✂️'
                 };
                 CartManager.toggleService(service);
             });
