@@ -1930,8 +1930,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£45</div>
-                                <div class="service-duration">60 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -1949,8 +1948,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£27</div>
-                                <div class="service-duration">45 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -1967,8 +1965,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£13.95</div>
-                                <div class="service-duration">30 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -1985,8 +1982,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£15.95</div>
-                                <div class="service-duration">40 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -2003,8 +1999,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£12.95</div>
-                                <div class="service-duration">20 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -2021,8 +2016,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£8.95</div>
-                                <div class="service-duration">20 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -2057,8 +2051,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£11</div>
-                                <div class="service-duration">25 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -2075,8 +2068,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£6.95</div>
-                                <div class="service-duration">15 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -2093,8 +2085,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£3</div>
-                                <div class="service-duration">15 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -2128,8 +2119,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£6</div>
-                                <div class="service-duration">10 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -2146,8 +2136,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£5 / £10</div>
-                                <div class="service-duration">15 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -2164,8 +2153,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£5 / £10 / £15</div>
-                                <div class="service-duration">Varies</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -2182,8 +2170,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£5</div>
-                                <div class="service-duration">10 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -2200,8 +2187,7 @@
                         <div class="service-meta">
                             <div>
                                 <div class="service-price">£5</div>
-                                <div class="service-duration">10 minutes</div>
-                            </div>
+                                                            </div>
                             <button class="service-cta">Add to Cart</button>
                         </div>
                     </div>
@@ -2304,7 +2290,6 @@
                 <span class="modal-service-icon" id="modalIcon">👑</span>
                 <h2 class="modal-service-name" id="modalName">Service Name</h2>
                 <div class="modal-service-price" id="modalPrice">£0</div>
-                <p class="modal-service-duration" id="modalDuration">Duration</p>
             </div>
 
             <div class="modal-body">
@@ -2517,7 +2502,6 @@
         </div>
         <div class="cart-totals">
             <div><span>Total:</span> <span class="cart-total-price" id="cartTotalPrice">£0</span></div>
-            <div><span>Est. Time:</span> <span class="cart-total-time" id="cartTotalTime">0 min</span></div>
         </div>
         <button class="cart-checkout-btn" onclick="openCartModal()">Review & Book</button>
         <button class="cart-clear-btn" onclick="CartManager.clear()">Clear Cart</button>
@@ -2771,7 +2755,6 @@
         const modalIcon = document.getElementById('modalIcon');
         const modalName = document.getElementById('modalName');
         const modalPrice = document.getElementById('modalPrice');
-        const modalDuration = document.getElementById('modalDuration');
 
         // State for extras
         let selectedExtras = [];
@@ -2864,7 +2847,6 @@
             modalIcon.textContent = '🛒';
             modalName.textContent = totals.count + ' Service' + (totals.count > 1 ? 's' : '') + ' Selected';
             modalPrice.textContent = '£' + totals.price.toFixed(2);
-            modalDuration.textContent = totals.duration + ' minutes';
 
             updateOrderSummary();
 
