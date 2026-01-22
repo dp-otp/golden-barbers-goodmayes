@@ -369,6 +369,12 @@
             margin-top: 20px;
         }
 
+        /* Manage gallery grid needs more space */
+        #manageGalleryGrid {
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
         .gallery-item {
             position: relative;
             aspect-ratio: 1;
@@ -565,6 +571,8 @@
         /* Gallery Manage Item Buttons */
         .gallery-manage-item {
             min-height: 220px;
+            position: relative;
+            overflow: visible !important;
         }
 
         .gallery-manage-btns {
@@ -574,6 +582,12 @@
             display: flex;
             gap: 6px;
             flex-direction: column;
+            z-index: 10;
+        }
+
+        .gallery-manage-btns button {
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
 
         @media (max-width: 768px) {
