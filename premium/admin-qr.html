@@ -11,6 +11,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+    <!-- QR Code Generator Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
     <style>
         :root {
             --gold: #d4af37;
@@ -431,8 +434,8 @@
                 <div class="qr-display-amount" id="displayAmount">£0.00</div>
 
                 <div class="qr-code-container" id="qrCodeContainer" style="min-height: 250px; display: flex; align-items: center; justify-content: center;">
-                    <img id="qrCodeImage" src="" alt="Payment QR Code" style="width: 250px; height: 250px; border-radius: 15px; display: none;">
-                    <div id="qrLoading" style="color: #888;">Generating QR Code...</div>
+                    <canvas id="qrCanvas" style="border-radius: 15px;"></canvas>
+                    <div id="qrLoading" style="color: #888; display: none;">Generating QR Code...</div>
                 </div>
 
                 <div class="qr-payment-info">
@@ -520,25 +523,23 @@ Account: ${bankDetails.accountName}
 Sort Code: ${bankDetails.sortCode}
 Account No: ${bankDetails.accountNumber}`;
 
-            // Generate QR code using QR Server API
-            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(paymentInfo)}`;
+            // Generate QR code locally using qrcode library
+            const canvas = document.getElementById('qrCanvas');
 
-            const qrImg = document.getElementById('qrCodeImage');
-            const qrLoading = document.getElementById('qrLoading');
-
-            qrLoading.style.display = 'block';
-            qrImg.style.display = 'none';
-
-            qrImg.onload = function() {
-                qrLoading.style.display = 'none';
-                qrImg.style.display = 'block';
-            };
-
-            qrImg.onerror = function() {
-                qrLoading.textContent = 'Error loading QR code. Please try again.';
-            };
-
-            qrImg.src = qrCodeUrl;
+            QRCode.toCanvas(canvas, paymentInfo, {
+                width: 250,
+                margin: 2,
+                color: {
+                    dark: '#000000',
+                    light: '#ffffff'
+                }
+            }, function(error) {
+                if (error) {
+                    console.error('QR Error:', error);
+                    document.getElementById('qrLoading').textContent = 'Error generating QR code.';
+                    document.getElementById('qrLoading').style.display = 'block';
+                }
+            });
         }
 
         // Copy to Clipboard
