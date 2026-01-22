@@ -3726,14 +3726,14 @@
 
     <!-- Adam Chat Widget -->
     <button class="adam-chat-btn" id="adamChatBtn" title="Chat with Adam AI">
-        <span class="adam-icon">🤖</span>
-        <span class="adam-text">Ask Adam</span>
+        <span class="adam-icon">👨</span>
+        <span class="adam-text">Chat with Adam!</span>
     </button>
 
     <div class="adam-chat-popup" id="adamChatPopup">
         <div class="adam-popup-header">
             <div class="adam-popup-info">
-                <div class="adam-popup-avatar">🤖</div>
+                <div class="adam-popup-avatar">👨</div>
                 <div class="adam-popup-name">
                     <h4>Adam AI</h4>
                     <span>Online now</span>
@@ -3744,7 +3744,7 @@
 
         <div class="adam-popup-messages" id="adamMessages">
             <div class="adam-msg bot">
-                <div class="adam-msg-avatar">🤖</div>
+                <div class="adam-msg-avatar">👨</div>
                 <div class="adam-msg-content">
                     <p>Hey! I'm Adam, your Golden Barbers assistant. How can I help?</p>
                     <div class="adam-quick-btns">
@@ -3830,7 +3830,7 @@
             const div = document.createElement('div');
             div.className = `adam-msg ${isUser ? 'user' : 'bot'}`;
             div.innerHTML = `
-                <div class="adam-msg-avatar">${isUser ? '👤' : '🤖'}</div>
+                <div class="adam-msg-avatar">${isUser ? '👤' : '👨'}</div>
                 <div class="adam-msg-content"><p>${text}</p></div>
             `;
             adamMessages.appendChild(div);
