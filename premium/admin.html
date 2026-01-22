@@ -562,6 +562,20 @@
             background: rgba(212, 175, 55, 0.2);
         }
 
+        /* Gallery Manage Item Buttons */
+        .gallery-manage-item {
+            min-height: 220px;
+        }
+
+        .gallery-manage-btns {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 6px;
+            flex-direction: column;
+        }
+
         @media (max-width: 768px) {
             .admin-grid {
                 grid-template-columns: 1fr;
@@ -574,6 +588,146 @@
 
             .booking-details {
                 grid-template-columns: 1fr;
+            }
+
+            .logout-btn {
+                position: static;
+                display: block;
+                width: 100%;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+
+            .admin-header {
+                padding: 20px;
+                text-align: center;
+            }
+
+            .admin-header h1 {
+                font-size: 24px;
+            }
+
+            .warning-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .tab-buttons {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .tab-btn {
+                flex: 1;
+                min-width: 100px;
+                text-align: center;
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .gallery-item {
+                aspect-ratio: 1;
+            }
+
+            .gallery-manage-item {
+                min-height: 180px;
+            }
+
+            .gallery-manage-btns {
+                flex-direction: row;
+                top: 5px;
+                right: 5px;
+            }
+
+            .gallery-manage-btns button {
+                padding: 5px 8px !important;
+                font-size: 10px !important;
+            }
+
+            .gallery-item .delete-btn,
+            .gallery-item .copy-btn,
+            .gallery-item .live-btn {
+                opacity: 1;
+            }
+
+            .upload-area {
+                padding: 25px 15px;
+            }
+
+            .upload-area h4 {
+                font-size: 14px;
+            }
+
+            .upload-area p {
+                font-size: 12px;
+            }
+
+            .form-group input,
+            .form-group textarea,
+            .form-group select {
+                font-size: 16px;
+            }
+
+            .admin-card {
+                padding: 15px;
+            }
+
+            .admin-card h2 {
+                font-size: 18px;
+            }
+
+            #makeLiveModal > div {
+                padding: 20px;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .category-chip {
+                padding: 8px 12px !important;
+                font-size: 12px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .gallery-manage-item {
+                min-height: 160px;
+            }
+
+            .gallery-manage-btns {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .gallery-manage-btns button {
+                padding: 4px 6px !important;
+                font-size: 9px !important;
+            }
+
+            .gallery-item div[style*="bottom: 8px"] {
+                padding: 5px !important;
+            }
+
+            .gallery-item div[style*="bottom: 8px"] p {
+                font-size: 10px !important;
+            }
+
+            .tab-btn {
+                padding: 10px 8px;
+                font-size: 12px;
             }
         }
     </style>
@@ -768,8 +922,46 @@
 
     </div>
 
+    <!-- Replace Photo Modal -->
+    <div id="replacePhotoModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center;">
+        <div style="background: #141414; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 15px; padding: 30px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto;">
+            <h3 style="color: #d4af37; margin-bottom: 20px;">Replace Photo</h3>
+
+            <div style="margin-bottom: 20px;">
+                <p style="color: #888; font-size: 13px; margin-bottom: 10px;">Current photo:</p>
+                <div style="display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
+                    <img id="replaceCurrentImg" src="" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                    <div>
+                        <p id="replaceCurrentTitle" style="color: #fff; font-weight: 600;"></p>
+                        <p id="replaceCurrentId" style="color: #888; font-size: 12px;"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; color: #888; font-size: 12px; margin-bottom: 8px; text-transform: uppercase;">Replace with URL</label>
+                <input type="text" id="replaceUrlInput" placeholder="https://example.com/image.jpg" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #fff; font-size: 14px;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <p style="color: #888; font-size: 13px; margin-bottom: 10px;">Or upload a new photo:</p>
+                <button onclick="openReplaceUploadWidget()" style="width: 100%; padding: 15px; background: rgba(212, 175, 55, 0.1); border: 2px dashed rgba(212, 175, 55, 0.4); border-radius: 10px; color: #d4af37; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+                    Click to Upload New Photo
+                </button>
+                <div id="replacePreview" style="display: none; margin-top: 15px; text-align: center;">
+                    <img id="replacePreviewImg" src="" style="max-width: 200px; max-height: 150px; border-radius: 10px;">
+                    <p style="color: #22c55e; font-size: 12px; margin-top: 8px;">New photo ready</p>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button onclick="closeReplaceModal()" style="flex: 1; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; cursor: pointer;">Cancel</button>
+                <button onclick="confirmReplace()" style="flex: 1; padding: 12px; background: #d4af37; border: none; border-radius: 8px; color: #000; font-weight: 700; cursor: pointer;">Replace Photo</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Make Live Modal -->
-    <div id="makeLiveModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center;">
         <div style="background: #141414; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 15px; padding: 30px; max-width: 500px; width: 90%;">
             <h3 style="color: #d4af37; margin-bottom: 20px;">Make Image Live</h3>
 
@@ -1450,6 +1642,13 @@
             { id: 'pic', src: 'pic.jpg', title: 'Clean Skin Fade', category: 'fades', usedIn: 'Learn' },
             { id: 'images', src: 'images.jpg', title: 'Confident Buzz Cut', category: 'fades', usedIn: 'Learn' },
 
+            // === WEB IMAGES (from root folder) ===
+            { id: 'hqdefault', src: '../hqdefault.jpg', title: 'YouTube Thumbnail', category: 'fades', usedIn: 'Learn' },
+            { id: 'untitled-design', src: '../untitled-design-2023-11-07t193853-673-1600x900.webp', title: 'Barber Chair Design', category: 'shop', usedIn: 'Learn' },
+            { id: 'hair-loss-tips', src: '../v4-460px-Treat-Male-Pattern-Hair-Loss-Step-11-Version-3.jpg', title: 'Hair Loss Treatment Tips', category: 'fades', usedIn: 'Learn' },
+            { id: 'instagram-post', src: '56490494_441941899910184_1535393151337681820_n.jpg', title: 'Instagram Barber Post', category: 'fades', usedIn: 'Gallery' },
+            { id: 'styled-cut', src: '../cde5b93b-f8ed-4cde-bbd3-dfe60b666732.jpg', title: 'Styled Haircut', category: 'fades', usedIn: 'Unused' },
+
             // === OTHER (not in main pages) ===
             { id: 'download-5', src: 'download (5).jpg', title: 'Style Shot 1', category: 'fades', usedIn: 'Unused' },
             { id: 'download-6', src: 'download (6).jpg', title: 'Style Shot 2', category: 'fades', usedIn: 'Unused' },
@@ -1507,16 +1706,26 @@
 
                 const usedInColor = photo.usedIn === 'Unused' ? '#666' : '#22c55e';
                 return `
-                    <div class="gallery-item" style="${isHidden ? 'opacity: 0.6;' : ''}">
+                    <div class="gallery-item gallery-manage-item" style="${isHidden ? 'opacity: 0.6;' : ''}">
                         <img src="${photo.src}" alt="${photo.title}" onerror="this.src='https://via.placeholder.com/200x200?text=Not+Found'">
                         <div style="position: absolute; bottom: 8px; left: 8px; right: 8px; background: rgba(0,0,0,0.9); padding: 8px; border-radius: 6px;">
                             <p style="color: #d4af37; font-size: 12px; font-weight: 600; margin: 0;">${photo.title}</p>
                             <p style="color: #888; font-size: 10px; margin: 2px 0 0 0; text-transform: capitalize;">${photo.category}</p>
                             <p style="color: ${usedInColor}; font-size: 9px; margin: 4px 0 0 0;">Used in: ${photo.usedIn}</p>
                         </div>
-                        <button onclick="${btnAction}('${photo.id}')"
-                            style="position: absolute; top: 8px; right: 8px; padding: 6px 12px; ${btnStyle} border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">
-                            ${btnText}
+                        <div class="gallery-manage-btns">
+                            <button onclick="openReplaceModal('${photo.id}', '${photo.src}', '${photo.title}')"
+                                style="padding: 6px 10px; background: rgba(212, 175, 55, 0.2); border: 1px solid rgba(212, 175, 55, 0.5); border-radius: 6px; color: #d4af37; font-size: 11px; font-weight: 600; cursor: pointer;">
+                                Replace
+                            </button>
+                            <button onclick="${btnAction}('${photo.id}')"
+                                style="padding: 6px 10px; ${btnStyle} border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer;">
+                                ${btnText}
+                            </button>
+                        </div>
+                        <button onclick="makePhotoLiveFromGallery('${photo.id}', '${photo.src}', '${photo.title}')"
+                            style="position: absolute; bottom: 70px; left: 8px; right: 8px; padding: 8px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.5); border-radius: 6px; color: #22c55e; font-size: 11px; font-weight: 600; cursor: pointer; text-align: center;">
+                            + Add to Live Gallery
                         </button>
                     </div>
                 `;
@@ -1547,6 +1756,122 @@
 
         // Initialize hidden photos listener
         loadHiddenPhotos();
+
+        // ============================================
+        // REPLACE PHOTO FUNCTIONALITY
+        // ============================================
+
+        let pendingReplacePhoto = null;
+        let newReplaceUrl = null;
+
+        function openReplaceModal(photoId, photoSrc, photoTitle) {
+            pendingReplacePhoto = { id: photoId, src: photoSrc, title: photoTitle };
+            newReplaceUrl = null;
+
+            document.getElementById('replaceCurrentImg').src = photoSrc;
+            document.getElementById('replaceCurrentTitle').textContent = photoTitle;
+            document.getElementById('replaceCurrentId').textContent = 'ID: ' + photoId;
+            document.getElementById('replaceUrlInput').value = '';
+            document.getElementById('replacePreview').style.display = 'none';
+
+            document.getElementById('replacePhotoModal').style.display = 'flex';
+        }
+
+        function closeReplaceModal() {
+            document.getElementById('replacePhotoModal').style.display = 'none';
+            pendingReplacePhoto = null;
+            newReplaceUrl = null;
+        }
+
+        function openReplaceUploadWidget() {
+            cloudinary.openUploadWidget({
+                cloudName: CLOUDINARY_CLOUD_NAME,
+                uploadPreset: 'golden_barbers_unsigned',
+                sources: ['local', 'camera', 'url'],
+                multiple: false,
+                maxFiles: 1,
+                maxFileSize: 10000000,
+                resourceType: 'image',
+                folder: 'golden-barbers/replacements',
+                clientAllowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+                styles: {
+                    palette: {
+                        window: "#141414",
+                        windowBorder: "#d4af37",
+                        tabIcon: "#d4af37",
+                        menuIcons: "#d4af37",
+                        textDark: "#000000",
+                        textLight: "#ffffff",
+                        link: "#d4af37",
+                        action: "#d4af37",
+                        inactiveTabIcon: "#888888",
+                        error: "#ef4444",
+                        inProgress: "#d4af37",
+                        complete: "#22c55e",
+                        sourceBg: "#0a0a0a"
+                    }
+                }
+            }, (error, result) => {
+                if (!error && result && result.event === "success") {
+                    newReplaceUrl = result.info.secure_url;
+                    document.getElementById('replacePreviewImg').src = newReplaceUrl;
+                    document.getElementById('replacePreview').style.display = 'block';
+                    document.getElementById('replaceUrlInput').value = newReplaceUrl;
+                }
+            });
+        }
+
+        function confirmReplace() {
+            if (!pendingReplacePhoto) return;
+
+            const urlInput = document.getElementById('replaceUrlInput').value.trim();
+            const finalUrl = urlInput || newReplaceUrl;
+
+            if (!finalUrl) {
+                alert('Please enter a URL or upload a new photo');
+                return;
+            }
+
+            // Save the replacement mapping to Firebase
+            const safeKey = pendingReplacePhoto.id.replace(/[.#$\/\[\]]/g, '_');
+
+            database.ref('photoReplacements/' + safeKey).set({
+                originalId: pendingReplacePhoto.id,
+                originalSrc: pendingReplacePhoto.src,
+                newUrl: finalUrl,
+                replacedAt: new Date().toISOString()
+            }).then(() => {
+                closeReplaceModal();
+                alert('Photo replacement saved! The new photo will be used on the website.');
+                loadAllGalleryPhotos();
+            }).catch((error) => {
+                alert('Error saving replacement: ' + error.message);
+            });
+        }
+
+        // ============================================
+        // ADD FROM GALLERY TO LIVE
+        // ============================================
+
+        function makePhotoLiveFromGallery(photoId, photoSrc, photoTitle) {
+            // Check if already live
+            if (isMediaLive(photoId)) {
+                alert('This image is already live on the gallery!');
+                return;
+            }
+
+            // Store the image data and open the make live modal
+            pendingLiveImage = { id: photoId, url: photoSrc };
+
+            // Reset form
+            resetCategoryChips();
+            document.getElementById('liveTitle').value = photoTitle;
+            document.getElementById('liveDescription').value = '';
+            document.getElementById('customCategoryInput').value = '';
+
+            // Show modal
+            document.getElementById('makeLiveModal').style.display = 'flex';
+        }
     </script>
 </body>
 </html>
