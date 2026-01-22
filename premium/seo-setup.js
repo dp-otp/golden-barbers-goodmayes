@@ -20,16 +20,16 @@ const BUSINESS_SEO = {
 
     // Location
     address: {
-        streetAddress: "123 High Street",
+        streetAddress: "14 Goodmayes Road",
         addressLocality: "Goodmayes",
         addressRegion: "Ilford",
-        postalCode: "IG3 8XY",
+        postalCode: "IG3 9UN",
         addressCountry: "GB"
     },
 
     // Contact
-    telephone: "+442012345678",
-    email: "bookings@goldenbarbers.com",
+    telephone: "+442085989920",
+    email: "ltdgoldenbarbers@gmail.com",
 
     // Coordinates (REPLACE with real coordinates)
     geo: {
@@ -58,11 +58,11 @@ const BUSINESS_SEO = {
         "Kids Haircut"
     ],
 
-    // Social Media (REPLACE with real accounts)
+    // Social Media
     socialMedia: {
-        instagram: "https://instagram.com/goldenbarbersgoodmayes",
-        facebook: "https://facebook.com/goldenbarbersgoodmayes",
-        tiktok: "https://tiktok.com/@goldenbarbers"
+        instagram: "https://www.instagram.com/goldenbarbers_goodmayes/",
+        facebook: "https://www.facebook.com/Goldenbarbers.goodmayes/",
+        tiktok: "https://www.tiktok.com/@thegoldenbarbers"
     }
 };
 

@@ -13,9 +13,9 @@
 // Business configuration
 const BUSINESS_CONFIG = {
     name: "Golden Barbers Goodmayes",
-    phone: "+44 20 1234 5678", // PLACEHOLDER - Replace with real number
-    email: "bookings@goldenbarbers.com", // PLACEHOLDER
-    address: "123 High Street, Goodmayes, Ilford, IG3 8XY",
+    phone: "+44 20 8598 9920",
+    email: "ltdgoldenbarbers@gmail.com",
+    address: "14 Goodmayes Road, Ilford, IG3 9UN",
 
     // Opening hours (24-hour format)
     hours: {

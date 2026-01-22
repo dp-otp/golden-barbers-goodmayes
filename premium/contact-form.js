@@ -21,11 +21,11 @@ class ContactForm {
 
         // CONFIGURATION
         this.config = {
-            // REPLACE THIS with your real email address
-            email: "placeholder@email.com",
+            // Business email
+            email: "ltdgoldenbarbers@gmail.com",
 
             // FormSubmit endpoint
-            endpoint: "https://formsubmit.co/ajax/placeholder@email.com",
+            endpoint: "https://formsubmit.co/ajax/ltdgoldenbarbers@gmail.com",
 
             // Success/error messages
             messages: {
