@@ -738,6 +738,21 @@
                 </div>
             </div>
 
+            <!-- Manage All Gallery Photos -->
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>Manage Gallery Photos</h2>
+                <p style="color: #888; font-size: 14px; margin-bottom: 20px;">Remove photos from the public gallery page. Hidden photos are stored in Firebase and can be restored.</p>
+
+                <div class="tab-buttons">
+                    <button class="tab-btn active" id="visiblePhotosTab" onclick="switchGalleryManageTab('visible')">Visible Photos</button>
+                    <button class="tab-btn" id="hiddenPhotosTab" onclick="switchGalleryManageTab('hidden')">Hidden Photos</button>
+                </div>
+
+                <div class="gallery-grid" id="allGalleryPhotos" style="margin-top: 20px;">
+                    <!-- All gallery photos loaded here -->
+                </div>
+            </div>
+
             <!-- View Bookings -->
             <div class="admin-card" style="grid-column: 1 / -1;">
                 <h2>Recent Bookings</h2>
@@ -1393,6 +1408,129 @@
 
         // Load custom categories on page load
         loadCustomCategoryChips();
+
+        // ============================================
+        // MANAGE ALL GALLERY PHOTOS
+        // ============================================
+
+        // List of all hardcoded gallery photos (from gallery.html)
+        const allGalleryPhotos = [
+            { id: 'download-1', src: 'download (1).jpg', title: 'Classic Fade', category: 'fades' },
+            { id: 'download-2', src: 'download (2).jpg', title: 'Textured Top', category: 'fades' },
+            { id: 'download-3', src: 'download (3).jpg', title: 'Sharp Line Up', category: 'fades' },
+            { id: 'download-4', src: 'download (4).jpg', title: 'Premium Cut', category: 'fades' },
+            { id: 'download-5', src: 'download (5).jpg', title: 'Skin Fade', category: 'fades' },
+            { id: 'download-6', src: 'download (6).jpg', title: 'Modern Style', category: 'fades' },
+            { id: 'download-7', src: 'download (7).jpg', title: 'Beard Shape', category: 'beard' },
+            { id: 'download-8', src: 'download (8).jpg', title: 'Full Grooming', category: 'beard' },
+            { id: 'download-9', src: 'download (9).jpg', title: 'Beard Trim', category: 'beard' },
+            { id: 'download-10', src: 'download (10).jpg', title: 'The Golden Team', category: 'shop' },
+            { id: 'download-11', src: 'download (11).jpg', title: 'Fire Technique', category: 'beard' },
+            { id: 'download-12', src: 'download (12).jpg', title: 'Gallery Shot', category: 'fades' },
+            { id: 'download-13', src: 'download (13).jpg', title: 'Fresh Cut', category: 'fades' },
+            { id: 'download-14', src: 'download (14).jpg', title: 'Premium Interior', category: 'shop' },
+            { id: 'download-15', src: 'download (15).jpg', title: 'Style Shot', category: 'fades' },
+            { id: 'download-16', src: 'download (16).jpg', title: 'Clean Fade', category: 'fades' },
+            { id: 'download-17', src: 'download (17).jpg', title: 'Barber Work', category: 'fades' },
+            { id: 'download-18', src: 'download (18).jpg', title: 'Beard Styling', category: 'beard' },
+            { id: 'download-19', src: 'download (19).jpg', title: 'Before & After', category: 'transformations' },
+            { id: 'download-20', src: 'download (20).jpg', title: 'Shop Atmosphere', category: 'shop' },
+            { id: 'download-21', src: 'download (21).jpg', title: 'Premium Service', category: 'fades' },
+            { id: 'download-22', src: 'download (22).jpg', title: 'Turquoise Color Fade', category: 'transformations' },
+            { id: 'download-23', src: 'download (23).jpg', title: 'Hot Towel Service', category: 'beard' },
+            { id: 'download-24', src: 'download (24).jpg', title: 'Detailed Work', category: 'fades' },
+            { id: 'download-25', src: 'download (25).jpg', title: 'Client Style', category: 'fades' },
+            { id: 'download-26', src: 'download (26).jpg', title: 'Consultation', category: 'fades' },
+            { id: 'download-27', src: 'download (27).jpg', title: 'Hair Health', category: 'fades' }
+        ];
+
+        // Hidden photos stored in Firebase
+        let hiddenPhotosCache = [];
+        let currentGalleryManageTab = 'visible';
+
+        // Load hidden photos from Firebase
+        function loadHiddenPhotos() {
+            database.ref('hiddenGalleryPhotos').on('value', (snapshot) => {
+                const data = snapshot.val();
+                hiddenPhotosCache = data ? Object.keys(data) : [];
+                loadAllGalleryPhotos();
+            });
+        }
+
+        // Switch between visible/hidden tabs
+        function switchGalleryManageTab(tab) {
+            currentGalleryManageTab = tab;
+            document.getElementById('visiblePhotosTab').classList.toggle('active', tab === 'visible');
+            document.getElementById('hiddenPhotosTab').classList.toggle('active', tab === 'hidden');
+            loadAllGalleryPhotos();
+        }
+
+        // Load all gallery photos
+        function loadAllGalleryPhotos() {
+            const container = document.getElementById('allGalleryPhotos');
+            if (!container) return;
+
+            let photosToShow;
+            if (currentGalleryManageTab === 'visible') {
+                photosToShow = allGalleryPhotos.filter(p => !hiddenPhotosCache.includes(p.id));
+            } else {
+                photosToShow = allGalleryPhotos.filter(p => hiddenPhotosCache.includes(p.id));
+            }
+
+            if (photosToShow.length === 0) {
+                container.innerHTML = '<p style="color: #888; font-size: 14px;">' +
+                    (currentGalleryManageTab === 'visible' ? 'No visible photos.' : 'No hidden photos.') + '</p>';
+                return;
+            }
+
+            container.innerHTML = photosToShow.map(photo => {
+                const isHidden = hiddenPhotosCache.includes(photo.id);
+                const btnStyle = isHidden
+                    ? 'background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.5); color: #22c55e;'
+                    : 'background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); color: #ef4444;';
+                const btnText = isHidden ? 'Restore' : 'Hide';
+                const btnAction = isHidden ? 'restoreGalleryPhoto' : 'hideGalleryPhoto';
+
+                return `
+                    <div class="gallery-item" style="${isHidden ? 'opacity: 0.6;' : ''}">
+                        <img src="${photo.src}" alt="${photo.title}" onerror="this.src='https://via.placeholder.com/200x200?text=Not+Found'">
+                        <div style="position: absolute; bottom: 8px; left: 8px; right: 8px; background: rgba(0,0,0,0.8); padding: 8px; border-radius: 6px;">
+                            <p style="color: #d4af37; font-size: 12px; font-weight: 600; margin: 0;">${photo.title}</p>
+                            <p style="color: #888; font-size: 10px; margin: 2px 0 0 0;">${photo.category}</p>
+                        </div>
+                        <button onclick="${btnAction}('${photo.id}')"
+                            style="position: absolute; top: 8px; right: 8px; padding: 6px 12px; ${btnStyle} border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                            ${btnText}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Hide a gallery photo
+        function hideGalleryPhoto(photoId) {
+            if (!confirm('Hide this photo from the gallery?')) return;
+
+            database.ref('hiddenGalleryPhotos/' + photoId).set({
+                hiddenAt: new Date().toISOString()
+            }).then(() => {
+                // Will auto-refresh via listener
+            }).catch((error) => {
+                alert('Error hiding photo: ' + error.message);
+            });
+        }
+
+        // Restore a hidden photo
+        function restoreGalleryPhoto(photoId) {
+            database.ref('hiddenGalleryPhotos/' + photoId).remove().then(() => {
+                // Will auto-refresh via listener
+            }).catch((error) => {
+                alert('Error restoring photo: ' + error.message);
+            });
+        }
+
+        // Initialize hidden photos listener
+        loadHiddenPhotos();
     </script>
 </body>
 </html>
