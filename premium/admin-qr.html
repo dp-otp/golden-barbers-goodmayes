@@ -430,12 +430,8 @@
             <div class="qr-display" id="qrDisplay">
                 <div class="qr-display-amount" id="displayAmount">£0.00</div>
 
-                <div class="qr-code-placeholder">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4z"/>
-                    </svg>
-                    <p>QR Code will appear here</p>
-                    <p style="font-size: 12px; margin-top: 5px;">Requires Stripe integration</p>
+                <div class="qr-code-container" id="qrCodeContainer">
+                    <img id="qrCodeImage" src="" alt="Payment QR Code" style="width: 250px; height: 250px; border-radius: 15px;">
                 </div>
 
                 <div class="qr-payment-info">
@@ -496,6 +492,12 @@
 
     <script>
         // QR Code Functions
+        const bankDetails = {
+            accountName: 'GOLDEN BARBERS LTD',
+            sortCode: '30-98-97',
+            accountNumber: '58413368'
+        };
+
         function setAmount(amount) {
             document.getElementById('amountInput').value = amount.toFixed(2);
         }
@@ -510,8 +512,16 @@
             document.getElementById('displayAmount').textContent = '£' + amount.toFixed(2);
             document.getElementById('qrDisplay').classList.add('active');
 
-            // In production, this would call Stripe API to generate a payment link/QR
-            // For now, showing placeholder
+            // Create payment info text for QR code
+            const paymentInfo = `Pay Golden Barbers
+Amount: £${amount.toFixed(2)}
+Account: ${bankDetails.accountName}
+Sort Code: ${bankDetails.sortCode}
+Account No: ${bankDetails.accountNumber}`;
+
+            // Generate QR code using QR Server API
+            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(paymentInfo)}`;
+            document.getElementById('qrCodeImage').src = qrCodeUrl;
         }
 
         // Copy to Clipboard
