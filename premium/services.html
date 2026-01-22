@@ -508,6 +508,15 @@
             transition: transform 0.5s;
         }
 
+        .service-icon.neon-icon {
+            font-size: inherit;
+        }
+
+        .service-icon.neon-icon svg {
+            stroke: var(--gold);
+            filter: drop-shadow(0 0 8px var(--gold)) drop-shadow(0 0 15px rgba(212, 175, 55, 0.5));
+        }
+
         .service-card:hover .service-icon {
             transform: scale(1.2) rotate(-10deg);
         }
@@ -899,6 +908,7 @@
             background: rgba(0, 0, 0, 0.9);
             backdrop-filter: blur(20px);
             z-index: 10000;
+            cursor: none;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1929,7 +1939,7 @@
                         <span class="service-badge">Premium</span>
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">👑</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/><path d="M5 19h14"/></svg></span>
                         <h3 class="service-title">Golden Luxury</h3>
                         <p class="service-desc">Cut, wash, blow dry, hot towel shave, ear flaming, face mask, ear & nose wax, massage & style.</p>
                         <div class="service-meta">
@@ -1947,7 +1957,7 @@
                         <span class="service-badge">Most Popular</span>
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">✂️</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></span>
                         <h3 class="service-title">Golden Bundle</h3>
                         <p class="service-desc">Cut, wash, blow dry, hot towel shave, ear flaming, massage & style.</p>
                         <div class="service-meta">
@@ -1964,7 +1974,7 @@
                         <img src="download (9).jpg" alt="Gents Cut">
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">💈</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><rect x="3" y="8" width="4" height="13" rx="1"/><path d="M7 14h12"/><path d="M19 8v6a2 2 0 01-2 2h-3"/><path d="M19 8l2-4h-6l2 4"/></svg></span>
                         <h3 class="service-title">Gents Cut</h3>
                         <p class="service-desc">Cut, wash, blow dry & style. Classic gentleman's haircut with precision finishing.</p>
                         <div class="service-meta">
@@ -1981,7 +1991,7 @@
                         <img src="pic.jpg" alt="Skin Fade">
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">🎯</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
                         <h3 class="service-title">Skin Fade</h3>
                         <p class="service-desc">Fade, ear flaming, wash & blow dry. Master-level fade with surgical precision.</p>
                         <div class="service-meta">
@@ -1998,7 +2008,7 @@
                         <img src="download (18).jpg" alt="Head Shave">
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">🪒</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M7 3h10l-1 6H8L7 3z"/><path d="M8 9l-1 12h2l3-8 3 8h2l-1-12"/></svg></span>
                         <h3 class="service-title">Head Shave</h3>
                         <p class="service-desc">Cut throat shave, hot towel & massage. Complete bald look with luxurious treatment.</p>
                         <div class="service-meta">
@@ -2015,7 +2025,7 @@
                         <img src="download (4).jpg" alt="Children Under 12">
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">👦</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><circle cx="12" cy="8" r="5"/><path d="M3 21v-2a4 4 0 014-4h10a4 4 0 014 4v2"/></svg></span>
                         <h3 class="service-title">Children Under 12</h3>
                         <p class="service-desc">Gentle, patient haircuts for our younger clients. We make it fun and comfortable.</p>
                         <div class="service-meta">
@@ -2050,7 +2060,7 @@
                         <span class="service-badge">Premium</span>
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">🔥</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M12 22c4-3 7-6 7-10a7 7 0 00-14 0c0 4 3 7 7 10z"/><path d="M12 22c-2-2-3-4-3-6a3 3 0 016 0c0 2-1 4-3 6z"/></svg></span>
                         <h3 class="service-title">Deluxe Hot Towel Shave</h3>
                         <p class="service-desc">Shape up, hot towel & massage. Traditional straight razor shave experience.</p>
                         <div class="service-meta">
@@ -2067,7 +2077,7 @@
                         <img src="download (11).jpg" alt="Beard Trim">
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">🧔</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><circle cx="12" cy="8" r="5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/><path d="M8 14v4c0 1 1 2 4 2s4-1 4-2v-4"/></svg></span>
                         <h3 class="service-title">Beard Trim (Machine)</h3>
                         <p class="service-desc">Professional beard trim using clippers. Quick, clean, and precise grooming.</p>
                         <div class="service-meta">
@@ -2084,7 +2094,7 @@
                         <img src="download (23).jpg" alt="Traditional Turkish Hot Towel">
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">🧖</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg></span>
                         <h3 class="service-title">Traditional Turkish Hot Towel</h3>
                         <p class="service-desc">Authentic Turkish hot towel treatment. Relaxing and rejuvenating experience.</p>
                         <div class="service-meta">
@@ -2118,7 +2128,7 @@
                         <img src="download (12).jpg" alt="Ear & Nose Flaming">
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">🔥</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M12 22c4-3 7-6 7-10a7 7 0 00-14 0c0 4 3 7 7 10z"/><path d="M12 22c-2-2-3-4-3-6a3 3 0 016 0c0 2-1 4-3 6z"/></svg></span>
                         <h3 class="service-title">Ear & Nose Flaming/Waxing</h3>
                         <p class="service-desc">Traditional ear and nose hair removal with flaming and waxing techniques.</p>
                         <div class="service-meta">
@@ -2135,7 +2145,7 @@
                         <img src="download (13).jpg" alt="Patterns & Design">
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">✨</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.8l-6.4 4.4 2.4-7.2-6-4.8h7.6L12 2z"/></svg></span>
                         <h3 class="service-title">Patterns & Design</h3>
                         <p class="service-desc">Custom hair patterns and designs to personalize your look.</p>
                         <div class="service-meta">
@@ -2152,7 +2162,7 @@
                         <img src="download (22).jpg" alt="Colour">
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">🎨</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="11.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/><circle cx="8.5" cy="17.5" r="1.5"/><circle cx="5" cy="11.5" r="1.5"/><path d="M12 2a10 10 0 00-7.35 16.76 3 3 0 004.08 1.04l3.27-2.13 3.27 2.13a3 3 0 004.08-1.04A10 10 0 0012 2z"/></svg></span>
                         <h3 class="service-title">Colour (Beard/Head/Both)</h3>
                         <p class="service-desc">Professional hair coloring for beard, head, or both. Multiple shade options.</p>
                         <div class="service-meta">
@@ -2169,7 +2179,7 @@
                         <img src="download (16).jpg" alt="Head Massage">
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">💆</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01"/><path d="M15 9h.01"/></svg></span>
                         <h3 class="service-title">Head Massage</h3>
                         <p class="service-desc">Relaxing head massage to complete your grooming experience.</p>
                         <div class="service-meta">
@@ -2186,7 +2196,7 @@
                         <img src="download (15).jpg" alt="Black or Mud Mask">
                     </div>
                     <div class="service-card-content">
-                        <span class="service-icon">🧴</span>
+                        <span class="service-icon neon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M10 3h4v4h-4z"/><path d="M8 7h8v14a2 2 0 01-2 2h-4a2 2 0 01-2-2V7z"/><path d="M12 12v5"/></svg></span>
                         <h3 class="service-title">Black or Mud Mask Treatment</h3>
                         <p class="service-desc">Premium facial mask treatment for deep cleansing and rejuvenation.</p>
                         <div class="service-meta">
