@@ -3769,11 +3769,52 @@
     </div>
 
     <script>
-        // Adam Chatbot Widget
+        // Adam AI Chatbot Widget - Powered by Google Gemini
         const adamBtn = document.getElementById('adamChatBtn');
         const adamPopup = document.getElementById('adamChatPopup');
         const adamClose = document.getElementById('adamPopupClose');
         const adamMessages = document.getElementById('adamMessages');
+
+        // Gemini API Key - Get yours free at https://makersuite.google.com/app/apikey
+        const GEMINI_API_KEY = 'AIzaSyBnBU_1tKHy07OlGaTLWJTJj_0i01tAjDM';
+        const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+
+        // System context for Adam
+        const ADAM_SYSTEM_PROMPT = `You are Adam, the friendly AI assistant for Golden Barbers Goodmayes - a premium barbershop in Ilford, London.
+
+KEY INFO ABOUT GOLDEN BARBERS:
+- Location: 14 Goodmayes Road, Ilford IG3 9UN (near Goodmayes Station)
+- Phone: 020 8598 9920
+- WhatsApp: Available for bookings
+- Hours: Mon-Sat 9:30 AM - 8:00 PM, Sunday 9:30 AM - 6:00 PM
+
+SERVICES & PRICES:
+- Golden Luxury (full package): £45
+- Golden Bundle: £27
+- Skin Fade: £15.95
+- Gents Cut: £13.95
+- Head Shave: £12.95
+- Children Under 12: £8.95
+- Deluxe Hot Towel Shave: £11
+- Beard Trim (Machine): £6.95
+- Turkish Hot Towel: £3
+- Ear & Nose Flaming/Waxing: £6
+- Patterns & Design: £5
+- Colour: £5
+- Head Massage: £5
+- Black or Mud Mask: £5
+
+YOUR PERSONALITY:
+- Friendly, warm, and professional
+- Knowledgeable about haircuts, fades, beards, and men's grooming
+- You can answer ANY question - not just about the barbershop
+- Keep responses concise but helpful (2-3 sentences max for simple questions)
+- Use casual British English
+- If asked about booking, recommend calling, WhatsApp, or walking in
+
+You can discuss anything - sports, weather, general knowledge, advice, etc. Be helpful and conversational like a friendly barber would be!`;
+
+        let conversationHistory = [];
 
         adamBtn.addEventListener('click', () => {
             adamPopup.classList.toggle('active');
@@ -3783,67 +3824,70 @@
             adamPopup.classList.remove('active');
         });
 
-        const adamKB = {
-            services: {
-                keywords: ['service', 'offer', 'menu', 'do you do'],
-                response: 'We offer Skin Fades (£15.95), Gents Cuts (£13.95), Hot Towel Shaves (£11), Beard Trims (£6.95), and more! <a href="services.html">View all services</a>'
-            },
-            prices: {
-                keywords: ['price', 'cost', 'how much'],
-                response: 'Skin Fade: £15.95 | Gents Cut: £13.95 | Kids Cut: £11.95 | Beard Trim: £6.95 | <a href="services.html">Full price list</a>'
-            },
-            book: {
-                keywords: ['book', 'appointment', 'reserve'],
-                response: 'Book easily! Call <a href="tel:02085989920">020 8598 9920</a>, WhatsApp us, or just walk in. We welcome walk-ins daily!'
-            },
-            hours: {
-                keywords: ['hour', 'open', 'close', 'time'],
-                response: 'Mon-Sat: 9:30 AM - 8:00 PM | Sunday: 9:30 AM - 6:00 PM. Open 7 days a week!'
-            },
-            location: {
-                keywords: ['where', 'location', 'address', 'find'],
-                response: '14 Goodmayes Road, Ilford IG3 9UN - near Goodmayes Station. <a href="contact.html">Get directions</a>'
-            },
-            fade: {
-                keywords: ['fade', 'skin fade'],
-                response: 'Our barbers are fade experts! Skin Fade: £15.95 - includes precision work, ear flaming, wash & style. Book every 2-3 weeks to keep it fresh!'
-            },
-            beard: {
-                keywords: ['beard', 'facial'],
-                response: 'Beard services: Trim (£6.95), Shape & Line-up (£8.95), Hot Towel Shave (£11). Check our <a href="knowledge.html#beard">beard care guide</a>!'
-            }
-        };
-
-        function adamFindResponse(msg) {
-            const lower = msg.toLowerCase();
-            for (const [k, v] of Object.entries(adamKB)) {
-                for (const kw of v.keywords) {
-                    if (lower.includes(kw)) return v.response;
-                }
-            }
-            if (lower.match(/^(hi|hello|hey)/)) return "Hey! Welcome to Golden Barbers. What can I help you with today?";
-            if (lower.match(/thank/)) return "You're welcome! Anything else I can help with?";
-            return "I'd love to help with that! For detailed questions, call us at <a href='tel:02085989920'>020 8598 9920</a> or <a href='adam.html'>chat with me fully</a>.";
-        }
-
-        function adamAddMsg(text, isUser) {
+        function adamAddMsg(text, isUser, isTyping = false) {
             const div = document.createElement('div');
             div.className = `adam-msg ${isUser ? 'user' : 'bot'}`;
+            if (isTyping) div.id = 'adamTyping';
             div.innerHTML = `
-                <div class="adam-msg-avatar">${isUser ? '👤' : '👨'}</div>
+                <div class="adam-msg-avatar">${isUser ? '👤' : '🙋‍♂️'}</div>
                 <div class="adam-msg-content"><p>${text}</p></div>
             `;
             adamMessages.appendChild(div);
             adamMessages.scrollTop = adamMessages.scrollHeight;
+            return div;
         }
 
-        function adamSend() {
+        function removeTypingIndicator() {
+            const typing = document.getElementById('adamTyping');
+            if (typing) typing.remove();
+        }
+
+        async function adamSend() {
             const input = document.getElementById('adamInput');
             const msg = input.value.trim();
             if (!msg) return;
+
             adamAddMsg(msg, true);
             input.value = '';
-            setTimeout(() => adamAddMsg(adamFindResponse(msg), false), 500 + Math.random() * 500);
+
+            // Show typing indicator
+            adamAddMsg('Typing...', false, true);
+
+            // Add to conversation history
+            conversationHistory.push({ role: 'user', parts: [{ text: msg }] });
+
+            try {
+                const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [
+                            { role: 'user', parts: [{ text: ADAM_SYSTEM_PROMPT }] },
+                            { role: 'model', parts: [{ text: 'Got it! I\'m Adam from Golden Barbers. Happy to help with anything!' }] },
+                            ...conversationHistory
+                        ],
+                        generationConfig: {
+                            temperature: 0.8,
+                            maxOutputTokens: 256
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                removeTypingIndicator();
+
+                if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+                    const reply = data.candidates[0].content.parts[0].text;
+                    conversationHistory.push({ role: 'model', parts: [{ text: reply }] });
+                    adamAddMsg(reply, false);
+                } else {
+                    adamAddMsg("Sorry, I'm having a bit of trouble. Try again or call us at 020 8598 9920!", false);
+                }
+            } catch (error) {
+                console.error('Adam AI Error:', error);
+                removeTypingIndicator();
+                adamAddMsg("Connection issue! Call us at <a href='tel:02085989920'>020 8598 9920</a> or <a href='adam.html'>try the full chat</a>.", false);
+            }
         }
 
         function adamQuickMsg(msg) {

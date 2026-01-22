@@ -708,196 +708,57 @@
     </main>
 
     <script>
-        // Golden Barbers Knowledge Base
-        const knowledgeBase = {
-            services: {
-                keywords: ['service', 'services', 'offer', 'do you do', 'what do you', 'menu', 'options'],
-                response: `We offer a full range of premium grooming services:
+        // Adam AI - Powered by Google Gemini
+        const GEMINI_API_KEY = 'AIzaSyBnBU_1tKHy07OlGaTLWJTJj_0i01tAjDM';
+        const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
-<strong>Haircuts:</strong>
-• Golden Luxury (Full service) - £45
-• Skin Fade - £15.95
-• Gents Cut - £13.95
-• Kids Cut (under 12) - £11.95
+        // System context for Adam
+        const ADAM_SYSTEM_PROMPT = `You are Adam, the friendly AI assistant for Golden Barbers Goodmayes - a premium barbershop in Ilford, London.
 
-<strong>Beard & Shave:</strong>
-• Hot Towel Shave - £11
-• Beard Trim - £6.95
-• Beard Shape & Line-up - £8.95
+KEY INFO ABOUT GOLDEN BARBERS:
+- Location: 14 Goodmayes Road, Ilford IG3 9UN (near Goodmayes Station)
+- Phone: 020 8598 9920
+- WhatsApp: Available for bookings
+- Hours: Mon-Sat 9:30 AM - 8:00 PM, Sunday 9:30 AM - 6:00 PM
 
-<strong>Packages:</strong>
-• Haircut + Beard Trim - £19.95
-• Skin Fade + Hot Towel Shave - £24.95
+SERVICES & PRICES:
+- Golden Luxury (full package): £45
+- Golden Bundle: £27
+- Skin Fade: £15.95
+- Gents Cut: £13.95
+- Head Shave: £12.95
+- Children Under 12: £8.95
+- Deluxe Hot Towel Shave: £11
+- Beard Trim (Machine): £6.95
+- Turkish Hot Towel: £3
+- Ear & Nose Flaming/Waxing: £6
+- Patterns & Design: £5
+- Colour: £5
+- Head Massage: £5
+- Black or Mud Mask: £5
 
-<a href="services.html">View full service menu →</a>`
-            },
-            prices: {
-                keywords: ['price', 'cost', 'how much', 'pricing', 'rates', 'expensive', 'cheap', 'afford'],
-                response: `Here are our main prices:
+YOUR PERSONALITY:
+- Friendly, warm, and professional
+- Knowledgeable about haircuts, fades, beards, and men's grooming
+- You can answer ANY question - not just about the barbershop
+- Keep responses helpful but conversational
+- Use casual British English
+- If asked about booking, recommend calling, WhatsApp, or walking in
+- For longer explanations, use bullet points or numbered lists
+- You can include HTML links like <a href="services.html">View services</a>
 
-• Skin Fade - £15.95
-• Gents Cut - £13.95
-• Kids Cut - £11.95
-• Hot Towel Shave - £11
-• Beard Trim - £6.95
-• Golden Luxury Package - £45
+You can discuss anything - sports, weather, general knowledge, advice, coding, maths, history, etc. Be helpful and conversational like a friendly barber would be! You're smart and can help with homework, explain concepts, give advice, and more.`;
 
-We accept cash, card, Apple Pay, and Google Pay. <a href="services.html">See all prices →</a>`
-            },
-            booking: {
-                keywords: ['book', 'appointment', 'reserve', 'schedule'],
-                response: `Booking is easy! You have several options:
+        let conversationHistory = [];
 
-📞 <strong>Call us:</strong> <a href="tel:02085989920">020 8598 9920</a>
-💬 <strong>WhatsApp:</strong> <a href="https://wa.me/442085989920">Message us</a>
-🚶 <strong>Walk-in:</strong> We welcome walk-ins during opening hours!
-
-We recommend booking for weekends and holidays to guarantee your slot.`
-            },
-            hours: {
-                keywords: ['hours', 'open', 'close', 'time', 'when', 'schedule', 'opening'],
-                response: `We're open 7 days a week:
-
-<strong>Monday - Saturday:</strong> 9:30 AM - 8:00 PM
-<strong>Sunday:</strong> 9:30 AM - 6:00 PM
-
-We're busiest on Saturdays and before holidays, so booking ahead is recommended!`
-            },
-            location: {
-                keywords: ['where', 'location', 'address', 'find', 'directions', 'located', 'map'],
-                response: `Find us at:
-
-<strong>14 Goodmayes Road</strong>
-Ilford, London IG3 9UN
-
-We're just a short walk from Goodmayes Station (Elizabeth Line). Street parking is available nearby.
-
-<a href="https://www.google.com/maps/search/?api=1&query=Golden+Barbers+14+Goodmayes+Road+Ilford+IG3+9UN" target="_blank">Get directions →</a>`
-            },
-            fade: {
-                keywords: ['fade', 'skin fade', 'low fade', 'mid fade', 'high fade', 'taper'],
-                response: `We're known for our precision fades! Here's what we offer:
-
-• <strong>Skin Fade</strong> - £15.95 (goes down to the skin)
-• <strong>Low/Mid/High Fade</strong> - We customize based on your preference
-• <strong>Taper Fade</strong> - Gentler transition, more professional look
-
-Our barbers are experts at creating seamless gradients. Just tell us how short you want the sides and where you want the fade to start!
-
-For skin fades, we recommend coming back every 2-3 weeks to keep it fresh.`
-            },
-            beard: {
-                keywords: ['beard', 'facial hair', 'beard care', 'beard trim', 'mustache'],
-                response: `We offer complete beard services:
-
-• <strong>Beard Trim</strong> - £6.95
-• <strong>Beard Shape & Line-up</strong> - £8.95
-• <strong>Hot Towel Shave</strong> - £11 (traditional straight razor)
-
-<strong>Beard Care Tips:</strong>
-1. Wash 2-3 times weekly with beard shampoo
-2. Apply beard oil daily
-3. Brush to train hair direction
-4. Visit us every 2-3 weeks for shape maintenance
-
-Check out our <a href="knowledge.html#beard">beard care guide</a> for more tips!`
-            },
-            walkins: {
-                keywords: ['walk-in', 'walkin', 'walk in', 'no appointment', 'just come', 'wait'],
-                response: `Yes, we welcome walk-ins!
-
-However, wait times vary depending on the day:
-• <strong>Weekdays:</strong> Usually 10-30 min wait
-• <strong>Saturdays:</strong> Can be 30-60 min during peak hours
-• <strong>Sundays:</strong> Moderate wait times
-
-To skip the wait, call ahead or book via WhatsApp: <a href="https://wa.me/442085989920">Message us</a>`
-            },
-            haircare: {
-                keywords: ['hair care', 'haircare', 'hair loss', 'healthy hair', 'shampoo', 'product'],
-                response: `Great hair starts with good care! Here are our tips:
-
-<strong>Daily Care:</strong>
-• Don't over-wash (2-3 times per week is ideal)
-• Use lukewarm water, not hot
-• Apply styling product to damp hair
-
-<strong>For Healthy Hair:</strong>
-• Eat protein-rich foods
-• Stay hydrated
-• Get regular trims every 3-4 weeks
-
-Check out our full <a href="knowledge.html">Learn Hub</a> for expert grooming guides!`
-            },
-            style: {
-                keywords: ['style', 'recommend', 'suit', 'face shape', 'what haircut', 'suggestion'],
-                response: `Great question! The best haircut depends on your:
-• Face shape
-• Hair type
-• Lifestyle
-• Personal style
-
-<strong>General tips:</strong>
-• Round face? Add height with a quiff or pompadour
-• Square face? Textured crops work great
-• Oval face? You're lucky - most styles work!
-
-Come in for a consultation and our barbers will recommend the perfect style for you. We're at <a href="contact.html">14 Goodmayes Road</a>.`
-            },
-            contact: {
-                keywords: ['contact', 'phone', 'email', 'call', 'reach', 'get in touch'],
-                response: `Here's how to reach us:
-
-📞 <strong>Phone:</strong> <a href="tel:02085989920">020 8598 9920</a>
-💬 <strong>WhatsApp:</strong> <a href="https://wa.me/442085989920">Chat with us</a>
-📧 <strong>Email:</strong> ltdgoldenbarbers@gmail.com
-
-📍 <strong>Visit us:</strong> 14 Goodmayes Road, Ilford IG3 9UN
-
-<a href="contact.html">See our contact page →</a>`
-            }
-        };
-
-        const fallbackResponses = [
-            "I'm not sure about that specific question. Would you like me to help you with booking an appointment or tell you about our services instead?",
-            "That's a great question! For detailed help with that, I'd recommend calling us at <a href='tel:02085989920'>020 8598 9920</a> or visiting us in person.",
-            "I don't have information on that right now. Is there something else I can help you with - like our services, pricing, or hours?"
-        ];
-
-        function findResponse(message) {
-            const lowerMessage = message.toLowerCase();
-
-            for (const [category, data] of Object.entries(knowledgeBase)) {
-                for (const keyword of data.keywords) {
-                    if (lowerMessage.includes(keyword)) {
-                        return data.response;
-                    }
-                }
-            }
-
-            // Greeting responses
-            if (lowerMessage.match(/^(hi|hello|hey|yo|sup|good morning|good afternoon|good evening)/)) {
-                return "Hey! Welcome to Golden Barbers. I'm Adam, your virtual assistant. How can I help you today? You can ask me about our services, pricing, booking, or grooming tips!";
-            }
-
-            if (lowerMessage.match(/(thank|thanks|cheers)/)) {
-                return "You're welcome! Is there anything else I can help you with today?";
-            }
-
-            if (lowerMessage.match(/(bye|goodbye|see you|later)/)) {
-                return "Take care! Hope to see you at Golden Barbers soon. Call us anytime at <a href='tel:02085989920'>020 8598 9920</a> or just walk in!";
-            }
-
-            return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-        }
-
-        function addMessage(content, isUser = false) {
+        function addMessage(content, isUser = false, isTyping = false) {
             const messagesContainer = document.getElementById('chatMessages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            if (isTyping) messageDiv.id = 'typingIndicator';
 
             messageDiv.innerHTML = `
-                <div class="message-avatar">${isUser ? '👤' : 'A'}</div>
+                <div class="message-avatar">${isUser ? '👤' : '🙋‍♂️'}</div>
                 <div class="message-content">
                     <p>${content}</p>
                 </div>
@@ -907,31 +768,12 @@ Come in for a consultation and our barbers will recommend the perfect style for 
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
-        function showTyping() {
-            const messagesContainer = document.getElementById('chatMessages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message bot';
-            typingDiv.id = 'typingIndicator';
-
-            typingDiv.innerHTML = `
-                <div class="message-avatar">A</div>
-                <div class="typing-indicator">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            `;
-
-            messagesContainer.appendChild(typingDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
         function hideTyping() {
             const typing = document.getElementById('typingIndicator');
             if (typing) typing.remove();
         }
 
-        function sendMessage() {
+        async function sendMessage() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
 
@@ -940,13 +782,48 @@ Come in for a consultation and our barbers will recommend the perfect style for 
             addMessage(message, true);
             input.value = '';
 
-            showTyping();
+            // Show typing indicator
+            addMessage('Thinking...', false, true);
 
-            setTimeout(() => {
+            // Add to conversation history
+            conversationHistory.push({ role: 'user', parts: [{ text: message }] });
+
+            try {
+                const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [
+                            { role: 'user', parts: [{ text: ADAM_SYSTEM_PROMPT }] },
+                            { role: 'model', parts: [{ text: 'Got it! I\'m Adam from Golden Barbers. I can help with anything - barbershop questions, general knowledge, advice, you name it. What\'s on your mind?' }] },
+                            ...conversationHistory
+                        ],
+                        generationConfig: {
+                            temperature: 0.85,
+                            maxOutputTokens: 1024
+                        }
+                    })
+                });
+
+                const data = await response.json();
                 hideTyping();
-                const response = findResponse(message);
-                addMessage(response, false);
-            }, 1000 + Math.random() * 1000);
+
+                if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+                    const reply = data.candidates[0].content.parts[0].text;
+                    conversationHistory.push({ role: 'model', parts: [{ text: reply }] });
+                    // Convert markdown-style formatting to HTML
+                    const formattedReply = reply
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\n/g, '<br>');
+                    addMessage(formattedReply, false);
+                } else {
+                    addMessage("Sorry, I'm having a bit of trouble right now. Try again or call us at <a href='tel:02085989920'>020 8598 9920</a>!", false);
+                }
+            } catch (error) {
+                console.error('Adam AI Error:', error);
+                hideTyping();
+                addMessage("Connection issue! Please try again or call us at <a href='tel:02085989920'>020 8598 9920</a>.", false);
+            }
         }
 
         function sendQuickMessage(message) {
