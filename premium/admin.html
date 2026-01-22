@@ -130,35 +130,6 @@
             font-size: 14px;
         }
 
-        .warning-banner {
-            background: rgba(255, 193, 7, 0.1);
-            border: 2px solid #ffc107;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-            display: flex;
-            gap: 15px;
-            align-items: start;
-        }
-
-        .warning-banner svg {
-            width: 24px;
-            height: 24px;
-            stroke: #ffc107;
-            flex-shrink: 0;
-        }
-
-        .warning-content h3 {
-            color: #ffc107;
-            margin-bottom: 10px;
-        }
-
-        .warning-content p {
-            color: #ccc;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
         .admin-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -689,11 +660,6 @@
                 font-size: 24px;
             }
 
-            .warning-banner {
-                flex-direction: column;
-                text-align: center;
-            }
-
             .tab-buttons {
                 flex-wrap: wrap;
                 gap: 8px;
@@ -857,21 +823,6 @@
         </div>
 
         <!-- Warning Banner -->
-        <div class="warning-banner">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path>
-                <line x1="12" y1="9" x2="12" y2="13"></line>
-                <line x1="12" y1="17" x2="12.01" y2="17"></line>
-            </svg>
-            <div class="warning-content">
-                <h3>Firebase Connected</h3>
-                <p>
-                    This admin panel is now connected to <strong>Firebase</strong>. Gallery images you mark as "Live"
-                    will be visible to all visitors on the website, not just this browser.
-                </p>
-            </div>
-        </div>
-
         <!-- Admin Cards Grid -->
         <div class="admin-grid">
 
