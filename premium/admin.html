@@ -1621,55 +1621,56 @@
         // ============================================
 
         // List of all gallery photos - organized by where they're used
-        // GALLERY = Used in gallery.html
+        // GALLERY = Used in gallery.html (hardcoded)
         // LEARN = Used in knowledge.html (Learn page)
         // HOME = Used in index.html (Home page)
         const allGalleryPhotos = [
-            // === FADES & CUTS ===
-            { id: 'download-4', src: 'download (4).jpg', title: 'Kids Classic Cut', category: 'fades', usedIn: 'Gallery' },
-            { id: 'download-7', src: 'download (7).jpg', title: 'Modern Textured Cut', category: 'fades', usedIn: 'Gallery, Learn, Home' },
-            { id: 'download-8', src: 'download (8).jpg', title: 'High Top Fade', category: 'fades', usedIn: 'Gallery, Learn' },
-            { id: 'download-9', src: 'download (9).jpg', title: 'Sharp Lineup', category: 'fades', usedIn: 'Gallery, Learn, Home' },
-            { id: 'download-11', src: 'download (11).jpg', title: 'Classic Taper Fade', category: 'fades', usedIn: 'Gallery, Learn' },
-            { id: 'download-13', src: 'download (13).jpg', title: 'Custom Design Lines', category: 'fades', usedIn: 'Gallery' },
-            { id: 'download-16', src: 'download (16).jpg', title: 'Precision Cuts', category: 'fades', usedIn: 'Home' },
-            { id: 'download-21', src: 'download (21).jpg', title: 'Blonde Curly Fade', category: 'fades', usedIn: 'Gallery, Learn' },
+            // === GALLERY PAGE PHOTOS (hardcoded in gallery.html) ===
+            { id: 'download-4', src: 'download (4).jpg', title: 'Kids Classic Cut', category: 'fades', usedIn: 'Gallery', inGallery: true },
+            { id: 'download-7', src: 'download (7).jpg', title: 'Modern Textured Cut', category: 'fades', usedIn: 'Gallery, Learn, Home', inGallery: true },
+            { id: 'download-8', src: 'download (8).jpg', title: 'High Top Fade', category: 'fades', usedIn: 'Gallery, Learn', inGallery: true },
+            { id: 'download-9', src: 'download (9).jpg', title: 'Sharp Lineup', category: 'fades', usedIn: 'Gallery, Learn, Home', inGallery: true },
+            { id: 'download-10', src: 'download (10).jpg', title: 'The Golden Team', category: 'shop', usedIn: 'Gallery, Home', inGallery: true },
+            { id: 'download-11', src: 'download (11).jpg', title: 'Traditional Fire Technique', category: 'beard', usedIn: 'Gallery, Learn', inGallery: true },
+            { id: 'download-12', src: 'download (12).jpg', title: 'Fire Wax Treatment', category: 'beard', usedIn: 'Gallery', inGallery: true },
+            { id: 'download-13', src: 'download (13).jpg', title: 'Custom Design Lines', category: 'fades', usedIn: 'Gallery', inGallery: true },
+            { id: 'download-14', src: 'download (14).jpg', title: 'Premium Interior', category: 'shop', usedIn: 'Gallery', inGallery: true },
+            { id: 'download-15', src: 'download (15).jpg', title: 'Face Wax Treatment', category: 'beard', usedIn: 'Gallery', inGallery: true },
+            { id: 'download-18', src: 'download (18).jpg', title: 'Beard Styling & Fade', category: 'beard', usedIn: 'Gallery, Learn', inGallery: true },
+            { id: 'download-19', src: 'download (19).jpg', title: 'The Golden Team 2', category: 'shop', usedIn: 'Gallery', inGallery: true },
+            { id: 'download-20', src: 'download (20).jpg', title: 'Welcoming Atmosphere', category: 'shop', usedIn: 'Gallery', inGallery: true },
+            { id: 'download-21', src: 'download (21).jpg', title: 'Blonde Curly Fade', category: 'fades', usedIn: 'Gallery, Learn', inGallery: true },
+            { id: 'download-22', src: 'download (22).jpg', title: 'Turquoise Color Fade', category: 'transformations', usedIn: 'Gallery, Learn', inGallery: true },
+            { id: 'download-23', src: 'download (23).jpg', title: 'Hot Towel Service', category: 'beard', usedIn: 'Gallery, Learn', inGallery: true },
+            { id: 'download-24', src: 'download (24).jpg', title: 'Goodmayes Location', category: 'shop', usedIn: 'Gallery', inGallery: true },
 
-            // === BEARD & GROOMING ===
-            { id: 'download-12', src: 'download (12).jpg', title: 'Traditional Fire Technique', category: 'beard', usedIn: 'Gallery' },
-            { id: 'download-15', src: 'download (15).jpg', title: 'Face Wax Treatment', category: 'beard', usedIn: 'Gallery' },
-            { id: 'download-18', src: 'download (18).jpg', title: 'Beard Styling & Fade', category: 'beard', usedIn: 'Gallery, Learn' },
-            { id: 'download-23', src: 'download (23).jpg', title: 'Hot Towel Service', category: 'beard', usedIn: 'Gallery, Learn' },
+            // === HOME PAGE ONLY ===
+            { id: 'download-16', src: 'download (16).jpg', title: 'Precision Cuts', category: '', usedIn: 'Home', inGallery: false },
 
-            // === TRANSFORMATIONS ===
-            { id: 'download-22', src: 'download (22).jpg', title: 'Turquoise Color Fade', category: 'transformations', usedIn: 'Gallery, Learn' },
+            // === LEARN PAGE ONLY (local images) ===
+            { id: 'pic', src: 'pic.jpg', title: 'Clean Skin Fade', category: '', usedIn: 'Learn', inGallery: false },
+            { id: 'images', src: 'images.jpg', title: 'Confident Buzz Cut', category: '', usedIn: 'Learn', inGallery: false },
+            { id: 'download-26', src: 'download (26).jpg', title: 'Hair Consultation', category: '', usedIn: 'Learn', inGallery: false },
+            { id: 'download-27', src: 'download (27).jpg', title: 'Hair Health Tips', category: '', usedIn: 'Learn', inGallery: false },
 
-            // === SHOP & TEAM ===
-            { id: 'download-10', src: 'download (10).jpg', title: 'The Golden Team', category: 'shop', usedIn: 'Gallery, Home' },
-            { id: 'download-14', src: 'download (14).jpg', title: 'Premium Interior', category: 'shop', usedIn: 'Gallery' },
-            { id: 'download-19', src: 'download (19).jpg', title: 'Team Photo 2', category: 'shop', usedIn: 'Gallery' },
-            { id: 'download-20', src: 'download (20).jpg', title: 'Welcoming Atmosphere', category: 'shop', usedIn: 'Gallery' },
-            { id: 'download-24', src: 'download (24).jpg', title: 'Goodmayes Location', category: 'shop', usedIn: 'Gallery' },
+            // === LEARN PAGE (root folder images) ===
+            { id: 'hqdefault', src: '../hqdefault.jpg', title: 'Hair Types Guide', category: '', usedIn: 'Learn', inGallery: false },
+            { id: 'untitled-design', src: '../untitled-design-2023-11-07t193853-673-1600x900.webp', title: 'Scalp Care Guide', category: '', usedIn: 'Learn', inGallery: false },
+            { id: 'hair-loss-tips', src: '../v4-460px-Treat-Male-Pattern-Hair-Loss-Step-11-Version-3.jpg', title: 'Hair Loss Treatment', category: '', usedIn: 'Learn', inGallery: false },
 
-            // === LEARN PAGE ONLY ===
-            { id: 'download-26', src: 'download (26).jpg', title: 'Hair Consultation', category: 'fades', usedIn: 'Learn' },
-            { id: 'download-27', src: 'download (27).jpg', title: 'Hair Health Tips', category: 'fades', usedIn: 'Learn' },
-            { id: 'pic', src: 'pic.jpg', title: 'Clean Skin Fade', category: 'fades', usedIn: 'Learn' },
-            { id: 'images', src: 'images.jpg', title: 'Confident Buzz Cut', category: 'fades', usedIn: 'Learn' },
+            // === LEARN PAGE PRODUCTS (external images) ===
+            { id: 'product-pomade', src: 'https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=400&h=300&fit=crop', title: 'Hair Styling Pomade', category: '', usedIn: 'Learn', inGallery: false },
+            { id: 'product-wax', src: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=300&fit=crop', title: 'Hair Wax Products', category: '', usedIn: 'Learn', inGallery: false },
+            { id: 'product-styling', src: 'https://images.unsplash.com/photo-1599305090598-fe179d501227?w=400&h=300&fit=crop', title: 'Mens Styling Products', category: '', usedIn: 'Learn', inGallery: false },
 
-            // === WEB IMAGES (from root folder) ===
-            { id: 'hqdefault', src: '../hqdefault.jpg', title: 'YouTube Thumbnail', category: 'fades', usedIn: 'Learn' },
-            { id: 'untitled-design', src: '../untitled-design-2023-11-07t193853-673-1600x900.webp', title: 'Barber Chair Design', category: 'shop', usedIn: 'Learn' },
-            { id: 'hair-loss-tips', src: '../v4-460px-Treat-Male-Pattern-Hair-Loss-Step-11-Version-3.jpg', title: 'Hair Loss Treatment Tips', category: 'fades', usedIn: 'Learn' },
-            { id: 'instagram-post', src: '56490494_441941899910184_1535393151337681820_n.jpg', title: 'Instagram Barber Post', category: 'fades', usedIn: 'Gallery' },
-            { id: 'styled-cut', src: '../cde5b93b-f8ed-4cde-bbd3-dfe60b666732.jpg', title: 'Styled Haircut', category: 'fades', usedIn: 'Unused' },
-
-            // === OTHER (not in main pages) ===
-            { id: 'download-5', src: 'download (5).jpg', title: 'Style Shot 1', category: 'fades', usedIn: 'Unused' },
-            { id: 'download-6', src: 'download (6).jpg', title: 'Style Shot 2', category: 'fades', usedIn: 'Unused' },
-            { id: 'download-17', src: 'download (17).jpg', title: 'Barber at Work', category: 'fades', usedIn: 'Unused' },
-            { id: 'download-25', src: 'download (25).jpg', title: 'Client Result', category: 'fades', usedIn: 'Unused' },
-            { id: 'download-28', src: 'download (28).jpg', title: 'Extra Photo', category: 'fades', usedIn: 'Unused' }
+            // === UNUSED (available for future use) ===
+            { id: 'download-5', src: 'download (5).jpg', title: 'Fade Style 1', category: '', usedIn: 'Unused', inGallery: false },
+            { id: 'download-6', src: 'download (6).jpg', title: 'Fade Style 2', category: '', usedIn: 'Unused', inGallery: false },
+            { id: 'download-17', src: 'download (17).jpg', title: 'Barber at Work', category: '', usedIn: 'Unused', inGallery: false },
+            { id: 'download-25', src: 'download (25).jpg', title: 'Client Result', category: '', usedIn: 'Unused', inGallery: false },
+            { id: 'download-28', src: 'download (28).jpg', title: 'Extra Photo', category: '', usedIn: 'Unused', inGallery: false },
+            { id: 'instagram-post', src: '56490494_441941899910184_1535393151337681820_n.jpg', title: 'Instagram Post', category: '', usedIn: 'Unused', inGallery: false },
+            { id: 'styled-cut', src: '../cde5b93b-f8ed-4cde-bbd3-dfe60b666732.jpg', title: 'Styled Haircut', category: '', usedIn: 'Unused', inGallery: false }
         ];
 
         // Hidden photos stored in Firebase
@@ -1720,12 +1721,18 @@
                 const btnAction = isHidden ? 'restoreGalleryPhoto' : 'hideGalleryPhoto';
 
                 const usedInColor = photo.usedIn === 'Unused' ? '#666' : '#22c55e';
+                const categoryLine = photo.category ? `<p style="color: #888; font-size: 10px; margin: 2px 0 0 0; text-transform: capitalize;">${photo.category}</p>` : '';
+                const addToLiveBtn = !photo.inGallery ? `
+                        <button onclick="makePhotoLiveFromGallery('${photo.id}', '${photo.src}', '${photo.title}')"
+                            style="position: absolute; bottom: 70px; left: 8px; right: 8px; padding: 8px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.5); border-radius: 6px; color: #22c55e; font-size: 11px; font-weight: 600; cursor: pointer; text-align: center;">
+                            + Add to Live Gallery
+                        </button>` : '';
                 return `
                     <div class="gallery-item gallery-manage-item" style="${isHidden ? 'opacity: 0.6;' : ''}">
                         <img src="${photo.src}" alt="${photo.title}" onerror="this.src='https://via.placeholder.com/200x200?text=Not+Found'">
                         <div style="position: absolute; bottom: 8px; left: 8px; right: 8px; background: rgba(0,0,0,0.9); padding: 8px; border-radius: 6px;">
                             <p style="color: #d4af37; font-size: 12px; font-weight: 600; margin: 0;">${photo.title}</p>
-                            <p style="color: #888; font-size: 10px; margin: 2px 0 0 0; text-transform: capitalize;">${photo.category}</p>
+                            ${categoryLine}
                             <p style="color: ${usedInColor}; font-size: 9px; margin: 4px 0 0 0;">Used in: ${photo.usedIn}</p>
                         </div>
                         <div class="gallery-manage-btns">
@@ -1738,10 +1745,7 @@
                                 ${btnText}
                             </button>
                         </div>
-                        <button onclick="makePhotoLiveFromGallery('${photo.id}', '${photo.src}', '${photo.title}')"
-                            style="position: absolute; bottom: 70px; left: 8px; right: 8px; padding: 8px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.5); border-radius: 6px; color: #22c55e; font-size: 11px; font-weight: 600; cursor: pointer; text-align: center;">
-                            + Add to Live Gallery
-                        </button>
+                        ${addToLiveBtn}
                     </div>
                 `;
             }).join('');
