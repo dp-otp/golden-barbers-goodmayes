@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Golden Barbers Goodmayes</title>
 
+    <!-- Cloudinary Upload Widget -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+
     <style>
         /* Simple Admin Panel Styles */
         * {
@@ -322,6 +325,136 @@
             animation: slideDown 0.3s ease;
         }
 
+        /* Gallery Upload Styles */
+        .upload-area {
+            border: 2px dashed rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover {
+            border-color: #d4af37;
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .upload-area svg {
+            width: 48px;
+            height: 48px;
+            stroke: #d4af37;
+            margin-bottom: 15px;
+        }
+
+        .upload-area h4 {
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .upload-area p {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #1a1a1a;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            background: rgba(239, 68, 68, 0.9);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .gallery-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .gallery-item .copy-btn {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            padding: 5px 10px;
+            background: rgba(212, 175, 55, 0.9);
+            border: none;
+            border-radius: 5px;
+            color: #000;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .gallery-item:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .gallery-empty {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            color: #d4af37;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #d4af37;
+            color: #000;
+        }
+
         @keyframes slideDown {
             from {
                 opacity: 0;
@@ -534,6 +667,31 @@
                 </form>
             </div>
 
+            <!-- Gallery / Media Upload -->
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>Gallery & Media</h2>
+                <div id="gallerySuccess" class="success-message">Media uploaded successfully!</div>
+
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('photos')">Photos</button>
+                    <button class="tab-btn" onclick="switchTab('videos')">Videos</button>
+                </div>
+
+                <!-- Upload Area -->
+                <div class="upload-area" id="uploadArea" onclick="openUploadWidget()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                    </svg>
+                    <h4>Click to Upload Photos or Videos</h4>
+                    <p>Supports JPG, PNG, GIF, MP4, MOV (max 10MB)</p>
+                </div>
+
+                <!-- Gallery Grid -->
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
             <!-- View Bookings -->
             <div class="admin-card" style="grid-column: 1 / -1;">
                 <h2>Recent Bookings</h2>
@@ -687,6 +845,140 @@
 
         // Refresh bookings every 10 seconds
         setInterval(loadBookings, 10000);
+
+        // ============================================
+        // CLOUDINARY GALLERY MANAGEMENT
+        // ============================================
+
+        const CLOUDINARY_CLOUD_NAME = 'dg10kkr88';
+        let currentTab = 'photos';
+
+        // Cloudinary Upload Widget
+        function openUploadWidget() {
+            cloudinary.openUploadWidget({
+                cloudName: CLOUDINARY_CLOUD_NAME,
+                uploadPreset: 'golden_barbers_unsigned',
+                sources: ['local', 'camera', 'url'],
+                multiple: true,
+                maxFiles: 10,
+                maxFileSize: 10000000, // 10MB
+                resourceType: 'auto',
+                folder: 'golden-barbers',
+                clientAllowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov'],
+                styles: {
+                    palette: {
+                        window: "#141414",
+                        windowBorder: "#d4af37",
+                        tabIcon: "#d4af37",
+                        menuIcons: "#d4af37",
+                        textDark: "#000000",
+                        textLight: "#ffffff",
+                        link: "#d4af37",
+                        action: "#d4af37",
+                        inactiveTabIcon: "#888888",
+                        error: "#ef4444",
+                        inProgress: "#d4af37",
+                        complete: "#22c55e",
+                        sourceBg: "#0a0a0a"
+                    }
+                }
+            }, (error, result) => {
+                if (error) {
+                    console.error('Upload error:', error);
+                    alert('Upload failed. Make sure you created an unsigned upload preset named "golden_barbers_unsigned" in Cloudinary settings.');
+                    return;
+                }
+                if (!error && result && result.event === "success") {
+                    // Save to localStorage
+                    const media = JSON.parse(localStorage.getItem('goldenBarbers_gallery') || '[]');
+                    media.push({
+                        id: result.info.public_id,
+                        url: result.info.secure_url,
+                        type: result.info.resource_type,
+                        format: result.info.format,
+                        createdAt: new Date().toISOString()
+                    });
+                    localStorage.setItem('goldenBarbers_gallery', JSON.stringify(media));
+
+                    // Show success
+                    const success = document.getElementById('gallerySuccess');
+                    success.classList.add('show');
+                    setTimeout(() => success.classList.remove('show'), 3000);
+
+                    // Refresh gallery
+                    loadGallery();
+                }
+            });
+        }
+
+        // Load gallery
+        function loadGallery() {
+            const media = JSON.parse(localStorage.getItem('goldenBarbers_gallery') || '[]');
+            const container = document.getElementById('galleryGrid');
+
+            // Filter by current tab
+            const filtered = media.filter(item => {
+                if (currentTab === 'photos') return item.type === 'image';
+                if (currentTab === 'videos') return item.type === 'video';
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="gallery-empty">No ' + currentTab + ' uploaded yet. Click above to add some!</div>';
+                return;
+            }
+
+            container.innerHTML = filtered.map(item => {
+                if (item.type === 'video') {
+                    return `
+                        <div class="gallery-item">
+                            <video src="${item.url}" muted></video>
+                            <button class="delete-btn" onclick="deleteMedia('${item.id}')">&times;</button>
+                            <button class="copy-btn" onclick="copyUrl('${item.url}')">Copy URL</button>
+                        </div>
+                    `;
+                }
+                return `
+                    <div class="gallery-item">
+                        <img src="${item.url}" alt="Gallery image">
+                        <button class="delete-btn" onclick="deleteMedia('${item.id}')">&times;</button>
+                        <button class="copy-btn" onclick="copyUrl('${item.url}')">Copy URL</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Switch tabs
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            loadGallery();
+        }
+
+        // Delete media
+        function deleteMedia(id) {
+            if (!confirm('Delete this media?')) return;
+
+            let media = JSON.parse(localStorage.getItem('goldenBarbers_gallery') || '[]');
+            media = media.filter(item => item.id !== id);
+            localStorage.setItem('goldenBarbers_gallery', JSON.stringify(media));
+            loadGallery();
+        }
+
+        // Copy URL
+        function copyUrl(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                alert('URL copied to clipboard!');
+            });
+        }
+
+        // Load gallery on page load (after showing admin panel)
+        const originalShowAdminPanel = showAdminPanel;
+        showAdminPanel = function() {
+            originalShowAdminPanel();
+            loadGallery();
+        };
     </script>
 </body>
 </html>
