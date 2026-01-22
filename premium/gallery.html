@@ -43,6 +43,10 @@
         gtag('config', 'G-XXXXXXXXXX');
     </script>
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1540,23 +1544,6 @@
                 </div>
             </div>
 
-            <div class="gallery-item tall" data-category="transformations">
-                <div class="gallery-item-inner">
-                    <img src="download (22).jpg" alt="Turquoise Color Fade" loading="lazy">
-                    <div class="gallery-item-overlay"></div>
-                    <div class="gallery-item-content">
-                        <span class="gallery-item-category">Color</span>
-                        <h3 class="gallery-item-title">Turquoise Color Fade</h3>
-                        <p class="gallery-item-desc">Bold color transformation with precision fade</p>
-                    </div>
-                    <div class="gallery-item-expand">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
             <div class="gallery-item tall" data-category="shop">
                 <div class="gallery-item-inner">
                     <img src="download (14).jpg" alt="Premium Interior" loading="lazy">
@@ -2026,50 +2013,72 @@
         });
 
         // ============================================
-        // LOAD CLOUDINARY LIVE GALLERY IMAGES
+        // FIREBASE CONFIGURATION
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3eVAdYntGPTsvhAZn0sezj7aYTR9qLC4",
+            authDomain: "golden-barbers-e25db.firebaseapp.com",
+            databaseURL: "https://golden-barbers-e25db-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "golden-barbers-e25db",
+            storageBucket: "golden-barbers-e25db.firebasestorage.app",
+            messagingSenderId: "719034478402",
+            appId: "1:719034478402:web:d3b3042688795b34e422db"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // ============================================
+        // LOAD LIVE GALLERY IMAGES FROM FIREBASE
         // ============================================
         function loadLiveGalleryImages() {
-            const liveImages = JSON.parse(localStorage.getItem('goldenBarbers_liveGallery') || '[]');
-            if (liveImages.length === 0) return;
+            database.ref('liveGallery').once('value').then((snapshot) => {
+                const data = snapshot.val();
+                if (!data) return;
 
-            const galleryGrid = document.getElementById('galleryGrid');
+                const liveImages = Object.values(data);
+                const galleryGrid = document.getElementById('galleryGrid');
 
-            liveImages.forEach((item, index) => {
-                const galleryItem = document.createElement('div');
-                galleryItem.className = 'gallery-item';
-                galleryItem.dataset.category = item.category || 'fades';
+                liveImages.forEach((item, index) => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item';
+                    galleryItem.dataset.category = item.category || 'fades';
 
-                galleryItem.innerHTML = `
-                    <div class="gallery-item-inner">
-                        <img src="${item.url}" alt="${item.title}" loading="lazy">
-                        <div class="gallery-item-overlay"></div>
-                        <div class="gallery-item-content">
-                            <span class="gallery-item-category">${item.categoryLabel || 'New'}</span>
-                            <h3 class="gallery-item-title">${item.title}</h3>
-                            <p class="gallery-item-desc">${item.description}</p>
+                    galleryItem.innerHTML = `
+                        <div class="gallery-item-inner">
+                            <img src="${item.url}" alt="${item.title}" loading="lazy">
+                            <div class="gallery-item-overlay"></div>
+                            <div class="gallery-item-content">
+                                <span class="gallery-item-category">${item.categoryLabel || 'New'}</span>
+                                <h3 class="gallery-item-title">${item.title}</h3>
+                                <p class="gallery-item-desc">${item.description}</p>
+                            </div>
+                            <div class="gallery-item-expand">
+                                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                                </svg>
+                            </div>
                         </div>
-                        <div class="gallery-item-expand">
-                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                            </svg>
-                        </div>
-                    </div>
-                `;
+                    `;
 
-                // Insert at the beginning of the gallery
-                galleryGrid.insertBefore(galleryItem, galleryGrid.firstChild);
+                    // Insert at the beginning of the gallery
+                    galleryGrid.insertBefore(galleryItem, galleryGrid.firstChild);
 
-                // Add click handler for lightbox
-                galleryItem.addEventListener('click', () => {
-                    const allItems = document.querySelectorAll('.gallery-item');
-                    const visibleItems = Array.from(allItems).filter(i => !i.classList.contains('hidden'));
-                    const visibleIndex = visibleItems.indexOf(galleryItem);
-                    openLightbox(visibleIndex);
+                    // Add click handler for lightbox
+                    galleryItem.addEventListener('click', () => {
+                        const allItems = document.querySelectorAll('.gallery-item');
+                        const visibleItems = Array.from(allItems).filter(i => !i.classList.contains('hidden'));
+                        const visibleIndex = visibleItems.indexOf(galleryItem);
+                        openLightbox(visibleIndex);
+                    });
+
+                    // Add to observer for animation
+                    observer.observe(galleryItem);
+                    galleryItem.style.transitionDelay = `${index * 0.05}s`;
                 });
-
-                // Add to observer for animation
-                observer.observe(galleryItem);
-                galleryItem.style.transitionDelay = `${index * 0.05}s`;
+            }).catch((error) => {
+                console.error('Error loading gallery from Firebase:', error);
             });
         }
 
