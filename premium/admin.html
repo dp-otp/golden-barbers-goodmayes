@@ -568,6 +568,66 @@
             background: rgba(212, 175, 55, 0.2);
         }
 
+        /* Undo Button */
+        .undo-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .undo-btn:hover {
+            background: rgba(34, 197, 94, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .undo-btn.show {
+            display: flex;
+        }
+
+        .undo-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .undo-toast {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            padding: 12px 20px;
+            background: #141414;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 13px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .undo-toast.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         /* Gallery Manage Item Buttons */
         .gallery-manage-item {
             min-height: 280px;
@@ -1000,6 +1060,17 @@
             </div>
         </div>
     </div>
+
+    <!-- Undo Button -->
+    <button class="undo-btn" id="undoBtn" onclick="undoLastAction()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 10h10a5 5 0 0 1 5 5v2M3 10l4-4M3 10l4 4"/>
+        </svg>
+        <span id="undoBtnText">Undo</span>
+    </button>
+
+    <!-- Undo Toast -->
+    <div class="undo-toast" id="undoToast"></div>
 
     <!-- Make Live Modal -->
     <div id="makeLiveModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center;">
@@ -1579,8 +1650,7 @@
             // Create safe key from id (Firebase doesn't allow certain characters)
             const safeKey = pendingLiveImage.id.replace(/[.#$\/\[\]]/g, '_');
 
-            // Add to Firebase
-            database.ref('liveGallery/' + safeKey).set({
+            const liveData = {
                 id: pendingLiveImage.id,
                 url: pendingLiveImage.url,
                 title: title,
@@ -1589,7 +1659,13 @@
                 categories: selectedCategories,
                 categoryLabel: categoryLabel,
                 createdAt: new Date().toISOString()
-            }).then(() => {
+            };
+
+            // Add to Firebase
+            database.ref('liveGallery/' + safeKey).set(liveData).then(() => {
+                // Push undo action
+                pushUndoAction(UNDO_ACTIONS.MAKE_LIVE, { firebaseKey: safeKey, title }, 'Make Live: ' + title);
+
                 // Close modal
                 closeLiveModal();
 
@@ -1612,10 +1688,17 @@
 
             const safeKey = id.replace(/[.#$\/\[\]]/g, '_');
 
-            database.ref('liveGallery/' + safeKey).remove().then(() => {
-                // Gallery will auto-refresh via the 'on' listener
-            }).catch((error) => {
-                alert('Error removing from Firebase: ' + error.message);
+            // First get the current data for undo
+            database.ref('liveGallery/' + safeKey).once('value').then((snapshot) => {
+                const liveData = snapshot.val();
+                const title = liveData ? liveData.title : id;
+
+                database.ref('liveGallery/' + safeKey).remove().then(() => {
+                    // Push undo action with the data needed to restore
+                    pushUndoAction(UNDO_ACTIONS.REMOVE_LIVE, { firebaseKey: safeKey, title, liveData }, 'Remove: ' + title);
+                }).catch((error) => {
+                    alert('Error removing from Firebase: ' + error.message);
+                });
             });
         }
 
@@ -1775,10 +1858,15 @@
         function hideGalleryPhoto(photoId) {
             if (!confirm('Hide this photo from the gallery?')) return;
 
+            // Find photo title
+            const photo = allGalleryPhotos.find(p => p.id === photoId);
+            const title = photo ? photo.title : photoId;
+
             database.ref('hiddenGalleryPhotos/' + photoId).set({
                 hiddenAt: new Date().toISOString()
             }).then(() => {
-                // Will auto-refresh via listener
+                // Push undo action
+                pushUndoAction(UNDO_ACTIONS.HIDE_PHOTO, { photoId, title }, 'Hide ' + title);
             }).catch((error) => {
                 alert('Error hiding photo: ' + error.message);
             });
@@ -1786,8 +1874,13 @@
 
         // Restore a hidden photo
         function restoreGalleryPhoto(photoId) {
+            // Find photo title
+            const photo = allGalleryPhotos.find(p => p.id === photoId);
+            const title = photo ? photo.title : photoId;
+
             database.ref('hiddenGalleryPhotos/' + photoId).remove().then(() => {
-                // Will auto-refresh via listener
+                // Push undo action
+                pushUndoAction(UNDO_ACTIONS.RESTORE_PHOTO, { photoId, title }, 'Restore ' + title);
             }).catch((error) => {
                 alert('Error restoring photo: ' + error.message);
             });
@@ -1873,6 +1966,8 @@
 
             // Save the replacement mapping to Firebase
             const safeKey = pendingReplacePhoto.id.replace(/[.#$\/\[\]]/g, '_');
+            const photoTitle = pendingReplacePhoto.title;
+            const photoId = pendingReplacePhoto.id;
 
             database.ref('photoReplacements/' + safeKey).set({
                 originalId: pendingReplacePhoto.id,
@@ -1880,6 +1975,8 @@
                 newUrl: finalUrl,
                 replacedAt: new Date().toISOString()
             }).then(() => {
+                // Push undo action
+                pushUndoAction(UNDO_ACTIONS.REPLACE_PHOTO, { photoId, title: photoTitle }, 'Replace ' + photoTitle);
                 closeReplaceModal();
                 alert('Photo replacement saved! The new photo will be used on the website.');
                 loadAllGalleryPhotos();
@@ -1910,6 +2007,134 @@
 
             // Show modal
             document.getElementById('makeLiveModal').style.display = 'flex';
+        }
+
+        // ============================================
+        // UNDO SYSTEM
+        // ============================================
+
+        // Undo stack - stores recent actions
+        let undoStack = [];
+        const MAX_UNDO_HISTORY = 10;
+        let undoTimeout = null;
+
+        // Action types
+        const UNDO_ACTIONS = {
+            HIDE_PHOTO: 'hide_photo',
+            RESTORE_PHOTO: 'restore_photo',
+            MAKE_LIVE: 'make_live',
+            REMOVE_LIVE: 'remove_live',
+            REPLACE_PHOTO: 'replace_photo',
+            DELETE_UPLOAD: 'delete_upload'
+        };
+
+        // Push action to undo stack
+        function pushUndoAction(type, data, description) {
+            undoStack.push({
+                type,
+                data,
+                description,
+                timestamp: Date.now()
+            });
+
+            // Limit stack size
+            if (undoStack.length > MAX_UNDO_HISTORY) {
+                undoStack.shift();
+            }
+
+            // Show undo button
+            showUndoButton(description);
+        }
+
+        // Show undo button with description
+        function showUndoButton(description) {
+            const btn = document.getElementById('undoBtn');
+            const text = document.getElementById('undoBtnText');
+            text.textContent = 'Undo: ' + description;
+            btn.classList.add('show');
+
+            // Auto-hide after 10 seconds
+            if (undoTimeout) clearTimeout(undoTimeout);
+            undoTimeout = setTimeout(() => {
+                btn.classList.remove('show');
+            }, 10000);
+        }
+
+        // Show toast notification
+        function showUndoToast(message) {
+            const toast = document.getElementById('undoToast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Undo last action
+        function undoLastAction() {
+            if (undoStack.length === 0) return;
+
+            const action = undoStack.pop();
+            const btn = document.getElementById('undoBtn');
+
+            switch (action.type) {
+                case UNDO_ACTIONS.HIDE_PHOTO:
+                    // Restore the hidden photo
+                    database.ref('hiddenGalleryPhotos/' + action.data.photoId).remove()
+                        .then(() => {
+                            showUndoToast('Photo restored: ' + action.data.title);
+                        });
+                    break;
+
+                case UNDO_ACTIONS.RESTORE_PHOTO:
+                    // Re-hide the photo
+                    database.ref('hiddenGalleryPhotos/' + action.data.photoId).set({
+                        hiddenAt: action.data.hiddenAt || new Date().toISOString()
+                    }).then(() => {
+                        showUndoToast('Photo hidden again: ' + action.data.title);
+                    });
+                    break;
+
+                case UNDO_ACTIONS.MAKE_LIVE:
+                    // Remove from live gallery
+                    database.ref('liveGallery/' + action.data.firebaseKey).remove()
+                        .then(() => {
+                            showUndoToast('Removed from live gallery: ' + action.data.title);
+                        });
+                    break;
+
+                case UNDO_ACTIONS.REMOVE_LIVE:
+                    // Re-add to live gallery
+                    database.ref('liveGallery/' + action.data.firebaseKey).set(action.data.liveData)
+                        .then(() => {
+                            showUndoToast('Restored to live gallery: ' + action.data.title);
+                        });
+                    break;
+
+                case UNDO_ACTIONS.REPLACE_PHOTO:
+                    // Remove the replacement
+                    const safeKey = action.data.photoId.replace(/[.#$\/\[\]]/g, '_');
+                    database.ref('photoReplacements/' + safeKey).remove()
+                        .then(() => {
+                            showUndoToast('Photo replacement undone: ' + action.data.title);
+                            loadAllGalleryPhotos();
+                        });
+                    break;
+
+                case UNDO_ACTIONS.DELETE_UPLOAD:
+                    // Can't fully undo upload deletion, but show message
+                    showUndoToast('Upload deletion cannot be fully undone');
+                    break;
+            }
+
+            // Hide button if no more actions
+            if (undoStack.length === 0) {
+                btn.classList.remove('show');
+            } else {
+                // Show previous action
+                const prevAction = undoStack[undoStack.length - 1];
+                showUndoButton(prevAction.description);
+            }
         }
     </script>
 </body>
