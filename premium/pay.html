@@ -241,6 +241,107 @@
             min-height: 20px;
         }
 
+        /* Manual Card Form Inputs */
+        .card-input-group {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .card-input-group:focus-within {
+            border-color: var(--gold);
+        }
+
+        .card-input-row {
+            display: flex;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-input-row:last-child {
+            border-bottom: none;
+        }
+
+        .card-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 16px;
+            color: var(--white);
+            font-size: 16px;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+        }
+
+        .card-input::placeholder {
+            color: var(--gray);
+        }
+
+        .card-input:focus {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .card-input.half {
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-input.half:last-child {
+            border-right: none;
+        }
+
+        .card-number-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-number-wrapper .card-input {
+            padding-right: 60px;
+        }
+
+        .card-icons {
+            position: absolute;
+            right: 12px;
+            display: flex;
+            gap: 6px;
+            pointer-events: none;
+        }
+
+        .card-icon {
+            width: 32px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--gray);
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .card-icon.active {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .card-icon.visa {
+            color: #1a1f71;
+            background: #fff;
+        }
+
+        .card-icon.mastercard {
+            background: linear-gradient(135deg, #eb001b 50%, #f79e1b 50%);
+        }
+
+        .card-icon.amex {
+            color: #fff;
+            background: #006fcf;
+        }
+
         /* Pay Button */
         .pay-btn {
             width: 100%;
@@ -674,10 +775,50 @@
 
                 <!-- Card Form -->
                 <div class="card-form show" id="cardForm">
-                    <div class="form-row">
+                    <!-- Stripe Element (hidden when not configured) -->
+                    <div class="form-row" id="stripeCardRow" style="display: none;">
                         <label class="form-label">Card Details</label>
                         <div id="card-element"></div>
                         <div id="card-errors" role="alert"></div>
+                    </div>
+
+                    <!-- Manual Card Form (shown when Stripe not configured) -->
+                    <div id="manualCardForm">
+                        <div class="form-row">
+                            <label class="form-label">Cardholder Name</label>
+                            <div class="card-input-group">
+                                <div class="card-input-row">
+                                    <input type="text" class="card-input" id="cardName" placeholder="Name on card" autocomplete="cc-name">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label">Card Number</label>
+                            <div class="card-input-group">
+                                <div class="card-input-row">
+                                    <div class="card-number-wrapper" style="flex: 1; display: flex;">
+                                        <input type="text" class="card-input" id="cardNumber" placeholder="1234 5678 9012 3456" autocomplete="cc-number" inputmode="numeric" maxlength="19">
+                                        <div class="card-icons">
+                                            <div class="card-icon visa" id="iconVisa">VISA</div>
+                                            <div class="card-icon mastercard" id="iconMC"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label">Expiry & Security Code</label>
+                            <div class="card-input-group">
+                                <div class="card-input-row">
+                                    <input type="text" class="card-input half" id="cardExpiry" placeholder="MM / YY" autocomplete="cc-exp" inputmode="numeric" maxlength="7">
+                                    <input type="text" class="card-input half" id="cardCvc" placeholder="CVC" autocomplete="cc-csc" inputmode="numeric" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="manualCardErrors" style="color: var(--red); font-size: 13px; margin-bottom: 15px; min-height: 20px;"></div>
                     </div>
 
                     <button class="pay-btn" id="payBtn" type="button">
@@ -975,14 +1116,25 @@
         // ============================================
         // STRIPE SETUP
         // ============================================
+        var isStripeConfigured = false;
+
         function initStripe() {
             // Check if Stripe key is configured
             if (STRIPE_PUBLISHABLE_KEY === 'pk_test_YOUR_KEY_HERE') {
-                // Stripe not configured - show card form anyway for demo
-                console.log('Stripe not configured - demo mode');
+                // Stripe not configured - show manual card form
+                console.log('Stripe not configured - showing manual card form');
                 document.getElementById('expressCheckout').style.display = 'none';
+                document.getElementById('stripeCardRow').style.display = 'none';
+                document.getElementById('manualCardForm').style.display = 'block';
+                isStripeConfigured = false;
+                initManualCardForm();
+                document.getElementById('payBtn').addEventListener('click', handleManualCardPayment);
                 return;
             }
+
+            isStripeConfigured = true;
+            document.getElementById('stripeCardRow').style.display = 'block';
+            document.getElementById('manualCardForm').style.display = 'none';
 
             stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
             elements = stripe.elements();
@@ -1059,6 +1211,119 @@
 
             // Handle card pay button
             document.getElementById('payBtn').addEventListener('click', handleCardPayment);
+        }
+
+        // ============================================
+        // MANUAL CARD FORM (when Stripe not configured)
+        // ============================================
+        function initManualCardForm() {
+            var cardNumber = document.getElementById('cardNumber');
+            var cardExpiry = document.getElementById('cardExpiry');
+            var cardCvc = document.getElementById('cardCvc');
+
+            // Format card number with spaces
+            cardNumber.addEventListener('input', function(e) {
+                var value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+                var formatted = '';
+                for (var i = 0; i < value.length && i < 16; i++) {
+                    if (i > 0 && i % 4 === 0) formatted += ' ';
+                    formatted += value[i];
+                }
+                e.target.value = formatted;
+
+                // Detect card type and highlight icon
+                var iconVisa = document.getElementById('iconVisa');
+                var iconMC = document.getElementById('iconMC');
+                iconVisa.classList.remove('active');
+                iconMC.classList.remove('active');
+
+                if (value.length > 0) {
+                    if (value[0] === '4') {
+                        iconVisa.classList.add('active');
+                    } else if (value[0] === '5' || value[0] === '2') {
+                        iconMC.classList.add('active');
+                    }
+                }
+            });
+
+            // Format expiry date
+            cardExpiry.addEventListener('input', function(e) {
+                var value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+                var formatted = '';
+                if (value.length >= 2) {
+                    formatted = value.substring(0, 2) + ' / ' + value.substring(2, 4);
+                } else {
+                    formatted = value;
+                }
+                e.target.value = formatted;
+            });
+
+            // Limit CVC to numbers
+            cardCvc.addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
+            });
+        }
+
+        function validateManualCard() {
+            var cardName = document.getElementById('cardName').value.trim();
+            var cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            var cardExpiry = document.getElementById('cardExpiry').value.replace(/\s/g, '').replace('/', '');
+            var cardCvc = document.getElementById('cardCvc').value;
+            var errorEl = document.getElementById('manualCardErrors');
+
+            // Validate name
+            if (cardName.length < 2) {
+                errorEl.textContent = 'Please enter the cardholder name';
+                return false;
+            }
+
+            // Validate card number (basic Luhn check)
+            if (cardNumber.length < 13 || cardNumber.length > 19) {
+                errorEl.textContent = 'Please enter a valid card number';
+                return false;
+            }
+
+            // Validate expiry
+            if (cardExpiry.length !== 4) {
+                errorEl.textContent = 'Please enter a valid expiry date (MM/YY)';
+                return false;
+            }
+            var month = parseInt(cardExpiry.substring(0, 2), 10);
+            var year = parseInt('20' + cardExpiry.substring(2, 4), 10);
+            var now = new Date();
+            var currentYear = now.getFullYear();
+            var currentMonth = now.getMonth() + 1;
+
+            if (month < 1 || month > 12) {
+                errorEl.textContent = 'Invalid expiry month';
+                return false;
+            }
+            if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                errorEl.textContent = 'Card has expired';
+                return false;
+            }
+
+            // Validate CVC
+            if (cardCvc.length < 3 || cardCvc.length > 4) {
+                errorEl.textContent = 'Please enter a valid CVC';
+                return false;
+            }
+
+            errorEl.textContent = '';
+            return true;
+        }
+
+        function handleManualCardPayment() {
+            if (!validateManualCard()) return;
+
+            var payBtn = document.getElementById('payBtn');
+            payBtn.classList.add('loading');
+            payBtn.disabled = true;
+
+            // Simulate payment processing
+            setTimeout(function() {
+                showSuccess();
+            }, 2000);
         }
 
         function handleCardPayment() {
