@@ -1230,6 +1230,29 @@
             100% { transform: translateX(-50%); }
         }
 
+        /* Mobile: Make marquee scrollable */
+        @media (max-width: 768px) {
+            .marquee-section {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .marquee {
+                animation: none;
+            }
+            .marquee-content:last-child {
+                display: none;
+            }
+            .marquee-item {
+                font-size: 16px;
+                letter-spacing: 2px;
+                gap: 20px;
+            }
+            .marquee-content {
+                gap: 40px;
+                padding: 0 20px;
+            }
+        }
+
         /* ============================================
            SERVICES SECTION
            ============================================ */
@@ -1534,6 +1557,23 @@
         @keyframes scrollTestimonials {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
+        }
+
+        /* Mobile: Make testimonials scrollable */
+        @media (max-width: 768px) {
+            .testimonials {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 20px;
+            }
+            .testimonials-track {
+                animation: none;
+                padding: 0 20px;
+                gap: 20px;
+            }
+            .testimonials-track .testimonial-card:nth-child(n+5) {
+                display: none;
+            }
         }
 
         .testimonial-card {
