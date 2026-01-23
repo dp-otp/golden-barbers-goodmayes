@@ -668,7 +668,7 @@
                 border-radius: 50%;
                 background: var(--dark);
                 box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-                overflow: hidden;
+                overflow: visible;
                 transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             }
 
@@ -685,16 +685,17 @@
                     from 0deg,
                     transparent 0deg,
                     transparent 20deg,
-                    rgba(184, 134, 11, 0.15) 50deg,
-                    rgba(184, 134, 11, 0.5) 80deg,
+                    rgba(184, 134, 11, 0.2) 50deg,
+                    rgba(184, 134, 11, 0.6) 80deg,
                     #b8860b 110deg,
-                    rgba(184, 134, 11, 0.5) 140deg,
-                    rgba(184, 134, 11, 0.15) 170deg,
+                    rgba(184, 134, 11, 0.6) 140deg,
+                    rgba(184, 134, 11, 0.2) 170deg,
                     transparent 200deg,
                     transparent 360deg
                 );
                 animation: rotateBorder 8s linear infinite, borderPulse 3s ease-in-out infinite;
-                z-index: -1;
+                z-index: 0;
+                pointer-events: none;
             }
 
             .image-showcase .img-wrap img,
@@ -706,6 +707,8 @@
                 object-position: center;
                 border-radius: 50%;
                 display: block;
+                position: relative;
+                z-index: 1;
             }
 
             /* Main center photo - BIGGER */
