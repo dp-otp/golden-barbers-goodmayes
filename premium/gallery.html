@@ -605,19 +605,11 @@
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-
         .gallery-item video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .gallery-item:hover video {
-            transform: scale(1.05);
+            object-fit: contain;
+            background: var(--black);
         }
 
         .gallery-item .video-play-btn {
@@ -900,7 +892,7 @@
         }
 
         .instagram-section:hover .instagram-icon {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.05);
         }
 
         .instagram-title {
@@ -1468,7 +1460,7 @@
             <button class="filter-btn" data-filter="fades">Fades & Cuts</button>
             <button class="filter-btn" data-filter="beard">Beard & Grooming</button>
             <button class="filter-btn" data-filter="transformations">Transformations</button>
-            <button class="filter-btn" data-filter="wellness">Treatments</button>
+            <button class="filter-btn" data-filter="wellness">Luxury Treatments</button>
             <button class="filter-btn" data-filter="shop">The Shop</button>
         </div>
     </section>
@@ -1738,23 +1730,6 @@
 
             <div class="gallery-item" data-category="wellness">
                 <div class="gallery-item-inner">
-                    <img src="download (23).jpg" alt="Hot Towel Treatment" loading="lazy">
-                    <div class="gallery-item-overlay"></div>
-                    <div class="gallery-item-content">
-                        <span class="gallery-item-category">Wellness</span>
-                        <h3 class="gallery-item-title">Hot Towel Treatment</h3>
-                        <p class="gallery-item-desc">Traditional Turkish hot towel service</p>
-                    </div>
-                    <div class="gallery-item-expand">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="gallery-item" data-category="wellness">
-                <div class="gallery-item-inner">
                     <img src="SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg" alt="Head Massage" loading="lazy">
                     <div class="gallery-item-overlay"></div>
                     <div class="gallery-item-content">
@@ -1772,12 +1747,12 @@
 
             <div class="gallery-item" data-category="wellness">
                 <div class="gallery-item-inner">
-                    <img src="56490494_441941899910184_1535393151337681820_n.jpg" alt="Charcoal Face Mask" loading="lazy">
+                    <img src="download (15).jpg" alt="Face Wax Treatment" loading="lazy">
                     <div class="gallery-item-overlay"></div>
                     <div class="gallery-item-content">
                         <span class="gallery-item-category">Wellness</span>
-                        <h3 class="gallery-item-title">Charcoal Face Mask</h3>
-                        <p class="gallery-item-desc">Deep cleansing facial wax treatment</p>
+                        <h3 class="gallery-item-title">Face Wax Treatment</h3>
+                        <p class="gallery-item-desc">Professional facial waxing service</p>
                     </div>
                     <div class="gallery-item-expand">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
@@ -2006,23 +1981,6 @@
                 </div>
             </div>
 
-            <div class="gallery-item tall" data-category="fades beard">
-                <div class="gallery-item-inner">
-                    <img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="Afro Temple Fade & Beard" loading="lazy">
-                    <div class="gallery-item-overlay"></div>
-                    <div class="gallery-item-content">
-                        <span class="gallery-item-category">Combo</span>
-                        <h3 class="gallery-item-title">Afro Temple Fade & Beard</h3>
-                        <p class="gallery-item-desc">Natural afro with sharp temple fade and shaped beard</p>
-                    </div>
-                    <div class="gallery-item-expand">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
             <div class="gallery-item" data-category="fades">
                 <div class="gallery-item-inner">
                     <img src="SnapInsta.to_83452999_639920510104267_5362544737012483305_n.jpg" alt="Star Design Cut" loading="lazy">
@@ -2042,12 +2000,12 @@
 
             <div class="gallery-item" data-category="fades beard">
                 <div class="gallery-item-inner">
-                    <img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" alt="Classic Low Fade" loading="lazy">
+                    <img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" alt="Mid-High Fade" loading="lazy">
                     <div class="gallery-item-overlay"></div>
                     <div class="gallery-item-content">
                         <span class="gallery-item-category">Fades</span>
-                        <h3 class="gallery-item-title">Classic Low Fade</h3>
-                        <p class="gallery-item-desc">Clean low fade with shaped beard</p>
+                        <h3 class="gallery-item-title">Mid-High Fade</h3>
+                        <p class="gallery-item-desc">Clean mid-high fade with shaped beard</p>
                     </div>
                     <div class="gallery-item-expand">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
@@ -2549,48 +2507,60 @@
         // Initialize with "All Work" organization
         organizeGallery('all');
 
-        // Set video thumbnails to show climax (later frame)
+        // Set video thumbnails to show climax (later frame) - for preview only
         document.querySelectorAll('.gallery-item video').forEach(video => {
+            video.preload = 'metadata';
             video.addEventListener('loadedmetadata', () => {
-                // Seek to 75% of the video to show the "climax" result
+                // Seek to 75% for thumbnail preview
                 video.currentTime = video.duration * 0.75;
             });
-            // Preload metadata to trigger the seek
-            video.preload = 'metadata';
         });
 
-        // Video Play on Click
+        // Video Lightbox - opens video in fullscreen lightbox like photos
+        function openVideoLightbox(videoSrc, title, desc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxContent = lightbox.querySelector('.lightbox-content');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxTitle = document.getElementById('lightboxTitle');
+            const lightboxDesc = document.getElementById('lightboxDesc');
+
+            // Replace image with video
+            lightboxImage.style.display = 'none';
+            let lightboxVideo = document.getElementById('lightboxVideo');
+            if (!lightboxVideo) {
+                lightboxVideo = document.createElement('video');
+                lightboxVideo.id = 'lightboxVideo';
+                lightboxVideo.controls = true;
+                lightboxVideo.style.maxWidth = '100%';
+                lightboxVideo.style.maxHeight = '85vh';
+                lightboxVideo.style.borderRadius = '20px';
+                lightboxVideo.style.boxShadow = '0 50px 100px rgba(0, 0, 0, 0.5)';
+                lightboxContent.insertBefore(lightboxVideo, lightboxContent.querySelector('.lightbox-info'));
+            }
+
+            lightboxVideo.src = videoSrc;
+            lightboxVideo.style.display = 'block';
+            lightboxVideo.currentTime = 0; // Start from beginning
+            lightboxTitle.textContent = title;
+            lightboxDesc.textContent = desc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Video Click Handler - open in lightbox
         document.querySelectorAll('.gallery-item video').forEach(video => {
             const playBtn = video.parentElement.querySelector('.video-play-btn');
             const item = video.closest('.gallery-item');
+            const title = item.querySelector('.gallery-item-title')?.textContent || 'Video';
+            const desc = item.querySelector('.gallery-item-desc')?.textContent || '';
 
-            if (playBtn) {
-                playBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if (video.paused) {
-                        video.play();
-                        item.classList.add('playing');
-                    } else {
-                        video.pause();
-                        item.classList.remove('playing');
-                    }
-                });
-            }
-
-            video.addEventListener('click', (e) => {
+            const openVideo = (e) => {
                 e.stopPropagation();
-                if (video.paused) {
-                    video.play();
-                    item.classList.add('playing');
-                } else {
-                    video.pause();
-                    item.classList.remove('playing');
-                }
-            });
+                openVideoLightbox(video.src, title, desc);
+            };
 
-            video.addEventListener('ended', () => {
-                item.classList.remove('playing');
-            });
+            if (playBtn) playBtn.addEventListener('click', openVideo);
+            video.addEventListener('click', openVideo);
         });
 
         // Lightbox
@@ -2623,6 +2593,15 @@
         function closeLightbox() {
             lightbox.classList.remove('active');
             document.body.style.overflow = '';
+            // Reset video if present
+            const lightboxVideo = document.getElementById('lightboxVideo');
+            if (lightboxVideo) {
+                lightboxVideo.pause();
+                lightboxVideo.style.display = 'none';
+                lightboxVideo.src = '';
+            }
+            const lightboxImage = document.getElementById('lightboxImage');
+            if (lightboxImage) lightboxImage.style.display = 'block';
         }
 
         function navigateLightbox(direction) {

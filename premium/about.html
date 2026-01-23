@@ -822,7 +822,7 @@
         }
 
         .value-card:hover .value-icon {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.05);
             box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
         }
 
@@ -1692,11 +1692,22 @@
             <span class="section-badge" style="display: inline-block; padding: 8px 20px; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 30px; color: var(--gold); font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">Inside The Shop</span>
             <h2 class="section-title" style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800;">Experience <span style="color: var(--gold);">Golden Barbers</span></h2>
         </div>
-        <div style="max-width: 900px; margin: 0 auto; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border: 1px solid rgba(212, 175, 55, 0.2);">
-            <video controls style="width: 100%; display: block;" poster="download (10).jpg">
+        <div style="max-width: 900px; margin: 0 auto; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border: 1px solid rgba(212, 175, 55, 0.2); position: relative;">
+            <div id="videoPoster" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2;">
+                <img src="logo.png" alt="Golden Barbers" style="width: 150px; height: 150px; opacity: 0.9;">
+            </div>
+            <video id="aboutVideo" style="width: 100%; display: block;">
                 <source src="SnapInsta.to_AQPGe6NeSzxsBsWUbAVB5TpDvzujkBSx3TvtDa7ubYDj0gzj_5kT1IfkJx4qXcwZbpig_aQ92mCtFrW6lC-1kz1IN7rGxufewkpMPJw.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
+            <script>
+                document.getElementById('videoPoster').addEventListener('click', function() {
+                    this.style.display = 'none';
+                    const video = document.getElementById('aboutVideo');
+                    video.controls = true;
+                    video.play();
+                });
+            </script>
         </div>
     </section>
 
