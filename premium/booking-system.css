@@ -786,6 +786,160 @@
     }
 }
 
+@media (max-width: 480px) {
+    .booking-modal {
+        padding: 10px;
+    }
+
+    .booking-modal-content {
+        border-radius: 15px;
+    }
+
+    .booking-modal-header {
+        padding: 15px;
+    }
+
+    .booking-modal-header h2 {
+        font-size: 18px;
+        padding-right: 40px;
+    }
+
+    .booking-modal-close {
+        width: 35px;
+        height: 35px;
+        top: 12px;
+        right: 12px;
+    }
+
+    .booking-modal-body {
+        padding: 15px;
+    }
+
+    .booking-progress {
+        padding: 10px 15px;
+    }
+
+    .progress-number {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+    }
+
+    .progress-label {
+        font-size: 9px;
+    }
+
+    .progress-step:not(:last-child)::after {
+        top: 15px;
+    }
+
+    .step-title {
+        font-size: 18px;
+    }
+
+    .service-option {
+        padding: 15px;
+    }
+
+    .service-option-content h4 {
+        font-size: 14px;
+    }
+
+    .service-price {
+        font-size: 20px;
+    }
+
+    .barbers-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .barber-option {
+        padding: 15px 10px;
+    }
+
+    .barber-option-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .barber-option h4 {
+        font-size: 12px;
+    }
+
+    .time-slots-container {
+        max-height: 300px;
+        padding: 15px;
+    }
+
+    .time-slots-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .time-slot {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+    .booking-form-group input {
+        padding: 12px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+
+    .booking-summary {
+        padding: 15px;
+    }
+
+    .booking-summary h3 {
+        font-size: 16px;
+    }
+
+    .summary-row {
+        padding: 10px 0;
+    }
+
+    .summary-row:last-child .summary-value {
+        font-size: 20px;
+    }
+
+    .booking-modal-footer {
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .booking-modal-footer button {
+        padding: 12px 20px;
+        font-size: 12px;
+    }
+
+    #booking-success h2 {
+        font-size: 24px;
+    }
+
+    .success-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .success-icon svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .booking-reference h3 {
+        font-size: 18px;
+    }
+
+    .payment-notice {
+        padding: 15px;
+    }
+
+    .payment-notice p {
+        font-size: 12px;
+    }
+}
+
 /* Scrollbar styling */
 .booking-modal-content::-webkit-scrollbar,
 .time-slots-container::-webkit-scrollbar {
