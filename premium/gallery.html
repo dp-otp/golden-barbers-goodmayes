@@ -608,8 +608,8 @@
         .gallery-item video {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            background: var(--black);
+            object-fit: cover;
+            border-radius: 20px;
         }
 
         .gallery-item .video-play-btn {
@@ -2204,12 +2204,12 @@
 
             <div class="gallery-item" data-category="shop">
                 <div class="gallery-item-inner">
-                    <img src="download (19).jpg" alt="The Golden Team" loading="lazy">
+                    <img src="download (19).jpg" alt="Celebration Interior" loading="lazy">
                     <div class="gallery-item-overlay"></div>
                     <div class="gallery-item-content">
-                        <span class="gallery-item-category">Team</span>
-                        <h3 class="gallery-item-title">The Golden Team</h3>
-                        <p class="gallery-item-desc">Meet our expert barbers dedicated to your style</p>
+                        <span class="gallery-item-category">Shop</span>
+                        <h3 class="gallery-item-title">Celebration Interior</h3>
+                        <p class="gallery-item-desc">Our shop decorated with gold, black & white balloons</p>
                     </div>
                     <div class="gallery-item-expand">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
@@ -2524,6 +2524,9 @@
             const lightboxTitle = document.getElementById('lightboxTitle');
             const lightboxDesc = document.getElementById('lightboxDesc');
 
+            // Hide navigation arrows for video
+            document.querySelectorAll('.lightbox-nav').forEach(nav => nav.style.display = 'none');
+
             // Replace image with video
             lightboxImage.style.display = 'none';
             let lightboxVideo = document.getElementById('lightboxVideo');
@@ -2602,6 +2605,8 @@
             }
             const lightboxImage = document.getElementById('lightboxImage');
             if (lightboxImage) lightboxImage.style.display = 'block';
+            // Show navigation arrows again
+            document.querySelectorAll('.lightbox-nav').forEach(nav => nav.style.display = '');
         }
 
         function navigateLightbox(direction) {
