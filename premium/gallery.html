@@ -2139,7 +2139,7 @@
                 </div>
             </div>
 
-            <div class="gallery-item" data-category="shop" data-hide-from-all="true">
+            <div class="gallery-item" data-category="shop">
                 <div class="gallery-item-inner">
                     <img src="download (19).jpg" alt="Celebration Interior" loading="lazy">
                     <div class="gallery-item-overlay"></div>
@@ -2507,9 +2507,7 @@
 
                 galleryItems.forEach(item => {
                     const categories = item.dataset.category.split(' ');
-                    const hideFromAll = item.dataset.hideFromAll === 'true';
-                    const showItem = (filter === 'all' && !hideFromAll) || categories.includes(filter);
-                    if (showItem) {
+                    if (filter === 'all' || categories.includes(filter)) {
                         item.classList.remove('hidden');
                         setTimeout(() => item.classList.add('visible'), 50);
                     } else {
@@ -2520,14 +2518,8 @@
             });
         });
 
-        // Show all on page load (except items hidden from all)
-        galleryItems.forEach(item => {
-            if (item.dataset.hideFromAll === 'true') {
-                item.classList.add('hidden');
-            } else {
-                item.classList.add('visible');
-            }
-        });
+        // Show all on page load
+        galleryItems.forEach(item => item.classList.add('visible'));
 
         // Set video thumbnails to show climax (later frame)
         document.querySelectorAll('.gallery-item video').forEach(video => {
