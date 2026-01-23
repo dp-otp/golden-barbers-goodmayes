@@ -648,6 +648,19 @@
             50% { opacity: 1; }
         }
 
+        /* YouTube thumbnail zoom fix - crops black letterbox bars */
+        .img-wrap.yt-thumb {
+            overflow: hidden !important;
+        }
+        .img-wrap.yt-thumb img {
+            width: 180% !important;
+            height: 180% !important;
+            max-width: none !important;
+            margin: -40% 0 0 -40% !important;
+            object-fit: cover !important;
+            object-position: center 45% !important;
+        }
+
         @media (max-width: 768px) {
             /* Creative Mobile Photo Collage - Circular Cluster */
             .image-showcase {
@@ -662,7 +675,7 @@
                 border-radius: 50%;
             }
 
-            .image-showcase .img-wrap,
+            .image-showcase > .img-wrap,
             .image-showcase > img {
                 position: absolute;
                 border-radius: 50%;
@@ -671,6 +684,14 @@
                 overflow: visible;
                 transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             }
+
+            /* Reset desktop height for mobile circles */
+            .image-showcase > .img-wrap:nth-child(1) { width: 160px; height: 160px; }
+            .image-showcase > .img-wrap:nth-child(2) { width: 110px; height: 110px; }
+            .image-showcase > .img-wrap:nth-child(3) { width: 105px; height: 105px; }
+            .image-showcase > .img-wrap:nth-child(4) { width: 95px; height: 95px; }
+            .image-showcase > .img-wrap:nth-child(5) { width: 100px; height: 100px; }
+            .image-showcase > .img-wrap:nth-child(6) { width: 85px; height: 85px; }
 
             /* Rotating single golden strip with fade */
             .image-showcase .img-wrap::before {
@@ -709,6 +730,19 @@
                 display: block;
                 position: relative;
                 z-index: 1;
+            }
+
+            /* YouTube thumbnail zoom fix for mobile - crops black letterbox bars */
+            .image-showcase .img-wrap.yt-thumb {
+                overflow: hidden !important;
+            }
+            .image-showcase .img-wrap.yt-thumb img {
+                width: 180% !important;
+                height: 180% !important;
+                margin: -40% 0 0 -40% !important;
+                transform: none !important;
+                object-fit: cover !important;
+                object-position: center 45% !important;
             }
 
             /* Main center photo - BIGGER */
@@ -1342,9 +1376,9 @@
             </p>
 
             <div class="image-showcase">
-                <img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs Skin Fade" loading="lazy">
-                <img src="SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg" alt="Buzz Cut Skin Fade" loading="lazy">
-                <img src="pic.jpg" alt="Clean Skin Fade" loading="lazy">
+                <div class="img-wrap"><img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs Skin Fade" loading="lazy"></div>
+                <div class="img-wrap"><img src="SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg" alt="Buzz Cut Skin Fade" loading="lazy"></div>
+                <div class="img-wrap"><img src="pic.jpg" alt="Clean Skin Fade" loading="lazy"></div>
             </div>
 
             <div class="info-cards">
@@ -1412,9 +1446,9 @@
 
             <!-- Beard Grooming Image Gallery -->
             <div class="image-showcase">
-                <img src="download (11).jpg" alt="Beard Grooming" loading="lazy">
-                <img src="download (18).jpg" alt="Professional Beard Styling" loading="lazy">
-                <img src="SnapInsta.to_187808517_1044738236053320_2458909227727331354_n.jpg" alt="Beard Shaping" loading="lazy">
+                <div class="img-wrap"><img src="download (11).jpg" alt="Beard Grooming" loading="lazy"></div>
+                <div class="img-wrap"><img src="download (18).jpg" alt="Professional Beard Styling" loading="lazy"></div>
+                <div class="img-wrap"><img src="SnapInsta.to_187808517_1044738236053320_2458909227727331354_n.jpg" alt="Beard Shaping" loading="lazy"></div>
             </div>
 
             <div class="style-cards">
@@ -1491,7 +1525,7 @@
             <!-- Hair Health Image Gallery -->
             <div class="image-showcase">
                 <div class="img-wrap"><img src="SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg" alt="Head Massage Treatment" loading="lazy"></div>
-                <div class="img-wrap"><img src="../hqdefault.jpg" alt="Hair Care Routine" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;transform:scale(1.4);"></div>
+                <div class="img-wrap yt-thumb"><img src="../hqdefault.jpg" alt="Hair Care Routine" loading="lazy"></div>
                 <div class="img-wrap"><img src="download (27).jpg" alt="Healthy Scalp Care" loading="lazy"></div>
             </div>
 
@@ -1549,9 +1583,9 @@
 
             <!-- Hair Loss Image Gallery -->
             <div class="image-showcase">
-                <img src="../v4-460px-Treat-Male-Pattern-Hair-Loss-Step-11-Version-3.jpg" alt="Hair Loss Treatment" loading="lazy">
-                <img src="download (26).jpg" alt="Professional Hair Consultation" loading="lazy">
-                <img src="images.jpg" alt="Confident Buzz Cut Style" loading="lazy">
+                <div class="img-wrap"><img src="../v4-460px-Treat-Male-Pattern-Hair-Loss-Step-11-Version-3.jpg" alt="Hair Loss Treatment" loading="lazy"></div>
+                <div class="img-wrap"><img src="download (26).jpg" alt="Professional Hair Consultation" loading="lazy"></div>
+                <div class="img-wrap"><img src="images.jpg" alt="Confident Buzz Cut Style" loading="lazy"></div>
             </div>
 
             <div class="style-cards">
@@ -1616,9 +1650,9 @@
 
             <!-- Hair Products Image Gallery -->
             <div class="image-showcase">
-                <img src="https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=400&h=300&fit=crop" alt="Hair Styling Pomade" loading="lazy">
-                <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=300&fit=crop" alt="Hair Wax Products" loading="lazy">
-                <img src="https://images.unsplash.com/photo-1599305090598-fe179d501227?w=400&h=300&fit=crop" alt="Men's Hair Styling Products" loading="lazy">
+                <div class="img-wrap"><img src="https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=400&h=300&fit=crop" alt="Hair Styling Pomade" loading="lazy"></div>
+                <div class="img-wrap"><img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=300&fit=crop" alt="Hair Wax Products" loading="lazy"></div>
+                <div class="img-wrap"><img src="https://images.unsplash.com/photo-1599305090598-fe179d501227?w=400&h=300&fit=crop" alt="Men's Hair Styling Products" loading="lazy"></div>
             </div>
 
             <div class="info-cards">
