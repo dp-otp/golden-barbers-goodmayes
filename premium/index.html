@@ -472,6 +472,40 @@
             padding: 150px 20px 200px;
         }
 
+        /* Hero Video Background */
+        .hero-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .hero-video-bg video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.3) saturate(1.2) contrast(1.1);
+            opacity: 0.6;
+        }
+
+        .hero-video-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg,
+                rgba(10, 10, 10, 0.7) 0%,
+                rgba(10, 10, 10, 0.4) 40%,
+                rgba(10, 10, 10, 0.6) 70%,
+                rgba(10, 10, 10, 0.95) 100%);
+            pointer-events: none;
+        }
+
         /* Morphing Background Blobs */
         .hero-blob {
             position: absolute;
@@ -2825,6 +2859,13 @@
 
     <!-- Hero Section -->
     <section class="hero">
+        <!-- Video Background -->
+        <div class="hero-video-bg">
+            <video autoplay muted loop playsinline>
+                <source src="SnapInsta.to_AQPGe6NeSzxsBsWUbAVB5TpDvzujkBSx3TvtDa7ubYDj0gzj_5kT1IfkJx4qXcwZbpig_aQ92mCtFrW6lC-1kz1IN7rGxufewkpMPJw.mp4" type="video/mp4">
+            </video>
+        </div>
+
         <!-- Background Effects -->
         <div class="hero-blob hero-blob-1"></div>
         <div class="hero-blob hero-blob-2"></div>

@@ -570,6 +570,50 @@
             transform: scale(1.1);
         }
 
+        .gallery-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gallery-item:hover video {
+            transform: scale(1.05);
+        }
+
+        .gallery-item .video-play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(212, 175, 55, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-item .video-play-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--black);
+            margin-left: 4px;
+        }
+
+        .gallery-item:hover .video-play-btn {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: var(--gold);
+        }
+
+        .gallery-item.playing .video-play-btn {
+            opacity: 0;
+        }
+
         .gallery-item-overlay {
             position: absolute;
             inset: 0;
@@ -1383,6 +1427,7 @@
             <button class="filter-btn" data-filter="fades">Fades & Cuts</button>
             <button class="filter-btn" data-filter="beard">Beard & Grooming</button>
             <button class="filter-btn" data-filter="transformations">Transformations</button>
+            <button class="filter-btn" data-filter="wellness">Spa & Wellness</button>
             <button class="filter-btn" data-filter="shop">The Shop</button>
         </div>
     </section>
@@ -1544,14 +1589,424 @@
                 </div>
             </div>
 
+            <!-- TRANSFORMATION VIDEOS - Before & After -->
             <div class="gallery-item tall" data-category="transformations">
                 <div class="gallery-item-inner">
-                    <img src="download (22).jpg" alt="Turquoise Color Fade" loading="lazy">
+                    <video src="SnapInsta.to_AQPWTSZMiAf7VEDq57M53RRX8vanCvcIpZ-Yf5seQWLFoMRCtaT2vqL1sMQMzfnlmEDZzSV-Vj_s4-JvZKuAls90z9muPCrxjaS-tuQ.mp4" loop muted playsinline></video>
+                    <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
                     <div class="gallery-item-overlay"></div>
                     <div class="gallery-item-content">
-                        <span class="gallery-item-category">Color</span>
-                        <h3 class="gallery-item-title">Turquoise Color Fade</h3>
-                        <p class="gallery-item-desc">Bold color transformation with precision fade</p>
+                        <span class="gallery-item-category">Transformation</span>
+                        <h3 class="gallery-item-title">Fresh Fade Glow-Up</h3>
+                        <p class="gallery-item-desc">Watch the complete transformation unfold</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="transformations">
+                <div class="gallery-item-inner">
+                    <video src="SnapInsta.to_AQPt-dvTcECnj5oO-quXmW2dxu5EbFrJZ8atbKazKTjH-WxB6niGIUuk4D5TxG9SRZokqVWI_Nr0XP8lxCx7ihwxjOY_PRemyoHnm8c.mp4" loop muted playsinline></video>
+                    <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Transformation</span>
+                        <h3 class="gallery-item-title">Clean Cut Revival</h3>
+                        <p class="gallery-item-desc">Before and after precision styling</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="transformations">
+                <div class="gallery-item-inner">
+                    <video src="SnapInsta.to_AQOYvkScwzxO3kC3pXJ2WyxC768Lb2fs8xBsvUyWwRnjPd7eX9HOPEiwhUyMOwZJomYU7nAQ1FUWJlok_9NbcBFoeCjdOTw6Yl3zZic.mp4" loop muted playsinline></video>
+                    <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Transformation</span>
+                        <h3 class="gallery-item-title">Style Upgrade</h3>
+                        <p class="gallery-item-desc">From grown out to fresh and sharp</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="transformations">
+                <div class="gallery-item-inner">
+                    <video src="SnapInsta.to_AQNj4qrDaszR8Yr0r_GvZCMUU5JHeulyHJJZKDzxUbUMPPKJmFDn4MTFXREmVyhFZLesEdJMerTYTCx0nUYzaq2GL4vTwxUZzpT-gyI.mp4" loop muted playsinline></video>
+                    <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Transformation</span>
+                        <h3 class="gallery-item-title">The Full Treatment</h3>
+                        <p class="gallery-item-desc">Complete makeover in action</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item tall" data-category="transformations">
+                <div class="gallery-item-inner">
+                    <video src="SnapInsta.to_AQN0LsM-5y1kVjSPE7TOJkBUFKkZUNhS7pp0GhEOcQZlyN2sVC3XuydTDFzpJNyK3S0UMN36kTE0PAkWpR0lFotXxLnru0WLfpJnp1Y.mp4" loop muted playsinline></video>
+                    <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Transformation</span>
+                        <h3 class="gallery-item-title">Sharp Lineup Magic</h3>
+                        <p class="gallery-item-desc">See the difference a fresh cut makes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SPA & WELLNESS VIDEOS -->
+            <div class="gallery-item tall" data-category="wellness">
+                <div class="gallery-item-inner">
+                    <video src="SnapInsta.to_AQMZ26pCr3ydBIIJDCIkOvM5yN-BltS5vWZ-6L4RUF5XtbinzpKYh-0mvD6jkVqJyqlmZzSXCkvrJ5FQ1lcwooZk30eXYiQghfEwMV4.mp4" loop muted playsinline></video>
+                    <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Wellness</span>
+                        <h3 class="gallery-item-title">Face Massage</h3>
+                        <p class="gallery-item-desc">Relaxing facial massage treatment</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="wellness">
+                <div class="gallery-item-inner">
+                    <video src="SnapInsta.to_AQN3936ufo6rrN8Rt9cdnaoUEbW0XFpkh9ysjXqZNhHMSpvU_9qjO1OLTIllJUAaETOcWk6qZPv4-yQDg6XanNca-8RWVOx948sZaHc.mp4" loop muted playsinline></video>
+                    <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Wellness</span>
+                        <h3 class="gallery-item-title">Back Massage</h3>
+                        <p class="gallery-item-desc">Deep tissue relaxation therapy</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item tall" data-category="wellness">
+                <div class="gallery-item-inner">
+                    <video src="SnapInsta.to_AQOLAd5u7_smkNcuLejMQ6lA2C3cS71125-bJtgR-C2rXgalbtfRWv-0FAhGrjUs5FXPcYPPCVLzjMGubK1syzSSzEtJ7DN0GyfNQpA.mp4" loop muted playsinline></video>
+                    <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Wellness</span>
+                        <h3 class="gallery-item-title">Premium Treatments</h3>
+                        <p class="gallery-item-desc">Our full range of grooming treatments</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="wellness">
+                <div class="gallery-item-inner">
+                    <img src="download (23).jpg" alt="Hot Towel Treatment" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Wellness</span>
+                        <h3 class="gallery-item-title">Hot Towel Treatment</h3>
+                        <p class="gallery-item-desc">Traditional Turkish hot towel service</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="wellness">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg" alt="Head Massage" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Wellness</span>
+                        <h3 class="gallery-item-title">Head Massage</h3>
+                        <p class="gallery-item-desc">Relaxing scalp massage for total relief</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FINAL TOUCHES VIDEO - Fades & Beard -->
+            <div class="gallery-item tall" data-category="fades beard">
+                <div class="gallery-item-inner">
+                    <video src="SnapInsta.to_AQPnnJyiNCkBo7EL7S2G9ba7WFPhilYr0ABlmISfVgU4hP91x9llVhmYGZPq5wJOHtb2GAg3ANmFd-wkn2NBg91UKDqn8lU57sXzNS4.mp4" loop muted playsinline></video>
+                    <div class="video-play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Finishing</span>
+                        <h3 class="gallery-item-title">The Final Touches</h3>
+                        <p class="gallery-item-desc">Precision detailing on cut and beard</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW PHOTOS - Fades & Cuts -->
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs with Skin Fade" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">Locs with Skin Fade</h3>
+                        <p class="gallery-item-desc">High-top locs with clean skin fade</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="beard">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_187808517_1044738236053320_2458909227727331354_n.jpg" alt="Precision Beard Shaping" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Beard</span>
+                        <h3 class="gallery-item-title">Precision Beard Shaping</h3>
+                        <p class="gallery-item-desc">Expert beard trimming and shaping</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg" alt="Buzz Cut Skin Fade" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">Buzz Cut Skin Fade</h3>
+                        <p class="gallery-item-desc">Classic buzz with precision skin fade</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item tall" data-category="fades beard">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="Waves & Beard Combo" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Combo</span>
+                        <h3 class="gallery-item-title">Waves & Beard Combo</h3>
+                        <p class="gallery-item-desc">360 waves with sharp lineup and full beard</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Junior Side Part" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Kids</span>
+                        <h3 class="gallery-item-title">Junior Side Part</h3>
+                        <p class="gallery-item-desc">Clean side part with high fade</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Slicked Back Mid Fade" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">Slicked Back Mid Fade</h3>
+                        <p class="gallery-item-desc">Classic slicked back with smooth mid fade</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item tall" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_50119020_2338328669729367_6657319863597735597_n.jpg" alt="Geometric Design Fade" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Designs</span>
+                        <h3 class="gallery-item-title">Geometric Design Fade</h3>
+                        <p class="gallery-item-desc">Textured top with custom geometric pattern</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_59039774_468241190612084_3168956384655946770_n.jpg" alt="Blonde Curls Temple Fade" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">Blonde Curls Temple Fade</h3>
+                        <p class="gallery-item-desc">Highlighted curls with clean temple fade</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_66620431_493779438090103_5926486896537980734_n.jpg" alt="Curly Top Taper" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Kids</span>
+                        <h3 class="gallery-item-title">Curly Top Taper</h3>
+                        <p class="gallery-item-desc">Natural curls with clean taper fade</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_70010652_1348701105288372_8634153704668559015_n.jpg" alt="Sponge Curls Temp Fade" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">Sponge Curls Temp Fade</h3>
+                        <p class="gallery-item-desc">Textured sponge curls with temple fade</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="Textured Crop Fade" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">Textured Crop Fade</h3>
+                        <p class="gallery-item-desc">Modern textured crop with skin fade</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item tall" data-category="fades beard">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="Afro Temple Fade & Beard" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Combo</span>
+                        <h3 class="gallery-item-title">Afro Temple Fade & Beard</h3>
+                        <p class="gallery-item-desc">Natural afro with sharp temple fade and shaped beard</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_83452999_639920510104267_5362544737012483305_n.jpg" alt="Star Design Cut" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Designs</span>
+                        <h3 class="gallery-item-title">Star Design Cut</h3>
+                        <p class="gallery-item-desc">Creative star pattern design</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades beard">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" alt="Classic Low Fade" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Fades</span>
+                        <h3 class="gallery-item-title">Classic Low Fade</h3>
+                        <p class="gallery-item-desc">Clean low fade with shaped beard</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item tall" data-category="fades beard">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_118516576_242770710236355_3326219608200829104_n.jpg" alt="Short Locs & Beard" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Combo</span>
+                        <h3 class="gallery-item-title">Short Locs & Beard</h3>
+                        <p class="gallery-item-desc">Short locs with fade and full shaped beard</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="fades beard">
+                <div class="gallery-item-inner">
+                    <img src="SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg" alt="Waves & Beard" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Combo</span>
+                        <h3 class="gallery-item-title">Waves & Beard</h3>
+                        <p class="gallery-item-desc">Clean waves with shaped beard</p>
                     </div>
                     <div class="gallery-item-expand">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
@@ -1943,7 +2398,8 @@
                 const filter = btn.dataset.filter;
 
                 galleryItems.forEach(item => {
-                    if (filter === 'all' || item.dataset.category === filter) {
+                    const categories = item.dataset.category.split(' ');
+                    if (filter === 'all' || categories.includes(filter)) {
                         item.classList.remove('hidden');
                         setTimeout(() => item.classList.add('visible'), 50);
                     } else {
@@ -1951,6 +2407,40 @@
                         setTimeout(() => item.classList.add('hidden'), 300);
                     }
                 });
+            });
+        });
+
+        // Video Play on Click
+        document.querySelectorAll('.gallery-item video').forEach(video => {
+            const playBtn = video.parentElement.querySelector('.video-play-btn');
+            const item = video.closest('.gallery-item');
+
+            if (playBtn) {
+                playBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (video.paused) {
+                        video.play();
+                        item.classList.add('playing');
+                    } else {
+                        video.pause();
+                        item.classList.remove('playing');
+                    }
+                });
+            }
+
+            video.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (video.paused) {
+                    video.play();
+                    item.classList.add('playing');
+                } else {
+                    video.pause();
+                    item.classList.remove('playing');
+                }
+            });
+
+            video.addEventListener('ended', () => {
+                item.classList.remove('playing');
             });
         });
 
