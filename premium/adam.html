@@ -786,7 +786,18 @@ You can discuss anything - sports, weather, general knowledge, advice, coding, m
             input.value = '';
 
             // Show typing indicator
-            addMessage('Thinking...', false, true);
+            const messagesContainer = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">A</div>
+                <div class="typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            `;
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
             // Add to conversation history
             conversationHistory.push({ role: 'user', parts: [{ text: message }] });
@@ -810,6 +821,14 @@ You can discuss anything - sports, weather, general knowledge, advice, coding, m
 
                 const data = await response.json();
                 hideTyping();
+
+                console.log('Gemini Response:', data);
+
+                if (data.error) {
+                    console.error('API Error:', data.error);
+                    addMessage(`API Error: ${data.error.message || 'Unknown error'}. Please call us at <a href='tel:02085989920'>020 8598 9920</a>!`, false);
+                    return;
+                }
 
                 if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
                     const reply = data.candidates[0].content.parts[0].text;
