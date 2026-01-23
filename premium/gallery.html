@@ -545,12 +545,12 @@
 
         /* Videos Section Divider */
         .gallery-section-divider {
-            grid-column: 1 / -1;
+            max-width: 1400px;
+            margin: 60px auto 30px;
             display: flex;
             align-items: center;
             gap: 20px;
-            padding: 40px 0 20px;
-            margin-top: 40px;
+            padding: 0 20px;
         }
 
         .gallery-section-divider .section-icon {
@@ -2142,16 +2142,18 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- ========== VIDEOS SECTION ========== -->
-            <div class="gallery-section-divider">
-                <div class="section-icon">
-                    <svg viewBox="0 0 24 24" fill="var(--gold)"><polygon points="5,3 19,12 5,21"/></svg>
-                </div>
-                <h3>Videos</h3>
-                <div class="section-line"></div>
+        <!-- ========== VIDEOS SECTION ========== -->
+        <div class="gallery-section-divider" id="videosDivider">
+            <div class="section-icon">
+                <svg viewBox="0 0 24 24" fill="var(--gold)"><polygon points="5,3 19,12 5,21"/></svg>
             </div>
+            <h3>Videos</h3>
+            <div class="section-line"></div>
+        </div>
 
+        <div class="gallery-grid" id="videosGrid">
             <!-- TRANSFORMATION VIDEOS -->
             <div class="gallery-item" data-category="transformations">
                 <div class="gallery-item-inner">
@@ -2472,10 +2474,11 @@
             link.addEventListener('click', () => mobileMenu.classList.remove('active'));
         });
 
-        // Simple Gallery Filter - no reorganization
+        // Simple Gallery Filter
         const filterBtns = document.querySelectorAll('.filter-btn');
         const galleryItems = document.querySelectorAll('.gallery-item');
-        const videoDivider = document.querySelector('.gallery-section-divider');
+        const videoDivider = document.getElementById('videosDivider');
+        const videosGrid = document.getElementById('videosGrid');
 
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -2484,10 +2487,10 @@
 
                 const filter = btn.dataset.filter;
 
-                // Show/hide video section divider
-                if (videoDivider) {
-                    videoDivider.style.display = (filter === 'all') ? 'flex' : 'none';
-                }
+                // Show/hide video section and divider based on filter
+                const showVideos = (filter === 'all' || filter === 'transformations' || filter === 'wellness' || filter === 'fades' || filter === 'beard');
+                if (videoDivider) videoDivider.style.display = (filter === 'all') ? 'flex' : 'none';
+                if (videosGrid) videosGrid.style.display = showVideos ? 'grid' : 'none';
 
                 galleryItems.forEach(item => {
                     const categories = item.dataset.category.split(' ');
