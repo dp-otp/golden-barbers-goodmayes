@@ -2515,7 +2515,7 @@
             const seekToEnd = () => {
                 if (!sought && video.duration > 0) {
                     sought = true;
-                    video.currentTime = video.duration * 0.85;
+                    video.currentTime = 10;
                 }
             };
             video.addEventListener('loadedmetadata', seekToEnd);
