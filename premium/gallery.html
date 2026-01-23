@@ -2508,23 +2508,18 @@
         // Show all on page load
         galleryItems.forEach(item => item.classList.add('visible'));
 
-        // Set video thumbnails to show climax (later frame) - for preview only
+        // Set video thumbnails to show climax (later frame)
         document.querySelectorAll('.gallery-item video').forEach(video => {
-            video.preload = 'metadata';
-
-            // Try to seek when metadata loads
+            video.preload = 'auto';
             const seekToEnd = () => {
-                if (video.duration && video.duration > 0) {
-                    video.currentTime = video.duration * 0.75;
+                if (video.duration > 0 && video.currentTime < 1) {
+                    video.currentTime = video.duration * 0.8;
                 }
             };
-
             video.addEventListener('loadedmetadata', seekToEnd);
-
-            // Also try on loadeddata for better browser support
             video.addEventListener('loadeddata', seekToEnd);
-
-            // Force load metadata
+            video.addEventListener('canplaythrough', seekToEnd);
+            setTimeout(() => { if (video.readyState >= 1) seekToEnd(); }, 2000);
             video.load();
         });
 
