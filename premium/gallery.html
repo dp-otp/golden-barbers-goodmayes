@@ -505,6 +505,45 @@
         }
 
         /* ============================================
+           GALLERY SECTION HEADERS (Photos/Videos)
+           ============================================ */
+        .gallery-section-header {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 0;
+            margin-top: 20px;
+        }
+
+        .gallery-section-header:first-child {
+            margin-top: 0;
+        }
+
+        .gallery-section-header svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+        }
+
+        .gallery-section-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .gallery-section-header .section-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.5), transparent);
+        }
+
+        /* ============================================
            MASONRY GALLERY GRID
            ============================================ */
         .gallery-section {
@@ -1429,7 +1468,7 @@
             <button class="filter-btn" data-filter="fades">Fades & Cuts</button>
             <button class="filter-btn" data-filter="beard">Beard & Grooming</button>
             <button class="filter-btn" data-filter="transformations">Transformations</button>
-            <button class="filter-btn" data-filter="wellness">Spa & Wellness</button>
+            <button class="filter-btn" data-filter="wellness">Treatments</button>
             <button class="filter-btn" data-filter="shop">The Shop</button>
         </div>
     </section>
@@ -1722,6 +1761,40 @@
                         <span class="gallery-item-category">Wellness</span>
                         <h3 class="gallery-item-title">Head Massage</h3>
                         <p class="gallery-item-desc">Relaxing scalp massage for total relief</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="wellness">
+                <div class="gallery-item-inner">
+                    <img src="56490494_441941899910184_1535393151337681820_n.jpg" alt="Charcoal Face Mask" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Wellness</span>
+                        <h3 class="gallery-item-title">Charcoal Face Mask</h3>
+                        <p class="gallery-item-desc">Deep cleansing facial wax treatment</p>
+                    </div>
+                    <div class="gallery-item-expand">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="wellness">
+                <div class="gallery-item-inner">
+                    <img src="download (12).jpg" alt="Fire Technique" loading="lazy">
+                    <div class="gallery-item-overlay"></div>
+                    <div class="gallery-item-content">
+                        <span class="gallery-item-category">Wellness</span>
+                        <h3 class="gallery-item-title">Fire Technique</h3>
+                        <p class="gallery-item-desc">Traditional ear candling treatment with flame</p>
                     </div>
                     <div class="gallery-item-expand">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
@@ -2071,12 +2144,12 @@
 
             <div class="gallery-item" data-category="shop">
                 <div class="gallery-item-inner">
-                    <img src="download (24).jpg" alt="Our Goodmayes Location" loading="lazy">
+                    <img src="download (24).jpg" alt="Grand Opening Celebration" loading="lazy">
                     <div class="gallery-item-overlay"></div>
                     <div class="gallery-item-content">
-                        <span class="gallery-item-category">Location</span>
-                        <h3 class="gallery-item-title">Our Goodmayes Location</h3>
-                        <p class="gallery-item-desc">14 Goodmayes Rd - serving since 2020</p>
+                        <span class="gallery-item-category">Celebration</span>
+                        <h3 class="gallery-item-title">Grand Opening Celebration</h3>
+                        <p class="gallery-item-desc">Our storefront decorated with gold, black & white balloons</p>
                     </div>
                     <div class="gallery-item-expand">
                         <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
@@ -2388,20 +2461,73 @@
             link.addEventListener('click', () => mobileMenu.classList.remove('active'));
         });
 
-        // Gallery Filter
+        // Gallery Filter with Photo/Video Separation
         const filterBtns = document.querySelectorAll('.filter-btn');
+        const galleryGrid = document.getElementById('galleryGrid');
         const galleryItems = document.querySelectorAll('.gallery-item');
 
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+        // Create section headers
+        const photosHeader = document.createElement('div');
+        photosHeader.className = 'gallery-section-header';
+        photosHeader.id = 'photosHeader';
+        photosHeader.innerHTML = `
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            <h3>Photos</h3>
+            <div class="section-line"></div>
+        `;
 
-                const filter = btn.dataset.filter;
+        const videosHeader = document.createElement('div');
+        videosHeader.className = 'gallery-section-header';
+        videosHeader.id = 'videosHeader';
+        videosHeader.innerHTML = `
+            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" fill="var(--gold)" stroke="var(--gold)"/></svg>
+            <h3>Videos</h3>
+            <div class="section-line"></div>
+        `;
+
+        function organizeGallery(filter) {
+            // Remove existing headers
+            const existingPhotosHeader = document.getElementById('photosHeader');
+            const existingVideosHeader = document.getElementById('videosHeader');
+            if (existingPhotosHeader) existingPhotosHeader.remove();
+            if (existingVideosHeader) existingVideosHeader.remove();
+
+            if (filter === 'all') {
+                // Separate photos and videos
+                const photos = [];
+                const videos = [];
 
                 galleryItems.forEach(item => {
+                    if (item.querySelector('video')) {
+                        videos.push(item);
+                    } else {
+                        photos.push(item);
+                    }
+                });
+
+                // Clear grid and reorganize
+                galleryItems.forEach(item => item.remove());
+
+                // Add photos header and photos
+                galleryGrid.appendChild(photosHeader.cloneNode(true));
+                photos.forEach(photo => {
+                    galleryGrid.appendChild(photo);
+                    photo.classList.remove('hidden');
+                    setTimeout(() => photo.classList.add('visible'), 50);
+                });
+
+                // Add videos header and videos
+                galleryGrid.appendChild(videosHeader.cloneNode(true));
+                videos.forEach(video => {
+                    galleryGrid.appendChild(video);
+                    video.classList.remove('hidden');
+                    setTimeout(() => video.classList.add('visible'), 50);
+                });
+            } else {
+                // Normal filtering without headers
+                galleryItems.forEach(item => {
                     const categories = item.dataset.category.split(' ');
-                    if (filter === 'all' || categories.includes(filter)) {
+                    if (categories.includes(filter)) {
                         item.classList.remove('hidden');
                         setTimeout(() => item.classList.add('visible'), 50);
                     } else {
@@ -2409,7 +2535,28 @@
                         setTimeout(() => item.classList.add('hidden'), 300);
                     }
                 });
+            }
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                organizeGallery(btn.dataset.filter);
             });
+        });
+
+        // Initialize with "All Work" organization
+        organizeGallery('all');
+
+        // Set video thumbnails to show climax (later frame)
+        document.querySelectorAll('.gallery-item video').forEach(video => {
+            video.addEventListener('loadedmetadata', () => {
+                // Seek to 75% of the video to show the "climax" result
+                video.currentTime = video.duration * 0.75;
+            });
+            // Preload metadata to trigger the seek
+            video.preload = 'metadata';
         });
 
         // Video Play on Click
