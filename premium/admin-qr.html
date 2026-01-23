@@ -226,10 +226,6 @@
             color: var(--gold);
         }
 
-        .service-duration {
-            font-size: 11px;
-            color: var(--gray);
-        }
 
         /* Cart Summary */
         .cart-summary {
@@ -546,10 +542,6 @@
                     <span id="serviceCount">0</span>
                 </div>
                 <div class="cart-total-row">
-                    <span>Est. Time</span>
-                    <span id="totalTime">0 min</span>
-                </div>
-                <div class="cart-total-row">
                     <span>Total</span>
                     <span id="totalPrice">£0.00</span>
                 </div>
@@ -610,24 +602,24 @@
         // ============================================
         var services = {
             haircuts: [
-                { id: 'golden-luxury', name: 'Golden Luxury', price: 45, duration: 60, img: 'download (21).jpg', desc: 'Full package with all treatments' },
-                { id: 'golden-bundle', name: 'Golden Bundle', price: 27, duration: 45, img: 'download (8).jpg', desc: 'Cut, shave, towel & massage' },
-                { id: 'gents-cut', name: 'Gents Cut', price: 13.95, duration: 30, img: 'download (9).jpg', desc: 'Cut, wash, blow dry & style' },
-                { id: 'skin-fade', name: 'Skin Fade', price: 15.95, duration: 40, img: 'pic.jpg', desc: 'Fade, ear flaming & wash' },
-                { id: 'head-shave', name: 'Head Shave', price: 12.95, duration: 20, img: 'download (18).jpg', desc: 'Cut throat shave & towel' },
-                { id: 'children-cut', name: 'Children Under 12', price: 8.95, duration: 20, img: 'download (4).jpg', desc: 'Gentle kids haircut' }
+                { id: 'golden-luxury', name: 'Golden Luxury', price: 45, img: 'download (21).jpg' },
+                { id: 'golden-bundle', name: 'Golden Bundle', price: 27, img: 'download (8).jpg' },
+                { id: 'gents-cut', name: 'Gents Cut', price: 13.95, img: 'download (9).jpg' },
+                { id: 'skin-fade', name: 'Skin Fade', price: 15.95, img: 'pic.jpg' },
+                { id: 'head-shave', name: 'Head Shave', price: 12.95, img: 'SnapInsta.to_84958218_597425250989592_6331447961297910555_n.jpg' },
+                { id: 'children-cut', name: 'Children Under 12', price: 8.95, img: 'download (4).jpg' }
             ],
             beard: [
-                { id: 'deluxe-hot-towel', name: 'Deluxe Hot Towel Shave', price: 11, duration: 25, img: 'download (23).jpg', desc: 'Traditional razor shave' },
-                { id: 'beard-trim', name: 'Beard Trim (Machine)', price: 6.95, duration: 15, img: 'download (11).jpg', desc: 'Professional beard trim' },
-                { id: 'turkish-hot-towel', name: 'Turkish Hot Towel', price: 3, duration: 15, img: 'download (23).jpg', desc: 'Relaxing hot towel' }
+                { id: 'deluxe-hot-towel', name: 'Deluxe Hot Towel Shave', price: 11, img: 'download (23).jpg' },
+                { id: 'beard-trim', name: 'Beard Trim (Machine)', price: 6.95, img: 'download (11).jpg' },
+                { id: 'turkish-hot-towel', name: 'Turkish Hot Towel', price: 3, img: 'download (23).jpg' }
             ],
             addons: [
-                { id: 'ear-nose-flaming', name: 'Ear & Nose Flaming', price: 6, duration: 10, img: 'download (12).jpg', desc: 'Traditional hair removal' },
-                { id: 'face-wax', name: 'Face Wax', price: 6, duration: 10, img: 'download (15).jpg', desc: 'Complete face waxing' },
-                { id: 'face-mask', name: 'Face Mask', price: 5, duration: 10, img: 'download (16).jpg', desc: 'Refreshing facial' },
-                { id: 'eyebrow-trim', name: 'Eyebrow Trim', price: 3, duration: 5, img: 'download (9).jpg', desc: 'Neat eyebrow shaping' },
-                { id: 'hair-wash', name: 'Hair Wash & Dry', price: 4, duration: 10, img: 'download (7).jpg', desc: 'Relaxing wash & style' }
+                { id: 'ear-nose-flaming', name: 'Ear & Nose Flaming/Waxing', price: 6, img: 'download (12).jpg' },
+                { id: 'patterns-design', name: 'Patterns & Design', price: 5, img: 'download (13).jpg' },
+                { id: 'colour', name: 'Colour', price: 5, img: 'download (22).jpg' },
+                { id: 'head-massage', name: 'Head Massage', price: 5, img: 'SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg' },
+                { id: 'mask-treatment', name: 'Black or Mud Mask', price: 5, img: 'download (15).jpg' }
             ]
         };
 
@@ -652,7 +644,6 @@
                     '<div class="service-info">' +
                         '<div class="service-name">' + service.name + '</div>' +
                         '<div class="service-price">£' + service.price.toFixed(2) + '</div>' +
-                        '<div class="service-duration">' + service.duration + ' min</div>' +
                     '</div>' +
                 '</div>';
             }).join('');
@@ -719,7 +710,6 @@
 
                 var totals = getCartTotals();
                 document.getElementById('serviceCount').textContent = cart.length + ' service' + (cart.length > 1 ? 's' : '');
-                document.getElementById('totalTime').textContent = totals.duration + ' min';
                 document.getElementById('totalPrice').textContent = '£' + totals.price.toFixed(2);
                 cartTotalsEl.style.display = 'block';
                 generateBtn.disabled = false;
@@ -729,11 +719,8 @@
 
         function getCartTotals() {
             return cart.reduce(function(acc, item) {
-                return {
-                    price: acc.price + item.price,
-                    duration: acc.duration + item.duration
-                };
-            }, { price: 0, duration: 0 });
+                return { price: acc.price + item.price };
+            }, { price: 0 });
         }
 
         function updateSteps(currentStep) {
