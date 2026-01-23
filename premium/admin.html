@@ -1692,12 +1692,12 @@
         const allGalleryPhotos = [
             // === GALLERY PAGE PHOTOS - FADES ===
             { id: 'pic', src: 'pic.jpg', title: 'Clean Skin Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true, type: 'photo' },
-            { id: 'download-8', src: 'download (8).jpg', title: 'High Top Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true, type: 'photo' },
+            { id: 'download-8', src: 'download (8).jpg', title: 'High Top Fade', category: 'fades', usedIn: 'Gallery, Services', inGallery: true, type: 'photo' },
             { id: 'download-13', src: 'download (13).jpg', title: 'Custom Design Lines', category: 'fades', usedIn: 'Gallery, Services', inGallery: true, type: 'photo' },
             { id: 'download-21', src: 'download (21).jpg', title: 'Blonde Curly Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true, type: 'photo' },
             { id: 'download-4', src: 'download (4).jpg', title: 'Kids Classic Cut', category: 'fades', usedIn: 'Gallery, Services', inGallery: true, type: 'photo' },
-            { id: 'download-7', src: 'download (7).jpg', title: 'Modern Textured Cut', category: 'fades', usedIn: 'Gallery, Learn, Home', inGallery: true, type: 'photo' },
-            { id: 'download-9', src: 'download (9).jpg', title: 'Sharp Lineup', category: 'fades', usedIn: 'Gallery, Services, Learn, Home', inGallery: true, type: 'photo' },
+            { id: 'download-7', src: 'download (7).jpg', title: 'Modern Textured Cut', category: 'fades', usedIn: 'Gallery, Home', inGallery: true, type: 'photo' },
+            { id: 'download-9', src: 'download (9).jpg', title: 'Sharp Lineup', category: 'fades', usedIn: 'Gallery, Services, Home', inGallery: true, type: 'photo' },
             { id: 'snap-locs-fade', src: 'SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg', title: 'Locs with Skin Fade', category: 'fades', usedIn: 'Gallery, Learn', inGallery: true, type: 'photo' },
             { id: 'snap-buzz-fade', src: 'SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg', title: 'Buzz Cut Skin Fade', category: 'fades', usedIn: 'Gallery, Learn', inGallery: true, type: 'photo' },
             { id: 'snap-junior-part', src: 'SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg', title: 'Junior Side Part', category: 'fades', usedIn: 'Gallery', inGallery: true, type: 'photo' },
@@ -1724,7 +1724,7 @@
             { id: 'snap-waves-beard2', src: 'SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg', title: 'Waves & Beard', category: 'fades beard', usedIn: 'Gallery', inGallery: true, type: 'photo' },
 
             // === GALLERY PAGE PHOTOS - WELLNESS ===
-            { id: 'snap-head-massage', src: 'SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg', title: 'Head Massage', category: 'wellness', usedIn: 'Gallery, Learn', inGallery: true, type: 'photo' },
+            { id: 'snap-head-massage', src: 'SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg', title: 'Head Massage', category: 'wellness', usedIn: 'Gallery, Services, Learn', inGallery: true, type: 'photo' },
 
             // === GALLERY PAGE PHOTOS - SHOP ===
             { id: 'download-14', src: 'download (14).jpg', title: 'Premium Interior', category: 'shop', usedIn: 'Gallery', inGallery: true, type: 'photo' },
@@ -1753,12 +1753,14 @@
             // === SERVICES PAGE ONLY ===
             { id: 'download-16', src: 'download (16).jpg', title: 'Head Massage', category: '', usedIn: 'Services, Home', inGallery: false, type: 'photo' },
             { id: 'download-22', src: 'download (22).jpg', title: 'Hair Colour', category: '', usedIn: 'Services', inGallery: false, type: 'photo' },
+            { id: 'snap-head-shave', src: 'SnapInsta.to_84958218_597425240989592_6331447961297910555_n.jpg', title: 'Head Shave', category: '', usedIn: 'Services', inGallery: false, type: 'photo' },
 
             // === LEARN PAGE ONLY ===
             { id: 'images', src: 'images.jpg', title: 'Confident Buzz Cut', category: '', usedIn: 'Learn', inGallery: false, type: 'photo' },
             { id: 'download-26', src: 'download (26).jpg', title: 'Hair Consultation', category: '', usedIn: 'Learn', inGallery: false, type: 'photo' },
             { id: 'download-27', src: 'download (27).jpg', title: 'Hair Health Tips', category: '', usedIn: 'Learn', inGallery: false, type: 'photo' },
             { id: 'hqdefault', src: '../hqdefault.jpg', title: 'Hair Types Guide', category: '', usedIn: 'Learn', inGallery: false, type: 'photo' },
+            { id: 'hair-loss-treatment', src: '../v4-460px-Treat-Male-Pattern-Hair-Loss-Step-11-Version-3.jpg', title: 'Hair Loss Treatment', category: '', usedIn: 'Learn', inGallery: false, type: 'photo' },
 
             // === AWARDS (About page) ===
             { id: 'download-5', src: 'download (5).jpg', title: 'Business of the Year 2022', category: 'shop', usedIn: 'About', inGallery: false, type: 'photo' },
@@ -1820,9 +1822,14 @@
                             style="position: absolute; bottom: 95px; left: 8px; right: 8px; padding: 8px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.5); border-radius: 6px; color: #22c55e; font-size: 11px; font-weight: 600; cursor: pointer; text-align: center;">
                             + Add to Live Gallery
                         </button>` : '';
+                const isVideo = photo.type === 'video';
+                const mediaElement = isVideo
+                    ? `<video src="${photo.src}" muted loop style="width:100%;height:100%;object-fit:cover;" onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0;"></video>
+                       <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;"><svg width="40" height="40" viewBox="0 0 24 24" fill="rgba(212,175,55,0.9)"><path d="M8 5v14l11-7z"/></svg></div>`
+                    : `<img src="${photo.src}" alt="${photo.title}" onerror="this.src='https://via.placeholder.com/200x200?text=Not+Found'">`;
                 return `
                     <div class="gallery-item gallery-manage-item" style="${isHidden ? 'opacity: 0.6;' : ''}">
-                        <img src="${photo.src}" alt="${photo.title}" onerror="this.src='https://via.placeholder.com/200x200?text=Not+Found'">
+                        ${mediaElement}
                         <div style="position: absolute; bottom: 8px; left: 8px; right: 8px; background: rgba(0,0,0,0.9); padding: 8px; border-radius: 6px;">
                             <p style="color: #d4af37; font-size: 12px; font-weight: 600; margin: 0;">${photo.title}</p>
                             ${categoryLine}
