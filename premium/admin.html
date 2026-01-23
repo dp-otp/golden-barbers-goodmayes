@@ -1690,28 +1690,50 @@
         // LEARN = Used in knowledge.html (Learn page)
         // HOME = Used in index.html (Home page)
         const allGalleryPhotos = [
-            // === GALLERY PAGE PHOTOS (also used on other pages) ===
-            // Gallery = premium/gallery.html, Services = services.html, Learn = knowledge.html, Home = index.html, About = about.html
+            // === GALLERY PAGE PHOTOS - FADES ===
+            { id: 'pic', src: 'pic.jpg', title: 'Clean Skin Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true },
+            { id: 'download-8', src: 'download (8).jpg', title: 'High Top Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true },
+            { id: 'download-13', src: 'download (13).jpg', title: 'Custom Design Lines', category: 'fades', usedIn: 'Gallery, Services', inGallery: true },
+            { id: 'download-21', src: 'download (21).jpg', title: 'Blonde Curly Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true },
             { id: 'download-4', src: 'download (4).jpg', title: 'Kids Classic Cut', category: 'fades', usedIn: 'Gallery, Services', inGallery: true },
             { id: 'download-7', src: 'download (7).jpg', title: 'Modern Textured Cut', category: 'fades', usedIn: 'Gallery, Learn, Home', inGallery: true },
-            { id: 'download-8', src: 'download (8).jpg', title: 'High Top Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true },
             { id: 'download-9', src: 'download (9).jpg', title: 'Sharp Lineup', category: 'fades', usedIn: 'Gallery, Services, Learn, Home', inGallery: true },
-            { id: 'download-10', src: 'download (10).jpg', title: 'The Golden Team', category: 'shop', usedIn: 'Gallery, Home, About', inGallery: true },
-            { id: 'download-11', src: 'download (11).jpg', title: 'Classic Taper Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true },
+            { id: 'snap-locs-fade', src: 'SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg', title: 'Locs with Skin Fade', category: 'fades', usedIn: 'Gallery, Learn', inGallery: true },
+            { id: 'snap-buzz-fade', src: 'SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg', title: 'Buzz Cut Skin Fade', category: 'fades', usedIn: 'Gallery, Learn', inGallery: true },
+            { id: 'snap-junior-part', src: 'SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg', title: 'Junior Side Part', category: 'fades', usedIn: 'Gallery', inGallery: true },
+            { id: 'snap-slick-mid', src: 'SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg', title: 'Slicked Back Mid Fade', category: 'fades', usedIn: 'Gallery', inGallery: true },
+            { id: 'snap-geometric', src: 'SnapInsta.to_50119020_2338328669729367_6657319863597735597_n.jpg', title: 'Geometric Design Fade', category: 'fades', usedIn: 'Gallery', inGallery: true },
+            { id: 'snap-blonde-curls', src: 'SnapInsta.to_59039774_468241190612084_3168956384655946770_n.jpg', title: 'Blonde Curls Temple Fade', category: 'fades', usedIn: 'Gallery', inGallery: true },
+            { id: 'snap-curly-taper', src: 'SnapInsta.to_66620431_493779438090103_5926486896537980734_n.jpg', title: 'Curly Top Taper', category: 'fades', usedIn: 'Gallery', inGallery: true },
+            { id: 'snap-sponge-curls', src: 'SnapInsta.to_70010652_1348701105288372_8634153704668559015_n.jpg', title: 'Sponge Curls Temp Fade', category: 'fades', usedIn: 'Gallery', inGallery: true },
+            { id: 'snap-textured-crop', src: 'SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg', title: 'Textured Crop Fade', category: 'fades', usedIn: 'Gallery, Learn', inGallery: true },
+            { id: 'snap-star-design', src: 'SnapInsta.to_83452999_639920510104267_5362544737012483305_n.jpg', title: 'Star Design Cut', category: 'fades', usedIn: 'Gallery', inGallery: true },
+
+            // === GALLERY PAGE PHOTOS - BEARD ===
             { id: 'download-12', src: 'download (12).jpg', title: 'Traditional Fire Technique', category: 'beard', usedIn: 'Gallery, Services', inGallery: true },
-            { id: 'download-13', src: 'download (13).jpg', title: 'Custom Design Lines', category: 'fades', usedIn: 'Gallery, Services', inGallery: true },
-            { id: 'download-14', src: 'download (14).jpg', title: 'Premium Interior', category: 'shop', usedIn: 'Gallery', inGallery: true },
             { id: 'download-15', src: 'download (15).jpg', title: 'Face Wax Treatment', category: 'beard', usedIn: 'Gallery, Services', inGallery: true },
-            { id: 'download-17', src: 'download (17).jpg', title: 'Golden Barbers Logo', category: 'shop', usedIn: 'Gallery', inGallery: true },
             { id: 'download-18', src: 'download (18).jpg', title: 'Professional Beard Styling', category: 'beard', usedIn: 'Gallery, Services, Learn', inGallery: true },
-            { id: 'download-19', src: 'download (19).jpg', title: 'The Golden Team 2', category: 'shop', usedIn: 'Gallery', inGallery: true },
-            { id: 'download-20', src: 'download (20).jpg', title: 'Welcoming Atmosphere', category: 'shop', usedIn: 'Gallery', inGallery: true },
-            { id: 'download-21', src: 'download (21).jpg', title: 'Blonde Curly Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true },
-            { id: 'download-22', src: 'download (22).jpg', title: 'Turquoise Color Fade', category: 'transformations', usedIn: 'Gallery, Services, Learn', inGallery: true },
             { id: 'download-23', src: 'download (23).jpg', title: 'Hot Towel Service', category: 'beard', usedIn: 'Gallery, Services, Learn', inGallery: true },
-            { id: 'download-24', src: 'download (24).jpg', title: 'Goodmayes Location', category: 'shop', usedIn: 'Gallery', inGallery: true },
-            { id: 'pic', src: 'pic.jpg', title: 'Clean Skin Fade', category: 'fades', usedIn: 'Gallery, Services, Learn', inGallery: true },
-            { id: 'styled-cut', src: '../cde5b93b-f8ed-4cde-bbd3-dfe60b666732.jpg', title: 'Golden Barbers Excellence', category: 'shop', usedIn: 'Gallery, About', inGallery: true },
+            { id: 'download-11', src: 'download (11).jpg', title: 'Beard Neckline Shaping', category: 'beard', usedIn: 'Gallery, Services, Learn', inGallery: true },
+            { id: 'snap-beard-shape', src: 'SnapInsta.to_187808517_1044738236053320_2458909227727331354_n.jpg', title: 'Precision Beard Shaping', category: 'beard', usedIn: 'Gallery, Learn', inGallery: true },
+
+            // === GALLERY PAGE PHOTOS - FADES & BEARD COMBO ===
+            { id: 'snap-waves-beard', src: 'SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg', title: 'Waves & Beard Combo', category: 'fades beard', usedIn: 'Gallery, Learn', inGallery: true },
+            { id: 'snap-mid-high', src: 'SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg', title: 'Mid-High Fade', category: 'fades beard', usedIn: 'Gallery', inGallery: true },
+            { id: 'snap-locs-beard', src: 'SnapInsta.to_118516576_242770710236355_3326219608200829104_n.jpg', title: 'Short Locs & Beard', category: 'fades beard', usedIn: 'Gallery', inGallery: true },
+            { id: 'snap-waves-beard2', src: 'SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg', title: 'Waves & Beard', category: 'fades beard', usedIn: 'Gallery', inGallery: true },
+
+            // === GALLERY PAGE PHOTOS - WELLNESS ===
+            { id: 'snap-head-massage', src: 'SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg', title: 'Head Massage', category: 'wellness', usedIn: 'Gallery, Learn', inGallery: true },
+
+            // === GALLERY PAGE PHOTOS - SHOP ===
+            { id: 'download-14', src: 'download (14).jpg', title: 'Premium Interior', category: 'shop', usedIn: 'Gallery', inGallery: true },
+            { id: 'download-10', src: 'download (10).jpg', title: 'The Golden Team', category: 'shop', usedIn: 'Gallery, Home, About', inGallery: true },
+            { id: 'download-20', src: 'download (20).jpg', title: 'Welcoming Atmosphere', category: 'shop', usedIn: 'Gallery', inGallery: true },
+            { id: 'download-24', src: 'download (24).jpg', title: 'Grand Opening Celebration', category: 'shop', usedIn: 'Gallery', inGallery: true },
+            { id: 'download-17', src: 'download (17).jpg', title: 'Golden Barbers Logo', category: 'shop', usedIn: 'Gallery', inGallery: true },
+            { id: 'download-19', src: 'download (19).jpg', title: 'Celebration Interior', category: 'shop', usedIn: 'Gallery', inGallery: true },
+            { id: 'styled-cut', src: '../cde5b93b-f8ed-4cde-bbd3-dfe60b666732.jpg', title: 'Our Shop', category: 'shop', usedIn: 'Gallery, About', inGallery: true },
 
             // === SERVICES & HOME (not in gallery.html) ===
             { id: 'download-16', src: 'download (16).jpg', title: 'Head Massage', category: '', usedIn: 'Services, Home', inGallery: false },
@@ -1731,7 +1753,8 @@
 
             // === AWARDS (About page) ===
             { id: 'download-5', src: 'download (5).jpg', title: 'Business of the Year 2022', category: 'shop', usedIn: 'About', inGallery: false },
-            { id: 'download-6', src: 'download (6).jpg', title: 'Best Local Business 2021', category: 'shop', usedIn: 'About', inGallery: false }
+            { id: 'download-6', src: 'download (6).jpg', title: 'Best Local Business 2021', category: 'shop', usedIn: 'About', inGallery: false },
+            { id: 'ilford-award', src: '../6C3F4726-EF89-4DEB-9CB6-2A9D5969B034.png', title: 'Ilford Business of the Year 2024', category: 'shop', usedIn: 'About', inGallery: false }
         ];
 
         // Hidden photos stored in Firebase
