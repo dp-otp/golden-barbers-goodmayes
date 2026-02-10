@@ -1,5 +1,5 @@
 /**
- * Golden Barbers - Premium Seasonal Theme Effects v5
+ * Golden Barbers - Premium Seasonal Theme Effects v6
  * ═══════════════════════════════════════════════════
  * REALISTIC SVG illustrations, celebration banners,
  * premium creative elements. Brand gold STAYS -
@@ -354,8 +354,9 @@
                 { svg: 'ornament', colors: ['#d4af37','#a88a2d'], count: isMobile ? 1 : 3, size: [12, 18], opacity: [0.2, 0.42] }
             ],
             anim: 'fall', speed: [12, 26], drift: [4, 10],
-            creative: ['stringLights'],
+            creative: ['stringLights', 'bottomGarland', 'heroWraith'],
             corner: 'holly',
+            heroRing: 'wreath',
             atmosphere: 'radial-gradient(ellipse at 50% 0%, rgba(30,60,100,0.05) 0%, transparent 55%)',
             banner: { text: 'MERRY CHRISTMAS', sub: 'Wishing you joy & style this festive season!', icon: '&#9733;', bg: 'linear-gradient(135deg, #B71C1C, #1B5E20)', color: '#fff' },
             toast: { title: 'MERRY CHRISTMAS', sub: 'Wishing you a festive season full of style!', bg: 'linear-gradient(135deg, #1B5E20, #C62828)', color: '#fff' },
@@ -376,7 +377,8 @@
                 { svg: 'heart', color: '#FCE4EC', count: isMobile ? 2 : 5, size: [8, 14], opacity: [0.12, 0.3], spin: false }
             ],
             anim: 'rise', speed: [14, 28], drift: [4, 8],
-            creative: ['rosePetals'],
+            creative: ['rosePetals', 'hangingHearts'],
+            heroRing: 'heartRing',
             atmosphere: 'radial-gradient(ellipse at 30% 50%, rgba(233,30,99,0.04) 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, rgba(200,100,120,0.04) 0%, transparent 50%)',
             banner: { text: "HAPPY VALENTINE'S", sub: 'Look sharp for your special someone!', icon: '&#9829;', bg: 'linear-gradient(135deg, #880E4F, #E91E63)', color: '#fff' },
             toast: { title: "VALENTINE'S DAY", sub: 'Look sharp for your special someone!', bg: 'linear-gradient(135deg, #880E4F, #E91E63)', color: '#fff' },
@@ -394,7 +396,8 @@
                 { svg: 'snowflake', count: isMobile ? 10 : 22, size: [18, 36], opacity: [0.3, 0.65], spin: true }
             ],
             anim: 'fall', speed: [14, 30], drift: [4, 10],
-            creative: ['frost'],
+            creative: ['frost', 'icicles'],
+            heroRing: 'frostRing',
             atmosphere: 'radial-gradient(ellipse at 50% 0%, rgba(79,195,247,0.05) 0%, transparent 55%)',
             banner: { text: 'WINTER WARMTH', sub: 'Warm up with a fresh new look!', icon: '&#10052;', bg: 'linear-gradient(135deg, #01579B, #0288D1)', color: '#E1F5FE' },
             toast: { title: 'WINTER WARMTH', sub: 'Warm up with a fresh cut this winter', bg: 'linear-gradient(135deg, #01579B, #0288D1)', color: '#E1F5FE' },
@@ -413,8 +416,9 @@
                 { svg: 'pumpkin', count: isMobile ? 2 : 5, size: [18, 30], opacity: [0.25, 0.5] }
             ],
             anim: 'sway', speed: [10, 22], drift: [5, 12],
-            creative: ['fog'],
+            creative: ['fog', 'bottomGraveyard'],
             corner: 'cobweb',
+            heroRing: 'spookyRing',
             atmosphere: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.3) 100%)',
             banner: { text: 'HAPPY HALLOWEEN', sub: 'Get a killer look this spooky season!', icon: '&#127875;', bg: 'linear-gradient(135deg, #4A148C, #E65100)', color: '#FFE0B2' },
             toast: { title: 'SPOOKY SEASON', sub: 'Get a killer look this Halloween!', bg: 'linear-gradient(135deg, #4A148C, #E65100)', color: '#FFE0B2' },
@@ -435,7 +439,8 @@
                 { svg: 'flower', color: '#F48FB1', count: isMobile ? 2 : 5, size: [14, 22], opacity: [0.18, 0.4], spin: true }
             ],
             anim: 'fall', speed: [16, 32], drift: [4, 8],
-            creative: ['butterflies'],
+            creative: ['butterflies', 'bottomFlowers'],
+            heroRing: 'springRing',
             atmosphere: 'radial-gradient(ellipse at 25% 40%, rgba(129,199,132,0.04) 0%, transparent 45%), radial-gradient(ellipse at 75% 60%, rgba(244,143,177,0.04) 0%, transparent 45%)',
             banner: { text: 'HAPPY EASTER', sub: 'Spring into a fresh new look!', icon: '&#127807;', bg: 'linear-gradient(135deg, #66BB6A, #81C784)', color: '#fff' },
             toast: { title: 'HAPPY EASTER', sub: 'Spring into a fresh new look!', bg: 'linear-gradient(135deg, #66BB6A, #81C784)', color: '#fff' },
@@ -454,7 +459,8 @@
                 { svg: 'wave', color: '#0288D1', count: isMobile ? 3 : 6, size: [30, 50], opacity: [0.12, 0.28] }
             ],
             anim: 'float', speed: [8, 16], drift: [3, 6],
-            creative: ['sunFlare', 'heatShimmer'],
+            creative: ['sunFlare', 'heatShimmer', 'bottomWaves'],
+            heroRing: 'sunRing',
             atmosphere: 'radial-gradient(ellipse at 85% 10%, rgba(255,200,100,0.07) 0%, transparent 50%)',
             banner: { text: 'SUMMER VIBES', sub: 'Stay fresh all summer long!', icon: '&#9728;', bg: 'linear-gradient(135deg, #E65100, #FF8F00)', color: '#fff' },
             toast: { title: 'SUMMER VIBES', sub: 'Stay fresh all summer long!', bg: 'linear-gradient(135deg, #E65100, #FF8F00)', color: '#fff' },
@@ -474,6 +480,7 @@
             ],
             anim: 'float', speed: [8, 16], drift: [3, 6],
             creative: ['sparkleField'],
+            heroRing: 'goldRing',
             atmosphere: 'radial-gradient(ellipse at 50% 30%, rgba(253,216,53,0.03) 0%, transparent 50%)',
             banner: { text: 'EID MUBARAK', sub: 'Celebrate in style with a fresh look!', icon: '&#9734;', bg: 'linear-gradient(135deg, #2E7D32, #388E3C)', color: '#FFF9C4' },
             toast: { title: 'EID MUBARAK', sub: 'Celebrate in style with a fresh look!', bg: 'linear-gradient(135deg, #2E7D32, #388E3C)', color: '#FFF9C4' },
@@ -493,7 +500,8 @@
                 { svg: 'star', color: '#B8860B', count: isMobile ? 3 : 6, size: [8, 16], opacity: [0.15, 0.35], spin: true }
             ],
             anim: 'float', speed: [10, 20], drift: [3, 6],
-            creative: ['sparkleField'],
+            creative: ['sparkleField', 'hangingLanterns'],
+            heroRing: 'goldRing',
             atmosphere: 'radial-gradient(ellipse at 50% 0%, rgba(26,35,126,0.05) 0%, transparent 55%)',
             banner: { text: 'RAMADAN KAREEM', sub: 'Wishing you a blessed & beautiful month', icon: '&#9774;', bg: 'linear-gradient(135deg, #1A237E, #283593)', color: '#E8EAF6' },
             toast: { title: 'RAMADAN KAREEM', sub: 'Wishing you a blessed and beautiful month', bg: 'linear-gradient(135deg, #1A237E, #283593)', color: '#E8EAF6' },
@@ -513,6 +521,7 @@
             ],
             anim: 'fall', speed: [5, 12], drift: [2, 5],
             creative: ['neonFlash'],
+            heroRing: 'fireRing',
             atmosphere: 'radial-gradient(ellipse at 50% 50%, rgba(255,23,68,0.03) 0%, transparent 55%)',
             banner: { text: 'BLACK FRIDAY DEALS', sub: 'Biggest deals of the year - Don\'t miss out!', icon: '&#128293;', bg: 'linear-gradient(135deg, #000, #212121)', color: '#FFD600' },
             toast: { title: 'BLACK FRIDAY', sub: 'Biggest deals of the year!', bg: 'linear-gradient(135deg, #000, #212121)', color: '#FFD600' },
@@ -533,6 +542,7 @@
             ],
             anim: 'fall', speed: [10, 20], drift: [4, 8],
             creative: ['confetti'],
+            heroRing: 'champagneRing',
             atmosphere: 'radial-gradient(ellipse at 50% 0%, rgba(13,71,161,0.05) 0%, transparent 55%)',
             banner: { text: 'HAPPY NEW YEAR', sub: 'New year, fresh look - Start the year right!', icon: '&#127878;', bg: 'linear-gradient(135deg, #0D47A1, #1565C0)', color: '#FFD700' },
             toast: { title: 'HAPPY NEW YEAR', sub: 'New year, new look!', bg: 'linear-gradient(135deg, #0D47A1, #1565C0)', color: '#FFD700' },
@@ -650,6 +660,25 @@
             /* ── NEON FLASH (Black Friday) ── */
             '.gb-neonflash{position:fixed;pointer-events:none;z-index:0;opacity:0;animation:gb-nflash 3s ease-in-out infinite}',
             '@keyframes gb-nflash{0%,100%{opacity:0}15%{opacity:0.06}30%{opacity:0}45%{opacity:0.04}60%{opacity:0}80%{opacity:0.08}90%{opacity:0}}',
+
+            /* ── BOTTOM SCENE (positioned decorations at viewport bottom) ── */
+            '.gb-bottom{position:fixed;bottom:0;left:0;width:100%;pointer-events:none;z-index:2;opacity:0;animation:gb-fadein 2s ease 1s forwards}',
+            '.gb-bottom svg{width:100%;height:100%;display:block}',
+
+            /* ── SIDE ACCENTS (hanging decorations from sides) ── */
+            '.gb-side{position:fixed;top:0;pointer-events:none;z-index:2;opacity:0;animation:gb-fadein 2.5s ease 1.2s forwards}',
+            '.gb-side svg{width:100%;height:100%}',
+            '.gb-side-left{left:0}',
+            '.gb-side-right{right:0}',
+
+            /* ── HERO RING (decorative ring around hero circle) ── */
+            '.gb-hero-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:4;border-radius:50%;opacity:0;animation:gb-fadein 2s ease 0.5s forwards}',
+            '.gb-hero-ring-pulse{animation:gb-fadein 2s ease 0.5s forwards, gb-ringpulse 4s ease-in-out 2.5s infinite}',
+            '@keyframes gb-ringpulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.7}50%{transform:translate(-50%,-50%) scale(1.03);opacity:1}}',
+
+            /* ── POSITIONED ELEMENT (specific spot on screen) ── */
+            '.gb-placed{position:fixed;pointer-events:none;z-index:2;opacity:0;animation:gb-fadein 2s ease 1.5s forwards}',
+            '.gb-placed svg{width:100%;height:100%}',
 
             /* ── CONFETTI ── */
             '.gb-confetti-wrap{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10000;overflow:hidden}',
@@ -1025,6 +1054,185 @@
     }
 
     /* ═══════════════════════════════════════════
+       BOTTOM SCENE - Positioned decorations at
+       the bottom edge of the viewport
+    ═══════════════════════════════════════════ */
+    function createBottomScene(type) {
+        var el = document.createElement('div');
+        el.className = 'gb-bottom';
+        var h, svg;
+
+        if (type === 'garland') {
+            /* Christmas garland with bows and berries along bottom */
+            h = isMobile ? 35 : 50;
+            svg = '<svg viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
+                '<path d="M0 20 Q60 45,120 20 Q180 -5,240 20 Q300 45,360 20 Q420 -5,480 20 Q540 45,600 20 Q660 -5,720 20 Q780 45,840 20 Q900 -5,960 20 Q1020 45,1080 20 Q1140 -5,1200 20" stroke="#1B5E20" stroke-width="4" fill="none" opacity="0.5"/>' +
+                '<path d="M0 22 Q60 47,120 22 Q180 -3,240 22 Q300 47,360 22 Q420 -3,480 22 Q540 47,600 22 Q660 -3,720 22 Q780 47,840 22 Q900 -3,960 22 Q1020 47,1080 22 Q1140 -3,1200 22" stroke="#2E7D32" stroke-width="2" fill="none" opacity="0.35"/>' +
+                '<g fill="#C62828" opacity="0.6"><circle cx="120" cy="20" r="4"/><circle cx="360" cy="20" r="4"/><circle cx="600" cy="20" r="4"/><circle cx="840" cy="20" r="4"/><circle cx="1080" cy="20" r="4"/></g>' +
+                '<g fill="#d4af37" opacity="0.45"><circle cx="240" cy="20" r="3.5"/><circle cx="480" cy="20" r="3.5"/><circle cx="720" cy="20" r="3.5"/><circle cx="960" cy="20" r="3.5"/></g>' +
+            '</svg>';
+        } else if (type === 'graveyard') {
+            /* Halloween graveyard silhouette */
+            h = isMobile ? 50 : 70;
+            svg = '<svg viewBox="0 0 1200 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
+                '<rect x="0" y="55" width="1200" height="15" fill="rgba(20,10,30,0.4)"/>' +
+                '<path d="M80 55 L80 30 Q80 18,92 18 L100 18 Q112 18,112 30 L112 55Z" fill="rgba(60,40,70,0.4)"/>' +
+                '<rect x="90" y="24" width="4" height="18" fill="rgba(80,60,90,0.3)"/><rect x="84" y="32" width="16" height="3" fill="rgba(80,60,90,0.3)"/>' +
+                '<path d="M300 55 L300 35 Q300 22,316 22 L316 22 Q332 22,332 35 L332 55Z" fill="rgba(55,35,65,0.35)"/>' +
+                '<path d="M550 55 L550 25 L560 20 L570 25 L570 55Z" fill="rgba(50,30,60,0.35)"/>' +
+                '<path d="M800 55 L800 32 Q800 20,815 20 L815 20 Q830 20,830 32 L830 55Z" fill="rgba(60,40,70,0.35)"/>' +
+                '<path d="M1050 55 L1050 28 Q1050 15,1065 15 L1065 15 Q1080 15,1080 28 L1080 55Z" fill="rgba(55,35,65,0.3)"/>' +
+                '<path d="M180 55 L180 42 Q200 38,220 42 L220 55Z" fill="rgba(30,15,40,0.25)"/>' +
+                '<path d="M650 55 L650 44 Q665 40,680 44 L680 55Z" fill="rgba(30,15,40,0.2)"/>' +
+            '</svg>';
+        } else if (type === 'waves') {
+            /* Summer ocean waves at bottom */
+            h = isMobile ? 40 : 55;
+            svg = '<svg viewBox="0 0 1200 55" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
+                '<path d="M0 30 Q50 15,100 30 Q150 45,200 30 Q250 15,300 30 Q350 45,400 30 Q450 15,500 30 Q550 45,600 30 Q650 15,700 30 Q750 45,800 30 Q850 15,900 30 Q950 45,1000 30 Q1050 15,1100 30 Q1150 45,1200 30 L1200 55 L0 55Z" fill="rgba(2,136,209,0.08)"/>' +
+                '<path d="M0 35 Q50 22,100 35 Q150 48,200 35 Q250 22,300 35 Q350 48,400 35 Q450 22,500 35 Q550 48,600 35 Q650 22,700 35 Q750 48,800 35 Q850 22,900 35 Q950 48,1000 35 Q1050 22,1100 35 Q1150 48,1200 35 L1200 55 L0 55Z" fill="rgba(2,136,209,0.05)"/>' +
+            '</svg>';
+        } else if (type === 'flowers') {
+            /* Easter/Spring flower border at bottom */
+            h = isMobile ? 30 : 40;
+            svg = '<svg viewBox="0 0 1200 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
+                '<rect x="0" y="32" width="1200" height="8" fill="rgba(129,199,132,0.1)"/>' +
+                '<g opacity="0.35">' +
+                    '<line x1="100" y1="32" x2="100" y2="12" stroke="#66BB6A" stroke-width="2"/><circle cx="100" cy="10" r="5" fill="#F48FB1"/><circle cx="100" cy="10" r="2" fill="#FFF59D"/>' +
+                    '<line x1="250" y1="32" x2="250" y2="16" stroke="#66BB6A" stroke-width="2"/><circle cx="250" cy="14" r="4" fill="#90CAF9"/><circle cx="250" cy="14" r="1.5" fill="#FFF59D"/>' +
+                    '<line x1="400" y1="32" x2="400" y2="10" stroke="#66BB6A" stroke-width="2"/><circle cx="400" cy="8" r="5" fill="#CE93D8"/><circle cx="400" cy="8" r="2" fill="#FFF59D"/>' +
+                    '<line x1="550" y1="32" x2="550" y2="14" stroke="#66BB6A" stroke-width="2"/><circle cx="550" cy="12" r="4.5" fill="#F48FB1"/><circle cx="550" cy="12" r="1.8" fill="#FFF59D"/>' +
+                    '<line x1="700" y1="32" x2="700" y2="8" stroke="#66BB6A" stroke-width="2"/><circle cx="700" cy="6" r="5" fill="#81C784"/><circle cx="700" cy="6" r="2" fill="#FFF59D"/>' +
+                    '<line x1="850" y1="32" x2="850" y2="15" stroke="#66BB6A" stroke-width="2"/><circle cx="850" cy="13" r="4" fill="#90CAF9"/><circle cx="850" cy="13" r="1.5" fill="#FFF59D"/>' +
+                    '<line x1="1000" y1="32" x2="1000" y2="11" stroke="#66BB6A" stroke-width="2"/><circle cx="1000" cy="9" r="5" fill="#F48FB1"/><circle cx="1000" cy="9" r="2" fill="#FFF59D"/>' +
+                    '<line x1="1150" y1="32" x2="1150" y2="16" stroke="#66BB6A" stroke-width="2"/><circle cx="1150" cy="14" r="4" fill="#CE93D8"/><circle cx="1150" cy="14" r="1.5" fill="#FFF59D"/>' +
+                '</g>' +
+            '</svg>';
+        } else {
+            return;
+        }
+
+        el.style.height = h + 'px';
+        el.innerHTML = svg;
+        document.body.appendChild(el);
+        state.creativeExtra.push(el);
+    }
+
+    /* ═══════════════════════════════════════════
+       SIDE ACCENTS - Hanging decorations from
+       the left/right edges of the viewport
+    ═══════════════════════════════════════════ */
+    function createSideAccents(type) {
+        if (isMobile) return;
+
+        if (type === 'icicles') {
+            /* Winter icicles hanging from top-left and top-right */
+            var icicleLeft = '<svg viewBox="0 0 30 180" xmlns="http://www.w3.org/2000/svg">' +
+                '<path d="M5 0 L5 60 L2 90 L5 60" stroke="rgba(200,230,255,0.15)" stroke-width="2" fill="rgba(200,230,255,0.06)"/>' +
+                '<path d="M15 0 L15 80 L12 120 L15 80" stroke="rgba(200,230,255,0.12)" stroke-width="1.5" fill="rgba(200,230,255,0.04)"/>' +
+                '<path d="M25 0 L25 50 L22 75 L25 50" stroke="rgba(200,230,255,0.1)" stroke-width="1.5" fill="rgba(200,230,255,0.03)"/>' +
+            '</svg>';
+            ['left','right'].forEach(function(side) {
+                var el = document.createElement('div');
+                el.className = 'gb-side gb-side-' + side;
+                el.style.width = '30px';
+                el.style.height = '180px';
+                el.innerHTML = icicleLeft;
+                if (side === 'right') el.style.transform = 'scaleX(-1)';
+                document.body.appendChild(el);
+                state.creativeExtra.push(el);
+            });
+        } else if (type === 'hangingHearts') {
+            /* Valentine's hearts hanging from top at specific positions */
+            var positions = [{x:'8%',h:80},{x:'92%',h:100},{x:'5%',h:60},{x:'95%',h:70}];
+            positions.forEach(function(pos) {
+                var el = document.createElement('div');
+                el.className = 'gb-placed';
+                el.style.top = '0';
+                el.style.left = pos.x;
+                el.style.width = '2px';
+                el.style.height = pos.h + 'px';
+                el.style.background = 'linear-gradient(to bottom, rgba(233,30,99,0.15), rgba(233,30,99,0.05))';
+                var heart = document.createElement('div');
+                heart.style.cssText = 'position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);width:16px;height:16px';
+                heart.innerHTML = buildSVG(HEART_SVG, '#E91E63');
+                heart.querySelector('svg').style.cssText = 'width:100%;height:100%;opacity:0.35';
+                el.appendChild(heart);
+                document.body.appendChild(el);
+                state.creativeExtra.push(el);
+            });
+        } else if (type === 'hangingLanterns') {
+            /* Ramadan lanterns at specific positions along top edges */
+            var positions = [{x:'6%',h:90},{x:'94%',h:75},{x:'3%',h:60},{x:'97%',h:85}];
+            positions.forEach(function(pos) {
+                var el = document.createElement('div');
+                el.className = 'gb-placed';
+                el.style.top = '0';
+                el.style.left = pos.x;
+                el.style.width = '1px';
+                el.style.height = pos.h + 'px';
+                el.style.background = 'rgba(184,134,11,0.12)';
+                var lantern = document.createElement('div');
+                lantern.style.cssText = 'position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);width:18px;height:32px';
+                lantern.innerHTML = LANTERN_SVG;
+                lantern.querySelector('svg').style.cssText = 'width:100%;height:100%;opacity:0.4';
+                el.appendChild(lantern);
+                document.body.appendChild(el);
+                state.creativeExtra.push(el);
+            });
+        }
+    }
+
+    /* ═══════════════════════════════════════════
+       HERO RING - Decorative ring around the
+       hero circle logo (.showcase-neon-circle)
+    ═══════════════════════════════════════════ */
+    function createHeroRing(type) {
+        var heroCircle = document.querySelector('.showcase-neon-circle');
+        if (!heroCircle) return;
+        heroCircle.style.overflow = 'visible';
+
+        var ring = document.createElement('div');
+        ring.className = 'gb-hero-ring gb-hero-ring-pulse';
+        ring.style.width = '348px';
+        ring.style.height = '348px';
+
+        if (type === 'wreath') {
+            ring.style.border = '3px solid rgba(46,125,50,0.2)';
+            ring.style.boxShadow = '0 0 15px rgba(46,125,50,0.1), inset 0 0 15px rgba(46,125,50,0.05)';
+        } else if (type === 'heartRing') {
+            ring.style.border = '2px solid rgba(233,30,99,0.15)';
+            ring.style.boxShadow = '0 0 20px rgba(233,30,99,0.08), inset 0 0 20px rgba(233,30,99,0.04)';
+        } else if (type === 'frostRing') {
+            ring.style.border = '2px solid rgba(100,180,246,0.15)';
+            ring.style.boxShadow = '0 0 20px rgba(100,180,246,0.1), inset 0 0 20px rgba(100,180,246,0.05)';
+        } else if (type === 'spookyRing') {
+            ring.style.border = '2px solid rgba(255,111,0,0.15)';
+            ring.style.boxShadow = '0 0 25px rgba(106,27,154,0.12), 0 0 15px rgba(255,111,0,0.08)';
+        } else if (type === 'goldRing') {
+            ring.style.border = '2px solid rgba(253,216,53,0.15)';
+            ring.style.boxShadow = '0 0 20px rgba(253,216,53,0.1), inset 0 0 15px rgba(253,216,53,0.05)';
+        } else if (type === 'fireRing') {
+            ring.style.border = '2px solid rgba(255,23,68,0.15)';
+            ring.style.boxShadow = '0 0 20px rgba(255,23,68,0.08), 0 0 10px rgba(255,214,0,0.06)';
+        } else if (type === 'champagneRing') {
+            ring.style.border = '2px solid rgba(255,215,0,0.2)';
+            ring.style.boxShadow = '0 0 25px rgba(255,215,0,0.1), inset 0 0 15px rgba(255,215,0,0.06)';
+        } else if (type === 'sunRing') {
+            ring.style.border = '2px solid rgba(255,143,0,0.12)';
+            ring.style.boxShadow = '0 0 20px rgba(255,143,0,0.08)';
+        } else if (type === 'springRing') {
+            ring.style.border = '2px solid rgba(129,199,132,0.15)';
+            ring.style.boxShadow = '0 0 15px rgba(129,199,132,0.08), 0 0 10px rgba(244,143,177,0.06)';
+        } else {
+            return;
+        }
+
+        heroCircle.appendChild(ring);
+        state.logoDeco.push(ring);
+    }
+
+    /* ═══════════════════════════════════════════
        CONFETTI - New Year one-shot burst
     ═══════════════════════════════════════════ */
     function createConfetti() {
@@ -1374,6 +1582,13 @@
             else if (c === 'butterflies') createButterflies();
             else if (c === 'sparkleField') createSparkleField();
             else if (c === 'neonFlash') createNeonFlash();
+            else if (c === 'bottomGarland') createBottomScene('garland');
+            else if (c === 'bottomGraveyard') createBottomScene('graveyard');
+            else if (c === 'bottomWaves') createBottomScene('waves');
+            else if (c === 'bottomFlowers') createBottomScene('flowers');
+            else if (c === 'icicles') createSideAccents('icicles');
+            else if (c === 'hangingHearts') createSideAccents('hangingHearts');
+            else if (c === 'hangingLanterns') createSideAccents('hangingLanterns');
         });
     }
 
@@ -1418,7 +1633,10 @@
         /* 5. Atmosphere overlay */
         createAtmosphere(theme);
 
-        /* 6. Santa hat */
+        /* 6. Hero ring decoration */
+        if (theme.heroRing) createHeroRing(theme.heroRing);
+
+        /* 7. Santa hat */
         if (theme.hat) addSantaHats();
 
         /* 7. Celebration banner */
