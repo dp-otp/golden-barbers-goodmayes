@@ -1936,5 +1936,25 @@
             });
         });
     </script>
+
+    <!-- Theme Effects -->
+    <script src="theme-effects.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script>
+    (function(){
+        var fc={apiKey:"AIzaSyA3eVAdYntGPTsvhAZn0sezj7aYTR9qLC4",authDomain:"golden-barbers-e25db.firebaseapp.com",databaseURL:"https://golden-barbers-e25db-default-rtdb.europe-west1.firebasedatabase.app",projectId:"golden-barbers-e25db",storageBucket:"golden-barbers-e25db.appspot.com",messagingSenderId:"84aborbers",appId:"1:848726278498:web:goldenbarbers"};
+        if(!firebase.apps.length)firebase.initializeApp(fc);
+        var db=firebase.database();
+        // Theme
+        db.ref('siteTheme').on('value',function(s){var d=s.val();if(typeof GBThemeEffects!=='undefined'){if(!d||!d.themeId){GBThemeEffects.remove();}else{GBThemeEffects.apply(d);}}});
+        // Shop Status
+        db.ref('shopStatus').on('value',function(s){var d=s.val();if(!d)return;});
+        // Announcement
+        db.ref('announcement').on('value',function(s){var d=s.val();if(!d)return;});
+    })();
+    </script>
 </body>
 </html>

@@ -1415,6 +1415,12 @@
                 </h2>
                 <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Add a special discount tied to the active theme. This shows as a banner on your website matching the theme colours.</p>
 
+                <!-- Quick Discount Recommendations -->
+                <div id="discountRecommendations" style="display:none; margin-bottom:20px;">
+                    <label style="display:block;margin-bottom:10px;font-size:13px;font-weight:600;color:#d4af37;">Quick Suggestions</label>
+                    <div id="discountRecBtns" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+                </div>
+
                 <div class="form-group">
                     <label>Discount Text</label>
                     <input type="text" id="themeDiscountText" placeholder="e.g. 20% OFF all fades this Christmas!" oninput="updateThemeDiscountPreview()">
@@ -2825,8 +2831,8 @@
         var SEASONAL_THEMES = {
             christmas: {
                 name: 'Christmas', emoji: '\uD83C\uDF84',
-                desc: 'Falling snowflakes, candy cane border, santa hat on logo & festive red-green vibes',
-                colors: { primary: '#C62828', secondary: '#1B5E20', accent: '#FFCDD2', bg: '#0C0606' },
+                desc: 'Falling snowflakes, santa hat on logo, festive green & gold with red accents',
+                colors: { primary: '#2E7D32', secondary: '#C62828', accent: '#d4af37', bg: '#060A06' },
                 banner: 'Merry Christmas from Golden Barbers!',
                 textColor: '#fff',
                 suggestedDiscount: '20% OFF all services this Christmas!'
@@ -2857,8 +2863,8 @@
             },
             easter: {
                 name: 'Easter', emoji: '\uD83D\uDC23',
-                desc: 'Drifting flower petals, Easter eggs, bunnies & spring pastel colours',
-                colors: { primary: '#AB47BC', secondary: '#4CAF50', accent: '#F3E5F5', bg: '#0E0810' },
+                desc: 'Drifting flower petals, spring pastels - mint green, soft pink & butter yellow',
+                colors: { primary: '#81C784', secondary: '#F48FB1', accent: '#FFF59D', bg: '#080A06' },
                 banner: 'Happy Easter! Spring into a fresh look',
                 textColor: '#fff',
                 suggestedDiscount: '15% OFF fresh cuts for Easter!'
@@ -2918,6 +2924,7 @@
                 }
                 renderThemeGrid();
                 updateActiveThemeBanner();
+                renderDiscountRecommendations();
             });
         }
 
@@ -2984,6 +2991,89 @@
                 s.classList.add('show');
                 setTimeout(function() { s.classList.remove('show'); }, 3000);
             });
+        }
+
+        // Discount Recommendation Buttons (per theme)
+        var DISCOUNT_RECS = {
+            christmas: [
+                { text: '20% OFF all services this Christmas!', type: 'percent', value: 20 },
+                { text: 'Festive Bundle: Haircut + Beard Trim for \u00A320', type: 'fixed', value: 20 },
+                { text: 'Free hot towel with every cut this December!', type: 'percent', value: 0 }
+            ],
+            valentines: [
+                { text: "Valentine's Couples Deal: 2 cuts for \u00A325!", type: 'fixed', value: 25 },
+                { text: "15% OFF any service this Valentine's!", type: 'percent', value: 15 },
+                { text: 'Treat your partner: Gift voucher with every cut!', type: 'percent', value: 0 }
+            ],
+            winter: [
+                { text: 'Winter Warmer: Free hot towel with any cut!', type: 'percent', value: 0 },
+                { text: '10% OFF all services this winter!', type: 'percent', value: 10 },
+                { text: 'Beat the cold: \u00A33 OFF any fade!', type: 'fixed', value: 3 }
+            ],
+            halloween: [
+                { text: 'Spooky Flash Deal: 25% OFF today only!', type: 'percent', value: 25 },
+                { text: 'Halloween Special: Kids cuts \u00A35!', type: 'fixed', value: 5 },
+                { text: 'Trick or Trim: 15% OFF all fades!', type: 'percent', value: 15 }
+            ],
+            easter: [
+                { text: '15% OFF fresh cuts for Easter!', type: 'percent', value: 15 },
+                { text: 'Spring Bundle: Cut + Beard for \u00A320!', type: 'fixed', value: 20 },
+                { text: 'Easter Egg Hunt: Mystery discount with every cut!', type: 'percent', value: 0 }
+            ],
+            summer: [
+                { text: 'Summer Special: \u00A310 OFF any premium cut!', type: 'fixed', value: 10 },
+                { text: 'Stay fresh: 20% OFF skin fades all summer!', type: 'percent', value: 20 },
+                { text: 'Beach Ready: Free hair wash with any service!', type: 'percent', value: 0 }
+            ],
+            eid: [
+                { text: 'Eid Special: 20% OFF premium grooming!', type: 'percent', value: 20 },
+                { text: 'Eid Mubarak: Golden Luxury for \u00A335!', type: 'fixed', value: 35 },
+                { text: 'Celebrate Eid: Family bundle 4 cuts for \u00A340!', type: 'fixed', value: 40 }
+            ],
+            ramadan: [
+                { text: 'Ramadan Special: Evening appointments 20% OFF!', type: 'percent', value: 20 },
+                { text: 'Ramadan Kareem: 15% OFF all services!', type: 'percent', value: 15 },
+                { text: 'Late night cuts: \u00A33 OFF after 6pm!', type: 'fixed', value: 3 }
+            ],
+            blackfriday: [
+                { text: 'BLACK FRIDAY: 30% OFF EVERYTHING!', type: 'percent', value: 30 },
+                { text: 'Flash Sale: Golden Luxury \u00A330 (was \u00A345)!', type: 'fixed', value: 30 },
+                { text: 'MEGA DEAL: Any cut + beard for \u00A315!', type: 'fixed', value: 15 }
+            ],
+            newyear: [
+                { text: 'New Year New Look: 15% OFF all January!', type: 'percent', value: 15 },
+                { text: 'Start 2026 fresh: \u00A35 OFF any fade!', type: 'fixed', value: 5 },
+                { text: 'New Year Bundle: Cut + Hot Towel for \u00A318!', type: 'fixed', value: 18 }
+            ]
+        };
+
+        function renderDiscountRecommendations() {
+            var container = document.getElementById('discountRecommendations');
+            var btnsContainer = document.getElementById('discountRecBtns');
+            if (!activeThemeId || !DISCOUNT_RECS[activeThemeId]) {
+                container.style.display = 'none';
+                return;
+            }
+            container.style.display = 'block';
+            var recs = DISCOUNT_RECS[activeThemeId];
+            var t = SEASONAL_THEMES[activeThemeId];
+            btnsContainer.innerHTML = recs.map(function(rec, i) {
+                return '<button onclick="applyDiscountRec(' + i + ')" style="' +
+                    'padding:8px 14px;border-radius:8px;border:1px solid ' + t.colors.primary + '44;' +
+                    'background:' + t.colors.primary + '18;color:' + t.colors.primary + ';' +
+                    'font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;' +
+                    'font-family:inherit;">' + rec.text + '</button>';
+            }).join('');
+        }
+
+        function applyDiscountRec(index) {
+            if (!activeThemeId || !DISCOUNT_RECS[activeThemeId]) return;
+            var rec = DISCOUNT_RECS[activeThemeId][index];
+            document.getElementById('themeDiscountText').value = rec.text;
+            document.getElementById('themeDiscountType').value = rec.type;
+            document.getElementById('themeDiscountValue').value = rec.value || '';
+            generateThemeCode();
+            updateThemeDiscountPreview();
         }
 
         // Theme Discount
