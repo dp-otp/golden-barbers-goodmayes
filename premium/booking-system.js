@@ -277,6 +277,7 @@ class BookingSystem {
     }
 
     getExistingBookings() {
+        // Try Firebase first, fall back to localStorage
         try {
             return JSON.parse(localStorage.getItem('goldenBarbers_bookings') || '[]');
         } catch (e) {
@@ -403,10 +404,28 @@ class BookingSystem {
             paymentStatus: 'pending' // Payment in-store
         };
 
-        // Save to localStorage
-        const bookings = this.getExistingBookings();
-        bookings.push(booking);
-        localStorage.setItem('goldenBarbers_bookings', JSON.stringify(bookings));
+        // Save to Firebase (LIVE - shows in admin panel)
+        try {
+            if (typeof firebase !== 'undefined' && firebase.database) {
+                firebase.database().ref('bookings').push(booking).then(() => {
+                    console.log('Booking saved to Firebase');
+                }).catch(() => {
+                    // Fallback to localStorage if Firebase fails
+                    const bookings = this.getExistingBookings();
+                    bookings.push(booking);
+                    localStorage.setItem('goldenBarbers_bookings', JSON.stringify(bookings));
+                });
+            } else {
+                // Fallback to localStorage if Firebase not available
+                const bookings = this.getExistingBookings();
+                bookings.push(booking);
+                localStorage.setItem('goldenBarbers_bookings', JSON.stringify(bookings));
+            }
+        } catch(e) {
+            const bookings = this.getExistingBookings();
+            bookings.push(booking);
+            localStorage.setItem('goldenBarbers_bookings', JSON.stringify(bookings));
+        }
 
         // Show success message
         this.showSuccess(booking);

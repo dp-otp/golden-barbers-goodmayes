@@ -6,6 +6,10 @@
     <title>Payment QR | Golden Barbers</title>
     <meta name="robots" content="noindex, nofollow">
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -625,6 +629,43 @@
 
         // Cart state
         var cart = [];
+
+        // ============================================
+        // FIREBASE - load live prices
+        // ============================================
+        var firebaseApp = firebase.initializeApp({
+            apiKey: "AIzaSyA3eVAdYntGPTsvhAZn0sezj7aYTR9qLC4",
+            authDomain: "golden-barbers-e25db.firebaseapp.com",
+            databaseURL: "https://golden-barbers-e25db-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "golden-barbers-e25db",
+            storageBucket: "golden-barbers-e25db.firebasestorage.app",
+            messagingSenderId: "719034478402",
+            appId: "1:719034478402:web:d3b3042688795b34e422db"
+        });
+        var db = firebase.database();
+
+        // Load live prices from Firebase and update local services
+        db.ref('servicePrices').on('value', function(snapshot) {
+            var data = snapshot.val();
+            if (!data) return;
+            ['haircuts', 'beard', 'addons'].forEach(function(cat) {
+                if (!data[cat] || !services[cat]) return;
+                data[cat].forEach(function(fbService) {
+                    var local = services[cat].find(function(s) { return s.id === fbService.id; });
+                    if (local && fbService.price !== undefined) {
+                        local.price = fbService.price;
+                    }
+                });
+            });
+            // Update cart items with new prices
+            cart.forEach(function(item) {
+                var allServices = services.haircuts.concat(services.beard).concat(services.addons);
+                var updated = allServices.find(function(s) { return s.id === item.id; });
+                if (updated) item.price = updated.price;
+            });
+            renderServices();
+            updateUI();
+        });
 
         // ============================================
         // RENDER SERVICES

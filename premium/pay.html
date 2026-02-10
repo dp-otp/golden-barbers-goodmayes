@@ -6,6 +6,10 @@
     <title>Pay | Golden Barbers</title>
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#000000">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -443,6 +447,85 @@
         .toast.show { transform:translateX(-50%) translateY(0); }
         .toast svg { width:16px; height:16px; stroke:var(--green); }
 
+        /* Discount Code */
+        .discount-section { margin-bottom:14px; }
+        .discount-input-row {
+            display:flex; gap:8px;
+        }
+        .discount-input {
+            flex:1; padding:14px 16px;
+            background:rgba(0,0,0,0.4);
+            border:1.5px solid rgba(255,255,255,0.1);
+            border-radius:14px;
+            color:var(--white);
+            font-family:'Outfit',sans-serif;
+            font-size:15px; font-weight:600;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            outline:none;
+            transition:border-color 0.3s;
+        }
+        .discount-input:focus { border-color:var(--gold); }
+        .discount-input::placeholder { color:var(--gray-dark); font-weight:400; text-transform:none; letter-spacing:0; font-size:13px; }
+        .discount-apply-btn {
+            padding:14px 20px;
+            background:linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color:var(--black); border:none; border-radius:14px;
+            font-family:'Outfit',sans-serif;
+            font-size:14px; font-weight:700;
+            cursor:pointer; transition:all 0.2s;
+            white-space:nowrap;
+        }
+        .discount-apply-btn:active { transform:scale(0.96); }
+        .discount-apply-btn:disabled { opacity:0.5; cursor:not-allowed; }
+        .discount-result {
+            margin-top:10px; padding:12px 16px;
+            border-radius:12px; font-size:13px; font-weight:600;
+            display:none;
+        }
+        .discount-result.success {
+            display:flex; align-items:center; justify-content:space-between;
+            background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); color:var(--green);
+        }
+        .discount-result.error {
+            display:block;
+            background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); color:var(--red);
+        }
+        .discount-remove {
+            background:none; border:none; color:var(--red);
+            font-family:'Outfit',sans-serif; font-size:12px; font-weight:600;
+            cursor:pointer; padding:4px 8px;
+        }
+        .discount-banner {
+            padding:14px 18px;
+            border-radius:16px;
+            text-align:center;
+            margin-bottom:14px;
+            animation:fadeIn 0.4s ease;
+        }
+        .discount-banner-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; opacity:0.85; margin-bottom:4px; }
+        .discount-banner-text { font-size:15px; font-weight:700; margin-bottom:4px; }
+        .discount-banner-code { font-size:12px; opacity:0.9; }
+        .discount-banner-code strong { font-size:14px; }
+
+        /* Savings line in amount hero */
+        .savings-line {
+            display:inline-block;
+            margin-top:6px; padding:4px 12px;
+            background:rgba(34,197,94,0.12);
+            border:1px solid rgba(34,197,94,0.3);
+            border-radius:20px;
+            font-size:12px; font-weight:600;
+            color:var(--green);
+        }
+        .original-price {
+            text-decoration:line-through;
+            color:var(--gray);
+            font-size:28px;
+            font-weight:600;
+            margin-bottom:4px;
+        }
+
         @media (max-width: 440px) {
             .amount-value { font-size:42px; }
             .banks-grid { grid-template-columns: 1fr; }
@@ -464,10 +547,15 @@
         </div>
 
         <div id="paymentContent" class="payment-content">
+            <!-- Discount Banner (loaded from Firebase) -->
+            <div class="discount-banner" id="discountBanner" style="display:none;"></div>
+
             <!-- Amount -->
             <div class="amount-hero">
                 <div class="amount-label">Amount Due</div>
+                <div class="original-price" id="originalPrice" style="display:none;"></div>
                 <div class="amount-value" id="totalAmount">&pound;0.00</div>
+                <div class="savings-line" id="savingsLine" style="display:none;"></div>
                 <button class="services-toggle" id="servicesToggle" onclick="toggleServices()">
                     <span id="servicesSummary">1 service</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -475,6 +563,19 @@
                 <div class="services-detail" id="servicesDetail">
                     <div class="services-detail-inner" id="servicesDetailInner"></div>
                 </div>
+            </div>
+
+            <!-- Discount Code -->
+            <div class="card discount-section">
+                <div class="card-header">
+                    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+                    <div><div class="card-title">Discount Code</div><div class="card-subtitle">Got a code? Apply it here</div></div>
+                </div>
+                <div class="discount-input-row">
+                    <input type="text" class="discount-input" id="discountInput" placeholder="Enter discount code" maxlength="20">
+                    <button class="discount-apply-btn" id="discountApplyBtn" onclick="applyDiscountCode()">Apply</button>
+                </div>
+                <div class="discount-result" id="discountResult"></div>
             </div>
 
             <!-- Bank Details -->
@@ -638,6 +739,20 @@
         var BANK = { name:'GOLDEN BARBERS LTD', sortCode:'30-98-97', sortCodeRaw:'309897', accountNumber:'58413368' };
 
         // ============================================
+        // FIREBASE - live payment logging
+        // ============================================
+        var firebaseApp = firebase.initializeApp({
+            apiKey: "AIzaSyA3eVAdYntGPTsvhAZn0sezj7aYTR9qLC4",
+            authDomain: "golden-barbers-e25db.firebaseapp.com",
+            databaseURL: "https://golden-barbers-e25db-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "golden-barbers-e25db",
+            storageBucket: "golden-barbers-e25db.firebasestorage.app",
+            messagingSenderId: "719034478402",
+            appId: "1:719034478402:web:d3b3042688795b34e422db"
+        });
+        var db = firebase.database();
+
+        // ============================================
         // BANK DEFINITIONS - real logos from Google Favicons
         // ============================================
         var BANKS_MAIN = [
@@ -670,6 +785,28 @@
         var orderItems = [];
         var reference = '';
         var verifyCode = '';
+        var appliedDiscount = null;
+
+        // ============================================
+        // LOAD LIVE PRICES FROM FIREBASE
+        // ============================================
+        var pricesLoaded = false;
+        db.ref('servicePrices').once('value').then(function(snapshot) {
+            var data = snapshot.val();
+            if (data) {
+                ['haircuts', 'beard', 'addons'].forEach(function(cat) {
+                    if (!data[cat]) return;
+                    data[cat].forEach(function(fbService) {
+                        if (services[fbService.id] && fbService.price !== undefined) {
+                            services[fbService.id].price = fbService.price;
+                        }
+                    });
+                });
+            }
+            pricesLoaded = true;
+        }).catch(function() {
+            pricesLoaded = true; // continue with hardcoded prices if Firebase fails
+        });
 
         // ============================================
         // INIT
@@ -819,8 +956,23 @@
             btn.classList.add('loading');
             btn.disabled = true;
 
-            // Simulate verification processing
-            setTimeout(function() {
+            // Log payment to Firebase (REAL - shows in admin panel)
+            var subtotal = orderItems.reduce(function(sum, i) { return sum + i.price; }, 0);
+            var paymentData = {
+                reference: reference,
+                verifyCode: verifyCode,
+                bankReference: input,
+                amount: orderTotal,
+                subtotal: subtotal,
+                items: orderItems.map(function(i) { return i.name; }),
+                itemsDetail: orderItems.map(function(i) { return { name: i.name, price: i.price }; }),
+                discount: appliedDiscount ? { code: appliedDiscount.code, type: appliedDiscount.type, value: appliedDiscount.value, saved: (subtotal - orderTotal).toFixed(2) } : null,
+                status: 'pending',
+                createdAt: new Date().toISOString(),
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            db.ref('payments').push(paymentData).then(function() {
                 btn.classList.remove('loading');
                 btn.disabled = false;
                 document.getElementById('verifyOverlay').classList.remove('show');
@@ -833,7 +985,19 @@
                 document.getElementById('successRef').textContent = reference;
                 document.getElementById('successCode').textContent = verifyCode;
                 window.scrollTo({top:0, behavior:'smooth'});
-            }, 2500);
+            }).catch(function() {
+                // Still show success even if Firebase fails (don't block customer)
+                btn.classList.remove('loading');
+                btn.disabled = false;
+                document.getElementById('verifyOverlay').classList.remove('show');
+                document.getElementById('paymentContent').classList.remove('show');
+                var s = document.getElementById('successScreen');
+                s.classList.add('show');
+                document.getElementById('successAmount').textContent = '\u00a3'+orderTotal.toFixed(2);
+                document.getElementById('successRef').textContent = reference;
+                document.getElementById('successCode').textContent = verifyCode;
+                window.scrollTo({top:0, behavior:'smooth'});
+            });
         }
 
         // Enter key on verify input
@@ -897,7 +1061,152 @@
             }).catch(function(){showToast('Could not copy');});
         }
 
-        setTimeout(init, 350);
+        // ============================================
+        // DISCOUNT CODES - validate against Firebase
+        // ============================================
+        var availableDiscounts = [];
+        var siteDiscountData = null;
+
+        // Load discount codes from Firebase
+        db.ref('discounts').on('value', function(snapshot) {
+            var data = snapshot.val();
+            availableDiscounts = data ? Object.keys(data).map(function(k) { var d = data[k]; d._key = k; return d; }) : [];
+        });
+
+        // Load site-wide discount banner from Firebase
+        db.ref('siteDiscount').on('value', function(snapshot) {
+            siteDiscountData = snapshot.val();
+            showDiscountBanner();
+        });
+
+        function showDiscountBanner() {
+            var banner = document.getElementById('discountBanner');
+            if (!banner) return;
+            if (!siteDiscountData || !siteDiscountData.active) {
+                banner.style.display = 'none';
+                return;
+            }
+            var bg = 'linear-gradient(135deg, ' + (siteDiscountData.colors ? siteDiscountData.colors.primary : '#d4af37') + ', ' + (siteDiscountData.colors ? siteDiscountData.colors.secondary : '#a88a2d') + ')';
+            var tc = siteDiscountData.textColor || '#fff';
+            banner.style.background = bg;
+            banner.style.color = tc;
+            banner.style.display = 'block';
+            banner.innerHTML =
+                '<div class="discount-banner-label">' + (siteDiscountData.themeName || 'Special Offer') + '</div>' +
+                '<div class="discount-banner-text">' + siteDiscountData.text + '</div>' +
+                (siteDiscountData.code ? '<div class="discount-banner-code">Use code: <strong>' + siteDiscountData.code + '</strong></div>' : '');
+        }
+
+        function applyDiscountCode() {
+            var input = document.getElementById('discountInput').value.trim().toUpperCase();
+            var result = document.getElementById('discountResult');
+            if (!input) return;
+
+            // Check site discount first
+            if (siteDiscountData && siteDiscountData.active && siteDiscountData.code && siteDiscountData.code.toUpperCase() === input) {
+                appliedDiscount = {
+                    code: siteDiscountData.code,
+                    type: siteDiscountData.type || 'percent',
+                    value: siteDiscountData.value || 0,
+                    source: 'siteDiscount'
+                };
+                showDiscountApplied(result);
+                recalculateTotal();
+                return;
+            }
+
+            // Check regular discount codes
+            var now = new Date();
+            var match = availableDiscounts.find(function(d) {
+                return d.code === input && d.active && new Date(d.start) <= now && new Date(d.end) >= now && (d.maxUses === 0 || d.usedCount < d.maxUses);
+            });
+
+            if (match) {
+                appliedDiscount = {
+                    code: match.code,
+                    type: match.type,
+                    value: match.value,
+                    source: 'discount',
+                    _key: match._key
+                };
+                showDiscountApplied(result);
+                recalculateTotal();
+
+                // Increment usage count
+                db.ref('discounts/' + match._key + '/usedCount').set((match.usedCount || 0) + 1);
+            } else {
+                result.className = 'discount-result error';
+                result.textContent = 'Invalid or expired discount code.';
+            }
+        }
+
+        function showDiscountApplied(result) {
+            var label = appliedDiscount.type === 'percent' ? appliedDiscount.value + '% OFF' : '\u00a3' + appliedDiscount.value + ' OFF';
+            result.className = 'discount-result success';
+            result.innerHTML = '<span>' + appliedDiscount.code + ' \u2014 ' + label + ' applied!</span>' +
+                '<button class="discount-remove" onclick="removeDiscount()">Remove</button>';
+            document.getElementById('discountInput').disabled = true;
+            document.getElementById('discountApplyBtn').disabled = true;
+        }
+
+        function removeDiscount() {
+            appliedDiscount = null;
+            var result = document.getElementById('discountResult');
+            result.className = 'discount-result';
+            result.innerHTML = '';
+            document.getElementById('discountInput').disabled = false;
+            document.getElementById('discountInput').value = '';
+            document.getElementById('discountApplyBtn').disabled = false;
+            recalculateTotal();
+        }
+
+        function recalculateTotal() {
+            var subtotal = orderItems.reduce(function(sum, i) { return sum + i.price; }, 0);
+            var discountAmount = 0;
+
+            if (appliedDiscount) {
+                if (appliedDiscount.type === 'percent') {
+                    discountAmount = subtotal * (appliedDiscount.value / 100);
+                } else {
+                    discountAmount = appliedDiscount.value;
+                }
+                discountAmount = Math.min(discountAmount, subtotal);
+            }
+
+            orderTotal = subtotal - discountAmount;
+
+            // Update displays
+            var t = '\u00a3' + orderTotal.toFixed(2);
+            document.getElementById('totalAmount').textContent = t;
+            document.getElementById('bankAmount').textContent = t;
+
+            if (appliedDiscount && discountAmount > 0) {
+                document.getElementById('originalPrice').textContent = '\u00a3' + subtotal.toFixed(2);
+                document.getElementById('originalPrice').style.display = 'block';
+                document.getElementById('savingsLine').textContent = 'You save \u00a3' + discountAmount.toFixed(2) + '!';
+                document.getElementById('savingsLine').style.display = 'inline-block';
+            } else {
+                document.getElementById('originalPrice').style.display = 'none';
+                document.getElementById('savingsLine').style.display = 'none';
+            }
+        }
+
+        // Enter key on discount input
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('discountInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') applyDiscountCode();
+            });
+        });
+
+        // Wait for Firebase prices before init
+        function waitAndInit() {
+            if (pricesLoaded) {
+                init();
+            } else {
+                setTimeout(waitAndInit, 50);
+            }
+        }
+        setTimeout(waitAndInit, 350);
     </script>
 </body>
 </html>

@@ -154,6 +154,10 @@
         gtag('config', 'G-XXXXXXXXXX');
     </script>
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2790,9 +2794,83 @@
                 font-size: 22px;
             }
         }
+        /* ============================================
+           FIREBASE LIVE BANNERS
+           ============================================ */
+        .gb-top-banner {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 10000;
+            padding: 10px 20px;
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+            animation: slideDown 0.5s ease;
+            cursor: pointer;
+        }
+        .gb-top-banner.show { display: block; }
+        .gb-top-banner .close-banner {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: inherit; font-size: 18px;
+            cursor: pointer; opacity: 0.7; padding: 4px 8px;
+        }
+        .gb-top-banner .close-banner:hover { opacity: 1; }
+
+        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+
+        .gb-shop-closed-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+        }
+        .gb-shop-closed-overlay.show { display: flex; }
+        .gb-shop-closed-card {
+            text-align: center;
+            padding: 40px 30px;
+            background: #111;
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 24px;
+            max-width: 400px;
+            width: 90%;
+        }
+        .gb-shop-closed-card .emoji { font-size: 48px; margin-bottom: 16px; }
+        .gb-shop-closed-card h2 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+        .gb-shop-closed-card p { color: #888; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+        .gb-shop-closed-card .dismiss-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #d4af37, #a88a2d);
+            color: #000; border: none; border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px; font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Theme color overrides */
+        body.themed { transition: background-color 0.5s; }
     </style>
 </head>
 <body>
+
+    <!-- Firebase Live Banners -->
+    <div class="gb-top-banner" id="gbAnnounceBanner"><span id="gbAnnounceText"></span><button class="close-banner" onclick="this.parentElement.classList.remove('show')">&times;</button></div>
+    <div class="gb-top-banner" id="gbDiscountBanner" style="top:auto;"><span id="gbDiscountText"></span><button class="close-banner" onclick="this.parentElement.classList.remove('show')">&times;</button></div>
+
+    <!-- Shop Closed Overlay -->
+    <div class="gb-shop-closed-overlay" id="gbShopClosed">
+        <div class="gb-shop-closed-card">
+            <div class="emoji" id="gbClosedEmoji">🔒</div>
+            <h2 id="gbClosedTitle">We're Currently Closed</h2>
+            <p id="gbClosedMsg">We'll be back soon! Check our opening hours or give us a call.</p>
+            <button class="dismiss-btn" onclick="document.getElementById('gbShopClosed').classList.remove('show')">Continue Browsing</button>
+        </div>
+    </div>
 
     <!-- Noise Texture Overlay -->
     <div class="noise-overlay"></div>
@@ -3940,6 +4018,124 @@ You can discuss anything - sports, weather, general knowledge, advice, etc. Be h
             document.getElementById('adamInput').value = msg;
             adamSend();
         }
+    </script>
+
+    <!-- Firebase Live Data Integration -->
+    <script>
+        (function() {
+            // Initialize Firebase
+            var app = firebase.initializeApp({
+                apiKey: "AIzaSyA3eVAdYntGPTsvhAZn0sezj7aYTR9qLC4",
+                authDomain: "golden-barbers-e25db.firebaseapp.com",
+                databaseURL: "https://golden-barbers-e25db-default-rtdb.europe-west1.firebasedatabase.app",
+                projectId: "golden-barbers-e25db",
+                storageBucket: "golden-barbers-e25db.firebasestorage.app",
+                messagingSenderId: "719034478402",
+                appId: "1:719034478402:web:d3b3042688795b34e422db"
+            });
+            var db = firebase.database();
+
+            // ============================================
+            // SHOP STATUS - show closed/holiday notice
+            // ============================================
+            db.ref('shopStatus').on('value', function(snapshot) {
+                var data = snapshot.val();
+                if (!data) return;
+                var overlay = document.getElementById('gbShopClosed');
+                if (data.status === 'closed') {
+                    document.getElementById('gbClosedEmoji').textContent = '🔒';
+                    document.getElementById('gbClosedTitle').textContent = "We're Currently Closed";
+                    document.getElementById('gbClosedMsg').textContent = "We'll be back soon! Check our opening hours or give us a call at 020 8598 9920.";
+                    overlay.classList.add('show');
+                } else if (data.status === 'holiday') {
+                    document.getElementById('gbClosedEmoji').textContent = '🏖️';
+                    document.getElementById('gbClosedTitle').textContent = "We're On Holiday";
+                    document.getElementById('gbClosedMsg').textContent = "Golden Barbers is currently on holiday. We'll be back refreshed and ready! Call 020 8598 9920 for updates.";
+                    overlay.classList.add('show');
+                } else {
+                    overlay.classList.remove('show');
+                }
+            });
+
+            // ============================================
+            // ANNOUNCEMENT BANNER
+            // ============================================
+            db.ref('announcement').on('value', function(snapshot) {
+                var data = snapshot.val();
+                var banner = document.getElementById('gbAnnounceBanner');
+                if (!data || !data.active || !data.text) {
+                    banner.classList.remove('show');
+                    return;
+                }
+                var bgColors = {
+                    gold: 'linear-gradient(135deg, #d4af37, #a88a2d)',
+                    green: 'linear-gradient(135deg, #22c55e, #16a34a)',
+                    red: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                    blue: 'linear-gradient(135deg, #3b82f6, #2563eb)'
+                };
+                banner.style.background = bgColors[data.style] || bgColors.gold;
+                banner.style.color = (data.style === 'gold') ? '#000' : '#fff';
+                document.getElementById('gbAnnounceText').textContent = data.text;
+                banner.classList.add('show');
+
+                // Push nav down when banner is visible
+                var nav = document.querySelector('.nav');
+                if (nav) nav.style.top = '40px';
+            });
+
+            // ============================================
+            // SEASONAL THEME - apply color overrides
+            // ============================================
+            db.ref('siteTheme').on('value', function(snapshot) {
+                var data = snapshot.val();
+                if (!data || !data.colors) {
+                    // Remove theme
+                    document.body.classList.remove('themed');
+                    document.documentElement.style.removeProperty('--gold');
+                    document.documentElement.style.removeProperty('--gold-light');
+                    document.documentElement.style.removeProperty('--gold-dark');
+                    document.documentElement.style.removeProperty('--gold-glow');
+                    return;
+                }
+                // Apply theme colors as CSS variables
+                document.body.classList.add('themed');
+                document.documentElement.style.setProperty('--gold', data.colors.primary);
+                document.documentElement.style.setProperty('--gold-light', data.colors.accent);
+                document.documentElement.style.setProperty('--gold-dark', data.colors.secondary);
+                document.documentElement.style.setProperty('--gold-glow', data.colors.primary + '99');
+                if (data.colors.bg) {
+                    document.documentElement.style.setProperty('--black', data.colors.bg);
+                    document.documentElement.style.setProperty('--dark', data.colors.bg);
+                }
+            });
+
+            // ============================================
+            // SITE DISCOUNT BANNER
+            // ============================================
+            db.ref('siteDiscount').on('value', function(snapshot) {
+                var data = snapshot.val();
+                var banner = document.getElementById('gbDiscountBanner');
+                if (!data || !data.active || !data.text) {
+                    banner.classList.remove('show');
+                    return;
+                }
+                var bg = 'linear-gradient(135deg, ' + (data.colors ? data.colors.primary : '#d4af37') + ', ' + (data.colors ? data.colors.secondary : '#a88a2d') + ')';
+                banner.style.background = bg;
+                banner.style.color = data.textColor || '#fff';
+                var html = data.text;
+                if (data.code) html += ' \u2014 Code: <strong>' + data.code + '</strong>';
+                document.getElementById('gbDiscountText').innerHTML = html;
+                banner.classList.add('show');
+
+                // Position below announcement banner if both visible
+                var announceBanner = document.getElementById('gbAnnounceBanner');
+                if (announceBanner.classList.contains('show')) {
+                    banner.style.top = '40px';
+                } else {
+                    banner.style.top = '0';
+                }
+            });
+        })();
     </script>
 
 </body>

@@ -796,6 +796,463 @@
                 font-size: 12px;
             }
         }
+
+        /* ============================================ */
+        /* NEW ADMIN FEATURES STYLES                    */
+        /* ============================================ */
+
+        /* Dashboard Stats */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #141414;
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 12px;
+            padding: 18px 15px;
+            text-align: center;
+        }
+        .stat-card .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #d4af37;
+            line-height: 1;
+        }
+        .stat-card .stat-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 6px;
+        }
+        .stat-card.stat-green .stat-value { color: #22c55e; }
+        .stat-card.stat-red .stat-value { color: #ef4444; }
+        .stat-card.stat-blue .stat-value { color: #3b82f6; }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        .action-btn svg { width: 18px; height: 18px; }
+        .action-btn-green {
+            background: rgba(34,197,94,0.15);
+            color: #22c55e;
+            border: 1px solid rgba(34,197,94,0.3) !important;
+        }
+        .action-btn-green:hover { background: rgba(34,197,94,0.25); }
+        .action-btn-red {
+            background: rgba(239,68,68,0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,0.3) !important;
+        }
+        .action-btn-red:hover { background: rgba(239,68,68,0.25); }
+        .action-btn-gold {
+            background: rgba(212,175,55,0.15);
+            color: #d4af37;
+            border: 1px solid rgba(212,175,55,0.3) !important;
+        }
+        .action-btn-gold:hover { background: rgba(212,175,55,0.25); }
+        .action-btn-blue {
+            background: rgba(59,130,246,0.15);
+            color: #3b82f6;
+            border: 1px solid rgba(59,130,246,0.3) !important;
+        }
+        .action-btn-blue:hover { background: rgba(59,130,246,0.25); }
+
+        /* Shop Status Badge */
+        .shop-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .shop-status-badge.open { background: rgba(34,197,94,0.2); color: #22c55e; }
+        .shop-status-badge.closed { background: rgba(239,68,68,0.2); color: #ef4444; }
+        .shop-status-badge.holiday { background: rgba(245,158,11,0.2); color: #f59e0b; }
+
+        .pulse-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        .pulse-dot.green { background: #22c55e; }
+        .pulse-dot.red { background: #ef4444; }
+        .pulse-dot.amber { background: #f59e0b; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+        .toggle-switch.active { background: #22c55e; }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 22px; height: 22px;
+            background: #fff;
+            border-radius: 50%;
+            top: 2px; left: 2px;
+            transition: transform 0.3s;
+        }
+        .toggle-switch.active::after { transform: translateX(24px); }
+
+        /* Holiday Item */
+        .holiday-item {
+            background: rgba(245,158,11,0.05);
+            border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .holiday-item .holiday-info h4 { color: #f59e0b; font-size: 14px; margin-bottom: 4px; }
+        .holiday-item .holiday-info p { color: #888; font-size: 12px; }
+
+        /* Discount Item */
+        .discount-item {
+            background: rgba(34,197,94,0.05);
+            border: 1px solid rgba(34,197,94,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .discount-item .discount-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .discount-code {
+            background: rgba(34,197,94,0.15);
+            color: #22c55e;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 2px;
+        }
+        .discount-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .discount-badge.active { background: rgba(34,197,94,0.2); color: #22c55e; }
+        .discount-badge.expired { background: rgba(239,68,68,0.2); color: #ef4444; }
+        .discount-badge.upcoming { background: rgba(59,130,246,0.2); color: #3b82f6; }
+
+        /* Staff Item */
+        .staff-item {
+            background: rgba(212,175,55,0.05);
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .staff-avatar {
+            width: 48px; height: 48px;
+            background: linear-gradient(135deg, #d4af37, #a88a2d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: #000;
+            flex-shrink: 0;
+        }
+        .staff-info { flex: 1; }
+        .staff-info h4 { color: #fff; font-size: 15px; margin-bottom: 3px; }
+        .staff-info p { color: #888; font-size: 12px; }
+        .staff-actions { display: flex; gap: 8px; align-items: center; }
+
+        /* Service Price Row */
+        .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .price-row:last-child { border-bottom: none; }
+        .price-row .price-name { color: #fff; font-size: 14px; flex: 1; }
+        .price-row .price-input {
+            width: 80px;
+            padding: 8px 10px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 6px;
+            color: #d4af37;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: center;
+        }
+        .price-row .price-input:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+
+        /* Announcement */
+        .announcement-preview {
+            background: linear-gradient(135deg, #d4af37, #a88a2d);
+            color: #000;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        /* Revenue Row */
+        .revenue-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .revenue-row:last-child { border-bottom: none; }
+        .revenue-row .rev-date { color: #888; font-size: 13px; }
+        .revenue-row .rev-amount { color: #22c55e; font-weight: 700; font-size: 16px; }
+        .revenue-total {
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .revenue-total .rev-total-label { color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .revenue-total .rev-total-value { color: #22c55e; font-size: 32px; font-weight: 800; margin-top: 5px; }
+
+        /* Contact Card */
+        .contact-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            background: rgba(212,175,55,0.05);
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .contact-card:hover { background: rgba(212,175,55,0.1); }
+        .contact-card .contact-icon {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .contact-card .contact-icon.phone-icon { background: rgba(34,197,94,0.2); }
+        .contact-card .contact-icon.phone-icon svg { stroke: #22c55e; }
+        .contact-card .contact-icon.whatsapp-icon { background: rgba(37,211,102,0.2); }
+        .contact-card .contact-icon.whatsapp-icon svg { fill: #25d366; }
+        .contact-card .contact-details { flex: 1; }
+        .contact-card .contact-details h4 { color: #fff; font-size: 14px; }
+        .contact-card .contact-details p { color: #888; font-size: 12px; }
+
+        /* Nav tabs for admin sections */
+        .admin-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 20px;
+            background: #141414;
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 12px;
+            padding: 8px;
+        }
+        .admin-nav-btn {
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: #888;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .admin-nav-btn:hover { color: #d4af37; background: rgba(212,175,55,0.05); }
+        .admin-nav-btn.active { background: rgba(212,175,55,0.15); color: #d4af37; }
+
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+
+        /* Payment Items */
+        .payment-item {
+            background: rgba(212,175,55,0.03);
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+        .payment-item.pending { border-left: 3px solid #f59e0b; }
+        .payment-item.confirmed { border-left: 3px solid #22c55e; }
+        .payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .payment-amount {
+            font-size: 22px;
+            font-weight: 800;
+            color: #d4af37;
+        }
+        .payment-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .payment-status.pending { background: rgba(245,158,11,0.2); color: #f59e0b; }
+        .payment-status.confirmed { background: rgba(34,197,94,0.2); color: #22c55e; }
+        .payment-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+        .payment-details div { color: #888; }
+        .payment-details strong { color: #fff; display: block; margin-top: 2px; }
+        .payment-verify-code {
+            background: rgba(212,175,55,0.1);
+            border: 1px dashed rgba(212,175,55,0.3);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .payment-verify-code .pv-label {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .payment-verify-code .pv-code {
+            font-size: 22px;
+            font-weight: 900;
+            color: #d4af37;
+            letter-spacing: 4px;
+            font-family: monospace;
+            margin-top: 4px;
+        }
+        .payment-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .payment-actions button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .payment-confirm-btn {
+            background: #22c55e;
+            color: #000;
+        }
+        .payment-confirm-btn:hover { background: #16a34a; }
+        .payment-reject-btn {
+            background: rgba(239,68,68,0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,0.3) !important;
+        }
+        .payment-reject-btn:hover { background: rgba(239,68,68,0.25); }
+
+        @media (max-width: 768px) {
+            .payment-details { grid-template-columns: 1fr; }
+        }
+
+        /* Theme Cards */
+        .theme-card {
+            border-radius: 14px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+        .theme-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+        .theme-card.active-theme { border-color: #fff !important; }
+        .theme-card .theme-emoji { font-size: 32px; margin-bottom: 10px; display: block; }
+        .theme-card .theme-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .theme-card .theme-desc { font-size: 12px; opacity: 0.75; margin-bottom: 12px; }
+        .theme-card .theme-colors {
+            display: flex; gap: 6px; margin-bottom: 12px;
+        }
+        .theme-card .theme-swatch {
+            width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2);
+        }
+        .theme-card .theme-apply-btn {
+            width: 100%; padding: 10px; border-radius: 8px; border: none;
+            font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .theme-card .theme-apply-btn:hover { opacity: 0.9; transform: scale(1.02); }
+
+        @media (max-width: 768px) {
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .quick-actions { flex-direction: column; }
+            .action-btn { justify-content: center; }
+            .staff-item { flex-wrap: wrap; }
+            .staff-actions { width: 100%; justify-content: flex-end; }
+            .admin-nav { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+            .admin-nav-btn { flex-shrink: 0; font-size: 12px; padding: 8px 12px; }
+        }
     </style>
 </head>
 <body>
@@ -819,11 +1276,550 @@
         <!-- Header -->
         <div class="admin-header">
             <h1>Admin Panel</h1>
-            <p>Golden Barbers Goodmayes - Content Management</p>
+            <p>Golden Barbers Goodmayes - Total Control Centre</p>
+            <div id="shopStatusBadge" class="shop-status-badge open" style="margin-top: 10px;">
+                <span class="pulse-dot green"></span>
+                <span id="shopStatusText">SHOP OPEN</span>
+            </div>
         </div>
 
-        <!-- Warning Banner -->
-        <!-- Admin Cards Grid -->
+        <!-- Dashboard Stats -->
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-card">
+                <div class="stat-value" id="statBookings">0</div>
+                <div class="stat-label">Today's Payments</div>
+            </div>
+            <div class="stat-card stat-green">
+                <div class="stat-value" id="statRevenue">£0</div>
+                <div class="stat-label">Today's Revenue</div>
+            </div>
+            <div class="stat-card stat-blue">
+                <div class="stat-value" id="statStaffOn">0</div>
+                <div class="stat-label">Staff On Duty</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statDiscounts">0</div>
+                <div class="stat-label">Active Discounts</div>
+            </div>
+            <div class="stat-card stat-green">
+                <div class="stat-value" id="statWeekRev">£0</div>
+                <div class="stat-label">This Week</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions" id="quickActions">
+            <button class="action-btn action-btn-green" id="toggleShopBtn" onclick="toggleShopStatus()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <span id="toggleShopText">Close Shop</span>
+            </button>
+            <button class="action-btn action-btn-gold" onclick="toggleHolidayMode()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <span id="holidayModeText">Holiday Mode</span>
+            </button>
+            <button class="action-btn action-btn-red" onclick="emergencyClose()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Emergency Close
+            </button>
+            <button class="action-btn action-btn-blue" onclick="window.open('admin-qr.html','_blank')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v3h-3M14 20h3M20 20h0"/></svg>
+                QR Payments
+            </button>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="admin-nav">
+            <button class="admin-nav-btn active" onclick="switchSection('overview')">Overview</button>
+            <button class="admin-nav-btn" onclick="switchSection('themes')">Themes</button>
+            <button class="admin-nav-btn" onclick="switchSection('discounts')">Discounts</button>
+            <button class="admin-nav-btn" onclick="switchSection('staff')">Staff</button>
+            <button class="admin-nav-btn" onclick="switchSection('prices')">Prices</button>
+            <button class="admin-nav-btn" onclick="switchSection('announce')">Announcements</button>
+            <button class="admin-nav-btn" onclick="switchSection('revenue')">Revenue</button>
+            <button class="admin-nav-btn" onclick="switchSection('contacts')">Contacts</button>
+            <button class="admin-nav-btn" onclick="switchSection('gallery')">Gallery</button>
+            <button class="admin-nav-btn" onclick="switchSection('settings')">Settings</button>
+        </div>
+
+        <!-- ==================== OVERVIEW SECTION ==================== -->
+        <div class="admin-section active" id="section-overview">
+        <div class="admin-grid">
+
+            <!-- Live Incoming Payments -->
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    Live Payments
+                    <span id="pendingPaymentCount" style="background: #ef4444; color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 12px; margin-left: 8px; display: none;">0</span>
+                </h2>
+                <p style="color: #888; font-size: 13px; margin-bottom: 15px;">Real-time payments from QR code scans. Verify by matching the customer's code on their phone.</p>
+
+                <div class="tab-buttons" style="margin-bottom: 15px;">
+                    <button class="tab-btn active" onclick="switchPaymentTab(this, 'pending')">Pending</button>
+                    <button class="tab-btn" onclick="switchPaymentTab(this, 'confirmed')">Confirmed</button>
+                    <button class="tab-btn" onclick="switchPaymentTab(this, 'all')">All</button>
+                </div>
+
+                <div id="paymentsListContainer" style="max-height: 500px; overflow-y: auto;">
+                    <p style="color: #888; font-size: 14px; text-align: center; padding: 30px 0;">No payments yet. Payments appear here when customers pay via QR code.</p>
+                </div>
+            </div>
+
+            <!-- Recent Bookings -->
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Recent Bookings
+                </h2>
+                <div class="bookings-list" id="bookingsList">
+                    <!-- Loaded dynamically -->
+                </div>
+                <button onclick="clearAllBookings()" class="btn btn-secondary" style="margin-top: 15px;">
+                    Clear All Bookings
+                </button>
+            </div>
+
+        </div>
+        </div>
+
+        <!-- ==================== THEMES SECTION ==================== -->
+        <div class="admin-section" id="section-themes">
+        <div class="admin-grid">
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    Seasonal Themes
+                </h2>
+                <div id="themeSuccess" class="success-message">Theme applied!</div>
+                <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Apply seasonal themes to your website. Themes change colours, add banners, and can include a special discount. Saved to Firebase - goes live instantly.</p>
+
+                <!-- Currently Active Theme -->
+                <div id="activeThemeBanner" style="display: none; border-radius: 12px; padding: 20px; margin-bottom: 25px; text-align: center; position: relative; overflow: hidden;">
+                    <span id="activeThemeEmoji" style="font-size: 36px;"></span>
+                    <h3 id="activeThemeName" style="font-size: 18px; font-weight: 700; margin: 8px 0 4px;"></h3>
+                    <p id="activeThemeBannerText" style="font-size: 13px; opacity: 0.85;"></p>
+                    <button onclick="removeTheme()" style="margin-top: 12px; padding: 8px 20px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer;">Remove Theme</button>
+                </div>
+
+                <!-- Theme Cards Grid -->
+                <div id="themeGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Theme Discount Designer -->
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+                    Theme Discount Banner
+                </h2>
+                <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Add a special discount tied to the active theme. This shows as a banner on your website matching the theme colours.</p>
+
+                <div class="form-group">
+                    <label>Discount Text</label>
+                    <input type="text" id="themeDiscountText" placeholder="e.g. 20% OFF all fades this Christmas!" oninput="updateThemeDiscountPreview()">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Discount Type</label>
+                        <select id="themeDiscountType" onchange="updateThemeDiscountPreview()">
+                            <option value="percent">Percentage (%)</option>
+                            <option value="fixed">Fixed Amount (£)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Value</label>
+                        <input type="number" id="themeDiscountValue" placeholder="e.g. 20" min="1" oninput="updateThemeDiscountPreview()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Discount Code (customers enter this)</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="themeDiscountCode" placeholder="e.g. XMAS25" style="text-transform: uppercase; flex: 1;">
+                        <button class="btn btn-secondary btn-small" onclick="generateThemeCode()" style="width: auto; white-space: nowrap;">Auto</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Active</label>
+                    <div class="toggle-switch" id="themeDiscountToggle" onclick="this.classList.toggle('active'); updateThemeDiscountPreview()"></div>
+                </div>
+
+                <!-- Live Banner Preview -->
+                <div id="themeDiscountPreview" style="display: none; border-radius: 12px; padding: 18px 20px; margin-top: 15px; text-align: center; position: relative; overflow: hidden;">
+                    <p style="font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;" id="themeDiscountPreviewLabel">Limited Time</p>
+                    <p style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="themeDiscountPreviewText">20% OFF all services</p>
+                    <p style="font-size: 13px; opacity: 0.8;" id="themeDiscountPreviewCode">Use code: <strong>XMAS25</strong></p>
+                </div>
+
+                <button class="btn" style="margin-top: 20px;" onclick="saveThemeDiscount()">Save Theme Discount</button>
+            </div>
+        </div>
+        </div>
+
+        <!-- ==================== DISCOUNTS SECTION ==================== -->
+        <div class="admin-section" id="section-discounts">
+        <div class="admin-grid">
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+                    Discount Manager
+                </h2>
+                <div id="discountSuccess" class="success-message">Discount saved!</div>
+
+                <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                    <h3 style="color: #22c55e; font-size: 15px; margin-bottom: 15px;">Create Discount</h3>
+                    <div class="form-group">
+                        <label>Discount Code</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="discountCode" placeholder="e.g. GOLDEN20" style="text-transform: uppercase; flex: 1;">
+                            <button class="btn btn-secondary btn-small" onclick="generateDiscountCode()" style="width: auto; white-space: nowrap;">Auto Generate</button>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Discount Type</label>
+                            <select id="discountType">
+                                <option value="percent">Percentage (%)</option>
+                                <option value="fixed">Fixed Amount (£)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Value</label>
+                            <input type="number" id="discountValue" placeholder="e.g. 20" min="1">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Valid From</label>
+                            <input type="date" id="discountStart">
+                        </div>
+                        <div class="form-group">
+                            <label>Valid Until</label>
+                            <input type="date" id="discountEnd">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Applies To</label>
+                        <select id="discountApplies">
+                            <option value="all">All Services</option>
+                            <option value="haircuts">Haircuts Only</option>
+                            <option value="beard">Beard Services Only</option>
+                            <option value="addons">Add-ons Only</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Max Uses (0 = unlimited)</label>
+                        <input type="number" id="discountMaxUses" placeholder="0" min="0" value="0">
+                    </div>
+                    <button class="btn" onclick="addDiscount()">Create Discount</button>
+                </div>
+
+                <h3 style="color: #fff; font-size: 15px; margin-bottom: 15px;">Active Discounts</h3>
+                <div id="discountList">
+                    <p style="color: #888; font-size: 14px;">No discounts created.</p>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- ==================== STAFF SECTION ==================== -->
+        <div class="admin-section" id="section-staff">
+        <div class="admin-grid">
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                    Staff Management
+                </h2>
+                <div id="staffSuccess" class="success-message">Staff updated!</div>
+
+                <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                    <h3 style="color: #d4af37; font-size: 15px; margin-bottom: 15px;">Add Staff Member</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="staffName" placeholder="e.g. Ahmed">
+                        </div>
+                        <div class="form-group">
+                            <label>Role</label>
+                            <select id="staffRole">
+                                <option value="Senior Barber">Senior Barber</option>
+                                <option value="Barber">Barber</option>
+                                <option value="Junior Barber">Junior Barber</option>
+                                <option value="Trainee">Trainee</option>
+                                <option value="Manager">Manager</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="staffPhone" placeholder="+44 7XXX XXXXXX">
+                        </div>
+                        <div class="form-group">
+                            <label>Speciality</label>
+                            <input type="text" id="staffSpeciality" placeholder="e.g. Fades, Beard Styling">
+                        </div>
+                    </div>
+                    <button class="btn" onclick="addStaff()">Add Staff Member</button>
+                </div>
+
+                <h3 style="color: #fff; font-size: 15px; margin-bottom: 15px;">Team</h3>
+                <div id="staffList">
+                    <p style="color: #888; font-size: 14px;">No staff added yet.</p>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- ==================== PRICES SECTION ==================== -->
+        <div class="admin-section" id="section-prices">
+        <div class="admin-grid">
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    Service Prices
+                </h2>
+                <div id="pricesSuccess" class="success-message">Prices updated!</div>
+                <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Quick-edit all service prices. Changes are saved to Firebase and update the QR payment page.</p>
+
+                <h3 style="color: #d4af37; font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Haircuts</h3>
+                <div id="priceListHaircuts"></div>
+
+                <h3 style="color: #d4af37; font-size: 14px; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 1px;">Beard & Grooming</h3>
+                <div id="priceListBeard"></div>
+
+                <h3 style="color: #d4af37; font-size: 14px; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 1px;">Add-ons</h3>
+                <div id="priceListAddons"></div>
+
+                <button class="btn" style="margin-top: 20px;" onclick="savePrices()">Save All Prices</button>
+            </div>
+        </div>
+        </div>
+
+        <!-- ==================== ANNOUNCEMENTS SECTION ==================== -->
+        <div class="admin-section" id="section-announce">
+        <div class="admin-grid">
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                    Announcements
+                </h2>
+                <div id="announceSuccess" class="success-message">Announcement saved!</div>
+                <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Push a banner message to the top of your website. Customers will see it immediately.</p>
+
+                <div class="form-group">
+                    <label>Banner Message</label>
+                    <input type="text" id="announceText" placeholder="e.g. 20% OFF all services this weekend!" oninput="updateAnnouncePreview()">
+                </div>
+                <div class="form-group">
+                    <label>Banner Style</label>
+                    <select id="announceStyle" onchange="updateAnnouncePreview()">
+                        <option value="gold">Gold (Default)</option>
+                        <option value="green">Green (Promotion)</option>
+                        <option value="red">Red (Urgent)</option>
+                        <option value="blue">Blue (Info)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Active</label>
+                    <div class="toggle-switch" id="announceToggle" onclick="toggleAnnouncement()"></div>
+                </div>
+
+                <div class="announcement-preview" id="announcePreview" style="display: none;">
+                    Preview: Your message here
+                </div>
+
+                <button class="btn" style="margin-top: 20px;" onclick="saveAnnouncement()">Save Announcement</button>
+
+                <h3 style="color: #fff; font-size: 15px; margin: 25px 0 15px;">Previous Announcements</h3>
+                <div id="announceHistory">
+                    <p style="color: #888; font-size: 14px;">No previous announcements.</p>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- ==================== REVENUE SECTION ==================== -->
+        <div class="admin-section" id="section-revenue">
+        <div class="admin-grid">
+            <div class="admin-card">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    Log Revenue
+                </h2>
+                <div id="revenueSuccess" class="success-message">Revenue logged!</div>
+
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="revenueDate">
+                </div>
+                <div class="form-group">
+                    <label>Amount (£)</label>
+                    <input type="number" id="revenueAmount" placeholder="e.g. 450" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Notes (optional)</label>
+                    <input type="text" id="revenueNotes" placeholder="e.g. Busy Saturday, 3 staff">
+                </div>
+                <button class="btn" onclick="addRevenue()">Log Revenue</button>
+            </div>
+
+            <div class="admin-card">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    Revenue History
+                </h2>
+                <div class="tab-buttons" style="margin-bottom: 15px;">
+                    <button class="tab-btn active" onclick="switchRevTab(this, 'week')">This Week</button>
+                    <button class="tab-btn" onclick="switchRevTab(this, 'month')">This Month</button>
+                    <button class="tab-btn" onclick="switchRevTab(this, 'all')">All Time</button>
+                </div>
+                <div id="revenueList"></div>
+                <div class="revenue-total">
+                    <div class="rev-total-label">Total</div>
+                    <div class="rev-total-value" id="revenueTotalValue">£0</div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- ==================== CONTACTS SECTION ==================== -->
+        <div class="admin-section" id="section-contacts">
+        <div class="admin-grid">
+            <div class="admin-card">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                    Quick Contacts
+                </h2>
+                <p style="color: #888; font-size: 13px; margin-bottom: 15px;">Tap to call or WhatsApp your team instantly.</p>
+                <div id="contactsList"></div>
+
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: #fff; font-size: 14px; margin-bottom: 12px;">Emergency Contacts</h3>
+                    <div class="contact-card" onclick="window.open('tel:999')">
+                        <div class="contact-icon phone-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Emergency Services</h4>
+                            <p>999</p>
+                        </div>
+                    </div>
+                    <div class="contact-card" onclick="window.open('tel:101')">
+                        <div class="contact-icon phone-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Police Non-Emergency</h4>
+                            <p>101</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    Business Links
+                </h2>
+                <p style="color: #888; font-size: 13px; margin-bottom: 15px;">Quick access to your business pages.</p>
+
+                <div class="contact-card" onclick="window.open('https://www.instagram.com/golden_barbers_goodmayes/','_blank')">
+                    <div class="contact-icon" style="background: rgba(225,48,108,0.2);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Instagram</h4>
+                        <p>@golden_barbers_goodmayes</p>
+                    </div>
+                </div>
+                <div class="contact-card" onclick="window.open('https://g.co/kgs/golden-barbers','_blank')">
+                    <div class="contact-icon" style="background: rgba(66,133,244,0.2);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4285f4" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 10-16 0c0 3 2.7 7 8 11.7z"/></svg>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Google Business</h4>
+                        <p>View & manage reviews</p>
+                    </div>
+                </div>
+                <div class="contact-card" onclick="window.open('admin-qr.html','_blank')">
+                    <div class="contact-icon" style="background: rgba(212,175,55,0.2);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    </div>
+                    <div class="contact-details">
+                        <h4>QR Payment Page</h4>
+                        <p>Generate payment QR codes</p>
+                    </div>
+                </div>
+                <div class="contact-card" onclick="window.open('pay.html','_blank')">
+                    <div class="contact-icon" style="background: rgba(34,197,94,0.2);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Payment Page</h4>
+                        <p>Customer bank transfer page</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- ==================== GALLERY SECTION ==================== -->
+        <div class="admin-section" id="section-gallery">
+        <div class="admin-grid">
+
+            <!-- Gallery / Media Upload -->
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>Gallery & Media</h2>
+                <div id="gallerySuccess" class="success-message">Media uploaded successfully!</div>
+
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('photos')">Photos</button>
+                    <button class="tab-btn" onclick="switchTab('videos')">Videos</button>
+                    <button onclick="clearAllLive()" style="margin-left: auto; padding: 10px 20px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); border-radius: 8px; color: #ef4444; cursor: pointer; font-weight: 600;">Clear All Live</button>
+                </div>
+
+                <!-- Upload Area -->
+                <div class="upload-area" id="uploadArea" onclick="openUploadWidget()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                    </svg>
+                    <h4>Click to Upload Photos or Videos</h4>
+                    <p>Supports JPG, PNG, GIF, MP4, MOV (max 10MB)</p>
+                </div>
+
+                <!-- Gallery Grid -->
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Loaded dynamically -->
+                </div>
+
+                <!-- Live Images Section -->
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #22c55e; font-size: 16px;">Currently Live on Website:</h3>
+                <div class="gallery-grid" id="liveGalleryGrid" style="border-top: 1px solid rgba(34, 197, 94, 0.3); padding-top: 20px;">
+                    <!-- Live images loaded from Firebase -->
+                </div>
+            </div>
+
+            <!-- Manage All Gallery Photos -->
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>Manage Gallery Photos</h2>
+                <p style="color: #888; font-size: 14px; margin-bottom: 20px;">Remove photos from the public gallery page. Hidden photos are stored in Firebase and can be restored.</p>
+
+                <div class="tab-buttons">
+                    <button class="tab-btn active" id="visiblePhotosTab" onclick="switchGalleryManageTab('visible')">Visible Photos</button>
+                    <button class="tab-btn" id="hiddenPhotosTab" onclick="switchGalleryManageTab('hidden')">Hidden Photos</button>
+                </div>
+
+                <div class="gallery-grid" id="allGalleryPhotos" style="margin-top: 20px;">
+                    <!-- All gallery photos loaded here -->
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+        <!-- ==================== SETTINGS SECTION ==================== -->
+        <div class="admin-section" id="section-settings">
         <div class="admin-grid">
 
             <!-- Business Settings -->
@@ -911,64 +1907,7 @@
                 </form>
             </div>
 
-            <!-- Gallery / Media Upload -->
-            <div class="admin-card" style="grid-column: 1 / -1;">
-                <h2>Gallery & Media</h2>
-                <div id="gallerySuccess" class="success-message">Media uploaded successfully!</div>
-
-                <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="switchTab('photos')">Photos</button>
-                    <button class="tab-btn" onclick="switchTab('videos')">Videos</button>
-                    <button onclick="clearAllLive()" style="margin-left: auto; padding: 10px 20px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); border-radius: 8px; color: #ef4444; cursor: pointer; font-weight: 600;">Clear All Live</button>
-                </div>
-
-                <!-- Upload Area -->
-                <div class="upload-area" id="uploadArea" onclick="openUploadWidget()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-                    </svg>
-                    <h4>Click to Upload Photos or Videos</h4>
-                    <p>Supports JPG, PNG, GIF, MP4, MOV (max 10MB)</p>
-                </div>
-
-                <!-- Gallery Grid -->
-                <div class="gallery-grid" id="galleryGrid">
-                    <!-- Loaded dynamically -->
-                </div>
-
-                <!-- Live Images Section -->
-                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #22c55e; font-size: 16px;">Currently Live on Website:</h3>
-                <div class="gallery-grid" id="liveGalleryGrid" style="border-top: 1px solid rgba(34, 197, 94, 0.3); padding-top: 20px;">
-                    <!-- Live images loaded from Firebase -->
-                </div>
-            </div>
-
-            <!-- Manage All Gallery Photos -->
-            <div class="admin-card" style="grid-column: 1 / -1;">
-                <h2>Manage Gallery Photos</h2>
-                <p style="color: #888; font-size: 14px; margin-bottom: 20px;">Remove photos from the public gallery page. Hidden photos are stored in Firebase and can be restored.</p>
-
-                <div class="tab-buttons">
-                    <button class="tab-btn active" id="visiblePhotosTab" onclick="switchGalleryManageTab('visible')">Visible Photos</button>
-                    <button class="tab-btn" id="hiddenPhotosTab" onclick="switchGalleryManageTab('hidden')">Hidden Photos</button>
-                </div>
-
-                <div class="gallery-grid" id="allGalleryPhotos" style="margin-top: 20px;">
-                    <!-- All gallery photos loaded here -->
-                </div>
-            </div>
-
-            <!-- View Bookings -->
-            <div class="admin-card" style="grid-column: 1 / -1;">
-                <h2>Recent Bookings</h2>
-                <div class="bookings-list" id="bookingsList">
-                    <!-- Loaded dynamically -->
-                </div>
-                <button onclick="clearAllBookings()" class="btn btn-secondary" style="margin-top: 15px;">
-                    Clear All Bookings
-                </button>
-            </div>
-
+        </div>
         </div>
 
     </div>
@@ -1180,29 +2119,31 @@
             setTimeout(() => success.classList.remove('show'), 3000);
         });
 
-        // Load bookings
+        // Load bookings from Firebase (LIVE - real-time)
+        var allBookings = [];
+
         function loadBookings() {
-            const bookings = JSON.parse(localStorage.getItem('goldenBarbers_bookings') || '[]');
+            // Initial call handled by Firebase listener below
+        }
+
+        function renderBookings() {
             const container = document.getElementById('bookingsList');
 
-            if (bookings.length === 0) {
+            if (allBookings.length === 0) {
                 container.innerHTML = '<p style="text-align: center; color: #888; padding: 40px 0;">No bookings yet</p>';
                 return;
             }
 
-            // Sort by date (newest first)
-            bookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-            container.innerHTML = bookings.map(booking => `
+            container.innerHTML = allBookings.map(booking => `
                 <div class="booking-item">
-                    <div class="booking-ref">${booking.reference}</div>
+                    <div class="booking-ref">${booking.reference || 'N/A'}</div>
                     <div class="booking-details">
-                        <div>Customer<strong>${booking.name}</strong></div>
-                        <div>Phone<strong>${booking.phone}</strong></div>
-                        <div>Service<strong>${booking.service.name} (£${booking.service.price})</strong></div>
-                        <div>Barber<strong>${booking.barber.name}</strong></div>
-                        <div>Date<strong>${new Date(booking.date + 'T00:00:00').toLocaleDateString('en-GB')}</strong></div>
-                        <div>Time<strong>${booking.time}</strong></div>
+                        <div>Customer<strong>${booking.name || 'Unknown'}</strong></div>
+                        <div>Phone<strong>${booking.phone || 'N/A'}</strong></div>
+                        <div>Service<strong>${booking.service ? booking.service.name + ' (£' + booking.service.price + ')' : 'N/A'}</strong></div>
+                        <div>Barber<strong>${booking.barber ? booking.barber.name : 'N/A'}</strong></div>
+                        <div>Date<strong>${booking.date ? new Date(booking.date + 'T00:00:00').toLocaleDateString('en-GB') : 'N/A'}</strong></div>
+                        <div>Time<strong>${booking.time || 'N/A'}</strong></div>
                     </div>
                 </div>
             `).join('');
@@ -1211,13 +2152,9 @@
         // Clear bookings
         function clearAllBookings() {
             if (confirm('Are you sure you want to clear all bookings? This cannot be undone.')) {
-                localStorage.removeItem('goldenBarbers_bookings');
-                loadBookings();
+                // Will be connected to Firebase after init
             }
         }
-
-        // Refresh bookings every 10 seconds
-        setInterval(loadBookings, 10000);
 
         // ============================================
         // FIREBASE CONFIGURATION
@@ -1235,6 +2172,32 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+
+        // ============================================
+        // BOOKINGS - Firebase real-time listener
+        // ============================================
+        database.ref('bookings').orderByChild('createdAt').on('value', function(snapshot) {
+            var data = snapshot.val();
+            allBookings = data ? Object.keys(data).map(function(k) { var b = data[k]; b._key = k; return b; }) : [];
+            // Also migrate any localStorage bookings to Firebase (one-time)
+            var localBookings = JSON.parse(localStorage.getItem('goldenBarbers_bookings') || '[]');
+            if (localBookings.length > 0) {
+                localBookings.forEach(function(b) {
+                    database.ref('bookings').push(b);
+                });
+                localStorage.removeItem('goldenBarbers_bookings');
+            }
+            // Sort newest first
+            allBookings.sort(function(a, b) { return new Date(b.createdAt) - new Date(a.createdAt); });
+            renderBookings();
+        });
+
+        // Update clearAllBookings to use Firebase
+        clearAllBookings = function() {
+            if (confirm('Are you sure you want to clear all bookings? This cannot be undone.')) {
+                database.ref('bookings').remove();
+            }
+        };
 
         // ============================================
         // CLOUDINARY GALLERY MANAGEMENT
@@ -1680,6 +2643,925 @@
 
         // Load custom categories on page load
         loadCustomCategoryChips();
+
+        // ============================================
+        // SECTION NAVIGATION
+        // ============================================
+        function switchSection(section) {
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.admin-nav-btn').forEach(b => b.classList.remove('active'));
+            var el = document.getElementById('section-' + section);
+            if (el) el.classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // ============================================
+        // LIVE PAYMENTS (from QR payment page - REAL)
+        // ============================================
+        var livePayments = [];
+        var currentPaymentTab = 'pending';
+
+        // Load payments from Firebase in real time
+        database.ref('payments').orderByChild('createdAt').on('value', function(snapshot) {
+            var data = snapshot.val();
+            livePayments = data ? Object.keys(data).map(function(k) { var p = data[k]; p._key = k; return p; }) : [];
+            livePayments.sort(function(a, b) { return new Date(b.createdAt) - new Date(a.createdAt); });
+            renderPayments();
+            updateStats();
+
+            // Update pending count badge
+            var pending = livePayments.filter(function(p) { return p.status === 'pending'; }).length;
+            var badge = document.getElementById('pendingPaymentCount');
+            if (pending > 0) {
+                badge.textContent = pending;
+                badge.style.display = 'inline';
+            } else {
+                badge.style.display = 'none';
+            }
+        });
+
+        function switchPaymentTab(btn, tab) {
+            currentPaymentTab = tab;
+            btn.parentElement.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            renderPayments();
+        }
+
+        function renderPayments() {
+            var c = document.getElementById('paymentsListContainer');
+            var filtered = livePayments;
+
+            if (currentPaymentTab === 'pending') {
+                filtered = livePayments.filter(function(p) { return p.status === 'pending'; });
+            } else if (currentPaymentTab === 'confirmed') {
+                filtered = livePayments.filter(function(p) { return p.status === 'confirmed'; });
+            }
+
+            if (filtered.length === 0) {
+                var msg = currentPaymentTab === 'pending'
+                    ? 'No pending payments. When customers pay via QR, they appear here.'
+                    : currentPaymentTab === 'confirmed'
+                    ? 'No confirmed payments yet.'
+                    : 'No payments yet.';
+                c.innerHTML = '<p style="color: #888; font-size: 14px; text-align: center; padding: 30px 0;">' + msg + '</p>';
+                return;
+            }
+
+            c.innerHTML = filtered.map(function(p) {
+                var isPending = p.status === 'pending';
+                var time = new Date(p.createdAt);
+                var timeStr = time.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                var dateStr = time.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+                var itemsStr = p.items ? p.items.join(', ') : 'Unknown';
+
+                return '<div class="payment-item ' + p.status + '">' +
+                    '<div class="payment-header">' +
+                        '<span class="payment-amount">\u00A3' + (p.amount || 0).toFixed(2) + '</span>' +
+                        '<span class="payment-status ' + p.status + '">' + (isPending ? 'Pending' : 'Confirmed') + '</span>' +
+                    '</div>' +
+                    '<div class="payment-details">' +
+                        '<div>Services<strong>' + itemsStr + '</strong></div>' +
+                        '<div>Time<strong>' + timeStr + ' \u2022 ' + dateStr + '</strong></div>' +
+                        '<div>Our Ref<strong>' + (p.reference || '-') + '</strong></div>' +
+                        '<div>Bank Ref<strong>' + (p.bankReference || '-') + '</strong></div>' +
+                    '</div>' +
+                    '<div class="payment-verify-code">' +
+                        '<div class="pv-label">Customer\u2019s Verification Code</div>' +
+                        '<div class="pv-code">' + (p.verifyCode || '------') + '</div>' +
+                    '</div>' +
+                    (isPending
+                        ? '<div class="payment-actions">' +
+                            '<button class="payment-confirm-btn" onclick="confirmPayment(\'' + p._key + '\')">Confirm Payment</button>' +
+                            '<button class="payment-reject-btn" onclick="rejectPayment(\'' + p._key + '\')">Reject</button>' +
+                          '</div>'
+                        : '<p style="color: #22c55e; font-size: 12px; text-align: center; font-weight: 600;">\u2713 Confirmed' + (p.confirmedAt ? ' at ' + new Date(p.confirmedAt).toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'}) : '') + '</p>'
+                    ) +
+                '</div>';
+            }).join('');
+        }
+
+        function confirmPayment(key) {
+            database.ref('payments/' + key).update({
+                status: 'confirmed',
+                confirmedAt: new Date().toISOString()
+            });
+        }
+
+        function rejectPayment(key) {
+            if (!confirm('Reject this payment? The customer may have not actually paid.')) return;
+            database.ref('payments/' + key).update({
+                status: 'rejected',
+                rejectedAt: new Date().toISOString()
+            });
+        }
+
+        // ============================================
+        // SHOP STATUS (saved to Firebase - LIVE)
+        // ============================================
+        var shopStatus = { status: 'open' };
+
+        // Load shop status from Firebase
+        database.ref('shopStatus').on('value', function(snapshot) {
+            var data = snapshot.val();
+            shopStatus = data || { status: 'open' };
+            updateShopStatusUI();
+        });
+
+        function updateShopStatusUI() {
+            var badge = document.getElementById('shopStatusBadge');
+            var text = document.getElementById('shopStatusText');
+            var dot = badge.querySelector('.pulse-dot');
+            var btn = document.getElementById('toggleShopBtn');
+            var btnText = document.getElementById('toggleShopText');
+
+            badge.className = 'shop-status-badge ' + shopStatus.status;
+            dot.className = 'pulse-dot ' + (shopStatus.status === 'open' ? 'green' : shopStatus.status === 'holiday' ? 'amber' : 'red');
+
+            if (shopStatus.status === 'open') {
+                text.textContent = 'SHOP OPEN';
+                btn.className = 'action-btn action-btn-green';
+                btnText.textContent = 'Close Shop';
+            } else if (shopStatus.status === 'holiday') {
+                text.textContent = 'ON HOLIDAY';
+                btn.className = 'action-btn action-btn-gold';
+                btnText.textContent = 'Reopen Shop';
+            } else {
+                text.textContent = 'SHOP CLOSED';
+                btn.className = 'action-btn action-btn-red';
+                btnText.textContent = 'Open Shop';
+            }
+        }
+
+        function saveShopStatus() {
+            database.ref('shopStatus').set(shopStatus);
+        }
+
+        function toggleShopStatus() {
+            shopStatus.status = shopStatus.status === 'open' ? 'closed' : 'open';
+            shopStatus.updatedAt = new Date().toISOString();
+            saveShopStatus();
+        }
+
+        function toggleHolidayMode() {
+            shopStatus.status = shopStatus.status === 'holiday' ? 'open' : 'holiday';
+            shopStatus.updatedAt = new Date().toISOString();
+            saveShopStatus();
+            var hmText = document.getElementById('holidayModeText');
+            hmText.textContent = shopStatus.status === 'holiday' ? 'End Holiday' : 'Holiday Mode';
+        }
+
+        function emergencyClose() {
+            if (!confirm('EMERGENCY CLOSE: This will immediately mark the shop as closed. Continue?')) return;
+            shopStatus.status = 'closed';
+            shopStatus.emergencyClose = new Date().toISOString();
+            shopStatus.updatedAt = new Date().toISOString();
+            saveShopStatus();
+            alert('Shop is now CLOSED. Remember to reopen when ready.');
+        }
+
+        // ============================================
+        // SEASONAL THEMES (saved to Firebase - LIVE)
+        // ============================================
+        var SEASONAL_THEMES = {
+            christmas: {
+                name: 'Christmas', emoji: '\uD83C\uDF84',
+                desc: 'Festive red & green with snowfall vibes',
+                colors: { primary: '#c41e3a', secondary: '#165b33', accent: '#f8b229', bg: '#0c0a0a' },
+                banner: 'Merry Christmas from Golden Barbers!',
+                textColor: '#fff',
+                suggestedDiscount: '20% OFF all services this Christmas!'
+            },
+            easter: {
+                name: 'Easter', emoji: '\uD83D\uDC23',
+                desc: 'Pastel spring colours with fresh energy',
+                colors: { primary: '#e8a0bf', secondary: '#b4d7a8', accent: '#f9e79f', bg: '#1a0f15' },
+                banner: 'Happy Easter! Spring into a fresh look',
+                textColor: '#fff',
+                suggestedDiscount: '15% OFF fresh cuts for Easter!'
+            },
+            summer: {
+                name: 'Summer', emoji: '\u2600\uFE0F',
+                desc: 'Hot orange & ocean blue summer vibes',
+                colors: { primary: '#ff6b35', secondary: '#00b4d8', accent: '#ffd60a', bg: '#0a1218' },
+                banner: 'Summer Vibes at Golden Barbers!',
+                textColor: '#fff',
+                suggestedDiscount: 'Summer Special: \u00A310 OFF any premium cut!'
+            },
+            winter: {
+                name: 'Winter', emoji: '\u2744\uFE0F',
+                desc: 'Cool ice blue with silver accents',
+                colors: { primary: '#a8d5e2', secondary: '#5b8fb9', accent: '#e0e0e0', bg: '#080c12' },
+                banner: 'Winter Warmth at Golden Barbers',
+                textColor: '#fff',
+                suggestedDiscount: 'Winter Warmer: Free hot towel with any cut!'
+            },
+            halloween: {
+                name: 'Halloween', emoji: '\uD83C\uDF83',
+                desc: 'Spooky orange & purple dark theme',
+                colors: { primary: '#ff6a00', secondary: '#7b2d8e', accent: '#39ff14', bg: '#0a0a0a' },
+                banner: 'Spooky Season Specials at Golden Barbers!',
+                textColor: '#fff',
+                suggestedDiscount: 'Halloween Flash Deal: 25% OFF!'
+            },
+            valentines: {
+                name: "Valentine's", emoji: '\u2764\uFE0F',
+                desc: 'Romantic reds and pinks',
+                colors: { primary: '#e11d48', secondary: '#fb7185', accent: '#fda4af', bg: '#12080a' },
+                banner: "Look sharp for Valentine's Day!",
+                textColor: '#fff',
+                suggestedDiscount: "Valentine's: Couples cut deal \u00A325!"
+            },
+            eid: {
+                name: 'Eid', emoji: '\u2728',
+                desc: 'Elegant gold, green and white celebration',
+                colors: { primary: '#c9a84c', secondary: '#1d6f42', accent: '#ffffff', bg: '#0a0d08' },
+                banner: 'Eid Mubarak from Golden Barbers!',
+                textColor: '#fff',
+                suggestedDiscount: 'Eid Special: 20% OFF premium grooming!'
+            },
+            blackfriday: {
+                name: 'Black Friday', emoji: '\uD83D\uDCB0',
+                desc: 'Bold black with neon deal accents',
+                colors: { primary: '#000000', secondary: '#ff0055', accent: '#ffea00', bg: '#0a0a0a' },
+                banner: 'BLACK FRIDAY MEGA DEALS!',
+                textColor: '#ffea00',
+                suggestedDiscount: 'BLACK FRIDAY: 30% OFF EVERYTHING!'
+            },
+            newyear: {
+                name: 'New Year', emoji: '\uD83C\uDF89',
+                desc: 'Champagne gold and midnight sparkle',
+                colors: { primary: '#d4af37', secondary: '#1a1a2e', accent: '#f5f5f5', bg: '#0a0a14' },
+                banner: 'Happy New Year from Golden Barbers!',
+                textColor: '#fff',
+                suggestedDiscount: 'New Year New Look: 15% OFF all January!'
+            },
+            ramadan: {
+                name: 'Ramadan', emoji: '\u262A\uFE0F',
+                desc: 'Deep blue and gold crescent moon theme',
+                colors: { primary: '#1a237e', secondary: '#c9a84c', accent: '#e8eaf6', bg: '#080810' },
+                banner: 'Ramadan Kareem from Golden Barbers',
+                textColor: '#e8eaf6',
+                suggestedDiscount: 'Ramadan Special: Evening appointments 20% OFF!'
+            }
+        };
+
+        var activeThemeId = null;
+
+        // Load active theme from Firebase
+        function loadActiveTheme() {
+            database.ref('siteTheme').on('value', function(snapshot) {
+                var data = snapshot.val();
+                if (data && data.themeId && SEASONAL_THEMES[data.themeId]) {
+                    activeThemeId = data.themeId;
+                } else {
+                    activeThemeId = null;
+                }
+                renderThemeGrid();
+                updateActiveThemeBanner();
+            });
+        }
+
+        function renderThemeGrid() {
+            var grid = document.getElementById('themeGrid');
+            grid.innerHTML = Object.keys(SEASONAL_THEMES).map(function(id) {
+                var t = SEASONAL_THEMES[id];
+                var isActive = id === activeThemeId;
+                var grad = 'linear-gradient(135deg, ' + t.colors.primary + '22, ' + t.colors.secondary + '22)';
+                var borderColor = isActive ? t.colors.primary : 'rgba(255,255,255,0.08)';
+                return '<div class="theme-card' + (isActive ? ' active-theme' : '') + '" style="background: ' + grad + '; border-color: ' + borderColor + ';">' +
+                    '<span class="theme-emoji">' + t.emoji + '</span>' +
+                    '<div class="theme-name" style="color: ' + t.colors.primary + ';">' + t.name + '</div>' +
+                    '<div class="theme-desc" style="color: #aaa;">' + t.desc + '</div>' +
+                    '<div class="theme-colors">' +
+                        '<div class="theme-swatch" style="background: ' + t.colors.primary + ';"></div>' +
+                        '<div class="theme-swatch" style="background: ' + t.colors.secondary + ';"></div>' +
+                        '<div class="theme-swatch" style="background: ' + t.colors.accent + ';"></div>' +
+                    '</div>' +
+                    (isActive
+                        ? '<button class="theme-apply-btn" onclick="removeTheme()" style="background: rgba(239,68,68,0.2); color: #ef4444;">Active - Tap to Remove</button>'
+                        : '<button class="theme-apply-btn" onclick="applyTheme(\'' + id + '\')" style="background: ' + t.colors.primary + '; color: ' + (id === 'blackfriday' ? t.colors.accent : '#fff') + ';">Apply Theme</button>'
+                    ) +
+                '</div>';
+            }).join('');
+        }
+
+        function updateActiveThemeBanner() {
+            var banner = document.getElementById('activeThemeBanner');
+            if (!activeThemeId) { banner.style.display = 'none'; return; }
+            var t = SEASONAL_THEMES[activeThemeId];
+            banner.style.display = 'block';
+            banner.style.background = 'linear-gradient(135deg, ' + t.colors.primary + ', ' + t.colors.secondary + ')';
+            banner.style.color = t.textColor;
+            document.getElementById('activeThemeEmoji').textContent = t.emoji;
+            document.getElementById('activeThemeName').textContent = t.name + ' Theme Active';
+            document.getElementById('activeThemeBannerText').textContent = t.banner;
+        }
+
+        function applyTheme(themeId) {
+            var t = SEASONAL_THEMES[themeId];
+            if (!t) return;
+            database.ref('siteTheme').set({
+                themeId: themeId,
+                name: t.name,
+                emoji: t.emoji,
+                banner: t.banner,
+                colors: t.colors,
+                textColor: t.textColor,
+                appliedAt: new Date().toISOString()
+            }).then(function() {
+                var s = document.getElementById('themeSuccess');
+                s.textContent = t.emoji + ' ' + t.name + ' theme is now LIVE!';
+                s.classList.add('show');
+                setTimeout(function() { s.classList.remove('show'); }, 3000);
+            });
+        }
+
+        function removeTheme() {
+            if (!confirm('Remove the active theme from the website?')) return;
+            database.ref('siteTheme').remove().then(function() {
+                var s = document.getElementById('themeSuccess');
+                s.textContent = 'Theme removed. Website reverted to default.';
+                s.classList.add('show');
+                setTimeout(function() { s.classList.remove('show'); }, 3000);
+            });
+        }
+
+        // Theme Discount
+        function generateThemeCode() {
+            var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            var code = '';
+            if (activeThemeId) {
+                code = activeThemeId.substring(0, 4).toUpperCase();
+            } else {
+                code = 'GB';
+            }
+            for (var i = 0; i < 4; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+            document.getElementById('themeDiscountCode').value = code;
+        }
+
+        function updateThemeDiscountPreview() {
+            var text = document.getElementById('themeDiscountText').value.trim();
+            var code = document.getElementById('themeDiscountCode').value.trim();
+            var preview = document.getElementById('themeDiscountPreview');
+            if (!text) { preview.style.display = 'none'; return; }
+
+            var t = activeThemeId ? SEASONAL_THEMES[activeThemeId] : null;
+            var bg = t ? 'linear-gradient(135deg, ' + t.colors.primary + ', ' + t.colors.secondary + ')' : 'linear-gradient(135deg, #d4af37, #a88a2d)';
+            var tc = t ? t.textColor : '#000';
+
+            preview.style.background = bg;
+            preview.style.color = tc;
+            preview.style.display = 'block';
+            document.getElementById('themeDiscountPreviewLabel').textContent = t ? t.emoji + ' ' + t.name + ' Special' : 'Limited Time';
+            document.getElementById('themeDiscountPreviewText').textContent = text;
+            document.getElementById('themeDiscountPreviewCode').innerHTML = code ? 'Use code: <strong>' + code.toUpperCase() + '</strong>' : '';
+        }
+
+        function saveThemeDiscount() {
+            var text = document.getElementById('themeDiscountText').value.trim();
+            var type = document.getElementById('themeDiscountType').value;
+            var value = parseFloat(document.getElementById('themeDiscountValue').value);
+            var code = document.getElementById('themeDiscountCode').value.trim().toUpperCase();
+            var active = document.getElementById('themeDiscountToggle').classList.contains('active');
+
+            if (!text) { alert('Please enter discount text.'); return; }
+
+            var t = activeThemeId ? SEASONAL_THEMES[activeThemeId] : null;
+            var discountData = {
+                text: text,
+                type: type,
+                value: value || 0,
+                code: code,
+                active: active,
+                themeId: activeThemeId || 'none',
+                themeName: t ? t.name : 'General',
+                colors: t ? t.colors : { primary: '#d4af37', secondary: '#a88a2d' },
+                textColor: t ? t.textColor : '#000',
+                updatedAt: new Date().toISOString()
+            };
+
+            database.ref('siteDiscount').set(discountData).then(function() {
+                var s = document.getElementById('themeSuccess');
+                s.textContent = 'Discount banner saved to website!';
+                s.classList.add('show');
+                setTimeout(function() { s.classList.remove('show'); }, 3000);
+            });
+        }
+
+        // Load existing theme discount from Firebase
+        database.ref('siteDiscount').on('value', function(snapshot) {
+            var data = snapshot.val();
+            if (data) {
+                document.getElementById('themeDiscountText').value = data.text || '';
+                document.getElementById('themeDiscountCode').value = data.code || '';
+                if (data.type) document.getElementById('themeDiscountType').value = data.type;
+                if (data.value) document.getElementById('themeDiscountValue').value = data.value;
+                if (data.active) document.getElementById('themeDiscountToggle').classList.add('active');
+                updateThemeDiscountPreview();
+            }
+        });
+
+        loadActiveTheme();
+
+        function formatDate(d) {
+            var date = new Date(d + 'T00:00:00');
+            return date.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        // ============================================
+        // DISCOUNT MANAGER (saved to Firebase - LIVE)
+        // ============================================
+        var discounts = [];
+
+        function generateDiscountCode() {
+            var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            var code = 'GB';
+            for (var i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+            document.getElementById('discountCode').value = code;
+        }
+
+        // Load discounts from Firebase
+        database.ref('discounts').on('value', function(snapshot) {
+            var data = snapshot.val();
+            discounts = data ? Object.keys(data).map(function(k) { var d = data[k]; d._key = k; return d; }) : [];
+            renderDiscounts();
+            updateStats();
+        });
+
+        function addDiscount() {
+            var code = document.getElementById('discountCode').value.trim().toUpperCase();
+            var type = document.getElementById('discountType').value;
+            var value = parseFloat(document.getElementById('discountValue').value);
+            var start = document.getElementById('discountStart').value;
+            var end = document.getElementById('discountEnd').value;
+            var applies = document.getElementById('discountApplies').value;
+            var maxUses = parseInt(document.getElementById('discountMaxUses').value) || 0;
+
+            if (!code || !value || !start || !end) { alert('Please fill in all required fields.'); return; }
+            if (discounts.some(function(d) { return d.code === code; })) { alert('This discount code already exists!'); return; }
+
+            var discountData = {
+                code: code, type: type, value: value,
+                start: start, end: end, applies: applies,
+                maxUses: maxUses, usedCount: 0, active: true,
+                createdAt: new Date().toISOString()
+            };
+
+            database.ref('discounts').push(discountData).then(function() {
+                document.getElementById('discountCode').value = '';
+                document.getElementById('discountValue').value = '';
+                document.getElementById('discountStart').value = '';
+                document.getElementById('discountEnd').value = '';
+                document.getElementById('discountMaxUses').value = '0';
+                var s = document.getElementById('discountSuccess');
+                s.classList.add('show');
+                setTimeout(function() { s.classList.remove('show'); }, 3000);
+            });
+        }
+
+        function toggleDiscount(key) {
+            var d = discounts.find(function(d) { return d._key === key; });
+            if (d) database.ref('discounts/' + key + '/active').set(!d.active);
+        }
+
+        function deleteDiscount(key) {
+            if (!confirm('Delete this discount?')) return;
+            database.ref('discounts/' + key).remove();
+        }
+
+        function renderDiscounts() {
+            var c = document.getElementById('discountList');
+            if (discounts.length === 0) {
+                c.innerHTML = '<p style="color: #888; font-size: 14px;">No discounts created.</p>';
+                return;
+            }
+            c.innerHTML = discounts.map(function(d) {
+                var now = new Date();
+                var endD = new Date(d.end);
+                var startD = new Date(d.start);
+                var statusText, statusClass;
+                if (!d.active) { statusText = 'Disabled'; statusClass = 'expired'; }
+                else if (now > endD) { statusText = 'Expired'; statusClass = 'expired'; }
+                else if (now < startD) { statusText = 'Upcoming'; statusClass = 'upcoming'; }
+                else { statusText = 'Active'; statusClass = 'active'; }
+
+                var valueText = d.type === 'percent' ? d.value + '% OFF' : '\u00A3' + d.value + ' OFF';
+                var usesText = d.maxUses > 0 ? d.usedCount + '/' + d.maxUses + ' used' : 'Unlimited';
+
+                return '<div class="discount-item">' +
+                    '<div class="discount-header">' +
+                        '<span class="discount-code">' + d.code + '</span>' +
+                        '<span class="discount-badge ' + statusClass + '">' + statusText + '</span>' +
+                    '</div>' +
+                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">' +
+                        '<div>' +
+                            '<span style="color: #22c55e; font-weight: 700; font-size: 16px;">' + valueText + '</span>' +
+                            '<span style="color: #888; font-size: 12px; margin-left: 10px;">' + d.applies + '</span>' +
+                        '</div>' +
+                        '<span style="color: #888; font-size: 12px;">' + usesText + '</span>' +
+                    '</div>' +
+                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05);">' +
+                        '<span style="color: #666; font-size: 11px;">' + formatDate(d.start) + ' - ' + formatDate(d.end) + '</span>' +
+                        '<div style="display: flex; gap: 8px;">' +
+                            '<button onclick="toggleDiscount(\'' + d._key + '\')" style="padding: 5px 12px; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #d4af37; font-size: 11px; cursor: pointer;">' + (d.active ? 'Disable' : 'Enable') + '</button>' +
+                            '<button onclick="deleteDiscount(\'' + d._key + '\')" style="padding: 5px 12px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 6px; color: #ef4444; font-size: 11px; cursor: pointer;">Delete</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        // ============================================
+        // STAFF MANAGEMENT (saved to Firebase - LIVE)
+        // ============================================
+        var staffMembers = [];
+
+        // Load staff from Firebase
+        database.ref('staff').on('value', function(snapshot) {
+            var data = snapshot.val();
+            staffMembers = data ? Object.keys(data).map(function(k) { var s = data[k]; s._key = k; return s; }) : [];
+            renderStaff();
+            renderContacts();
+            updateStats();
+        });
+
+        function addStaff() {
+            var name = document.getElementById('staffName').value.trim();
+            var role = document.getElementById('staffRole').value;
+            var phone = document.getElementById('staffPhone').value.trim();
+            var speciality = document.getElementById('staffSpeciality').value.trim();
+
+            if (!name) { alert('Please enter a staff name.'); return; }
+
+            database.ref('staff').push({
+                name: name, role: role, phone: phone,
+                speciality: speciality, onDuty: true,
+                createdAt: new Date().toISOString()
+            }).then(function() {
+                document.getElementById('staffName').value = '';
+                document.getElementById('staffPhone').value = '';
+                document.getElementById('staffSpeciality').value = '';
+                var s = document.getElementById('staffSuccess');
+                s.classList.add('show');
+                setTimeout(function() { s.classList.remove('show'); }, 3000);
+            });
+        }
+
+        function toggleStaffDuty(key) {
+            var s = staffMembers.find(function(s) { return s._key === key; });
+            if (s) database.ref('staff/' + key + '/onDuty').set(!s.onDuty);
+        }
+
+        function deleteStaff(key) {
+            if (!confirm('Remove this staff member?')) return;
+            database.ref('staff/' + key).remove();
+        }
+
+        function renderStaff() {
+            var c = document.getElementById('staffList');
+            if (staffMembers.length === 0) {
+                c.innerHTML = '<p style="color: #888; font-size: 14px;">No staff added yet.</p>';
+                return;
+            }
+            c.innerHTML = staffMembers.map(function(s) {
+                var initials = s.name.split(' ').map(function(n) { return n[0]; }).join('').toUpperCase();
+                var dutyColor = s.onDuty ? '#22c55e' : '#ef4444';
+                var dutyText = s.onDuty ? 'On Duty' : 'Off Duty';
+                return '<div class="staff-item">' +
+                    '<div class="staff-avatar">' + initials + '</div>' +
+                    '<div class="staff-info">' +
+                        '<h4>' + s.name + '</h4>' +
+                        '<p>' + s.role + (s.speciality ? ' · ' + s.speciality : '') + '</p>' +
+                        '<span style="color: ' + dutyColor + '; font-size: 11px; font-weight: 700;">' + dutyText + '</span>' +
+                    '</div>' +
+                    '<div class="staff-actions">' +
+                        (s.phone ? '<button onclick="window.open(\'tel:' + s.phone + '\')" style="width: 36px; height: 36px; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); border-radius: 50%; color: #22c55e; cursor: pointer; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></button>' : '') +
+                        '<div class="toggle-switch' + (s.onDuty ? ' active' : '') + '" onclick="toggleStaffDuty(\'' + s._key + '\')"></div>' +
+                        '<button onclick="deleteStaff(\'' + s._key + '\')" style="width: 36px; height: 36px; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); border-radius: 50%; color: #ef4444; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px;">&times;</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        renderStaff();
+
+        // Populate contacts from staff
+        function renderContacts() {
+            var c = document.getElementById('contactsList');
+            if (!c) return;
+            var contactStaff = staffMembers.filter(function(s) { return s.phone; });
+            if (contactStaff.length === 0) {
+                c.innerHTML = '<p style="color: #888; font-size: 13px;">Add staff with phone numbers to see them here.</p>';
+                return;
+            }
+            c.innerHTML = contactStaff.map(function(s) {
+                var phoneClean = s.phone.replace(/\s/g, '');
+                return '<div class="contact-card" onclick="window.open(\'tel:' + phoneClean + '\')">' +
+                    '<div class="contact-icon phone-icon">' +
+                        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>' +
+                    '</div>' +
+                    '<div class="contact-details">' +
+                        '<h4>' + s.name + '</h4>' +
+                        '<p>' + s.phone + ' · ' + s.role + '</p>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="contact-card" onclick="window.open(\'https://wa.me/' + phoneClean.replace('+', '') + '\')" style="margin-left: 20px; margin-top: -4px;">' +
+                    '<div class="contact-icon whatsapp-icon">' +
+                        '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.637-1.467A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-2.168 0-4.19-.586-5.932-1.608l-.425-.253-2.75.87.885-2.685-.278-.44A9.777 9.777 0 012.182 12c0-5.414 4.404-9.818 9.818-9.818S21.818 6.586 21.818 12s-4.404 9.818-9.818 9.818z"/></svg>' +
+                    '</div>' +
+                    '<div class="contact-details">' +
+                        '<h4>WhatsApp ' + s.name + '</h4>' +
+                        '<p>Tap to message</p>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        renderContacts();
+
+        // ============================================
+        // SERVICE PRICES
+        // ============================================
+        var defaultServices = {
+            haircuts: [
+                { id: 'golden-luxury', name: 'Golden Luxury', price: 45 },
+                { id: 'golden-bundle', name: 'Golden Bundle', price: 27 },
+                { id: 'gents-cut', name: 'Gents Cut', price: 13.95 },
+                { id: 'skin-fade', name: 'Skin Fade', price: 15.95 },
+                { id: 'head-shave', name: 'Head Shave', price: 12.95 },
+                { id: 'children-cut', name: 'Children Under 12', price: 8.95 }
+            ],
+            beard: [
+                { id: 'deluxe-hot-towel', name: 'Deluxe Hot Towel Shave', price: 11 },
+                { id: 'beard-trim', name: 'Beard Trim (Machine)', price: 6.95 },
+                { id: 'turkish-hot-towel', name: 'Turkish Hot Towel', price: 3 }
+            ],
+            addons: [
+                { id: 'ear-nose-flaming', name: 'Ear & Nose Flaming/Waxing', price: 6 },
+                { id: 'patterns-design', name: 'Patterns & Design', price: 5 },
+                { id: 'colour', name: 'Colour', price: 5 },
+                { id: 'head-massage', name: 'Head Massage', price: 5 },
+                { id: 'mask-treatment', name: 'Black or Mud Mask', price: 5 }
+            ]
+        };
+
+        var servicePrices = JSON.parse(JSON.stringify(defaultServices));
+
+        // Load prices from Firebase
+        database.ref('servicePrices').on('value', function(snapshot) {
+            var data = snapshot.val();
+            if (data) {
+                servicePrices = data;
+            }
+            renderPrices();
+        });
+
+        function renderPrices() {
+            ['haircuts', 'beard', 'addons'].forEach(function(cat) {
+                var container = document.getElementById('priceList' + cat.charAt(0).toUpperCase() + cat.slice(1));
+                if (!container || !servicePrices[cat]) return;
+                container.innerHTML = servicePrices[cat].map(function(s) {
+                    return '<div class="price-row">' +
+                        '<span class="price-name">' + s.name + '</span>' +
+                        '<span style="color: #888; margin-right: 5px;">\u00A3</span>' +
+                        '<input class="price-input" type="number" id="price-' + s.id + '" value="' + s.price + '" min="0" step="0.5">' +
+                    '</div>';
+                }).join('');
+            });
+        }
+
+        function savePrices() {
+            ['haircuts', 'beard', 'addons'].forEach(function(cat) {
+                if (!servicePrices[cat]) return;
+                servicePrices[cat].forEach(function(s) {
+                    var input = document.getElementById('price-' + s.id);
+                    if (input) s.price = parseFloat(input.value) || 0;
+                });
+            });
+            database.ref('servicePrices').set(servicePrices).then(function() {
+                var s = document.getElementById('pricesSuccess');
+                s.classList.add('show');
+                setTimeout(function() { s.classList.remove('show'); }, 3000);
+            });
+        }
+
+        renderPrices();
+
+        // ============================================
+        // ANNOUNCEMENTS (saved to Firebase - LIVE)
+        // ============================================
+        var announcement = { text: '', style: 'gold', active: false };
+        var announceHistory = [];
+
+        // Load announcement from Firebase
+        database.ref('announcement').on('value', function(snapshot) {
+            var data = snapshot.val();
+            if (data) {
+                announcement = data;
+                document.getElementById('announceText').value = data.text || '';
+                document.getElementById('announceStyle').value = data.style || 'gold';
+                if (data.active) {
+                    document.getElementById('announceToggle').classList.add('active');
+                } else {
+                    document.getElementById('announceToggle').classList.remove('active');
+                }
+                updateAnnouncePreview();
+            }
+        });
+
+        // Load announcement history from Firebase
+        database.ref('announceHistory').on('value', function(snapshot) {
+            var data = snapshot.val();
+            announceHistory = data ? Object.values(data) : [];
+            announceHistory.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+            renderAnnounceHistory();
+        });
+
+        function updateAnnouncePreview() {
+            var text = document.getElementById('announceText').value.trim();
+            var style = document.getElementById('announceStyle').value;
+            var preview = document.getElementById('announcePreview');
+            if (!text) { preview.style.display = 'none'; return; }
+
+            var bgColors = { gold: 'linear-gradient(135deg, #d4af37, #a88a2d)', green: 'linear-gradient(135deg, #22c55e, #16a34a)', red: 'linear-gradient(135deg, #ef4444, #dc2626)', blue: 'linear-gradient(135deg, #3b82f6, #2563eb)' };
+            preview.style.background = bgColors[style];
+            preview.style.color = (style === 'gold') ? '#000' : '#fff';
+            preview.textContent = text;
+            preview.style.display = 'block';
+        }
+
+        function toggleAnnouncement() {
+            var toggle = document.getElementById('announceToggle');
+            toggle.classList.toggle('active');
+        }
+
+        function saveAnnouncement() {
+            var text = document.getElementById('announceText').value.trim();
+            var style = document.getElementById('announceStyle').value;
+            var active = document.getElementById('announceToggle').classList.contains('active');
+
+            if (!text) { alert('Please enter an announcement message.'); return; }
+
+            database.ref('announcement').set({
+                text: text, style: style, active: active, updatedAt: new Date().toISOString()
+            });
+
+            database.ref('announceHistory').push({
+                text: text, style: style, date: new Date().toISOString()
+            });
+
+            var s = document.getElementById('announceSuccess');
+            s.classList.add('show');
+            setTimeout(function() { s.classList.remove('show'); }, 3000);
+        }
+
+        function renderAnnounceHistory() {
+            var c = document.getElementById('announceHistory');
+            if (announceHistory.length === 0) {
+                c.innerHTML = '<p style="color: #888; font-size: 14px;">No previous announcements.</p>';
+                return;
+            }
+            c.innerHTML = announceHistory.slice(0, 10).map(function(a) {
+                var d = new Date(a.date);
+                return '<div style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">' +
+                    '<span style="color: #fff; font-size: 13px;">' + a.text + '</span>' +
+                    '<span style="color: #666; font-size: 11px; white-space: nowrap; margin-left: 15px;">' + d.toLocaleDateString('en-GB') + '</span>' +
+                '</div>';
+            }).join('');
+        }
+
+        // ============================================
+        // REVENUE TRACKER (saved to Firebase - LIVE)
+        // ============================================
+        var revenueLog = [];
+        var currentRevTab = 'week';
+
+        // Set default date to today
+        document.getElementById('revenueDate').valueAsDate = new Date();
+
+        // Load revenue from Firebase
+        database.ref('revenue').on('value', function(snapshot) {
+            var data = snapshot.val();
+            revenueLog = data ? Object.keys(data).map(function(k) { var r = data[k]; r._key = k; return r; }) : [];
+            renderRevenue();
+            updateStats();
+        });
+
+        function addRevenue() {
+            var date = document.getElementById('revenueDate').value;
+            var amount = parseFloat(document.getElementById('revenueAmount').value);
+            var notes = document.getElementById('revenueNotes').value.trim();
+
+            if (!date || !amount) { alert('Please enter date and amount.'); return; }
+
+            database.ref('revenue').push({
+                date: date, amount: amount, notes: notes,
+                createdAt: new Date().toISOString()
+            }).then(function() {
+                document.getElementById('revenueAmount').value = '';
+                document.getElementById('revenueNotes').value = '';
+                var s = document.getElementById('revenueSuccess');
+                s.classList.add('show');
+                setTimeout(function() { s.classList.remove('show'); }, 3000);
+            });
+        }
+
+        function switchRevTab(btn, tab) {
+            currentRevTab = tab;
+            btn.parentElement.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            renderRevenue();
+        }
+
+        function renderRevenue() {
+            var c = document.getElementById('revenueList');
+            var now = new Date();
+            var filtered = revenueLog.filter(function(r) {
+                var d = new Date(r.date);
+                if (currentRevTab === 'week') {
+                    var weekAgo = new Date(now); weekAgo.setDate(weekAgo.getDate() - 7);
+                    return d >= weekAgo;
+                } else if (currentRevTab === 'month') {
+                    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+                }
+                return true;
+            });
+
+            filtered.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+
+            if (filtered.length === 0) {
+                c.innerHTML = '<p style="color: #888; font-size: 14px; text-align: center; padding: 20px 0;">No revenue logged for this period.</p>';
+                document.getElementById('revenueTotalValue').textContent = '\u00A30';
+                return;
+            }
+
+            var total = filtered.reduce(function(sum, r) { return sum + r.amount; }, 0);
+
+            c.innerHTML = filtered.map(function(r) {
+                return '<div class="revenue-row">' +
+                    '<div>' +
+                        '<span class="rev-date">' + formatDate(r.date) + '</span>' +
+                        (r.notes ? '<span style="color: #666; font-size: 11px; display: block;">' + r.notes + '</span>' : '') +
+                    '</div>' +
+                    '<div style="display: flex; align-items: center; gap: 10px;">' +
+                        '<span class="rev-amount">\u00A3' + r.amount.toFixed(2) + '</span>' +
+                        '<button onclick="deleteRevenue(\'' + r._key + '\')" style="width: 24px; height: 24px; background: rgba(239,68,68,0.1); border: none; border-radius: 50%; color: #ef4444; cursor: pointer; font-size: 14px;">&times;</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            document.getElementById('revenueTotalValue').textContent = '\u00A3' + total.toFixed(2);
+        }
+
+        function deleteRevenue(key) {
+            database.ref('revenue/' + key).remove();
+        }
+
+        // ============================================
+        // DASHBOARD STATS (from REAL Firebase data)
+        // ============================================
+        function updateStats() {
+            var now = new Date();
+            var today = now.toISOString().split('T')[0];
+
+            // Today's payments (REAL - from QR payment system)
+            var todayPayments = livePayments.filter(function(p) {
+                return p.date === today && p.status === 'confirmed';
+            });
+            document.getElementById('statBookings').textContent = todayPayments.length;
+
+            // Today's revenue (REAL - from confirmed payments)
+            var todayTotal = todayPayments.reduce(function(sum, p) { return sum + (p.amount || 0); }, 0);
+            // Also add manual revenue entries for today
+            var manualToday = revenueLog.filter(function(r) { return r.date === today; });
+            var manualTotal = manualToday.reduce(function(sum, r) { return sum + r.amount; }, 0);
+            document.getElementById('statRevenue').textContent = '\u00A3' + (todayTotal + manualTotal).toFixed(0);
+
+            // Staff on duty
+            var onDuty = staffMembers.filter(function(s) { return s.onDuty; }).length;
+            document.getElementById('statStaffOn').textContent = onDuty;
+
+            // Active discounts
+            var activeDisc = discounts.filter(function(d) {
+                if (!d.active) return false;
+                var endD = new Date(d.end);
+                var startD = new Date(d.start);
+                return now >= startD && now <= endD;
+            }).length;
+            document.getElementById('statDiscounts').textContent = activeDisc;
+
+            // This week's revenue (REAL - from confirmed payments + manual)
+            var weekAgo = new Date(now); weekAgo.setDate(weekAgo.getDate() - 7);
+            var weekPayments = livePayments.filter(function(p) {
+                return new Date(p.createdAt) >= weekAgo && p.status === 'confirmed';
+            });
+            var weekPayTotal = weekPayments.reduce(function(sum, p) { return sum + (p.amount || 0); }, 0);
+            var weekManual = revenueLog.filter(function(r) { return new Date(r.date) >= weekAgo; });
+            var weekManualTotal = weekManual.reduce(function(sum, r) { return sum + r.amount; }, 0);
+            document.getElementById('statWeekRev').textContent = '\u00A3' + (weekPayTotal + weekManualTotal).toFixed(0);
+        }
+
+        updateStats();
 
         // ============================================
         // MANAGE ALL GALLERY MEDIA (PHOTOS & VIDEOS)
