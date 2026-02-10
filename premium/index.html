@@ -4020,6 +4020,7 @@ You can discuss anything - sports, weather, general knowledge, advice, etc. Be h
         }
     </script>
 
+    <script src="theme-effects.js"></script>
     <!-- Firebase Live Data Integration -->
     <script>
         (function() {
@@ -4084,28 +4085,16 @@ You can discuss anything - sports, weather, general knowledge, advice, etc. Be h
             });
 
             // ============================================
-            // SEASONAL THEME - apply color overrides
+            // SEASONAL THEME - immersive effects via theme-effects.js
             // ============================================
             db.ref('siteTheme').on('value', function(snapshot) {
                 var data = snapshot.val();
-                if (!data || !data.colors) {
-                    // Remove theme
-                    document.body.classList.remove('themed');
-                    document.documentElement.style.removeProperty('--gold');
-                    document.documentElement.style.removeProperty('--gold-light');
-                    document.documentElement.style.removeProperty('--gold-dark');
-                    document.documentElement.style.removeProperty('--gold-glow');
-                    return;
-                }
-                // Apply theme colors as CSS variables
-                document.body.classList.add('themed');
-                document.documentElement.style.setProperty('--gold', data.colors.primary);
-                document.documentElement.style.setProperty('--gold-light', data.colors.accent);
-                document.documentElement.style.setProperty('--gold-dark', data.colors.secondary);
-                document.documentElement.style.setProperty('--gold-glow', data.colors.primary + '99');
-                if (data.colors.bg) {
-                    document.documentElement.style.setProperty('--black', data.colors.bg);
-                    document.documentElement.style.setProperty('--dark', data.colors.bg);
+                if (typeof GBThemeEffects !== 'undefined') {
+                    if (!data || !data.themeId) {
+                        GBThemeEffects.remove();
+                    } else {
+                        GBThemeEffects.apply(data);
+                    }
                 }
             });
 
