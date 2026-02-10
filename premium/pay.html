@@ -154,11 +154,11 @@
         .bank-btn {
             display:flex;
             align-items:center;
-            gap:12px;
-            padding:14px;
+            gap:14px;
+            padding:16px;
             background:rgba(255,255,255,0.03);
             border:1.5px solid rgba(255,255,255,0.08);
-            border-radius:14px;
+            border-radius:16px;
             cursor:pointer;
             transition:all 0.25s;
             text-decoration:none;
@@ -166,22 +166,19 @@
             overflow:hidden;
         }
 
-        .bank-btn:active { transform:scale(0.97); }
+        .bank-btn:active { transform:scale(0.96); background:rgba(255,255,255,0.07); }
         .bank-btn:hover { border-color:rgba(255,255,255,0.18); background:rgba(255,255,255,0.05); }
 
         .bank-btn-logo {
-            width:34px; height:34px;
-            border-radius:10px;
+            width:42px; height:42px;
+            border-radius:12px;
             display:flex; align-items:center; justify-content:center;
             flex-shrink:0;
-            font-size:14px; font-weight:800; color:white;
             overflow:hidden;
         }
 
-        .bank-btn-logo img {
-            width:100%; height:100%;
-            object-fit:contain;
-            padding:5px;
+        .bank-btn-logo svg {
+            width:24px; height:24px;
         }
 
         .bank-btn-text {
@@ -189,16 +186,16 @@
         }
 
         .bank-btn-name {
-            font-size:13px;
+            font-size:14px;
             font-weight:600;
             color:var(--white);
             line-height:1.2;
         }
 
         .bank-btn-type {
-            font-size:10px;
+            font-size:11px;
             color:var(--gray);
-            margin-top:1px;
+            margin-top:2px;
         }
 
         .bank-btn-arrow {
@@ -439,7 +436,7 @@
         .toast.show { transform:translateX(-50%) translateY(0); }
         .toast svg { width:16px; height:16px; stroke:var(--green); }
 
-        @media (max-width: 380px) {
+        @media (max-width: 440px) {
             .amount-value { font-size:42px; }
             .banks-grid { grid-template-columns: 1fr; }
             .more-banks.open { grid-template-columns: 1fr; }
@@ -634,28 +631,47 @@
         var BANK = { name:'GOLDEN BARBERS LTD', sortCode:'30-98-97', sortCodeRaw:'309897', accountNumber:'58413368' };
 
         // ============================================
-        // BANK DEFINITIONS
+        // BANK DEFINITIONS - inline SVG icons (no external images)
         // ============================================
+        var BANK_ICONS = {
+            barclays: '<svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.1 0 2 .67 2 1.5S13.1 8 12 8s-2-.67-2-1.5S10.9 5 12 5zm-4 9l2-5h4l2 5h-2l-.5-1.5h-3L10 14H8zm4 4c-2.21 0-4-1.12-4-2.5h8c0 1.38-1.79 2.5-4 2.5z"/></svg>',
+            hsbc: '<svg viewBox="0 0 24 24" fill="white"><polygon points="2,2 12,2 12,12 2,12"/><polygon points="12,2 22,2 22,12 12,12" opacity="0.7"/><polygon points="2,12 12,12 12,22 2,22" opacity="0.7"/><polygon points="12,12 22,12 22,22 12,22"/></svg>',
+            lloyds: '<svg viewBox="0 0 24 24" fill="white"><path d="M5 16c0-2 2-4 4-6s3-4 3-6c0 2 1 4 3 6s4 4 4 6c0 3-2.24 5-5 5h-4c-2.76 0-5-2-5-5z"/><circle cx="10" cy="18" r="1"/></svg>',
+            natwest: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" fill="#e41b13"/><rect x="14" y="3" width="7" height="7" rx="1" fill="#3d1f8e"/><rect x="8.5" y="14" width="7" height="7" rx="1" fill="#2bb3e0"/></svg>',
+            monzo: '<svg viewBox="0 0 24 24" fill="white"><path d="M12 2L2 9v11c0 1.1.9 2 2 2h4V11l4-3 4 3v11h4c1.1 0 2-.9 2-2V9L12 2z"/></svg>',
+            revolut: '<svg viewBox="0 0 24 24" fill="white"><path d="M7 4h6c2.76 0 5 2.24 5 5 0 2.1-1.3 3.9-3.14 4.64L19 22h-3.5l-3.86-8H10v8H7V4zm3 3v5h3c1.38 0 2.5-1.12 2.5-2.5S14.38 7 13 7h-3z"/></svg>',
+            starling: '<svg viewBox="0 0 24 24" fill="white"><circle cx="12" cy="10" r="4"/><path d="M6 8c-1-2 0-4 2-5M18 8c1-2 0-4-2-5"/><path d="M8 14c-2 1-3 3-3 5h14c0-2-1-4-3-5"/><path d="M12 14v4"/></svg>',
+            santander: '<svg viewBox="0 0 24 24" fill="white"><path d="M12 2C8 2 5 8 5 12c0 5 3 10 7 10s7-5 7-10c0-4-3-10-7-10zm0 3c.8 0 1.5 2 1.5 4.5S12.8 14 12 14s-1.5-2-1.5-4.5S11.2 5 12 5z"/></svg>',
+            halifax: '<svg viewBox="0 0 24 24" fill="white"><path d="M6 4h3v7h6V4h3v16h-3v-7H9v7H6V4z"/></svg>',
+            nationwide: '<svg viewBox="0 0 24 24" fill="white"><path d="M4 20V4h3v10.5L15 4h4v16h-3V9.5L8 20H4z"/></svg>',
+            tsb: '<svg viewBox="0 0 24 24" fill="white"><text x="12" y="16" text-anchor="middle" font-size="11" font-weight="800" font-family="sans-serif">TSB</text></svg>',
+            chase: '<svg viewBox="0 0 24 24" fill="white"><path d="M2 8h8V2h4v10H6v4H2V8zm12 0h8v8h-4v4h-8V10h8V8h-4z" fill-rule="evenodd"/></svg>',
+            firstdirect: '<svg viewBox="0 0 24 24" fill="white"><text x="12" y="16" text-anchor="middle" font-size="9" font-weight="800" font-family="sans-serif">1st</text></svg>',
+            virgin: '<svg viewBox="0 0 24 24" fill="white"><path d="M5 4l7 16 7-16h-3.5L12 13 8.5 4H5z"/></svg>',
+            tide: '<svg viewBox="0 0 24 24" fill="white"><path d="M2 12c2-3 4-4 6-4s4 2 6 2 4-2 6-2c1 0 2 .3 2 .3v4S20 12 18 12s-4 2-6 2-4-2-6-2-4 1.5-4 1.5V12z"/></svg>',
+            metro: '<svg viewBox="0 0 24 24" fill="white"><path d="M3 20V7l4.5 7L12 7l4.5 7L21 7v13h-3V13l-1.5 2.3L12 9l-4.5 6.3L6 13v7H3z"/></svg>'
+        };
+
         var BANKS_MAIN = [
-            { id:'barclays', name:'Barclays', color:'#00aeef', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Barclays-Logo.svg/120px-Barclays-Logo.svg.png', ios:'barclays-mobile-banking://', android:'com.barclays.android.barclaysmobilebanking', web:'https://bank.barclays.co.uk' },
-            { id:'hsbc', name:'HSBC', color:'#db0011', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/HSBC_logo_%282018%29.svg/120px-HSBC_logo_%282018%29.svg.png', ios:'hsbcpersonalbanking://', android:'com.hsbc.hsbcukmobilebanking', web:'https://www.hsbc.co.uk' },
-            { id:'lloyds', name:'Lloyds', color:'#006a4d', logo:'https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Lloyds_Banking_Group_logo.svg/120px-Lloyds_Banking_Group_logo.svg.png', ios:'lloydsbank://', android:'com.grppl.android.shell.CMBlloydsTSB73', web:'https://www.lloydsbank.com' },
-            { id:'natwest', name:'NatWest', color:'#5b2d8e', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Natwest_2014_logo.svg/120px-Natwest_2014_logo.svg.png', ios:'natwest://', android:'com.natwest.nol', web:'https://www.natwest.com' },
-            { id:'monzo', name:'Monzo', color:'#ff5c5c', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Monzo_2016_logo.svg/120px-Monzo_2016_logo.svg.png', ios:'monzo://', android:'co.uk.getmondo', web:'https://monzo.com' },
-            { id:'revolut', name:'Revolut', color:'#0666eb', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Revolut_logo.svg/120px-Revolut_logo.svg.png', ios:'revolut://', android:'com.revolut.revolut', web:'https://www.revolut.com' },
-            { id:'starling', name:'Starling', color:'#6935d3', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Starling_Bank_Logo.svg/120px-Starling_Bank_Logo.svg.png', ios:'starlingbank://', android:'com.starlingbank.android', web:'https://www.starlingbank.com' },
-            { id:'santander', name:'Santander', color:'#ec0000', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Banco_Santander_Logotipo.svg/120px-Banco_Santander_Logotipo.svg.png', ios:'santander://', android:'uk.co.santander.santanderUK', web:'https://www.santander.co.uk' }
+            { id:'barclays', name:'Barclays', color:'#00aeef', ios:'barclays-mobile-banking://', android:'com.barclays.android.barclaysmobilebanking', web:'https://bank.barclays.co.uk' },
+            { id:'hsbc', name:'HSBC', color:'#db0011', ios:'hsbcpersonalbanking://', android:'com.hsbc.hsbcukmobilebanking', web:'https://www.hsbc.co.uk' },
+            { id:'lloyds', name:'Lloyds', color:'#006a4d', ios:'lloydsbank://', android:'com.grppl.android.shell.CMBlloydsTSB73', web:'https://www.lloydsbank.com' },
+            { id:'natwest', name:'NatWest', color:'#5b2d8e', ios:'natwest://', android:'com.natwest.nol', web:'https://www.natwest.com' },
+            { id:'monzo', name:'Monzo', color:'#e8533f', ios:'monzo://', android:'co.uk.getmondo', web:'https://monzo.com' },
+            { id:'revolut', name:'Revolut', color:'#0666eb', ios:'revolut://', android:'com.revolut.revolut', web:'https://www.revolut.com' },
+            { id:'starling', name:'Starling', color:'#6935d3', ios:'starlingbank://', android:'com.starlingbank.android', web:'https://www.starlingbank.com' },
+            { id:'santander', name:'Santander', color:'#ec0000', ios:'santander://', android:'uk.co.santander.santanderUK', web:'https://www.santander.co.uk' }
         ];
 
         var BANKS_MORE = [
-            { id:'halifax', name:'Halifax', color:'#006eb6', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Halifax_logo.svg/120px-Halifax_logo.svg.png', ios:'halifax://', android:'com.grppl.android.shell.halifax', web:'https://www.halifax.co.uk' },
-            { id:'nationwide', name:'Nationwide', color:'#003366', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Nationwide_Building_Society_logo.svg/120px-Nationwide_Building_Society_logo.svg.png', ios:'nationwide://', android:'co.uk.nationwide.mobile', web:'https://www.nationwide.co.uk' },
-            { id:'tsb', name:'TSB', color:'#003087', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/TSB_logo_2013.svg/120px-TSB_logo_2013.svg.png', ios:'tsb://', android:'uk.co.tsb.newmobilebank', web:'https://www.tsb.co.uk' },
-            { id:'chase', name:'Chase UK', color:'#117aca', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Chase_logo_2021.svg/120px-Chase_logo_2021.svg.png', ios:'chase-uk://', android:'com.chase.intl', web:'https://www.chase.co.uk' },
-            { id:'firstdirect', name:'First Direct', color:'#2d2d2d', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/First_Direct_logo.svg/120px-First_Direct_logo.svg.png', ios:'firstdirect://', android:'com.firstdirect.bankingonthego', web:'https://www.firstdirect.com' },
-            { id:'virgin', name:'Virgin Money', color:'#e10a0a', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Virgin-logo.svg/120px-Virgin-logo.svg.png', ios:'virginmoney://', android:'uk.co.virginmoney.hilmobility', web:'https://www.virginmoney.com' },
-            { id:'tide', name:'Tide', color:'#6c60e0', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Tide_platform_logo.svg/120px-Tide_platform_logo.svg.png', ios:'tide://', android:'com.tideplatform.banking', web:'https://www.tide.co' },
-            { id:'metro', name:'Metro Bank', color:'#00a1de', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Metro_Bank_logo.svg/120px-Metro_Bank_logo.svg.png', ios:'metrobank://', android:'uk.co.metrobankonline.mobile.android.production', web:'https://www.metrobankonline.co.uk' }
+            { id:'halifax', name:'Halifax', color:'#006eb6', ios:'halifax://', android:'com.grppl.android.shell.halifax', web:'https://www.halifax.co.uk' },
+            { id:'nationwide', name:'Nationwide', color:'#1a3668', ios:'nationwide://', android:'co.uk.nationwide.mobile', web:'https://www.nationwide.co.uk' },
+            { id:'tsb', name:'TSB', color:'#003087', ios:'tsb://', android:'uk.co.tsb.newmobilebank', web:'https://www.tsb.co.uk' },
+            { id:'chase', name:'Chase UK', color:'#117aca', ios:'chase-uk://', android:'com.chase.intl', web:'https://www.chase.co.uk' },
+            { id:'firstdirect', name:'First Direct', color:'#2d2d2d', ios:'firstdirect://', android:'com.firstdirect.bankingonthego', web:'https://www.firstdirect.com' },
+            { id:'virgin', name:'Virgin Money', color:'#e10a0a', ios:'virginmoney://', android:'uk.co.virginmoney.hilmobility', web:'https://www.virginmoney.com' },
+            { id:'tide', name:'Tide', color:'#6c60e0', ios:'tide://', android:'com.tideplatform.banking', web:'https://www.tide.co' },
+            { id:'metro', name:'Metro Bank', color:'#00a1de', ios:'metrobank://', android:'uk.co.metrobankonline.mobile.android.production', web:'https://www.metrobankonline.co.uk' }
         ];
 
         var orderTotal = 0;
@@ -729,13 +745,12 @@
         }
 
         function bankHtml(b) {
+            var icon = BANK_ICONS[b.id] || '<svg viewBox="0 0 24 24" fill="white"><text x="12" y="16" text-anchor="middle" font-size="14" font-weight="800">'+b.name.charAt(0)+'</text></svg>';
             return '<button class="bank-btn" onclick="routeToBank(\''+b.id+'\')">' +
-                '<div class="bank-btn-logo" style="background:'+b.color+'">' +
-                    '<img src="'+b.logo+'" alt="'+b.name+'" onerror="this.remove();this.parentElement.textContent=\''+b.name.charAt(0)+'\'">' +
-                '</div>' +
+                '<div class="bank-btn-logo" style="background:'+b.color+'">'+icon+'</div>' +
                 '<div class="bank-btn-text">' +
                     '<div class="bank-btn-name">'+b.name+'</div>' +
-                    '<div class="bank-btn-type">Open app</div>' +
+                    '<div class="bank-btn-type">Tap to open app</div>' +
                 '</div>' +
                 '<svg class="bank-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>' +
             '</button>';
@@ -757,7 +772,8 @@
             var toast = document.getElementById('routingToast');
             var logoEl = document.getElementById('routingToastLogo');
             logoEl.style.background = bank.color;
-            logoEl.innerHTML = '<img src="'+bank.logo+'" alt="'+bank.name+'" style="width:100%;height:100%;object-fit:contain;padding:4px" onerror="this.remove();this.parentElement.textContent=\''+bank.name.charAt(0)+'\'">';
+            var icon = BANK_ICONS[bank.id] || '';
+            logoEl.innerHTML = icon;
             document.getElementById('routingToastTitle').textContent = 'Opening ' + bank.name + '...';
             toast.classList.add('show');
 
