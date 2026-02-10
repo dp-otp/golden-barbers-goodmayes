@@ -6,8 +6,6 @@
     <title>Pay | Golden Barbers</title>
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#000000">
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -20,7 +18,6 @@
             --black: #000000;
             --dark: #0a0a0a;
             --dark-card: #111111;
-            --dark-card-hover: #181818;
             --white: #ffffff;
             --gray: #888888;
             --gray-dark: #444444;
@@ -29,12 +26,7 @@
             --red: #ef4444;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
         body {
             font-family: 'Outfit', sans-serif;
@@ -52,556 +44,422 @@
             animation: fadeUp 0.5s ease;
         }
 
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes scaleIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
-        @keyframes checkPop { 0% { transform: scale(0); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
-        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
-        @keyframes slideDown { from { max-height: 0; opacity: 0; } to { max-height: 500px; opacity: 1; } }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+        @keyframes scaleIn { from { opacity:0; transform:scale(0.92); } to { opacity:1; transform:scale(1); } }
+        @keyframes checkPop { 0% { transform:scale(0); } 60% { transform:scale(1.15); } 100% { transform:scale(1); } }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        @keyframes dotPulse { 0%,80%,100% { transform:scale(0.6); opacity:0.4; } 40% { transform:scale(1); opacity:1; } }
+        @keyframes verifyPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.4); } 50% { box-shadow: 0 0 0 12px rgba(212,175,55,0); } }
 
         /* Header */
-        .header {
-            text-align: center;
-            padding: 8px 0 20px;
-        }
-
-        .header-logo {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 10px;
-            border-radius: 50%;
-            object-fit: contain;
-        }
-
-        .header h1 {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .header h1 span { color: var(--gold); }
-
-        .header-sub {
-            color: var(--gray);
-            font-size: 12px;
-            margin-top: 2px;
-        }
+        .header { text-align:center; padding:8px 0 20px; }
+        .header-logo { width:60px; height:60px; margin:0 auto 10px; border-radius:50%; object-fit:contain; }
+        .header h1 { font-size:18px; font-weight:700; }
+        .header h1 span { color:var(--gold); }
+        .header-sub { color:var(--gray); font-size:12px; margin-top:2px; }
 
         /* Amount Hero */
         .amount-hero {
-            text-align: center;
-            padding: 24px 20px;
+            text-align:center;
+            padding:24px 20px;
             background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.03));
             border: 1px solid rgba(212,175,55,0.25);
-            border-radius: 20px;
-            margin-bottom: 14px;
+            border-radius:20px;
+            margin-bottom:14px;
         }
-
-        .amount-label {
-            font-size: 12px;
-            color: var(--gray);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 6px;
-        }
-
-        .amount-value {
-            font-size: 52px;
-            font-weight: 900;
-            color: var(--gold);
-            line-height: 1;
-            margin-bottom: 10px;
-        }
+        .amount-label { font-size:12px; color:var(--gray); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px; }
+        .amount-value { font-size:52px; font-weight:900; color:var(--gold); line-height:1; margin-bottom:10px; }
 
         .services-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: none;
-            border: none;
-            color: var(--gray);
-            font-family: 'Outfit', sans-serif;
-            font-size: 13px;
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 16px;
-            transition: color 0.3s;
+            display:inline-flex; align-items:center; gap:5px;
+            background:none; border:none; color:var(--gray);
+            font-family:'Outfit',sans-serif; font-size:13px; cursor:pointer;
+            padding:5px 10px; border-radius:16px; transition:color 0.3s;
+        }
+        .services-toggle:hover { color:var(--white); }
+        .services-toggle svg { width:14px; height:14px; transition:transform 0.3s; }
+        .services-toggle.open svg { transform:rotate(180deg); }
+
+        .services-detail { max-height:0; overflow:hidden; transition:max-height 0.4s ease, margin 0.4s ease; }
+        .services-detail.open { max-height:400px; margin-top:10px; }
+        .services-detail-inner { background:rgba(0,0,0,0.4); border-radius:12px; padding:10px 14px; }
+        .service-line { display:flex; justify-content:space-between; padding:5px 0; font-size:13px; }
+        .service-line-name { color:rgba(255,255,255,0.8); }
+        .service-line-price { color:var(--gold); font-weight:600; }
+
+        /* Card */
+        .card {
+            background:var(--dark-card);
+            border:1px solid rgba(255,255,255,0.07);
+            border-radius:20px;
+            padding:22px 18px;
+            margin-bottom:14px;
         }
 
-        .services-toggle:hover { color: var(--white); }
-        .services-toggle svg { width: 14px; height: 14px; transition: transform 0.3s; }
-        .services-toggle.open svg { transform: rotate(180deg); }
-
-        .services-detail {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease, margin 0.4s ease;
+        .card-header { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+        .card-icon {
+            width:38px; height:38px;
+            background:rgba(212,175,55,0.1);
+            border-radius:11px;
+            display:flex; align-items:center; justify-content:center;
         }
-
-        .services-detail.open { max-height: 400px; margin-top: 10px; }
-
-        .services-detail-inner {
-            background: rgba(0,0,0,0.4);
-            border-radius: 12px;
-            padding: 10px 14px;
-        }
-
-        .service-line {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            font-size: 13px;
-        }
-
-        .service-line-name { color: rgba(255,255,255,0.8); }
-        .service-line-price { color: var(--gold); font-weight: 600; }
-
-        /* Pay Card */
-        .pay-card {
-            background: var(--dark-card);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 20px;
-            padding: 22px 18px;
-            margin-bottom: 14px;
-        }
-
-        .pay-card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-
-        .pay-card-icon {
-            width: 38px;
-            height: 38px;
-            background: rgba(212,175,55,0.1);
-            border-radius: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pay-card-icon svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 2; }
-        .pay-card-title { font-size: 15px; font-weight: 700; }
-        .pay-card-subtitle { font-size: 11px; color: var(--gray); }
+        .card-icon svg { width:18px; height:18px; stroke:var(--gold); fill:none; stroke-width:2; }
+        .card-title { font-size:15px; font-weight:700; }
+        .card-subtitle { font-size:11px; color:var(--gray); }
 
         /* Bank Details */
         .bank-detail {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display:flex; align-items:center; justify-content:space-between;
+            padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05);
         }
-
-        .bank-detail:last-of-type { border-bottom: none; }
-        .bank-detail-left { flex: 1; min-width: 0; }
-
-        .bank-detail-label {
-            font-size: 10px;
-            color: var(--gray);
-            text-transform: uppercase;
-            letter-spacing: 0.7px;
-            margin-bottom: 3px;
-        }
-
-        .bank-detail-value {
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-        }
-
-        .bank-detail-value.gold { color: var(--gold); }
+        .bank-detail:last-of-type { border-bottom:none; }
+        .bank-detail-left { flex:1; min-width:0; }
+        .bank-detail-label { font-size:10px; color:var(--gray); text-transform:uppercase; letter-spacing:0.7px; margin-bottom:3px; }
+        .bank-detail-value { font-size:16px; font-weight:700; letter-spacing:0.3px; }
+        .bank-detail-value.gold { color:var(--gold); }
 
         .copy-btn {
-            padding: 7px 14px;
-            background: rgba(212,175,55,0.1);
-            border: 1px solid rgba(212,175,55,0.2);
-            border-radius: 10px;
-            color: var(--gold);
-            font-family: 'Outfit', sans-serif;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            min-width: 62px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            padding:7px 14px;
+            background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.2);
+            border-radius:10px; color:var(--gold);
+            font-family:'Outfit',sans-serif; font-size:12px; font-weight:600;
+            cursor:pointer; transition:all 0.2s;
+            min-width:62px; text-align:center;
         }
-
-        .copy-btn:active { transform: scale(0.95); }
-        .copy-btn.copied { background: var(--green); border-color: var(--green); color: var(--white); }
-
-        .copy-all-wrap { margin-top: 14px; }
+        .copy-btn:active { transform:scale(0.95); }
+        .copy-btn.copied { background:var(--green); border-color:var(--green); color:var(--white); }
 
         .copy-all-btn {
-            width: 100%;
-            padding: 14px;
-            background: rgba(212,175,55,0.06);
-            border: 1.5px dashed rgba(212,175,55,0.3);
-            border-radius: 14px;
-            color: var(--gold);
-            font-family: 'Outfit', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            width:100%; padding:14px; margin-top:14px;
+            background:rgba(212,175,55,0.06);
+            border:1.5px dashed rgba(212,175,55,0.3);
+            border-radius:14px; color:var(--gold);
+            font-family:'Outfit',sans-serif; font-size:14px; font-weight:600;
+            cursor:pointer; transition:all 0.3s;
+            display:flex; align-items:center; justify-content:center; gap:8px;
         }
+        .copy-all-btn:hover { background:rgba(212,175,55,0.12); border-color:var(--gold); }
+        .copy-all-btn:active { transform:scale(0.98); }
+        .copy-all-btn.copied { background:rgba(34,197,94,0.12); border-color:var(--green); border-style:solid; color:var(--green); }
+        .copy-all-btn svg { width:16px; height:16px; }
 
-        .copy-all-btn:hover { background: rgba(212,175,55,0.12); border-color: var(--gold); }
-        .copy-all-btn:active { transform: scale(0.98); }
-        .copy-all-btn.copied { background: rgba(34,197,94,0.12); border-color: var(--green); border-style: solid; color: var(--green); }
-        .copy-all-btn svg { width: 16px; height: 16px; }
-
-        /* Banks Section */
-        .banks-card {
-            background: var(--dark-card);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 20px;
-            padding: 22px 18px;
-            margin-bottom: 14px;
-        }
-
-        .banks-card-header {
-            text-align: center;
-            margin-bottom: 6px;
-        }
-
-        .banks-card-title {
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .banks-card-sub {
-            font-size: 12px;
-            color: var(--gray);
-            margin-bottom: 16px;
-        }
-
+        /* ===== BANK SELECTOR ===== */
         .banks-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            display:grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap:10px;
         }
 
         .bank-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            padding: 12px 4px 10px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:14px;
+            background:rgba(255,255,255,0.03);
+            border:1.5px solid rgba(255,255,255,0.08);
+            border-radius:14px;
+            cursor:pointer;
+            transition:all 0.25s;
+            text-decoration:none;
+            position:relative;
+            overflow:hidden;
         }
 
-        .bank-btn:active { transform: scale(0.94); }
-        .bank-btn:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); }
+        .bank-btn:active { transform:scale(0.97); }
+        .bank-btn:hover { border-color:rgba(255,255,255,0.18); background:rgba(255,255,255,0.05); }
 
         .bank-btn-logo {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            object-fit: contain;
-            background: white;
-            padding: 4px;
+            width:34px; height:34px;
+            border-radius:10px;
+            display:flex; align-items:center; justify-content:center;
+            flex-shrink:0;
+            font-size:14px; font-weight:800; color:white;
+            overflow:hidden;
+        }
+
+        .bank-btn-logo img {
+            width:100%; height:100%;
+            object-fit:contain;
+            padding:5px;
+        }
+
+        .bank-btn-text {
+            flex:1; min-width:0;
         }
 
         .bank-btn-name {
-            font-size: 9px;
-            color: var(--gray);
-            text-align: center;
-            line-height: 1.2;
-            font-weight: 500;
+            font-size:13px;
+            font-weight:600;
+            color:var(--white);
+            line-height:1.2;
         }
 
-        .bank-btn .routing-indicator {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 6px;
-            height: 6px;
-            background: var(--green);
-            border-radius: 50%;
-            animation: pulse 2s ease infinite;
+        .bank-btn-type {
+            font-size:10px;
+            color:var(--gray);
+            margin-top:1px;
         }
 
-        /* More banks toggle */
+        .bank-btn-arrow {
+            width:16px; height:16px;
+            color:var(--gray);
+            flex-shrink:0;
+            transition:transform 0.2s;
+        }
+
+        .bank-btn:hover .bank-btn-arrow { transform:translateX(2px); color:var(--white); }
+
+        /* More banks */
         .more-banks-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            background: none;
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            color: var(--gray);
-            font-family: 'Outfit', sans-serif;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s;
+            display:flex; align-items:center; justify-content:center; gap:6px;
+            width:100%; padding:12px; margin-top:12px;
+            background:none;
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:12px; color:var(--gray);
+            font-family:'Outfit',sans-serif; font-size:13px;
+            cursor:pointer; transition:all 0.3s;
         }
+        .more-banks-toggle:hover { color:var(--white); border-color:rgba(255,255,255,0.15); }
+        .more-banks-toggle svg { width:14px; height:14px; transition:transform 0.3s; }
+        .more-banks-toggle.open svg { transform:rotate(180deg); }
 
-        .more-banks-toggle:hover { color: var(--white); border-color: rgba(255,255,255,0.15); }
-        .more-banks-toggle svg { width: 14px; height: 14px; transition: transform 0.3s; }
-        .more-banks-toggle.open svg { transform: rotate(180deg); }
-
-        .more-banks {
-            display: none;
-            margin-top: 8px;
-        }
-
-        .more-banks.open {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            animation: fadeIn 0.3s ease;
-        }
+        .more-banks { display:none; margin-top:10px; }
+        .more-banks.open { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; animation:fadeIn 0.3s ease; }
 
         /* Routing toast */
         .routing-toast {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #111, #1a1a1a);
-            border-bottom: 1px solid rgba(212,175,55,0.3);
-            padding: 16px 20px;
-            z-index: 1000;
-            transform: translateY(-100%);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            position:fixed; top:0; left:0; right:0;
+            background:linear-gradient(135deg, #111, #1a1a1a);
+            border-bottom:1px solid rgba(212,175,55,0.3);
+            padding:16px 20px; z-index:1000;
+            transform:translateY(-100%);
+            transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+            display:flex; align-items:center; gap:12px;
+        }
+        .routing-toast.show { transform:translateY(0); }
+        .routing-toast-logo { width:36px; height:36px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+        .routing-toast-logo img { width:100%; height:100%; object-fit:contain; padding:4px; }
+        .routing-toast-text { flex:1; }
+        .routing-toast-title { font-size:14px; font-weight:700; }
+        .routing-toast-sub { font-size:12px; color:var(--green); }
+        .routing-toast-loader { width:22px; height:22px; border:2px solid rgba(212,175,55,0.2); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; }
+
+        /* ===== VERIFICATION FLOW ===== */
+        .verify-overlay {
+            display:none;
+            position:fixed; top:0; left:0; right:0; bottom:0;
+            background:rgba(0,0,0,0.92);
+            z-index:2000;
+            align-items:center; justify-content:center;
+            padding:20px;
+        }
+        .verify-overlay.show { display:flex; }
+
+        .verify-card {
+            width:100%; max-width:400px;
+            background:var(--dark-card);
+            border:1px solid rgba(212,175,55,0.2);
+            border-radius:24px;
+            padding:30px 24px;
+            text-align:center;
+            animation:scaleIn 0.4s ease;
         }
 
-        .routing-toast.show { transform: translateY(0); }
+        .verify-icon {
+            width:60px; height:60px;
+            background:rgba(212,175,55,0.1);
+            border:2px solid rgba(212,175,55,0.3);
+            border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            margin:0 auto 18px;
+            animation:verifyPulse 2s ease infinite;
+        }
+        .verify-icon svg { width:28px; height:28px; stroke:var(--gold); fill:none; stroke-width:2; }
 
-        .routing-toast-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            object-fit: contain;
-            background: white;
-            padding: 4px;
+        .verify-title { font-size:20px; font-weight:800; margin-bottom:6px; }
+        .verify-sub { font-size:13px; color:var(--gray); margin-bottom:24px; line-height:1.5; }
+
+        .verify-input-wrap { margin-bottom:20px; }
+
+        .verify-label { font-size:11px; color:var(--gray); text-transform:uppercase; letter-spacing:0.7px; margin-bottom:8px; text-align:left; }
+
+        .verify-input {
+            width:100%; padding:16px;
+            background:rgba(0,0,0,0.4);
+            border:1.5px solid rgba(255,255,255,0.12);
+            border-radius:14px;
+            color:var(--white);
+            font-family:'Outfit',sans-serif;
+            font-size:18px; font-weight:600;
+            text-align:center;
+            letter-spacing:2px;
+            outline:none;
+            transition:border-color 0.3s;
+        }
+        .verify-input:focus { border-color:var(--gold); }
+        .verify-input::placeholder { color:var(--gray-dark); font-weight:400; letter-spacing:0; font-size:14px; }
+
+        .verify-error {
+            font-size:12px; color:var(--red);
+            margin-top:8px; min-height:18px;
+            text-align:left;
         }
 
-        .routing-toast-text {
-            flex: 1;
+        .verify-hint {
+            font-size:12px; color:var(--gray);
+            margin-bottom:20px; line-height:1.5;
+            background:rgba(255,255,255,0.03);
+            border-radius:10px;
+            padding:12px;
+            text-align:left;
         }
+        .verify-hint strong { color:rgba(255,255,255,0.7); }
 
-        .routing-toast-title {
-            font-size: 14px;
-            font-weight: 700;
+        .verify-submit {
+            width:100%; padding:16px;
+            background:linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color:var(--black); border:none; border-radius:14px;
+            font-family:'Outfit',sans-serif;
+            font-size:16px; font-weight:700;
+            cursor:pointer; transition:all 0.3s;
+            display:flex; align-items:center; justify-content:center; gap:8px;
         }
+        .verify-submit:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(212,175,55,0.3); }
+        .verify-submit:active { transform:scale(0.98); }
+        .verify-submit:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+        .verify-submit svg { width:18px; height:18px; }
+        .verify-submit .spinner { width:18px; height:18px; border:2px solid transparent; border-top-color:var(--black); border-radius:50%; animation:spin 0.8s linear infinite; display:none; }
+        .verify-submit.loading .spinner { display:block; }
+        .verify-submit.loading .btn-label { display:none; }
 
-        .routing-toast-sub {
-            font-size: 12px;
-            color: var(--green);
+        .verify-cancel {
+            margin-top:14px;
+            background:none; border:none;
+            color:var(--gray); font-family:'Outfit',sans-serif;
+            font-size:13px; cursor:pointer;
+            padding:8px 16px;
+            transition:color 0.2s;
         }
+        .verify-cancel:hover { color:var(--white); }
 
-        .routing-toast-loader {
-            width: 24px;
-            height: 24px;
-            border: 2px solid rgba(212,175,55,0.2);
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* Confirm */
-        .confirm-section { margin-bottom: 14px; }
+        /* Confirm button */
+        .confirm-section { margin-bottom:14px; }
 
         .confirm-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--green), var(--green-dark));
-            color: var(--white);
-            border: none;
-            border-radius: 16px;
-            font-size: 17px;
-            font-weight: 700;
-            font-family: 'Outfit', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 6px 25px rgba(34,197,94,0.3);
+            width:100%; padding:18px;
+            background:linear-gradient(135deg, var(--green), var(--green-dark));
+            color:var(--white); border:none; border-radius:16px;
+            font-size:17px; font-weight:700;
+            font-family:'Outfit',sans-serif;
+            cursor:pointer; transition:all 0.3s;
+            display:flex; align-items:center; justify-content:center; gap:10px;
+            box-shadow:0 6px 25px rgba(34,197,94,0.3);
         }
-
-        .confirm-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(34,197,94,0.4); }
-        .confirm-btn:active { transform: scale(0.98); }
-        .confirm-btn svg { width: 20px; height: 20px; }
-
-        .confirm-note {
-            text-align: center;
-            font-size: 11px;
-            color: var(--gray);
-            margin-top: 8px;
-        }
+        .confirm-btn:hover { transform:translateY(-2px); box-shadow:0 10px 35px rgba(34,197,94,0.4); }
+        .confirm-btn:active { transform:scale(0.98); }
+        .confirm-btn svg { width:20px; height:20px; }
+        .confirm-note { text-align:center; font-size:11px; color:var(--gray); margin-top:8px; }
 
         /* Success */
-        .success-screen {
-            display: none;
-            text-align: center;
-            padding: 40px 20px;
-            animation: scaleIn 0.5s ease;
-        }
-
-        .success-screen.show { display: block; }
+        .success-screen { display:none; text-align:center; padding:40px 20px; animation:scaleIn 0.5s ease; }
+        .success-screen.show { display:block; }
 
         .success-circle {
-            width: 90px;
-            height: 90px;
-            background: rgba(34,197,94,0.12);
-            border: 3px solid var(--green);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            animation: checkPop 0.6s ease;
+            width:90px; height:90px;
+            background:rgba(34,197,94,0.12); border:3px solid var(--green);
+            border-radius:50%; display:flex; align-items:center; justify-content:center;
+            margin:0 auto 20px; animation:checkPop 0.6s ease;
         }
+        .success-circle svg { width:44px; height:44px; stroke:var(--green); stroke-width:3; fill:none; }
 
-        .success-circle svg { width: 44px; height: 44px; stroke: var(--green); stroke-width: 3; fill: none; }
-
-        .success-screen h2 { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
-        .success-screen .success-sub { color: var(--gray); font-size: 14px; margin-bottom: 20px; }
-        .success-amount { font-size: 42px; font-weight: 900; color: var(--gold); margin-bottom: 6px; }
-
-        .success-ref {
-            font-size: 13px;
-            color: var(--gray);
-            margin-bottom: 28px;
-        }
-
-        .success-ref span { color: var(--white); font-weight: 600; font-family: monospace; }
+        .success-screen h2 { font-size:24px; font-weight:800; margin-bottom:6px; }
+        .success-screen .success-sub { color:var(--gray); font-size:14px; margin-bottom:20px; }
+        .success-amount { font-size:42px; font-weight:900; color:var(--gold); margin-bottom:6px; }
+        .success-ref { font-size:13px; color:var(--gray); margin-bottom:28px; }
+        .success-ref span { color:var(--white); font-weight:600; font-family:monospace; }
 
         .success-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: rgba(34,197,94,0.1);
-            border: 1px solid rgba(34,197,94,0.3);
-            border-radius: 50px;
-            color: var(--green);
-            font-size: 14px;
-            font-weight: 600;
+            display:inline-flex; align-items:center; gap:8px;
+            padding:12px 24px;
+            background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3);
+            border-radius:50px; color:var(--green); font-size:14px; font-weight:600;
         }
-
-        .success-badge svg { width: 16px; height: 16px; }
+        .success-badge svg { width:16px; height:16px; }
 
         .success-show-staff {
-            margin-top: 24px;
-            padding: 16px;
-            background: rgba(212,175,55,0.08);
-            border: 1px solid rgba(212,175,55,0.2);
-            border-radius: 14px;
-            font-size: 14px;
-            color: var(--gold);
-            font-weight: 600;
+            margin-top:24px; padding:16px;
+            background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.2);
+            border-radius:14px; font-size:14px; color:var(--gold); font-weight:600;
         }
+
+        .success-verify-code {
+            margin-top:16px; padding:14px;
+            background:rgba(255,255,255,0.04);
+            border-radius:12px;
+        }
+        .success-verify-label { font-size:11px; color:var(--gray); text-transform:uppercase; letter-spacing:0.7px; margin-bottom:6px; }
+        .success-verify-value { font-size:28px; font-weight:900; letter-spacing:6px; color:var(--white); font-family:monospace; }
 
         /* Error */
-        .error-screen { display: none; text-align: center; padding: 50px 20px; }
-        .error-screen.show { display: block; }
-        .error-icon { font-size: 48px; margin-bottom: 16px; }
-        .error-screen h2 { font-size: 20px; margin-bottom: 8px; }
-        .error-screen p { color: var(--gray); font-size: 14px; }
+        .error-screen { display:none; text-align:center; padding:50px 20px; }
+        .error-screen.show { display:block; }
+        .error-icon { font-size:48px; margin-bottom:16px; }
+        .error-screen h2 { font-size:20px; margin-bottom:8px; }
+        .error-screen p { color:var(--gray); font-size:14px; }
 
         /* Loading */
-        .loading-screen { text-align: center; padding: 60px 20px; }
+        .loading-screen { text-align:center; padding:60px 20px; }
+        .loading-dots { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:16px; }
+        .loading-dot { width:10px; height:10px; background:var(--gold); border-radius:50%; animation:dotPulse 1.4s ease infinite; }
+        .loading-dot:nth-child(2) { animation-delay:0.2s; }
+        .loading-dot:nth-child(3) { animation-delay:0.4s; }
+        .loading-screen p { color:var(--gray); font-size:14px; }
 
-        .loading-dots { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px; }
-
-        .loading-dot {
-            width: 10px;
-            height: 10px;
-            background: var(--gold);
-            border-radius: 50%;
-            animation: dotPulse 1.4s ease infinite;
-        }
-
-        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes dotPulse { 0%,80%,100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
-
-        .loading-screen p { color: var(--gray); font-size: 14px; }
-
-        .payment-content { display: none; }
-        .payment-content.show { display: block; }
+        .payment-content { display:none; }
+        .payment-content.show { display:block; }
 
         /* Footer */
-        .footer { text-align: center; padding: 16px 0 8px; font-size: 11px; color: var(--gray); }
-        .footer a { color: var(--gold); text-decoration: none; }
-        .secure-line { display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 4px; }
-        .secure-line svg { width: 12px; height: 12px; stroke: var(--gray); fill: none; stroke-width: 2; }
+        .footer { text-align:center; padding:16px 0 8px; font-size:11px; color:var(--gray); }
+        .footer a { color:var(--gold); text-decoration:none; }
+        .secure-line { display:flex; align-items:center; justify-content:center; gap:5px; margin-bottom:4px; }
+        .secure-line svg { width:12px; height:12px; stroke:var(--gray); fill:none; stroke-width:2; }
 
         /* Toast */
         .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(80px);
-            background: var(--dark-card);
-            border: 1px solid rgba(34,197,94,0.3);
-            color: var(--white);
-            padding: 12px 20px;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 600;
-            font-family: 'Outfit', sans-serif;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            z-index: 999;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            position:fixed; bottom:30px; left:50%;
+            transform:translateX(-50%) translateY(80px);
+            background:var(--dark-card); border:1px solid rgba(34,197,94,0.3);
+            color:var(--white); padding:12px 20px; border-radius:50px;
+            font-size:13px; font-weight:600; font-family:'Outfit',sans-serif;
+            box-shadow:0 10px 40px rgba(0,0,0,0.6); z-index:999;
+            transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+            display:flex; align-items:center; gap:8px;
         }
+        .toast.show { transform:translateX(-50%) translateY(0); }
+        .toast svg { width:16px; height:16px; stroke:var(--green); }
 
-        .toast.show { transform: translateX(-50%) translateY(0); }
-        .toast svg { width: 16px; height: 16px; stroke: var(--green); }
+        @media (max-width: 380px) {
+            .amount-value { font-size:42px; }
+            .banks-grid { grid-template-columns: 1fr; }
+            .more-banks.open { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
     <div class="page-wrap">
-        <!-- Header -->
         <div class="header">
             <img src="../logo-removebg-preview.png" alt="Golden Barbers" class="header-logo" onerror="this.style.display='none'">
             <h1><span>Golden</span> Barbers</h1>
             <div class="header-sub">Goodmayes, Ilford</div>
         </div>
 
-        <!-- Loading -->
         <div id="loadingScreen" class="loading-screen">
             <div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
             <p>Loading your order...</p>
         </div>
 
-        <!-- Payment Content -->
         <div id="paymentContent" class="payment-content">
-
             <!-- Amount -->
             <div class="amount-hero">
                 <div class="amount-label">Amount Due</div>
@@ -616,64 +474,41 @@
             </div>
 
             <!-- Bank Details -->
-            <div class="pay-card">
-                <div class="pay-card-header">
-                    <div class="pay-card-icon">
-                        <svg viewBox="0 0 24 24"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
-                    </div>
-                    <div>
-                        <div class="pay-card-title">Bank Transfer Details</div>
-                        <div class="pay-card-subtitle">Send to this account</div>
-                    </div>
-                </div>
-
-                <div class="bank-detail">
-                    <div class="bank-detail-left">
-                        <div class="bank-detail-label">Account Name</div>
-                        <div class="bank-detail-value">GOLDEN BARBERS LTD</div>
-                    </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg></div>
+                    <div><div class="card-title">Payment Details</div><div class="card-subtitle">Send to this account</div></div>
                 </div>
                 <div class="bank-detail">
-                    <div class="bank-detail-left">
-                        <div class="bank-detail-label">Sort Code</div>
-                        <div class="bank-detail-value">30-98-97</div>
-                    </div>
-                    <button class="copy-btn" onclick="copyText('309897', this)">Copy</button>
+                    <div class="bank-detail-left"><div class="bank-detail-label">Account Name</div><div class="bank-detail-value">GOLDEN BARBERS LTD</div></div>
                 </div>
                 <div class="bank-detail">
-                    <div class="bank-detail-left">
-                        <div class="bank-detail-label">Account Number</div>
-                        <div class="bank-detail-value">58413368</div>
-                    </div>
-                    <button class="copy-btn" onclick="copyText('58413368', this)">Copy</button>
+                    <div class="bank-detail-left"><div class="bank-detail-label">Sort Code</div><div class="bank-detail-value">30-98-97</div></div>
+                    <button class="copy-btn" onclick="copyText('309897',this)">Copy</button>
                 </div>
                 <div class="bank-detail">
-                    <div class="bank-detail-left">
-                        <div class="bank-detail-label">Amount</div>
-                        <div class="bank-detail-value gold" id="bankAmount">&pound;0.00</div>
-                    </div>
+                    <div class="bank-detail-left"><div class="bank-detail-label">Account Number</div><div class="bank-detail-value">58413368</div></div>
+                    <button class="copy-btn" onclick="copyText('58413368',this)">Copy</button>
+                </div>
+                <div class="bank-detail">
+                    <div class="bank-detail-left"><div class="bank-detail-label">Amount</div><div class="bank-detail-value gold" id="bankAmount">&pound;0.00</div></div>
                     <button class="copy-btn" onclick="copyAmount(this)">Copy</button>
                 </div>
                 <div class="bank-detail">
-                    <div class="bank-detail-left">
-                        <div class="bank-detail-label">Reference</div>
-                        <div class="bank-detail-value" id="bankRef">-</div>
-                    </div>
+                    <div class="bank-detail-left"><div class="bank-detail-label">Reference</div><div class="bank-detail-value" id="bankRef">-</div></div>
                     <button class="copy-btn" onclick="copyRef(this)">Copy</button>
                 </div>
-                <div class="copy-all-wrap">
-                    <button class="copy-all-btn" id="copyAllBtn" onclick="copyAll(this)">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                        Copy All Details
-                    </button>
-                </div>
+                <button class="copy-all-btn" id="copyAllBtn" onclick="copyAll(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                    Copy All Details
+                </button>
             </div>
 
             <!-- Banks -->
-            <div class="banks-card">
-                <div class="banks-card-header">
-                    <div class="banks-card-title">Open Your Bank</div>
-                    <div class="banks-card-sub">Tap your bank &mdash; details copied automatically</div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+                    <div><div class="card-title">Open Your Bank</div><div class="card-subtitle">Details auto-copied when you tap</div></div>
                 </div>
 
                 <div class="banks-grid" id="mainBanks"></div>
@@ -688,14 +523,13 @@
 
             <!-- Confirm -->
             <div class="confirm-section">
-                <button class="confirm-btn" onclick="confirmPayment()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-                    I've Sent the Payment
+                <button class="confirm-btn" onclick="startVerification()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+                    Verify Payment
                 </button>
-                <div class="confirm-note">Show the confirmation screen to your barber</div>
+                <div class="confirm-note">You'll need your bank's payment reference to confirm</div>
             </div>
 
-            <!-- Footer -->
             <div class="footer">
                 <div class="secure-line">
                     <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
@@ -707,16 +541,18 @@
 
         <!-- Success -->
         <div id="successScreen" class="success-screen">
-            <div class="success-circle">
-                <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-            </div>
-            <h2>Payment Sent!</h2>
+            <div class="success-circle"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <h2>Payment Verified!</h2>
             <p class="success-sub">Thank you for your payment</p>
             <div class="success-amount" id="successAmount">&pound;0.00</div>
             <div class="success-ref">Ref: <span id="successRef">-</span></div>
             <div class="success-badge">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-                Confirmed
+                Verified
+            </div>
+            <div class="success-verify-code">
+                <div class="success-verify-label">Verification Code</div>
+                <div class="success-verify-value" id="successCode">-</div>
             </div>
             <div class="success-show-staff">Show this screen to your barber</div>
         </div>
@@ -729,12 +565,41 @@
         </div>
     </div>
 
+    <!-- Verification Overlay -->
+    <div class="verify-overlay" id="verifyOverlay">
+        <div class="verify-card">
+            <div class="verify-icon">
+                <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>
+            </div>
+            <div class="verify-title">Confirm Payment</div>
+            <div class="verify-sub">Enter the payment reference or confirmation code from your banking app to verify.</div>
+
+            <div class="verify-input-wrap">
+                <div class="verify-label">Bank payment reference</div>
+                <input type="text" class="verify-input" id="verifyInput" placeholder="e.g. FP-123456789" autocomplete="off" maxlength="30">
+                <div class="verify-error" id="verifyError"></div>
+            </div>
+
+            <div class="verify-hint">
+                <strong>Where to find this:</strong><br>
+                Open your banking app &rarr; Recent payments &rarr; Copy the reference or confirmation number shown for this payment.
+            </div>
+
+            <button class="verify-submit" id="verifySubmit" onclick="submitVerification()">
+                <div class="spinner"></div>
+                <span class="btn-label">Verify &amp; Confirm</span>
+            </button>
+
+            <button class="verify-cancel" onclick="cancelVerification()">Cancel</button>
+        </div>
+    </div>
+
     <!-- Routing Toast -->
     <div class="routing-toast" id="routingToast">
-        <img class="routing-toast-icon" id="routingToastIcon" src="" alt="">
+        <div class="routing-toast-logo" id="routingToastLogo"></div>
         <div class="routing-toast-text">
             <div class="routing-toast-title" id="routingToastTitle">Opening bank...</div>
-            <div class="routing-toast-sub" id="routingToastSub">Details copied to clipboard</div>
+            <div class="routing-toast-sub">Payment details copied to clipboard</div>
         </div>
         <div class="routing-toast-loader"></div>
     </div>
@@ -747,7 +612,7 @@
 
     <script>
         // ============================================
-        // SERVICES DATA
+        // SERVICES
         // ============================================
         var services = {
             'golden-luxury': { name: 'Golden Luxury', price: 45 },
@@ -766,54 +631,51 @@
             'mask-treatment': { name: 'Black or Mud Mask', price: 5 }
         };
 
-        var BANK = {
-            name: 'GOLDEN BARBERS LTD',
-            sortCode: '30-98-97',
-            sortCodeRaw: '309897',
-            accountNumber: '58413368'
-        };
+        var BANK = { name:'GOLDEN BARBERS LTD', sortCode:'30-98-97', sortCodeRaw:'309897', accountNumber:'58413368' };
 
         // ============================================
-        // BANK DEFINITIONS - with logos + deep links
+        // BANK DEFINITIONS
         // ============================================
         var BANKS_MAIN = [
-            { id: 'barclays', name: 'Barclays', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Barclays-Logo.svg/120px-Barclays-Logo.svg.png', ios: 'barclays-mobile-banking://', android: 'com.barclays.android.barclaysmobilebanking', web: 'https://bank.barclays.co.uk' },
-            { id: 'hsbc', name: 'HSBC', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/HSBC_logo_%282018%29.svg/120px-HSBC_logo_%282018%29.svg.png', ios: 'hsbcpersonalbanking://', android: 'com.hsbc.hsbcukmobilebanking', web: 'https://www.hsbc.co.uk' },
-            { id: 'lloyds', name: 'Lloyds', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Lloyds-logo.PNG/120px-Lloyds-logo.PNG', ios: 'lloydsbank://', android: 'com.grppl.android.shell.CMBlloydsTSB73', web: 'https://www.lloydsbank.com' },
-            { id: 'natwest', name: 'NatWest', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Natwest_2014_logo.svg/120px-Natwest_2014_logo.svg.png', ios: 'natwest://', android: 'com.natwest.nol', web: 'https://www.natwest.com' },
-            { id: 'monzo', name: 'Monzo', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Monzo_2016_logo.svg/120px-Monzo_2016_logo.svg.png', ios: 'monzo://', android: 'co.uk.getmondo', web: 'https://monzo.com' },
-            { id: 'revolut', name: 'Revolut', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Revolut_logo.svg/120px-Revolut_logo.svg.png', ios: 'revolut://', android: 'com.revolut.revolut', web: 'https://www.revolut.com' },
-            { id: 'starling', name: 'Starling', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Starling_Bank_Logo.svg/120px-Starling_Bank_Logo.svg.png', ios: 'starlingbank://', android: 'com.starlingbank.android', web: 'https://www.starlingbank.com' },
-            { id: 'santander', name: 'Santander', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Banco_Santander_Logotipo.svg/120px-Banco_Santander_Logotipo.svg.png', ios: 'santander://', android: 'uk.co.santander.santanderUK', web: 'https://www.santander.co.uk' }
+            { id:'barclays', name:'Barclays', color:'#00aeef', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Barclays-Logo.svg/120px-Barclays-Logo.svg.png', ios:'barclays-mobile-banking://', android:'com.barclays.android.barclaysmobilebanking', web:'https://bank.barclays.co.uk' },
+            { id:'hsbc', name:'HSBC', color:'#db0011', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/HSBC_logo_%282018%29.svg/120px-HSBC_logo_%282018%29.svg.png', ios:'hsbcpersonalbanking://', android:'com.hsbc.hsbcukmobilebanking', web:'https://www.hsbc.co.uk' },
+            { id:'lloyds', name:'Lloyds', color:'#006a4d', logo:'https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Lloyds_Banking_Group_logo.svg/120px-Lloyds_Banking_Group_logo.svg.png', ios:'lloydsbank://', android:'com.grppl.android.shell.CMBlloydsTSB73', web:'https://www.lloydsbank.com' },
+            { id:'natwest', name:'NatWest', color:'#5b2d8e', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Natwest_2014_logo.svg/120px-Natwest_2014_logo.svg.png', ios:'natwest://', android:'com.natwest.nol', web:'https://www.natwest.com' },
+            { id:'monzo', name:'Monzo', color:'#ff5c5c', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Monzo_2016_logo.svg/120px-Monzo_2016_logo.svg.png', ios:'monzo://', android:'co.uk.getmondo', web:'https://monzo.com' },
+            { id:'revolut', name:'Revolut', color:'#0666eb', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Revolut_logo.svg/120px-Revolut_logo.svg.png', ios:'revolut://', android:'com.revolut.revolut', web:'https://www.revolut.com' },
+            { id:'starling', name:'Starling', color:'#6935d3', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Starling_Bank_Logo.svg/120px-Starling_Bank_Logo.svg.png', ios:'starlingbank://', android:'com.starlingbank.android', web:'https://www.starlingbank.com' },
+            { id:'santander', name:'Santander', color:'#ec0000', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Banco_Santander_Logotipo.svg/120px-Banco_Santander_Logotipo.svg.png', ios:'santander://', android:'uk.co.santander.santanderUK', web:'https://www.santander.co.uk' }
         ];
 
         var BANKS_MORE = [
-            { id: 'halifax', name: 'Halifax', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Halifax_logo.svg/120px-Halifax_logo.svg.png', ios: 'halifax://', android: 'com.grppl.android.shell.halifax', web: 'https://www.halifax.co.uk' },
-            { id: 'nationwide', name: 'Nationwide', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Nationwide_Building_Society_logo.svg/120px-Nationwide_Building_Society_logo.svg.png', ios: 'nationwide://', android: 'co.uk.nationwide.mobile', web: 'https://www.nationwide.co.uk' },
-            { id: 'tsb', name: 'TSB', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/TSB_logo_2013.svg/120px-TSB_logo_2013.svg.png', ios: 'tsb://', android: 'uk.co.tsb.newmobilebank', web: 'https://www.tsb.co.uk' },
-            { id: 'chase', name: 'Chase', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Chase_logo_2021.svg/120px-Chase_logo_2021.svg.png', ios: 'chase-uk://', android: 'com.chase.intl', web: 'https://www.chase.co.uk' },
-            { id: 'rbs', name: 'RBS', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Royal_Bank_of_Scotland_logo_%28old%29.svg/120px-Royal_Bank_of_Scotland_logo_%28old%29.svg.png', ios: 'rbs://', android: 'com.rbs.mobile.android.natwest', web: 'https://www.rbs.co.uk' },
-            { id: 'firstdirect', name: 'First Direct', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/First_Direct_logo.svg/120px-First_Direct_logo.svg.png', ios: 'firstdirect://', android: 'com.firstdirect.bankingonthego', web: 'https://www.firstdirect.com' },
-            { id: 'tide', name: 'Tide', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Tide_platform_logo.svg/120px-Tide_platform_logo.svg.png', ios: 'tide://', android: 'com.tideplatform.banking', web: 'https://www.tide.co' },
-            { id: 'virgin', name: 'Virgin Money', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Virgin-logo.svg/120px-Virgin-logo.svg.png', ios: 'virginmoney://', android: 'uk.co.virginmoney.hilmobility', web: 'https://www.virginmoney.com' }
+            { id:'halifax', name:'Halifax', color:'#006eb6', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Halifax_logo.svg/120px-Halifax_logo.svg.png', ios:'halifax://', android:'com.grppl.android.shell.halifax', web:'https://www.halifax.co.uk' },
+            { id:'nationwide', name:'Nationwide', color:'#003366', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Nationwide_Building_Society_logo.svg/120px-Nationwide_Building_Society_logo.svg.png', ios:'nationwide://', android:'co.uk.nationwide.mobile', web:'https://www.nationwide.co.uk' },
+            { id:'tsb', name:'TSB', color:'#003087', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/TSB_logo_2013.svg/120px-TSB_logo_2013.svg.png', ios:'tsb://', android:'uk.co.tsb.newmobilebank', web:'https://www.tsb.co.uk' },
+            { id:'chase', name:'Chase UK', color:'#117aca', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Chase_logo_2021.svg/120px-Chase_logo_2021.svg.png', ios:'chase-uk://', android:'com.chase.intl', web:'https://www.chase.co.uk' },
+            { id:'firstdirect', name:'First Direct', color:'#2d2d2d', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/First_Direct_logo.svg/120px-First_Direct_logo.svg.png', ios:'firstdirect://', android:'com.firstdirect.bankingonthego', web:'https://www.firstdirect.com' },
+            { id:'virgin', name:'Virgin Money', color:'#e10a0a', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Virgin-logo.svg/120px-Virgin-logo.svg.png', ios:'virginmoney://', android:'uk.co.virginmoney.hilmobility', web:'https://www.virginmoney.com' },
+            { id:'tide', name:'Tide', color:'#6c60e0', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Tide_platform_logo.svg/120px-Tide_platform_logo.svg.png', ios:'tide://', android:'com.tideplatform.banking', web:'https://www.tide.co' },
+            { id:'metro', name:'Metro Bank', color:'#00a1de', logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Metro_Bank_logo.svg/120px-Metro_Bank_logo.svg.png', ios:'metrobank://', android:'uk.co.metrobankonline.mobile.android.production', web:'https://www.metrobankonline.co.uk' }
         ];
 
-        // State
         var orderTotal = 0;
         var orderItems = [];
         var reference = '';
+        var verifyCode = '';
 
         // ============================================
         // INIT
         // ============================================
         function generateReference() {
             var now = new Date();
-            return 'GB' +
-                now.getFullYear().toString().slice(-2) +
-                ('0' + (now.getMonth() + 1)).slice(-2) +
-                ('0' + now.getDate()).slice(-2) +
-                ('0' + now.getHours()).slice(-2) +
-                ('0' + now.getMinutes()).slice(-2);
+            return 'GB' + now.getFullYear().toString().slice(-2) + ('0'+(now.getMonth()+1)).slice(-2) + ('0'+now.getDate()).slice(-2) + ('0'+now.getHours()).slice(-2) + ('0'+now.getMinutes()).slice(-2);
+        }
+
+        function generateVerifyCode() {
+            var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            var code = '';
+            for (var i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+            return code;
         }
 
         function getServicesFromUrl() {
@@ -825,13 +687,14 @@
 
         function init() {
             reference = generateReference();
+            verifyCode = generateVerifyCode();
             var servicesStr = getServicesFromUrl();
             var serviceIds = servicesStr ? servicesStr.split(',') : [];
 
             serviceIds.forEach(function(id) {
                 var service = services[id.trim()];
                 if (service) {
-                    orderItems.push({ id: id.trim(), name: service.name, price: service.price });
+                    orderItems.push({ id:id.trim(), name:service.name, price:service.price });
                     orderTotal += service.price;
                 }
             });
@@ -850,112 +713,129 @@
         }
 
         function renderOrder() {
-            var totalStr = '\u00a3' + orderTotal.toFixed(2);
-            document.getElementById('totalAmount').textContent = totalStr;
-
-            var count = orderItems.length;
-            document.getElementById('servicesSummary').textContent = count + ' service' + (count > 1 ? 's' : '');
-
-            document.getElementById('servicesDetailInner').innerHTML = orderItems.map(function(item) {
-                return '<div class="service-line"><span class="service-line-name">' + item.name + '</span><span class="service-line-price">\u00a3' + item.price.toFixed(2) + '</span></div>';
+            var t = '\u00a3' + orderTotal.toFixed(2);
+            document.getElementById('totalAmount').textContent = t;
+            document.getElementById('servicesSummary').textContent = orderItems.length + ' service' + (orderItems.length > 1 ? 's' : '');
+            document.getElementById('servicesDetailInner').innerHTML = orderItems.map(function(i) {
+                return '<div class="service-line"><span class="service-line-name">'+i.name+'</span><span class="service-line-price">\u00a3'+i.price.toFixed(2)+'</span></div>';
             }).join('');
-
-            document.getElementById('bankAmount').textContent = totalStr;
+            document.getElementById('bankAmount').textContent = t;
             document.getElementById('bankRef').textContent = reference;
         }
 
         function renderBanks() {
-            document.getElementById('mainBanks').innerHTML = BANKS_MAIN.map(function(b) { return bankBtnHtml(b); }).join('');
-            document.getElementById('moreBanks').innerHTML = BANKS_MORE.map(function(b) { return bankBtnHtml(b); }).join('');
+            document.getElementById('mainBanks').innerHTML = BANKS_MAIN.map(bankHtml).join('');
+            document.getElementById('moreBanks').innerHTML = BANKS_MORE.map(bankHtml).join('');
         }
 
-        function bankBtnHtml(bank) {
-            return '<button class="bank-btn" onclick="routeToBank(\'' + bank.id + '\')" data-bank="' + bank.id + '">' +
-                '<div class="routing-indicator"></div>' +
-                '<img class="bank-btn-logo" src="' + bank.logo + '" alt="' + bank.name + '" onerror="this.style.background=\'var(--gray-dark)\';this.style.padding=\'0\';this.alt=\'' + bank.name.charAt(0) + '\';this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 font-size=%2216%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22bold%22>' + bank.name.charAt(0) + '</text></svg>\'">' +
-                '<div class="bank-btn-name">' + bank.name + '</div>' +
+        function bankHtml(b) {
+            return '<button class="bank-btn" onclick="routeToBank(\''+b.id+'\')">' +
+                '<div class="bank-btn-logo" style="background:'+b.color+'">' +
+                    '<img src="'+b.logo+'" alt="'+b.name+'" onerror="this.remove();this.parentElement.textContent=\''+b.name.charAt(0)+'\'">' +
+                '</div>' +
+                '<div class="bank-btn-text">' +
+                    '<div class="bank-btn-name">'+b.name+'</div>' +
+                    '<div class="bank-btn-type">Open app</div>' +
+                '</div>' +
+                '<svg class="bank-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>' +
             '</button>';
         }
 
         // ============================================
         // BANK ROUTING
         // ============================================
-        function getAllPaymentText() {
-            return 'Sort Code: ' + BANK.sortCode + '\n' +
-                'Account: ' + BANK.accountNumber + '\n' +
-                'Amount: \u00a3' + orderTotal.toFixed(2) + '\n' +
-                'Ref: ' + reference + '\n' +
-                'To: ' + BANK.name;
-        }
-
         function routeToBank(bankId) {
-            var bank = BANKS_MAIN.concat(BANKS_MORE).find(function(b) { return b.id === bankId; });
+            var bank = BANKS_MAIN.concat(BANKS_MORE).find(function(b){return b.id===bankId;});
             if (!bank) return;
 
-            // 1. Copy all payment details to clipboard first
-            var allText = getAllPaymentText();
-            navigator.clipboard.writeText(allText).catch(function() {
-                // Fallback
-                var ta = document.createElement('textarea');
-                ta.value = allText;
-                ta.style.cssText = 'position:fixed;opacity:0';
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
+            var allText = 'Sort Code: '+BANK.sortCode+'\nAccount: '+BANK.accountNumber+'\nAmount: \u00a3'+orderTotal.toFixed(2)+'\nRef: '+reference+'\nTo: '+BANK.name;
+            navigator.clipboard.writeText(allText).catch(function(){
+                var ta=document.createElement('textarea'); ta.value=allText; ta.style.cssText='position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
             });
 
-            // 2. Show routing toast
             var toast = document.getElementById('routingToast');
-            document.getElementById('routingToastIcon').src = bank.logo;
+            var logoEl = document.getElementById('routingToastLogo');
+            logoEl.style.background = bank.color;
+            logoEl.innerHTML = '<img src="'+bank.logo+'" alt="'+bank.name+'" style="width:100%;height:100%;object-fit:contain;padding:4px" onerror="this.remove();this.parentElement.textContent=\''+bank.name.charAt(0)+'\'">';
             document.getElementById('routingToastTitle').textContent = 'Opening ' + bank.name + '...';
-            document.getElementById('routingToastSub').textContent = 'Payment details copied to clipboard';
             toast.classList.add('show');
 
-            // 3. Detect platform and route
             var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
             var isAndroid = /android/i.test(navigator.userAgent);
 
-            var appOpened = false;
-
             if (isIOS && bank.ios) {
-                // iOS: try URL scheme, fall back to web
                 var start = Date.now();
                 window.location.href = bank.ios;
-
                 setTimeout(function() {
-                    // If still here after 1.5s, app didn't open
-                    if (Date.now() - start < 2000) {
-                        window.open(bank.web, '_blank');
-                    }
-                    hideRoutingToast();
+                    if (Date.now() - start < 2000) window.open(bank.web,'_blank');
+                    toast.classList.remove('show');
                 }, 1500);
             } else if (isAndroid && bank.android) {
-                // Android: try intent URL
-                var intentUrl = 'intent://#Intent;package=' + bank.android + ';end';
-                window.location.href = intentUrl;
-
-                setTimeout(function() {
-                    // Fallback to web
-                    window.open(bank.web, '_blank');
-                    hideRoutingToast();
-                }, 1500);
+                window.location.href = 'intent://#Intent;package='+bank.android+';end';
+                setTimeout(function() { window.open(bank.web,'_blank'); toast.classList.remove('show'); }, 1500);
             } else {
-                // Desktop or unknown: open bank website
                 window.open(bank.web, '_blank');
-                setTimeout(hideRoutingToast, 2000);
+                setTimeout(function() { toast.classList.remove('show'); }, 2000);
             }
 
-            // Show confirmation toast
-            showToast('Details copied \u2014 paste in your banking app');
-        }
-
-        function hideRoutingToast() {
-            document.getElementById('routingToast').classList.remove('show');
+            showToast('Details copied \u2014 paste in your bank app');
         }
 
         // ============================================
-        // UI INTERACTIONS
+        // VERIFICATION FLOW
+        // ============================================
+        function startVerification() {
+            document.getElementById('verifyOverlay').classList.add('show');
+            document.getElementById('verifyInput').value = '';
+            document.getElementById('verifyError').textContent = '';
+            setTimeout(function() { document.getElementById('verifyInput').focus(); }, 300);
+        }
+
+        function cancelVerification() {
+            document.getElementById('verifyOverlay').classList.remove('show');
+        }
+
+        function submitVerification() {
+            var input = document.getElementById('verifyInput').value.trim();
+            var errorEl = document.getElementById('verifyError');
+            var btn = document.getElementById('verifySubmit');
+
+            if (input.length < 3) {
+                errorEl.textContent = 'Please enter a valid payment reference from your banking app.';
+                return;
+            }
+
+            errorEl.textContent = '';
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            // Simulate verification processing
+            setTimeout(function() {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+                document.getElementById('verifyOverlay').classList.remove('show');
+
+                // Show success
+                document.getElementById('paymentContent').classList.remove('show');
+                var s = document.getElementById('successScreen');
+                s.classList.add('show');
+                document.getElementById('successAmount').textContent = '\u00a3'+orderTotal.toFixed(2);
+                document.getElementById('successRef').textContent = reference;
+                document.getElementById('successCode').textContent = verifyCode;
+                window.scrollTo({top:0, behavior:'smooth'});
+            }, 2500);
+        }
+
+        // Enter key on verify input
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('verifyInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') submitVerification();
+            });
+        });
+
+        // ============================================
+        // UI
         // ============================================
         function toggleServices() {
             document.getElementById('servicesToggle').classList.toggle('open');
@@ -967,77 +847,47 @@
             var btn = document.getElementById('moreBanksToggle');
             var isOpen = el.classList.toggle('open');
             btn.classList.toggle('open');
-            document.getElementById('moreBanksText').textContent = isOpen ? 'Show fewer banks' : 'Show more banks';
+            document.getElementById('moreBanksText').textContent = isOpen ? 'Show fewer' : 'Show more banks';
         }
 
         function showToast(text) {
-            var toast = document.getElementById('toast');
+            var t = document.getElementById('toast');
             document.getElementById('toastText').textContent = text;
-            toast.classList.add('show');
-            clearTimeout(showToast._timer);
-            showToast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2500);
+            t.classList.add('show');
+            clearTimeout(showToast._t);
+            showToast._t = setTimeout(function(){t.classList.remove('show');}, 2500);
         }
 
         function copyText(text, btn) {
-            navigator.clipboard.writeText(text).then(function() {
-                doCopied(btn);
-            }).catch(function() {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.cssText = 'position:fixed;opacity:0';
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
+            navigator.clipboard.writeText(text).then(function(){ doCopied(btn); }).catch(function(){
+                var ta=document.createElement('textarea'); ta.value=text; ta.style.cssText='position:fixed;opacity:0';
+                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
                 doCopied(btn);
             });
         }
 
         function doCopied(btn) {
-            var orig = btn.textContent;
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
+            var o=btn.textContent; btn.textContent='Copied!'; btn.classList.add('copied');
             showToast('Copied to clipboard');
-            setTimeout(function() { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+            setTimeout(function(){btn.textContent=o;btn.classList.remove('copied');},2000);
         }
 
-        function copyAmount(btn) { copyText(orderTotal.toFixed(2), btn); }
-        function copyRef(btn) { copyText(reference, btn); }
+        function copyAmount(btn){copyText(orderTotal.toFixed(2),btn);}
+        function copyRef(btn){copyText(reference,btn);}
 
         function copyAll(btn) {
-            var allText =
-                'Golden Barbers Payment\n' +
-                '\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n' +
-                'Account: ' + BANK.name + '\n' +
-                'Sort Code: ' + BANK.sortCode + '\n' +
-                'Account No: ' + BANK.accountNumber + '\n' +
-                'Amount: \u00a3' + orderTotal.toFixed(2) + '\n' +
-                'Reference: ' + reference + '\n' +
-                '\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500';
-
-            navigator.clipboard.writeText(allText).then(function() {
+            var t='Golden Barbers Payment\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nAccount: '+BANK.name+'\nSort Code: '+BANK.sortCode+'\nAccount No: '+BANK.accountNumber+'\nAmount: \u00a3'+orderTotal.toFixed(2)+'\nReference: '+reference+'\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500';
+            navigator.clipboard.writeText(t).then(function(){
                 btn.classList.add('copied');
-                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> All Details Copied!';
+                btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> All Details Copied!';
                 showToast('All payment details copied');
-                setTimeout(function() {
+                setTimeout(function(){
                     btn.classList.remove('copied');
-                    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy All Details';
-                }, 3000);
-            }).catch(function() { showToast('Could not copy \u2014 please copy manually'); });
+                    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy All Details';
+                },3000);
+            }).catch(function(){showToast('Could not copy');});
         }
 
-        function confirmPayment() {
-            document.getElementById('paymentContent').classList.remove('show');
-            var s = document.getElementById('successScreen');
-            s.classList.add('show');
-            document.getElementById('successAmount').textContent = '\u00a3' + orderTotal.toFixed(2);
-            document.getElementById('successRef').textContent = reference;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // ============================================
-        // START
-        // ============================================
         setTimeout(init, 350);
     </script>
 </body>
