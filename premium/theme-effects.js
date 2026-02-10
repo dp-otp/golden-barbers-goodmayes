@@ -1,7 +1,9 @@
 /**
- * Golden Barbers - Premium Seasonal Theme Effects v4
- * Agency-quality seasonal theming. Brand gold STAYS - seasonal colors
- * come through decorations, logo glow, and creative elements only.
+ * Golden Barbers - Premium Seasonal Theme Effects v5
+ * ═══════════════════════════════════════════════════
+ * REALISTIC SVG illustrations, celebration banners,
+ * premium creative elements. Brand gold STAYS -
+ * seasonal color through decorations only.
  *
  * Usage: GBThemeEffects.apply(firebaseThemeData)
  *        GBThemeEffects.remove()
@@ -10,26 +12,235 @@
     'use strict';
 
     var state = {
-        container: null,    // Particle overlay
-        toast: null,        // Toast notification
-        border: null,       // Top border accent
-        style: null,        // Injected stylesheet
-        navLine: null,      // Nav accent line
-        corners: [],        // Corner ornament elements
-        creative: null,     // Creative element (lights, fog, etc.)
-        atmosphere: null,   // Atmosphere overlay
-        logoDeco: [],       // Logo decorations (hat)
-        savedNeon: null,    // Original neon circle styles
-        savedNavGlow: null, // Original nav logo styles
+        container: null,
+        toast: null,
+        border: null,
+        style: null,
+        navLine: null,
+        corners: [],
+        creative: null,
+        creativeExtra: [],
+        atmosphere: null,
+        logoDeco: [],
+        banner: null,
+        savedNeon: null,
+        savedNavGlow: null,
         id: null
     };
     var isMobile = window.innerWidth < 768;
 
     /* ═══════════════════════════════════════════
-       SVG ASSETS
+       SVG LIBRARY - Realistic Illustrations
+       Each is a detailed, hand-crafted SVG
     ═══════════════════════════════════════════ */
 
-    /* Realistic Santa Hat - fabric gradients, fur trim, pompom */
+    /* ── Snowflake Variants (crystal arm patterns) ── */
+    function snowflakeSVG(variant) {
+        var paths = '';
+        if (variant === 0) {
+            // 6-arm crystal with dendrites
+            paths = '<line x1="50" y1="5" x2="50" y2="95" stroke="FG" stroke-width="2" stroke-linecap="round"/>' +
+                '<line x1="11" y1="27.5" x2="89" y2="72.5" stroke="FG" stroke-width="2" stroke-linecap="round"/>' +
+                '<line x1="11" y1="72.5" x2="89" y2="27.5" stroke="FG" stroke-width="2" stroke-linecap="round"/>' +
+                '<line x1="50" y1="18" x2="38" y2="10" stroke="FG" stroke-width="1.5" stroke-linecap="round"/>' +
+                '<line x1="50" y1="18" x2="62" y2="10" stroke="FG" stroke-width="1.5" stroke-linecap="round"/>' +
+                '<line x1="50" y1="82" x2="38" y2="90" stroke="FG" stroke-width="1.5" stroke-linecap="round"/>' +
+                '<line x1="50" y1="82" x2="62" y2="90" stroke="FG" stroke-width="1.5" stroke-linecap="round"/>' +
+                '<line x1="24" y1="35" x2="14" y2="28" stroke="FG" stroke-width="1.5" stroke-linecap="round"/>' +
+                '<line x1="24" y1="35" x2="18" y2="44" stroke="FG" stroke-width="1.5" stroke-linecap="round"/>' +
+                '<line x1="76" y1="65" x2="86" y2="72" stroke="FG" stroke-width="1.5" stroke-linecap="round"/>' +
+                '<line x1="76" y1="65" x2="82" y2="56" stroke="FG" stroke-width="1.5" stroke-linecap="round"/>' +
+                '<line x1="24" y1="65" x2="14" y2="72" stroke="FG" stroke-width="1.5" stroke-linecap="round"/>' +
+                '<line x1="24" y1="65" x2="18" y2="56" stroke="FG" stroke-width="1.5" stroke-linecap="round"/>' +
+                '<line x1="76" y1="35" x2="86" y2="28" stroke="FG" stroke-width="1.5" stroke-linecap="round"/>' +
+                '<line x1="76" y1="35" x2="82" y2="44" stroke="FG" stroke-width="1.5" stroke-linecap="round"/>' +
+                '<circle cx="50" cy="50" r="4" fill="FG" opacity="0.6"/>';
+        } else if (variant === 1) {
+            // Plate snowflake with hexagonal center
+            paths = '<polygon points="50,8 54,20 50,16 46,20" fill="FG" opacity="0.7"/>' +
+                '<polygon points="50,92 54,80 50,84 46,80" fill="FG" opacity="0.7"/>' +
+                '<polygon points="86,29 76,35 78,30 72,28" fill="FG" opacity="0.7"/>' +
+                '<polygon points="14,71 24,65 22,70 28,72" fill="FG" opacity="0.7"/>' +
+                '<polygon points="86,71 76,65 78,70 72,72" fill="FG" opacity="0.7"/>' +
+                '<polygon points="14,29 24,35 22,30 28,28" fill="FG" opacity="0.7"/>' +
+                '<line x1="50" y1="5" x2="50" y2="95" stroke="FG" stroke-width="1.8" stroke-linecap="round"/>' +
+                '<line x1="11" y1="27.5" x2="89" y2="72.5" stroke="FG" stroke-width="1.8" stroke-linecap="round"/>' +
+                '<line x1="11" y1="72.5" x2="89" y2="27.5" stroke="FG" stroke-width="1.8" stroke-linecap="round"/>' +
+                '<circle cx="50" cy="50" r="8" fill="none" stroke="FG" stroke-width="1.5"/>' +
+                '<circle cx="50" cy="50" r="3" fill="FG" opacity="0.5"/>';
+        } else {
+            // Fernlike dendrite
+            paths = '<line x1="50" y1="5" x2="50" y2="95" stroke="FG" stroke-width="2" stroke-linecap="round"/>' +
+                '<line x1="11" y1="27.5" x2="89" y2="72.5" stroke="FG" stroke-width="2" stroke-linecap="round"/>' +
+                '<line x1="11" y1="72.5" x2="89" y2="27.5" stroke="FG" stroke-width="2" stroke-linecap="round"/>' +
+                '<line x1="50" y1="24" x2="40" y2="14" stroke="FG" stroke-width="1.2" stroke-linecap="round"/>' +
+                '<line x1="50" y1="24" x2="60" y2="14" stroke="FG" stroke-width="1.2" stroke-linecap="round"/>' +
+                '<line x1="50" y1="36" x2="42" y2="28" stroke="FG" stroke-width="1" stroke-linecap="round"/>' +
+                '<line x1="50" y1="36" x2="58" y2="28" stroke="FG" stroke-width="1" stroke-linecap="round"/>' +
+                '<line x1="50" y1="64" x2="42" y2="72" stroke="FG" stroke-width="1" stroke-linecap="round"/>' +
+                '<line x1="50" y1="64" x2="58" y2="72" stroke="FG" stroke-width="1" stroke-linecap="round"/>' +
+                '<line x1="50" y1="76" x2="40" y2="86" stroke="FG" stroke-width="1.2" stroke-linecap="round"/>' +
+                '<line x1="50" y1="76" x2="60" y2="86" stroke="FG" stroke-width="1.2" stroke-linecap="round"/>' +
+                '<line x1="30" y1="38" x2="20" y2="32" stroke="FG" stroke-width="1" stroke-linecap="round"/>' +
+                '<line x1="30" y1="38" x2="22" y2="46" stroke="FG" stroke-width="1" stroke-linecap="round"/>' +
+                '<line x1="70" y1="62" x2="80" y2="68" stroke="FG" stroke-width="1" stroke-linecap="round"/>' +
+                '<line x1="70" y1="62" x2="78" y2="54" stroke="FG" stroke-width="1" stroke-linecap="round"/>' +
+                '<circle cx="50" cy="50" r="3" fill="FG" opacity="0.5"/>';
+        }
+        return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' + paths + '</svg>';
+    }
+
+    /* ── Heart SVG with glossy highlight ── */
+    var HEART_SVG = '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs><radialGradient id="gbHS" cx="0.35" cy="0.3" r="0.65">' +
+            '<stop offset="0%" stop-color="rgba(255,255,255,0.4)"/>' +
+            '<stop offset="100%" stop-color="rgba(255,255,255,0)"/>' +
+        '</radialGradient></defs>' +
+        '<path d="M50 88 C25 65, 2 45, 2 28 C2 12, 15 2, 28 2 C37 2, 45 8, 50 18 C55 8, 63 2, 72 2 C85 2, 98 12, 98 28 C98 45, 75 65, 50 88Z" fill="FG"/>' +
+        '<path d="M50 88 C25 65, 2 45, 2 28 C2 12, 15 2, 28 2 C37 2, 45 8, 50 18 C55 8, 63 2, 72 2 C85 2, 98 12, 98 28 C98 45, 75 65, 50 88Z" fill="url(#gbHS)"/>' +
+        '<ellipse cx="30" cy="28" rx="14" ry="10" fill="rgba(255,255,255,0.2)" transform="rotate(-25 30 28)"/>' +
+    '</svg>';
+
+    /* ── Bat SVG (detailed wing silhouette) ── */
+    var BAT_SVG = '<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">' +
+        '<path d="M60 30 C58 24, 50 10, 38 8 C30 6, 18 14, 8 6 C4 2, 2 0, 0 2 C2 10, 8 18, 14 22 C8 20, 4 22, 2 28 C6 26, 12 26, 18 28 C12 28, 8 32, 4 36 C10 34, 16 32, 22 32 C28 34, 40 40, 50 44 L60 48 L70 44 C80 40, 92 34, 98 32 C104 32, 110 34, 116 36 C112 32, 108 28, 102 28 C108 26, 114 26, 118 28 C116 22, 112 20, 106 22 C112 18, 118 10, 120 2 C118 0, 116 2, 112 6 C102 14, 90 6, 82 8 C70 10, 62 24, 60 30Z" fill="FG"/>' +
+        '<circle cx="52" cy="26" r="2.5" fill="GLOW" opacity="0.8"/>' +
+        '<circle cx="68" cy="26" r="2.5" fill="GLOW" opacity="0.8"/>' +
+    '</svg>';
+
+    /* ── Pumpkin SVG (jack-o-lantern with face) ── */
+    var PUMPKIN_SVG = '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs>' +
+            '<radialGradient id="gbPK" cx="0.45" cy="0.5" r="0.55">' +
+                '<stop offset="0%" stop-color="#FF8F00"/>' +
+                '<stop offset="80%" stop-color="#E65100"/>' +
+                '<stop offset="100%" stop-color="#BF360C"/>' +
+            '</radialGradient>' +
+        '</defs>' +
+        '<ellipse cx="50" cy="58" rx="38" ry="34" fill="url(#gbPK)"/>' +
+        '<ellipse cx="36" cy="58" rx="16" ry="33" fill="rgba(255,160,0,0.3)"/>' +
+        '<ellipse cx="64" cy="58" rx="16" ry="33" fill="rgba(191,54,12,0.2)"/>' +
+        '<path d="M44 18 C46 8, 54 8, 56 18 L54 22 C52 16, 48 16, 46 22Z" fill="#2E7D32"/>' +
+        '<path d="M50 22 C52 12, 60 6, 66 10" stroke="#1B5E20" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
+        '<polygon points="36,48 40,58 32,58" fill="#1A1A00"/>' +
+        '<polygon points="64,48 68,58 60,58" fill="#1A1A00"/>' +
+        '<path d="M36 68 C38 72, 42 76, 46 74 C48 72, 52 72, 54 74 C58 76, 62 72, 64 68" stroke="#1A1A00" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+        '<circle cx="36" cy="54" r="1" fill="#FFE082" opacity="0.8"/>' +
+        '<circle cx="64" cy="54" r="1" fill="#FFE082" opacity="0.8"/>' +
+    '</svg>';
+
+    /* ── Star SVG (5-point with inner glow) ── */
+    function starSVG(fillColor) {
+        return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+            '<defs><radialGradient id="gbSG" cx="0.5" cy="0.5" r="0.5">' +
+                '<stop offset="0%" stop-color="rgba(255,255,255,0.35)"/>' +
+                '<stop offset="100%" stop-color="rgba(255,255,255,0)"/>' +
+            '</radialGradient></defs>' +
+            '<polygon points="50,5 61,38 97,38 68,60 79,93 50,72 21,93 32,60 3,38 39,38" fill="' + fillColor + '"/>' +
+            '<polygon points="50,5 61,38 97,38 68,60 79,93 50,72 21,93 32,60 3,38 39,38" fill="url(#gbSG)"/>' +
+            '<polygon points="50,22 56,42 76,42 60,54 66,74 50,62 34,74 40,54 24,42 44,42" fill="rgba(255,255,255,0.12)"/>' +
+        '</svg>';
+    }
+
+    /* ── Easter Egg SVG ── */
+    function easterEggSVG(color1, color2) {
+        return '<svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">' +
+            '<defs><linearGradient id="gbEG" x1="0" y1="0" x2="1" y2="1">' +
+                '<stop offset="0%" stop-color="' + color1 + '"/>' +
+                '<stop offset="100%" stop-color="' + color2 + '"/>' +
+            '</linearGradient></defs>' +
+            '<ellipse cx="30" cy="44" rx="24" ry="32" fill="url(#gbEG)"/>' +
+            '<path d="M8 36 Q20 30, 30 36 Q40 42, 52 36" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" fill="none"/>' +
+            '<path d="M10 48 Q20 54, 30 48 Q40 42, 50 48" stroke="rgba(255,255,255,0.25)" stroke-width="2" fill="none"/>' +
+            '<circle cx="20" cy="28" r="3" fill="rgba(255,255,255,0.2)"/>' +
+            '<circle cx="38" cy="52" r="2.5" fill="rgba(255,255,255,0.15)"/>' +
+            '<circle cx="24" cy="56" r="2" fill="rgba(255,255,255,0.18)"/>' +
+            '<ellipse cx="20" cy="30" rx="6" ry="4" fill="rgba(255,255,255,0.1)" transform="rotate(-20 20 30)"/>' +
+        '</svg>';
+    }
+
+    /* ── Crescent Moon SVG (Ramadan/Eid) ── */
+    var CRESCENT_SVG = '<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs><radialGradient id="gbCR" cx="0.3" cy="0.3" r="0.7">' +
+            '<stop offset="0%" stop-color="#FFF9C4"/>' +
+            '<stop offset="50%" stop-color="#FDD835"/>' +
+            '<stop offset="100%" stop-color="#F9A825"/>' +
+        '</radialGradient></defs>' +
+        '<circle cx="40" cy="40" r="30" fill="url(#gbCR)"/>' +
+        '<circle cx="52" cy="32" r="24" fill="BGFILL"/>' +
+        '<ellipse cx="30" cy="30" rx="8" ry="5" fill="rgba(255,255,255,0.15)" transform="rotate(-30 30 30)"/>' +
+    '</svg>';
+
+    /* ── Lantern SVG (Ramadan) ── */
+    var LANTERN_SVG = '<svg viewBox="0 0 50 90" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs><linearGradient id="gbLN" x1="0.5" y1="0" x2="0.5" y2="1">' +
+            '<stop offset="0%" stop-color="#FDD835"/>' +
+            '<stop offset="50%" stop-color="#F9A825"/>' +
+            '<stop offset="100%" stop-color="#F57F17"/>' +
+        '</linearGradient></defs>' +
+        '<rect x="18" y="5" width="14" height="6" rx="2" fill="#B8860B"/>' +
+        '<line x1="25" y1="0" x2="25" y2="5" stroke="#8D6E63" stroke-width="1.5"/>' +
+        '<path d="M14 11 Q14 35, 8 50 Q6 56, 14 60 L36 60 Q44 56, 42 50 Q36 35, 36 11Z" fill="url(#gbLN)" opacity="0.85"/>' +
+        '<path d="M14 11 Q14 35, 8 50 Q6 56, 14 60 L36 60 Q44 56, 42 50 Q36 35, 36 11Z" fill="none" stroke="#B8860B" stroke-width="1"/>' +
+        '<line x1="25" y1="14" x2="25" y2="58" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>' +
+        '<line x1="12" y1="36" x2="38" y2="36" stroke="rgba(255,255,255,0.12)" stroke-width="0.8"/>' +
+        '<ellipse cx="25" cy="40" rx="6" ry="8" fill="rgba(255,255,255,0.1)"/>' +
+        '<rect x="12" y="60" width="26" height="4" rx="1" fill="#B8860B"/>' +
+        '<path d="M20 64 L18 72 Q25 78, 32 72 L30 64" fill="#B8860B" opacity="0.6"/>' +
+    '</svg>';
+
+    /* ── Christmas Ornament Ball ── */
+    function ornamentSVG(color1, color2) {
+        return '<svg viewBox="0 0 60 75" xmlns="http://www.w3.org/2000/svg">' +
+            '<defs><radialGradient id="gbOB" cx="0.35" cy="0.3" r="0.65">' +
+                '<stop offset="0%" stop-color="' + color1 + '"/>' +
+                '<stop offset="100%" stop-color="' + color2 + '"/>' +
+            '</radialGradient></defs>' +
+            '<rect x="26" y="2" width="8" height="8" rx="2" fill="#B8860B"/>' +
+            '<line x1="30" y1="0" x2="30" y2="2" stroke="#8D6E63" stroke-width="1.5"/>' +
+            '<circle cx="30" cy="40" r="26" fill="url(#gbOB)"/>' +
+            '<ellipse cx="22" cy="30" rx="8" ry="6" fill="rgba(255,255,255,0.2)" transform="rotate(-30 22 30)"/>' +
+            '<circle cx="20" cy="28" r="3" fill="rgba(255,255,255,0.25)"/>' +
+            '<path d="M8 44 Q30 38, 52 44" stroke="rgba(255,255,255,0.12)" stroke-width="1" fill="none"/>' +
+        '</svg>';
+    }
+
+    /* ── Sun SVG (Summer) ── */
+    var SUN_SVG = '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs><radialGradient id="gbSN" cx="0.5" cy="0.5" r="0.5">' +
+            '<stop offset="0%" stop-color="#FFF9C4"/>' +
+            '<stop offset="40%" stop-color="#FFD54F"/>' +
+            '<stop offset="100%" stop-color="#FF8F00"/>' +
+        '</radialGradient></defs>' +
+        '<circle cx="50" cy="50" r="20" fill="url(#gbSN)"/>' +
+        '<g stroke="#FFB300" stroke-width="2.5" stroke-linecap="round">' +
+            '<line x1="50" y1="8" x2="50" y2="22"/>' +
+            '<line x1="50" y1="78" x2="50" y2="92"/>' +
+            '<line x1="8" y1="50" x2="22" y2="50"/>' +
+            '<line x1="78" y1="50" x2="92" y2="50"/>' +
+            '<line x1="20" y1="20" x2="30" y2="30"/>' +
+            '<line x1="70" y1="70" x2="80" y2="80"/>' +
+            '<line x1="80" y1="20" x2="70" y2="30"/>' +
+            '<line x1="20" y1="80" x2="30" y2="70"/>' +
+        '</g>' +
+        '<circle cx="42" cy="44" r="5" fill="rgba(255,255,255,0.2)"/>' +
+    '</svg>';
+
+    /* ── Flower Petal SVG (Easter/Spring) ── */
+    var FLOWER_SVG = '<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">' +
+        '<ellipse cx="30" cy="14" rx="8" ry="12" fill="FG" opacity="0.8"/>' +
+        '<ellipse cx="30" cy="46" rx="8" ry="12" fill="FG" opacity="0.7"/>' +
+        '<ellipse cx="14" cy="30" rx="12" ry="8" fill="FG" opacity="0.75"/>' +
+        '<ellipse cx="46" cy="30" rx="12" ry="8" fill="FG" opacity="0.75"/>' +
+        '<ellipse cx="18" cy="18" rx="8" ry="11" fill="FG" opacity="0.65" transform="rotate(-45 18 18)"/>' +
+        '<ellipse cx="42" cy="42" rx="8" ry="11" fill="FG" opacity="0.65" transform="rotate(-45 42 42)"/>' +
+        '<ellipse cx="42" cy="18" rx="8" ry="11" fill="FG" opacity="0.65" transform="rotate(45 42 18)"/>' +
+        '<ellipse cx="18" cy="42" rx="8" ry="11" fill="FG" opacity="0.65" transform="rotate(45 18 42)"/>' +
+        '<circle cx="30" cy="30" r="6" fill="#FFF59D"/>' +
+        '<circle cx="28" cy="28" r="2" fill="rgba(255,255,255,0.3)"/>' +
+    '</svg>';
+
+    /* ── Santa Hat SVG ── */
     var SANTA_HAT_SVG = '<svg viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">' +
         '<defs>' +
             '<linearGradient id="gbHF" x1="0.2" y1="0" x2="0.8" y2="1">' +
@@ -53,45 +264,80 @@
         '<path d="M65 18 C68 35, 76 55, 82 70 C74 60, 70 40, 66 22 Z" fill="#9B1B1B" opacity="0.25"/>' +
         '<path d="M10 70 C10 62, 25 57, 50 57 C75 57, 90 62, 90 70 C90 80, 75 84, 50 84 C25 84, 10 80, 10 70 Z" fill="url(#gbFB)"/>' +
         '<path d="M16 72 C28 66, 38 64, 50 64 C62 64, 72 66, 84 72" stroke="#E8E8E8" stroke-width="1" fill="none" opacity="0.5"/>' +
-        '<path d="M20 76 C32 72, 40 71, 50 71 C60 71, 68 72, 80 76" stroke="#DEDEDE" stroke-width="0.7" fill="none" opacity="0.35"/>' +
         '<circle cx="62" cy="8" r="10" fill="url(#gbPM)"/>' +
         '<circle cx="59" cy="5" r="3.5" fill="#fff" opacity="0.7"/>' +
-        '<circle cx="65" cy="11" r="2" fill="#D5D5D5" opacity="0.4"/>' +
     '</svg>';
 
-    /* Holly Corner SVG - top-left positioning */
-    var HOLLY_SVG = '<svg viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-        '<path d="M10 5 Q40 8, 65 30 Q80 45, 90 70 Q95 85, 100 110" stroke="#2d5a27" stroke-width="2" fill="none" opacity="0.7"/>' +
-        '<path d="M25 10 Q35 3, 48 8 Q55 0, 62 10 Q68 5, 65 18 Q55 25, 45 20 Q35 28, 28 18 Q20 22, 25 10Z" fill="#1a472a" opacity="0.85"/>' +
-        '<path d="M55 30 Q63 22, 75 28 Q82 20, 88 30 Q94 25, 90 38 Q82 45, 72 40 Q63 48, 58 38 Q50 42, 55 30Z" fill="#1a472a" opacity="0.8"/>' +
-        '<path d="M40 18 Q48 12, 58 17 Q62 10, 58 22 Q50 28, 43 23 Q36 26, 40 18Z" fill="#2d5a27" opacity="0.7"/>' +
-        '<path d="M70 55 Q78 48, 88 54 Q92 47, 88 60 Q80 66, 73 60 Q66 64, 70 55Z" fill="#2d5a27" opacity="0.65"/>' +
-        '<circle cx="50" cy="16" r="5" fill="#C62828"/>' +
-        '<circle cx="43" cy="12" r="4" fill="#D32F2F"/>' +
-        '<circle cx="47" cy="22" r="4.5" fill="#B71C1C"/>' +
-        '<circle cx="48" cy="14" r="1.5" fill="#E57373" opacity="0.5"/>' +
-        '<circle cx="75" cy="38" r="4" fill="#C62828"/>' +
-        '<circle cx="70" cy="35" r="3.5" fill="#D32F2F"/>' +
-        '<circle cx="73" cy="30" r="1.2" fill="#E57373" opacity="0.5"/>' +
+    /* ── Holly Corner SVG ── */
+    var HOLLY_SVG = '<svg viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<path d="M10 5 Q50 10, 80 40 Q100 60, 115 95 Q125 115, 130 145" stroke="#2d5a27" stroke-width="2.5" fill="none" opacity="0.6"/>' +
+        '<path d="M5 12 Q15 2, 30 5 Q40 -2, 50 8 Q58 2, 55 16 Q44 24, 34 18 Q24 26, 18 16 Q8 20, 5 12Z" fill="#1a472a" opacity="0.9"/>' +
+        '<path d="M30 28 Q42 18, 56 25 Q66 16, 72 28 Q78 22, 74 36 Q64 44, 54 38 Q44 46, 38 36 Q28 40, 30 28Z" fill="#1a472a" opacity="0.85"/>' +
+        '<path d="M62 52 Q74 42, 88 50 Q96 42, 100 54 Q106 48, 102 62 Q92 70, 82 64 Q72 72, 66 62 Q56 66, 62 52Z" fill="#2d5a27" opacity="0.75"/>' +
+        '<path d="M88 80 Q98 72, 110 78 Q116 70, 120 82 Q126 76, 122 90 Q114 96, 106 90 Q98 96, 92 88 Q82 92, 88 80Z" fill="#2d5a27" opacity="0.65"/>' +
+        '<circle cx="38" cy="14" r="5.5" fill="#C62828"/><circle cx="32" cy="10" r="4.5" fill="#D32F2F"/><circle cx="36" cy="20" r="5" fill="#B71C1C"/>' +
+        '<circle cx="36" cy="12" r="1.8" fill="#E57373" opacity="0.5"/>' +
+        '<circle cx="60" cy="36" r="4.5" fill="#C62828"/><circle cx="55" cy="32" r="4" fill="#D32F2F"/>' +
+        '<circle cx="58" cy="28" r="1.5" fill="#E57373" opacity="0.5"/>' +
+        '<circle cx="88" cy="62" r="4" fill="#C62828"/><circle cx="84" cy="58" r="3.5" fill="#D32F2F"/>' +
     '</svg>';
 
-    /* Cobweb SVG for Halloween - top-left corner */
-    var COBWEB_SVG = '<svg viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-        '<path d="M0 0 L150 0" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>' +
-        '<path d="M0 0 L0 150" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>' +
-        '<path d="M0 0 L140 140" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>' +
-        '<path d="M0 0 L70 150" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>' +
-        '<path d="M0 0 L150 70" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>' +
-        '<path d="M20 0 Q20 20, 0 20" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" fill="none"/>' +
-        '<path d="M50 0 Q50 50, 0 50" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" fill="none"/>' +
-        '<path d="M85 0 Q85 85, 0 85" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" fill="none"/>' +
-        '<path d="M120 0 Q120 120, 0 120" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" fill="none"/>' +
+    /* ── Cobweb SVG (Halloween) ── */
+    var COBWEB_SVG = '<svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<path d="M0 0 L200 0" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>' +
+        '<path d="M0 0 L0 200" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>' +
+        '<path d="M0 0 L190 190" stroke="rgba(255,255,255,0.14)" stroke-width="0.8"/>' +
+        '<path d="M0 0 L95 200" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>' +
+        '<path d="M0 0 L200 95" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>' +
+        '<path d="M0 0 L40 200" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>' +
+        '<path d="M0 0 L200 40" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>' +
+        '<path d="M25 0 Q25 25, 0 25" stroke="rgba(255,255,255,0.15)" stroke-width="0.7" fill="none"/>' +
+        '<path d="M55 0 Q55 55, 0 55" stroke="rgba(255,255,255,0.13)" stroke-width="0.6" fill="none"/>' +
+        '<path d="M90 0 Q90 90, 0 90" stroke="rgba(255,255,255,0.1)" stroke-width="0.6" fill="none"/>' +
+        '<path d="M130 0 Q130 130, 0 130" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" fill="none"/>' +
+        '<path d="M175 0 Q175 175, 0 175" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" fill="none"/>' +
+        '<circle cx="90" cy="90" r="1.5" fill="rgba(255,255,255,0.2)"/>' +
+    '</svg>';
+
+    /* ── Gift Tag / Sale Tag SVG (Black Friday) ── */
+    var SALE_TAG_SVG = '<svg viewBox="0 0 50 65" xmlns="http://www.w3.org/2000/svg">' +
+        '<path d="M5 5 L45 5 L45 50 L25 62 L5 50Z" fill="FG" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>' +
+        '<circle cx="25" cy="16" r="5" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>' +
+        '<line x1="12" y1="30" x2="38" y2="30" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>' +
+        '<line x1="15" y1="38" x2="35" y2="38" stroke="rgba(255,255,255,0.25)" stroke-width="1.2"/>' +
+        '<line x1="18" y1="46" x2="32" y2="46" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>' +
+    '</svg>';
+
+    /* ── Firework Burst SVG (New Year) ── */
+    var FIREWORK_SVG = '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+        '<circle cx="50" cy="50" r="4" fill="FG" opacity="0.9"/>' +
+        '<g stroke="FG" stroke-width="1.5" stroke-linecap="round" opacity="0.7">' +
+            '<line x1="50" y1="50" x2="50" y2="15"/>' +
+            '<line x1="50" y1="50" x2="50" y2="85"/>' +
+            '<line x1="50" y1="50" x2="15" y2="50"/>' +
+            '<line x1="50" y1="50" x2="85" y2="50"/>' +
+            '<line x1="50" y1="50" x2="25" y2="25"/>' +
+            '<line x1="50" y1="50" x2="75" y2="75"/>' +
+            '<line x1="50" y1="50" x2="75" y2="25"/>' +
+            '<line x1="50" y1="50" x2="25" y2="75"/>' +
+        '</g>' +
+        '<g fill="FG" opacity="0.6">' +
+            '<circle cx="50" cy="12" r="2.5"/><circle cx="50" cy="88" r="2.5"/>' +
+            '<circle cx="12" cy="50" r="2.5"/><circle cx="88" cy="50" r="2.5"/>' +
+            '<circle cx="23" cy="23" r="2"/><circle cx="77" cy="77" r="2"/>' +
+            '<circle cx="77" cy="23" r="2"/><circle cx="23" cy="77" r="2"/>' +
+        '</g>' +
+    '</svg>';
+
+    /* ── Wave SVG (Summer) ── */
+    var WAVE_SVG = '<svg viewBox="0 0 80 30" xmlns="http://www.w3.org/2000/svg">' +
+        '<path d="M0 15 Q10 5, 20 15 Q30 25, 40 15 Q50 5, 60 15 Q70 25, 80 15" stroke="FG" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.6"/>' +
+        '<path d="M0 22 Q10 14, 20 22 Q30 30, 40 22 Q50 14, 60 22 Q70 30, 80 22" stroke="FG" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.35"/>' +
     '</svg>';
 
     /* ═══════════════════════════════════════════
        THEME DEFINITIONS
-       --gold is NEVER overridden. Seasonal color
-       comes through decorations + logo glow only.
+       Brand gold NEVER overridden.
     ═══════════════════════════════════════════ */
     var THEMES = {
 
@@ -101,10 +347,17 @@
                 shadow: '0 0 25px rgba(200,60,60,0.45), 0 0 50px rgba(46,125,50,0.3), 0 0 80px rgba(200,60,60,0.15), inset 0 0 15px rgba(200,60,60,0.12)'
             },
             navGlow: '0 0 10px rgba(200,60,60,0.25), 0 0 20px rgba(46,125,50,0.12)',
-            snow: true,
-            creative: 'stringLights',
+            particles: [
+                { svg: 'snowflake', count: isMobile ? 8 : 18, size: [16, 32], opacity: [0.25, 0.6], spin: true },
+                { svg: 'ornament', colors: ['#C62828','#B71C1C'], count: isMobile ? 2 : 5, size: [14, 22], opacity: [0.2, 0.45] },
+                { svg: 'ornament', colors: ['#1B5E20','#0D3B13'], count: isMobile ? 2 : 4, size: [12, 20], opacity: [0.18, 0.4] },
+                { svg: 'ornament', colors: ['#d4af37','#a88a2d'], count: isMobile ? 1 : 3, size: [12, 18], opacity: [0.2, 0.42] }
+            ],
+            anim: 'fall', speed: [12, 26], drift: [4, 10],
+            creative: ['stringLights'],
             corner: 'holly',
-            atmosphere: 'radial-gradient(ellipse at 50% 0%, rgba(30,60,100,0.04) 0%, transparent 55%)',
+            atmosphere: 'radial-gradient(ellipse at 50% 0%, rgba(30,60,100,0.05) 0%, transparent 55%)',
+            banner: { text: 'MERRY CHRISTMAS', sub: 'Wishing you joy & style this festive season!', icon: '&#9733;', bg: 'linear-gradient(135deg, #B71C1C, #1B5E20)', color: '#fff' },
             toast: { title: 'MERRY CHRISTMAS', sub: 'Wishing you a festive season full of style!', bg: 'linear-gradient(135deg, #1B5E20, #C62828)', color: '#fff' },
             border: { bg: 'repeating-linear-gradient(90deg,#C62828 0,#C62828 8px,transparent 8px,transparent 14px,#1B5E20 14px,#1B5E20 22px,transparent 22px,transparent 28px)', height: 3 },
             navLine: 'linear-gradient(90deg, transparent, #C62828, #d4af37, #1B5E20, transparent)',
@@ -113,17 +366,19 @@
 
         valentines: {
             neon: {
-                border: '3px solid rgba(200, 100, 120, 0.8)',
-                shadow: '0 0 25px rgba(200,100,120,0.45), 0 0 50px rgba(233,30,99,0.2), inset 0 0 15px rgba(200,100,120,0.1)'
+                border: '3px solid rgba(233, 30, 99, 0.75)',
+                shadow: '0 0 25px rgba(233,30,99,0.4), 0 0 50px rgba(233,30,99,0.2), inset 0 0 15px rgba(233,30,99,0.1)'
             },
             navGlow: '0 0 10px rgba(233,30,99,0.2), 0 0 20px rgba(200,100,120,0.1)',
             particles: [
-                { shape: 'heart', color: '#E91E63', count: 6, size: [12, 20], opacity: [0.18, 0.42] },
-                { shape: 'heart', color: '#F48FB1', count: 4, size: [8, 14], opacity: [0.14, 0.35] },
-                { shape: 'circle', color: '#FCE4EC', count: 5, size: [3, 6], opacity: [0.1, 0.25] }
+                { svg: 'heart', color: '#E91E63', count: isMobile ? 5 : 12, size: [14, 26], opacity: [0.2, 0.5], spin: false },
+                { svg: 'heart', color: '#F48FB1', count: isMobile ? 3 : 8, size: [10, 18], opacity: [0.15, 0.4], spin: false },
+                { svg: 'heart', color: '#FCE4EC', count: isMobile ? 2 : 5, size: [8, 14], opacity: [0.12, 0.3], spin: false }
             ],
-            anim: 'rise', speed: [16, 30], drift: [4, 8],
-            atmosphere: 'radial-gradient(ellipse at 30% 50%, rgba(233,30,99,0.03) 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, rgba(200,100,120,0.03) 0%, transparent 50%)',
+            anim: 'rise', speed: [14, 28], drift: [4, 8],
+            creative: ['rosePetals'],
+            atmosphere: 'radial-gradient(ellipse at 30% 50%, rgba(233,30,99,0.04) 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, rgba(200,100,120,0.04) 0%, transparent 50%)',
+            banner: { text: "HAPPY VALENTINE'S", sub: 'Look sharp for your special someone!', icon: '&#9829;', bg: 'linear-gradient(135deg, #880E4F, #E91E63)', color: '#fff' },
             toast: { title: "VALENTINE'S DAY", sub: 'Look sharp for your special someone!', bg: 'linear-gradient(135deg, #880E4F, #E91E63)', color: '#fff' },
             border: { bg: 'linear-gradient(90deg,#E91E63,#F48FB1,#E91E63,#F48FB1,#E91E63)', height: 3, animated: true },
             navLine: 'linear-gradient(90deg, transparent, #F48FB1, #E91E63, #F48FB1, transparent)'
@@ -135,8 +390,13 @@
                 shadow: '0 0 25px rgba(100,180,246,0.4), 0 0 50px rgba(79,195,247,0.25), inset 0 0 15px rgba(100,180,246,0.1)'
             },
             navGlow: '0 0 10px rgba(100,180,246,0.2), 0 0 20px rgba(79,195,247,0.1)',
-            snow: true,
-            atmosphere: 'radial-gradient(ellipse at 50% 0%, rgba(79,195,247,0.04) 0%, transparent 55%)',
+            particles: [
+                { svg: 'snowflake', count: isMobile ? 10 : 22, size: [18, 36], opacity: [0.3, 0.65], spin: true }
+            ],
+            anim: 'fall', speed: [14, 30], drift: [4, 10],
+            creative: ['frost'],
+            atmosphere: 'radial-gradient(ellipse at 50% 0%, rgba(79,195,247,0.05) 0%, transparent 55%)',
+            banner: { text: 'WINTER WARMTH', sub: 'Warm up with a fresh new look!', icon: '&#10052;', bg: 'linear-gradient(135deg, #01579B, #0288D1)', color: '#E1F5FE' },
             toast: { title: 'WINTER WARMTH', sub: 'Warm up with a fresh cut this winter', bg: 'linear-gradient(135deg, #01579B, #0288D1)', color: '#E1F5FE' },
             border: { bg: 'linear-gradient(90deg,rgba(79,195,247,0),rgba(79,195,247,0.5),rgba(225,245,254,0.8),rgba(79,195,247,0.5),rgba(79,195,247,0))', height: 3, shimmer: true },
             navLine: 'linear-gradient(90deg, transparent, rgba(79,195,247,0.4), rgba(225,245,254,0.7), rgba(79,195,247,0.4), transparent)'
@@ -145,18 +405,18 @@
         halloween: {
             neon: {
                 border: '3px solid rgba(255, 111, 0, 0.8)',
-                shadow: '0 0 25px rgba(255,111,0,0.45), 0 0 50px rgba(106,27,154,0.25), inset 0 0 15px rgba(255,111,0,0.1)'
+                shadow: '0 0 25px rgba(255,111,0,0.45), 0 0 50px rgba(106,27,154,0.3), inset 0 0 15px rgba(255,111,0,0.12)'
             },
             navGlow: '0 0 10px rgba(255,111,0,0.25), 0 0 20px rgba(106,27,154,0.12)',
             particles: [
-                { shape: 'circle', color: '#FF6F00', count: 6, size: [4, 9], opacity: [0.12, 0.3] },
-                { shape: 'circle', color: '#6A1B9A', count: 5, size: [5, 11], opacity: [0.08, 0.25] },
-                { shape: 'circle', color: '#FFE0B2', count: 3, size: [2, 5], opacity: [0.08, 0.2] }
+                { svg: 'bat', color: '#1a1a2e', glow: '#FF6F00', count: isMobile ? 3 : 7, size: [22, 40], opacity: [0.3, 0.6], spin: false },
+                { svg: 'pumpkin', count: isMobile ? 2 : 5, size: [18, 30], opacity: [0.25, 0.5] }
             ],
-            anim: 'sway', speed: [10, 22], drift: [5, 10],
-            creative: 'fog',
+            anim: 'sway', speed: [10, 22], drift: [5, 12],
+            creative: ['fog'],
             corner: 'cobweb',
-            atmosphere: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.25) 100%)',
+            atmosphere: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.3) 100%)',
+            banner: { text: 'HAPPY HALLOWEEN', sub: 'Get a killer look this spooky season!', icon: '&#127875;', bg: 'linear-gradient(135deg, #4A148C, #E65100)', color: '#FFE0B2' },
             toast: { title: 'SPOOKY SEASON', sub: 'Get a killer look this Halloween!', bg: 'linear-gradient(135deg, #4A148C, #E65100)', color: '#FFE0B2' },
             border: { bg: 'linear-gradient(90deg,#4A148C,#FF6F00,#4A148C)', height: 3, glow: 'rgba(255,111,0,0.4)' },
             navLine: 'linear-gradient(90deg, #4A148C, #FF6F00, #4A148C, #FF6F00, #4A148C)'
@@ -165,16 +425,19 @@
         easter: {
             neon: {
                 border: '3px solid rgba(129, 199, 132, 0.75)',
-                shadow: '0 0 25px rgba(129,199,132,0.35), 0 0 50px rgba(244,143,177,0.2), inset 0 0 15px rgba(129,199,132,0.1)'
+                shadow: '0 0 25px rgba(129,199,132,0.35), 0 0 50px rgba(244,143,177,0.25), inset 0 0 15px rgba(129,199,132,0.1)'
             },
             navGlow: '0 0 10px rgba(129,199,132,0.2), 0 0 20px rgba(244,143,177,0.1)',
             particles: [
-                { shape: 'petal', color: '#F48FB1', count: 6, size: [8, 14], opacity: [0.2, 0.45] },
-                { shape: 'petal', color: '#81C784', count: 4, size: [6, 12], opacity: [0.15, 0.35] },
-                { shape: 'circle', color: '#FFF59D', count: 3, size: [3, 7], opacity: [0.12, 0.28] }
+                { svg: 'egg', colors: ['#F48FB1','#E91E63'], count: isMobile ? 3 : 6, size: [14, 22], opacity: [0.25, 0.5] },
+                { svg: 'egg', colors: ['#81C784','#4CAF50'], count: isMobile ? 2 : 5, size: [12, 20], opacity: [0.2, 0.45] },
+                { svg: 'egg', colors: ['#90CAF9','#42A5F5'], count: isMobile ? 2 : 4, size: [12, 18], opacity: [0.2, 0.4] },
+                { svg: 'flower', color: '#F48FB1', count: isMobile ? 2 : 5, size: [14, 22], opacity: [0.18, 0.4], spin: true }
             ],
             anim: 'fall', speed: [16, 32], drift: [4, 8],
-            atmosphere: 'radial-gradient(ellipse at 25% 40%, rgba(129,199,132,0.03) 0%, transparent 45%), radial-gradient(ellipse at 75% 60%, rgba(244,143,177,0.03) 0%, transparent 45%)',
+            creative: ['butterflies'],
+            atmosphere: 'radial-gradient(ellipse at 25% 40%, rgba(129,199,132,0.04) 0%, transparent 45%), radial-gradient(ellipse at 75% 60%, rgba(244,143,177,0.04) 0%, transparent 45%)',
+            banner: { text: 'HAPPY EASTER', sub: 'Spring into a fresh new look!', icon: '&#127807;', bg: 'linear-gradient(135deg, #66BB6A, #81C784)', color: '#fff' },
             toast: { title: 'HAPPY EASTER', sub: 'Spring into a fresh new look!', bg: 'linear-gradient(135deg, #66BB6A, #81C784)', color: '#fff' },
             border: { bg: 'repeating-linear-gradient(90deg,#F48FB1 0,#F48FB1 12px,#81C784 12px,#81C784 24px,#FFF59D 24px,#FFF59D 36px,#90CAF9 36px,#90CAF9 48px)', height: 3 },
             navLine: 'linear-gradient(90deg, #F48FB1, #81C784, #FFF59D, #81C784, #F48FB1)'
@@ -183,17 +446,17 @@
         summer: {
             neon: {
                 border: '3px solid rgba(255, 143, 0, 0.75)',
-                shadow: '0 0 25px rgba(255,143,0,0.35), 0 0 50px rgba(2,136,209,0.2), inset 0 0 15px rgba(255,143,0,0.1)'
+                shadow: '0 0 25px rgba(255,143,0,0.35), 0 0 50px rgba(2,136,209,0.25), inset 0 0 15px rgba(255,143,0,0.1)'
             },
             navGlow: '0 0 10px rgba(255,143,0,0.2), 0 0 20px rgba(2,136,209,0.1)',
             particles: [
-                { shape: 'circle', color: '#FF8F00', count: 5, size: [4, 9], opacity: [0.12, 0.28] },
-                { shape: 'circle', color: '#0288D1', count: 4, size: [3, 7], opacity: [0.1, 0.25] },
-                { shape: 'circle', color: '#FFF3E0', count: 3, size: [2, 5], opacity: [0.08, 0.2] }
+                { svg: 'sun', count: isMobile ? 2 : 4, size: [18, 30], opacity: [0.15, 0.35], spin: true },
+                { svg: 'wave', color: '#0288D1', count: isMobile ? 3 : 6, size: [30, 50], opacity: [0.12, 0.28] }
             ],
             anim: 'float', speed: [8, 16], drift: [3, 6],
-            creative: 'sunFlare',
-            atmosphere: 'radial-gradient(ellipse at 85% 10%, rgba(255,200,100,0.06) 0%, transparent 50%)',
+            creative: ['sunFlare', 'heatShimmer'],
+            atmosphere: 'radial-gradient(ellipse at 85% 10%, rgba(255,200,100,0.07) 0%, transparent 50%)',
+            banner: { text: 'SUMMER VIBES', sub: 'Stay fresh all summer long!', icon: '&#9728;', bg: 'linear-gradient(135deg, #E65100, #FF8F00)', color: '#fff' },
             toast: { title: 'SUMMER VIBES', sub: 'Stay fresh all summer long!', bg: 'linear-gradient(135deg, #E65100, #FF8F00)', color: '#fff' },
             border: { bg: 'linear-gradient(90deg,#FF8F00,#0288D1,#FF8F00,#0288D1)', height: 3, animated: true },
             navLine: 'linear-gradient(90deg, #FF8F00, #0288D1, #FF8F00, #0288D1, #FF8F00)'
@@ -202,15 +465,17 @@
         eid: {
             neon: {
                 border: '3px solid rgba(253, 216, 53, 0.85)',
-                shadow: '0 0 25px rgba(253,216,53,0.45), 0 0 50px rgba(46,125,50,0.2), inset 0 0 15px rgba(253,216,53,0.12)'
+                shadow: '0 0 25px rgba(253,216,53,0.45), 0 0 50px rgba(46,125,50,0.25), inset 0 0 15px rgba(253,216,53,0.12)'
             },
             navGlow: '0 0 10px rgba(253,216,53,0.25), 0 0 20px rgba(46,125,50,0.1)',
             particles: [
-                { shape: 'star', color: '#FDD835', count: 6, size: [6, 12], opacity: [0.2, 0.42] },
-                { shape: 'circle', color: '#2E7D32', count: 4, size: [3, 7], opacity: [0.1, 0.25] },
-                { shape: 'circle', color: '#FFF9C4', count: 3, size: [2, 5], opacity: [0.08, 0.2] }
+                { svg: 'star', color: '#FDD835', count: isMobile ? 4 : 10, size: [12, 22], opacity: [0.22, 0.5], spin: true },
+                { svg: 'crescent', bgFill: '#0a0a14', count: isMobile ? 2 : 4, size: [16, 26], opacity: [0.2, 0.42] }
             ],
             anim: 'float', speed: [8, 16], drift: [3, 6],
+            creative: ['sparkleField'],
+            atmosphere: 'radial-gradient(ellipse at 50% 30%, rgba(253,216,53,0.03) 0%, transparent 50%)',
+            banner: { text: 'EID MUBARAK', sub: 'Celebrate in style with a fresh look!', icon: '&#9734;', bg: 'linear-gradient(135deg, #2E7D32, #388E3C)', color: '#FFF9C4' },
             toast: { title: 'EID MUBARAK', sub: 'Celebrate in style with a fresh look!', bg: 'linear-gradient(135deg, #2E7D32, #388E3C)', color: '#FFF9C4' },
             border: { bg: 'repeating-linear-gradient(90deg,transparent 0,transparent 8px,#FDD835 8px,#FDD835 12px)', height: 3 },
             navLine: 'linear-gradient(90deg, transparent, #2E7D32, #FDD835, #2E7D32, transparent)'
@@ -219,16 +484,18 @@
         ramadan: {
             neon: {
                 border: '3px solid rgba(184, 134, 11, 0.85)',
-                shadow: '0 0 25px rgba(184,134,11,0.4), 0 0 50px rgba(26,35,126,0.25), inset 0 0 15px rgba(184,134,11,0.1)'
+                shadow: '0 0 25px rgba(184,134,11,0.4), 0 0 50px rgba(26,35,126,0.3), inset 0 0 15px rgba(184,134,11,0.1)'
             },
             navGlow: '0 0 10px rgba(184,134,11,0.2), 0 0 20px rgba(26,35,126,0.1)',
             particles: [
-                { shape: 'star', color: '#B8860B', count: 5, size: [5, 10], opacity: [0.15, 0.35] },
-                { shape: 'circle', color: '#1A237E', count: 3, size: [4, 8], opacity: [0.06, 0.18] },
-                { shape: 'circle', color: '#E8EAF6', count: 3, size: [2, 5], opacity: [0.06, 0.16] }
+                { svg: 'crescent', bgFill: '#0d1033', count: isMobile ? 2 : 5, size: [16, 28], opacity: [0.2, 0.42] },
+                { svg: 'lantern', count: isMobile ? 3 : 7, size: [14, 24], opacity: [0.22, 0.48] },
+                { svg: 'star', color: '#B8860B', count: isMobile ? 3 : 6, size: [8, 16], opacity: [0.15, 0.35], spin: true }
             ],
-            anim: 'float', speed: [12, 24], drift: [3, 6],
-            atmosphere: 'radial-gradient(ellipse at 50% 0%, rgba(26,35,126,0.04) 0%, transparent 55%)',
+            anim: 'float', speed: [10, 20], drift: [3, 6],
+            creative: ['sparkleField'],
+            atmosphere: 'radial-gradient(ellipse at 50% 0%, rgba(26,35,126,0.05) 0%, transparent 55%)',
+            banner: { text: 'RAMADAN KAREEM', sub: 'Wishing you a blessed & beautiful month', icon: '&#9774;', bg: 'linear-gradient(135deg, #1A237E, #283593)', color: '#E8EAF6' },
             toast: { title: 'RAMADAN KAREEM', sub: 'Wishing you a blessed and beautiful month', bg: 'linear-gradient(135deg, #1A237E, #283593)', color: '#E8EAF6' },
             border: { bg: 'linear-gradient(90deg,rgba(184,134,11,0),#B8860B,rgba(184,134,11,0.5),#B8860B,rgba(184,134,11,0))', height: 3, shimmer: true },
             navLine: 'linear-gradient(90deg, transparent, #1A237E, #B8860B, #1A237E, transparent)'
@@ -241,11 +508,13 @@
             },
             navGlow: '0 0 10px rgba(255,23,68,0.25), 0 0 20px rgba(255,214,0,0.1)',
             particles: [
-                { shape: 'circle', color: '#FF1744', count: 5, size: [3, 7], opacity: [0.18, 0.4] },
-                { shape: 'circle', color: '#FFD600', count: 4, size: [2, 5], opacity: [0.15, 0.35] },
-                { shape: 'circle', color: '#fff', count: 3, size: [1, 3], opacity: [0.08, 0.2] }
+                { svg: 'tag', color: '#FF1744', count: isMobile ? 3 : 7, size: [14, 24], opacity: [0.22, 0.48] },
+                { svg: 'tag', color: '#FFD600', count: isMobile ? 2 : 5, size: [12, 20], opacity: [0.18, 0.4] }
             ],
-            anim: 'fall', speed: [3, 8], drift: [2, 5],
+            anim: 'fall', speed: [5, 12], drift: [2, 5],
+            creative: ['neonFlash'],
+            atmosphere: 'radial-gradient(ellipse at 50% 50%, rgba(255,23,68,0.03) 0%, transparent 55%)',
+            banner: { text: 'BLACK FRIDAY DEALS', sub: 'Biggest deals of the year - Don\'t miss out!', icon: '&#128293;', bg: 'linear-gradient(135deg, #000, #212121)', color: '#FFD600' },
             toast: { title: 'BLACK FRIDAY', sub: 'Biggest deals of the year!', bg: 'linear-gradient(135deg, #000, #212121)', color: '#FFD600' },
             border: { bg: '#FF1744', height: 2, neon: '#FF1744' },
             navLine: 'linear-gradient(90deg, #FF1744, #FFD600, #FF1744, #FFD600, #FF1744)'
@@ -258,13 +527,14 @@
             },
             navGlow: '0 0 12px rgba(255,215,0,0.3), 0 0 24px rgba(13,71,161,0.12)',
             particles: [
-                { shape: 'star', color: '#FFD700', count: 6, size: [5, 10], opacity: [0.2, 0.45] },
-                { shape: 'circle', color: '#0D47A1', count: 4, size: [3, 7], opacity: [0.08, 0.22] },
-                { shape: 'circle', color: '#fff', count: 4, size: [2, 4], opacity: [0.12, 0.3] }
+                { svg: 'firework', color: '#FFD700', count: isMobile ? 3 : 7, size: [20, 36], opacity: [0.2, 0.45], spin: true },
+                { svg: 'firework', color: '#C0C0C0', count: isMobile ? 2 : 4, size: [16, 28], opacity: [0.15, 0.35], spin: true },
+                { svg: 'star', color: '#FFD700', count: isMobile ? 3 : 6, size: [10, 18], opacity: [0.2, 0.45], spin: true }
             ],
-            anim: 'fall', speed: [8, 18], drift: [3, 7],
-            creative: 'confetti',
-            atmosphere: 'radial-gradient(ellipse at 50% 0%, rgba(13,71,161,0.04) 0%, transparent 55%)',
+            anim: 'fall', speed: [10, 20], drift: [4, 8],
+            creative: ['confetti'],
+            atmosphere: 'radial-gradient(ellipse at 50% 0%, rgba(13,71,161,0.05) 0%, transparent 55%)',
+            banner: { text: 'HAPPY NEW YEAR', sub: 'New year, fresh look - Start the year right!', icon: '&#127878;', bg: 'linear-gradient(135deg, #0D47A1, #1565C0)', color: '#FFD700' },
             toast: { title: 'HAPPY NEW YEAR', sub: 'New year, new look!', bg: 'linear-gradient(135deg, #0D47A1, #1565C0)', color: '#FFD700' },
             border: { bg: 'linear-gradient(90deg,transparent,#FFD700,#fff,#FFD700,transparent)', height: 3, animated: true },
             navLine: 'linear-gradient(90deg, transparent, #0D47A1, #FFD700, #0D47A1, transparent)'
@@ -278,10 +548,20 @@
        HELPERS
     ═══════════════════════════════════════════ */
     function rand(a, b) { return Math.random() * (b - a) + a; }
+    function randInt(a, b) { return Math.floor(rand(a, b + 1)); }
     function getTheme(id) {
         if (!id) return null;
         var k = id.toLowerCase().replace(/[\s_']/g, '-');
         return THEMES[k] || THEMES[k.replace(/-/g, '')] || null;
+    }
+
+    /* Build SVG element from template string, replacing color placeholders */
+    function buildSVG(template, color, glow, bgFill) {
+        var s = template;
+        if (color) s = s.replace(/FG/g, color);
+        if (glow) s = s.replace(/GLOW/g, glow);
+        if (bgFill) s = s.replace(/BGFILL/g, bgFill);
+        return s;
     }
 
     /* ═══════════════════════════════════════════
@@ -295,65 +575,100 @@
             /* Container */
             '.gb-fx{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:hidden}',
 
-            /* Particle wrapper (dual animation) */
+            /* Particle wrapper */
             '.gb-pw{position:absolute;pointer-events:none;will-change:transform}',
             '.gb-p{pointer-events:none;will-change:transform}',
-
-            /* Heart shape via spans */
-            '.gb-heart{position:relative;display:inline-block}',
-
-            /* Star shape */
-            '.gb-star{clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}',
-
-            /* Petal shape */
-            '.gb-petal{border-radius:50% 0 50% 0}',
+            '.gb-p svg{width:100%;height:100%;display:block}',
 
             /* ── FALL ── */
-            '@keyframes gb-fall{0%{transform:translateY(-5vh);opacity:0}5%{opacity:var(--op)}95%{opacity:var(--op)}100%{transform:translateY(105vh);opacity:0}}',
+            '@keyframes gb-fall{0%{transform:translateY(-8vh);opacity:0}5%{opacity:var(--op)}92%{opacity:var(--op)}100%{transform:translateY(108vh);opacity:0}}',
 
             /* ── DRIFT ── */
             '@keyframes gb-drift{0%,100%{transform:translateX(0)}25%{transform:translateX(calc(var(--dx) * 0.6))}50%{transform:translateX(calc(var(--dx) * -0.4))}75%{transform:translateX(var(--dx))}}',
 
             /* ── RISE ── */
-            '@keyframes gb-rise{0%{transform:translateY(105vh);opacity:0}8%{opacity:var(--op)}92%{opacity:var(--op)}100%{transform:translateY(-5vh);opacity:0}}',
+            '@keyframes gb-rise{0%{transform:translateY(108vh);opacity:0}8%{opacity:var(--op)}90%{opacity:var(--op)}100%{transform:translateY(-8vh);opacity:0}}',
 
             /* ── FLOAT ── */
-            '@keyframes gb-vfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}',
+            '@keyframes gb-vfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-25px)}}',
 
             /* ── SWAY ── */
-            '@keyframes gb-vsway{0%,100%{transform:translateY(0)}30%{transform:translateY(-25px)}60%{transform:translateY(15px)}}',
+            '@keyframes gb-vsway{0%,100%{transform:translateY(0) scaleX(1)}25%{transform:translateY(-20px) scaleX(1.02)}50%{transform:translateY(10px) scaleX(0.98)}75%{transform:translateY(-15px) scaleX(1.01)}}',
 
-            /* ── SNOW LAYERS (box-shadow technique) ── */
-            '.gb-snow{position:fixed;top:0;left:0;pointer-events:none;z-index:1;border-radius:50%;width:3px;height:3px;background:transparent}',
-            '@keyframes gb-snowfall1{from{transform:translateY(0)}to{transform:translateY(var(--sh))}}',
-            '@keyframes gb-snowfall2{from{transform:translateY(0)}to{transform:translateY(var(--sh))}}',
-            '@keyframes gb-snowfall3{from{transform:translateY(0)}to{transform:translateY(var(--sh))}}',
+            /* ── SPIN ── */
+            '@keyframes gb-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}',
+            '@keyframes gb-spinSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}',
 
             /* ── STRING LIGHTS ── */
-            '.gb-lights{position:fixed;top:78px;left:0;width:100%;height:55px;pointer-events:none;z-index:998;opacity:0;animation:gb-fadein 1.5s ease 0.5s forwards}',
+            '.gb-lights{position:fixed;top:78px;left:0;width:100%;height:60px;pointer-events:none;z-index:998;opacity:0;animation:gb-fadein 1.5s ease 0.5s forwards}',
             '.gb-lights-wire{position:absolute;top:0;left:0;width:100%;height:100%}',
-            '.gb-bulb{position:absolute;width:10px;height:14px;border-radius:50% 50% 50% 50% / 55% 55% 45% 45%;transform:translateX(-50%);animation:gb-glow 2.5s ease-in-out infinite}',
-            '.gb-bulb-string{position:absolute;width:1px;background:rgba(120,120,120,0.4);top:0;left:50%;transform:translateX(-50%)}',
-            '@keyframes gb-glow{0%,100%{box-shadow:0 2px 6px var(--gc),0 0 10px var(--gc);opacity:0.75}50%{box-shadow:0 2px 12px var(--gc),0 0 18px var(--gc);opacity:1}}',
+            '.gb-bulb{position:absolute;width:12px;height:16px;border-radius:50% 50% 50% 50% / 55% 55% 45% 45%;transform:translateX(-50%);animation:gb-glow 2.5s ease-in-out infinite}',
+            '.gb-bulb::after{content:"";position:absolute;top:2px;left:3px;width:4px;height:5px;background:rgba(255,255,255,0.25);border-radius:50%;pointer-events:none}',
+            '.gb-bulb-cap{position:absolute;width:8px;height:5px;background:#666;border-radius:2px 2px 0 0;transform:translateX(-50%)}',
+            '@keyframes gb-glow{0%,100%{box-shadow:0 3px 8px var(--gc),0 0 14px var(--gc);opacity:0.8}50%{box-shadow:0 3px 16px var(--gc),0 0 24px var(--gc);opacity:1}}',
 
             /* ── CORNER ORNAMENTS ── */
             '.gb-corner{position:fixed;pointer-events:none;z-index:2;opacity:0;animation:gb-fadein 2s ease 0.8s forwards}',
             '.gb-corner svg{width:100%;height:100%}',
 
             /* ── FOG (Halloween) ── */
-            '.gb-fog{position:fixed;bottom:0;left:0;width:200%;height:30vh;pointer-events:none;z-index:1;opacity:0;animation:gb-fadein 3s ease 1s forwards}',
-            '.gb-fog-1{background:linear-gradient(to top,rgba(255,255,255,0.06) 0%,rgba(255,255,255,0.02) 40%,transparent 100%);animation:gb-fadein 3s ease 1s forwards, gb-fogdrift 30s linear infinite}',
-            '.gb-fog-2{background:linear-gradient(to top,rgba(255,255,255,0.04) 0%,rgba(255,255,255,0.015) 50%,transparent 100%);animation:gb-fadein 3s ease 1.5s forwards, gb-fogdrift 45s linear infinite reverse}',
+            '.gb-fog{position:fixed;bottom:0;left:0;width:200%;height:35vh;pointer-events:none;z-index:1;opacity:0}',
+            '.gb-fog-1{background:linear-gradient(to top,rgba(255,255,255,0.07) 0%,rgba(255,255,255,0.025) 40%,transparent 100%);animation:gb-fadein 3s ease 1s forwards, gb-fogdrift 28s linear infinite}',
+            '.gb-fog-2{background:linear-gradient(to top,rgba(255,255,255,0.05) 0%,rgba(255,255,255,0.018) 50%,transparent 100%);animation:gb-fadein 3s ease 1.5s forwards, gb-fogdrift 40s linear infinite reverse}',
             '@keyframes gb-fogdrift{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}',
 
-            /* ── SUN FLARE (Summer) ── */
-            '.gb-sunflare{position:fixed;top:0;right:0;width:50vw;height:50vh;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 90% 10%,rgba(255,200,100,0.08) 0%,transparent 60%);opacity:0;animation:gb-fadein 2s ease 0.5s forwards,gb-sunpulse 8s ease-in-out infinite}',
+            /* ── SUN FLARE ── */
+            '.gb-sunflare{position:fixed;top:0;right:0;width:55vw;height:55vh;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 90% 10%,rgba(255,200,100,0.1) 0%,transparent 60%);opacity:0;animation:gb-fadein 2s ease 0.5s forwards,gb-sunpulse 8s ease-in-out infinite}',
             '@keyframes gb-sunpulse{0%,100%{opacity:0.7}50%{opacity:1}}',
 
-            /* ── CONFETTI (New Year - one-shot) ── */
+            /* ── HEAT SHIMMER (Summer) ── */
+            '.gb-heatshimmer{position:fixed;bottom:0;left:0;width:100%;height:20vh;pointer-events:none;z-index:0;background:linear-gradient(to top,rgba(255,200,100,0.04) 0%,transparent 100%);opacity:0;animation:gb-fadein 2s ease 1s forwards,gb-heatwave 4s ease-in-out infinite}',
+            '@keyframes gb-heatwave{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.02)}}',
+
+            /* ── FROST (Winter) ── */
+            '.gb-frost{position:fixed;pointer-events:none;z-index:2;opacity:0;animation:gb-fadein 3s ease 1s forwards}',
+            '.gb-frost-tl{top:0;left:0;width:200px;height:200px;background:radial-gradient(ellipse at 0% 0%,rgba(200,230,255,0.08) 0%,transparent 70%)}',
+            '.gb-frost-tr{top:0;right:0;width:200px;height:200px;background:radial-gradient(ellipse at 100% 0%,rgba(200,230,255,0.08) 0%,transparent 70%)}',
+            '.gb-frost-bl{bottom:0;left:0;width:180px;height:180px;background:radial-gradient(ellipse at 0% 100%,rgba(200,230,255,0.06) 0%,transparent 70%)}',
+            '.gb-frost-br{bottom:0;right:0;width:180px;height:180px;background:radial-gradient(ellipse at 100% 100%,rgba(200,230,255,0.06) 0%,transparent 70%)}',
+
+            /* ── ROSE PETALS (Valentine) ── */
+            '.gb-rosepetal{position:absolute;pointer-events:none;border-radius:50% 0 50% 0;animation:gb-petalfall var(--pd) linear infinite}',
+            '@keyframes gb-petalfall{0%{transform:translateY(-5vh) rotate(0deg);opacity:0}5%{opacity:var(--op)}90%{opacity:var(--op)}100%{transform:translateY(105vh) rotate(720deg);opacity:0}}',
+
+            /* ── BUTTERFLIES (Easter) ── */
+            '.gb-butterfly{position:absolute;pointer-events:none;animation:gb-bfly var(--bd) ease-in-out infinite}',
+            '.gb-butterfly-wing{display:inline-block;border-radius:50% 50% 10% 50%;animation:gb-wingflap 0.4s ease-in-out infinite alternate}',
+            '.gb-butterfly-wing.right{transform:scaleX(-1)}',
+            '@keyframes gb-bfly{0%,100%{transform:translate(0,0)}25%{transform:translate(30px,-20px)}50%{transform:translate(-15px,-35px)}75%{transform:translate(20px,-10px)}}',
+            '@keyframes gb-wingflap{0%{transform:scaleY(1) skewX(0deg)}100%{transform:scaleY(0.6) skewX(10deg)}}',
+
+            /* ── SPARKLE FIELD (Eid/Ramadan) ── */
+            '.gb-sparkle{position:fixed;pointer-events:none;z-index:1;border-radius:50%;animation:gb-twinkle var(--sd) ease-in-out infinite}',
+            '@keyframes gb-twinkle{0%,100%{opacity:0;transform:scale(0.5)}50%{opacity:var(--op);transform:scale(1)}}',
+
+            /* ── NEON FLASH (Black Friday) ── */
+            '.gb-neonflash{position:fixed;pointer-events:none;z-index:0;opacity:0;animation:gb-nflash 3s ease-in-out infinite}',
+            '@keyframes gb-nflash{0%,100%{opacity:0}15%{opacity:0.06}30%{opacity:0}45%{opacity:0.04}60%{opacity:0}80%{opacity:0.08}90%{opacity:0}}',
+
+            /* ── CONFETTI ── */
             '.gb-confetti-wrap{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10000;overflow:hidden}',
             '.gb-conf{position:absolute;top:-10px;pointer-events:none;animation:gb-conffall var(--cd) ease-out forwards}',
             '@keyframes gb-conffall{0%{transform:translateY(0) rotate(0deg);opacity:1}80%{opacity:0.8}100%{transform:translateY(100vh) rotate(var(--cr));opacity:0}}',
+
+            /* ── CELEBRATION BANNER ── */
+            '.gb-banner{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);z-index:999;' +
+                'font-family:"Outfit",sans-serif;pointer-events:none;text-align:center;' +
+                'border-radius:20px;overflow:hidden;padding:16px 32px;min-width:280px;max-width:420px;' +
+                'box-shadow:0 8px 40px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.1);' +
+                'opacity:0;animation:gb-bannerin 1s cubic-bezier(.34,1.56,.64,1) 1.5s forwards}',
+            '.gb-banner-icon{font-size:28px;margin-bottom:4px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3))}',
+            '.gb-banner-text{font-size:14px;font-weight:800;letter-spacing:3px;text-transform:uppercase;line-height:1.3;text-shadow:0 1px 3px rgba(0,0,0,0.3)}',
+            '.gb-banner-sub{font-size:12px;font-weight:500;opacity:.85;line-height:1.4;margin-top:4px}',
+            '.gb-banner-shine{position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent);animation:gb-bannershine 4s ease-in-out 2.5s infinite}',
+            '@keyframes gb-bannerin{to{opacity:1;transform:translateX(-50%) translateY(0)}}',
+            '@keyframes gb-bannerout{to{opacity:0;transform:translateX(-50%) translateY(-30px)}}',
+            '@keyframes gb-bannershine{0%{left:-100%}50%{left:100%}100%{left:100%}}',
 
             /* ── ATMOSPHERE OVERLAY ── */
             '.gb-atmo{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;animation:gb-fadein 2s ease 0.8s forwards}',
@@ -401,77 +716,31 @@
                 '.gb-toast-t{font-size:10px;letter-spacing:2px}' +
                 '.gb-toast-s{font-size:12px}' +
                 '.gb-lights{display:none}' +
+                '.gb-banner{max-width:calc(100% - 40px);padding:12px 20px;top:70px}' +
+                '.gb-banner-text{font-size:12px;letter-spacing:2px}' +
+                '.gb-banner-sub{font-size:11px}' +
             '}',
 
             /* Reduced motion */
             '@media(prefers-reduced-motion:reduce){' +
-                '.gb-pw,.gb-p,.gb-snow,.gb-bulb,.gb-fog,.gb-fog-1,.gb-fog-2,.gb-sunflare,.gb-conf{animation:none!important}' +
+                '.gb-pw,.gb-p,.gb-bulb,.gb-fog,.gb-fog-1,.gb-fog-2,.gb-sunflare,.gb-conf,.gb-sparkle,.gb-rosepetal,.gb-butterfly,.gb-heatshimmer{animation:none!important}' +
             '}'
         ].join('\n');
         document.head.appendChild(state.style);
     }
 
     /* ═══════════════════════════════════════════
-       SNOWFALL - 3-layer parallax using box-shadow
-       Each layer = 1 DOM element. Ultra-performant.
-    ═══════════════════════════════════════════ */
-    function createSnowfall() {
-        if (state.container) state.container.remove();
-        state.container = document.createElement('div');
-        state.container.className = 'gb-fx';
-
-        var vw = window.innerWidth;
-        var vh = window.innerHeight;
-        var layers = [
-            { count: isMobile ? 20 : 45, minS: 0, maxS: 1.2, minO: 0.2, maxO: 0.5, dur: 14 },
-            { count: isMobile ? 12 : 28, minS: 0.5, maxS: 2.2, minO: 0.25, maxO: 0.55, dur: 20 },
-            { count: isMobile ? 6 : 15, minS: 1.0, maxS: 3.0, minO: 0.3, maxO: 0.65, dur: 28 }
-        ];
-
-        layers.forEach(function(layer, idx) {
-            var shadows = [];
-            /* Generate dots for first pass */
-            for (var i = 0; i < layer.count; i++) {
-                var x = Math.floor(Math.random() * vw);
-                var y = Math.floor(Math.random() * vh);
-                var s = layer.minS + Math.random() * (layer.maxS - layer.minS);
-                var o = layer.minO + Math.random() * (layer.maxO - layer.minO);
-                shadows.push(x + 'px ' + y + 'px 0 ' + s.toFixed(1) + 'px rgba(255,255,255,' + o.toFixed(2) + ')');
-            }
-            /* Duplicate for seamless loop */
-            for (var i = 0; i < layer.count; i++) {
-                var x = Math.floor(Math.random() * vw);
-                var y = Math.floor(Math.random() * vh) + vh;
-                var s = layer.minS + Math.random() * (layer.maxS - layer.minS);
-                var o = layer.minO + Math.random() * (layer.maxO - layer.minO);
-                shadows.push(x + 'px ' + y + 'px 0 ' + s.toFixed(1) + 'px rgba(255,255,255,' + o.toFixed(2) + ')');
-            }
-
-            var el = document.createElement('div');
-            el.className = 'gb-snow';
-            el.style.boxShadow = shadows.join(',');
-            el.style.setProperty('--sh', '-' + vh + 'px');
-            el.style.animation = 'gb-snowfall' + (idx + 1) + ' ' + layer.dur + 's linear infinite';
-            state.container.appendChild(el);
-        });
-
-        document.body.appendChild(state.container);
-    }
-
-    /* ═══════════════════════════════════════════
-       PARTICLES - DOM-based for hearts, stars, petals
+       SVG PARTICLE SYSTEM
+       Creates realistic SVG illustration particles
     ═══════════════════════════════════════════ */
     function createParticles(theme) {
-        if (!theme.particles) return;
+        if (!theme.particles || !theme.particles.length) return;
         if (state.container) state.container.remove();
         state.container = document.createElement('div');
         state.container.className = 'gb-fx';
 
-        var mult = isMobile ? 0.45 : 1;
-
         theme.particles.forEach(function(p) {
-            var count = Math.max(1, Math.round(p.count * mult));
-            for (var i = 0; i < count; i++) {
+            for (var i = 0; i < p.count; i++) {
                 var size = rand(p.size[0], p.size[1]);
                 var opacity = rand(p.opacity[0], p.opacity[1]);
                 var fallDur = rand(theme.speed[0], theme.speed[1]);
@@ -487,32 +756,45 @@
 
                 var el = document.createElement('div');
                 el.className = 'gb-p';
+                el.style.width = size + 'px';
+                el.style.height = (p.svg === 'bat' ? size * 0.5 : p.svg === 'wave' ? size * 0.375 : p.svg === 'egg' ? size * 1.33 : p.svg === 'lantern' ? size * 1.8 : size) + 'px';
                 el.style.setProperty('--dx', drift + 'px');
 
-                if (p.shape === 'heart') {
-                    var half = size / 2;
-                    el.classList.add('gb-heart');
-                    el.style.width = size + 'px';
-                    el.style.height = size * 0.9 + 'px';
-                    el.innerHTML = '<span style="position:absolute;width:' + half + 'px;height:' + (size * 0.7) + 'px;background:' + p.color + ';border-radius:' + half + 'px ' + half + 'px 0 0;left:' + half + 'px;top:0;transform:rotate(-45deg);transform-origin:0 100%"></span>' +
-                                   '<span style="position:absolute;width:' + half + 'px;height:' + (size * 0.7) + 'px;background:' + p.color + ';border-radius:' + half + 'px ' + half + 'px 0 0;left:0;top:0;transform:rotate(45deg);transform-origin:100% 100%"></span>';
-                } else if (p.shape === 'star') {
-                    el.classList.add('gb-star');
-                    el.style.width = size + 'px';
-                    el.style.height = size + 'px';
-                    el.style.background = p.color;
-                } else if (p.shape === 'petal') {
-                    el.classList.add('gb-petal');
-                    el.style.width = size + 'px';
-                    el.style.height = size * 1.5 + 'px';
-                    el.style.background = p.color;
-                } else {
-                    el.style.width = size + 'px';
-                    el.style.height = size + 'px';
-                    el.style.borderRadius = '50%';
-                    el.style.background = p.color;
+                // Build the correct SVG
+                var svgHTML = '';
+                if (p.svg === 'snowflake') {
+                    svgHTML = buildSVG(snowflakeSVG(randInt(0, 2)), 'rgba(255,255,255,0.9)');
+                } else if (p.svg === 'heart') {
+                    svgHTML = buildSVG(HEART_SVG, p.color || '#E91E63');
+                } else if (p.svg === 'bat') {
+                    svgHTML = buildSVG(BAT_SVG, p.color || '#1a1a2e', p.glow || '#FF6F00');
+                } else if (p.svg === 'pumpkin') {
+                    svgHTML = PUMPKIN_SVG;
+                } else if (p.svg === 'star') {
+                    svgHTML = starSVG(p.color || '#FDD835');
+                } else if (p.svg === 'egg') {
+                    svgHTML = easterEggSVG(p.colors ? p.colors[0] : '#F48FB1', p.colors ? p.colors[1] : '#E91E63');
+                } else if (p.svg === 'flower') {
+                    svgHTML = buildSVG(FLOWER_SVG, p.color || '#F48FB1');
+                } else if (p.svg === 'crescent') {
+                    svgHTML = buildSVG(CRESCENT_SVG, null, null, p.bgFill || '#0a0a14');
+                } else if (p.svg === 'lantern') {
+                    svgHTML = LANTERN_SVG;
+                } else if (p.svg === 'ornament') {
+                    svgHTML = ornamentSVG(p.colors ? p.colors[0] : '#C62828', p.colors ? p.colors[1] : '#B71C1C');
+                } else if (p.svg === 'tag') {
+                    svgHTML = buildSVG(SALE_TAG_SVG, p.color || '#FF1744');
+                } else if (p.svg === 'firework') {
+                    svgHTML = buildSVG(FIREWORK_SVG, p.color || '#FFD700');
+                } else if (p.svg === 'sun') {
+                    svgHTML = SUN_SVG;
+                } else if (p.svg === 'wave') {
+                    svgHTML = buildSVG(WAVE_SVG, p.color || '#0288D1');
                 }
 
+                el.innerHTML = svgHTML;
+
+                // Animation based on theme anim type
                 if (theme.anim === 'rise') {
                     wrapper.style.animation = 'gb-rise ' + fallDur.toFixed(1) + 's ' + delay.toFixed(1) + 's linear infinite';
                     el.style.animation = 'gb-drift ' + driftDur.toFixed(1) + 's ' + (delay * 0.5).toFixed(1) + 's ease-in-out infinite';
@@ -531,6 +813,16 @@
                     el.style.animation = 'gb-drift ' + driftDur.toFixed(1) + 's ' + (delay * 0.5).toFixed(1) + 's ease-in-out infinite';
                 }
 
+                // Add spin for snowflakes, stars, fireworks, etc.
+                if (p.spin) {
+                    var spinDur = rand(8, 20);
+                    var innerSVG = el.querySelector('svg');
+                    if (innerSVG) {
+                        innerSVG.style.animation = 'gb-spinSlow ' + spinDur.toFixed(1) + 's linear infinite';
+                        if (Math.random() > 0.5) innerSVG.style.animationDirection = 'reverse';
+                    }
+                }
+
                 wrapper.appendChild(el);
                 state.container.appendChild(wrapper);
             }
@@ -540,130 +832,238 @@
     }
 
     /* ═══════════════════════════════════════════
-       STRING LIGHTS - Premium Christmas feature
-       Teardrop bulbs with glow, hanging from thin strings
+       STRING LIGHTS - Premium Christmas
+       Bigger bulbs, brighter glow, cap detail
     ═══════════════════════════════════════════ */
     function createStringLights() {
-        if (isMobile) return; /* too cluttered on mobile */
+        if (isMobile) return;
         var el = document.createElement('div');
         el.className = 'gb-lights';
 
-        var numBulbs = 14;
-        var marginPct = 8;
+        var numBulbs = 16;
+        var marginPct = 6;
         var colors = [
-            { bg: 'rgba(255,245,224,0.9)', glow: 'rgba(255,245,224,0.5)' },
-            { bg: 'rgba(220,70,70,0.9)', glow: 'rgba(220,70,70,0.4)' },
-            { bg: 'rgba(212,175,55,0.9)', glow: 'rgba(212,175,55,0.45)' },
-            { bg: 'rgba(100,180,100,0.9)', glow: 'rgba(100,180,100,0.4)' }
+            { bg: 'rgba(255,245,224,0.92)', glow: 'rgba(255,245,224,0.55)' },
+            { bg: 'rgba(220,60,60,0.92)', glow: 'rgba(220,60,60,0.45)' },
+            { bg: 'rgba(212,175,55,0.92)', glow: 'rgba(212,175,55,0.5)' },
+            { bg: 'rgba(80,170,80,0.92)', glow: 'rgba(80,170,80,0.45)' },
+            { bg: 'rgba(80,140,220,0.9)', glow: 'rgba(80,140,220,0.4)' }
         ];
 
-        /* SVG wire with catenary droop */
         var points = [];
         for (var i = 0; i < numBulbs; i++) {
             var pct = marginPct + (i / (numBulbs - 1)) * (100 - 2 * marginPct);
-            var droop = Math.sin((i / (numBulbs - 1)) * Math.PI) * 18;
+            var droop = Math.sin((i / (numBulbs - 1)) * Math.PI) * 20;
             points.push((pct * 10) + ',' + (5 + droop));
         }
-        var wireSvg = '<svg class="gb-lights-wire" viewBox="0 0 1000 55" preserveAspectRatio="none">' +
-            '<polyline points="' + points.join(' ') + '" stroke="rgba(100,100,100,0.35)" stroke-width="1.5" fill="none"/>' +
+        var wireSvg = '<svg class="gb-lights-wire" viewBox="0 0 1000 60" preserveAspectRatio="none">' +
+            '<polyline points="' + points.join(' ') + '" stroke="rgba(80,80,80,0.4)" stroke-width="1.5" fill="none"/>' +
         '</svg>';
         el.innerHTML = wireSvg;
 
-        /* Bulbs with hanging strings */
         for (var i = 0; i < numBulbs; i++) {
             var pct = marginPct + (i / (numBulbs - 1)) * (100 - 2 * marginPct);
-            var droop = Math.sin((i / (numBulbs - 1)) * Math.PI) * 18;
+            var droop = Math.sin((i / (numBulbs - 1)) * Math.PI) * 20;
             var c = colors[i % colors.length];
-            var stringH = 3 + droop * 0.3;
+            var yPos = 9 + droop * 0.33;
 
-            /* String from wire to bulb */
-            var string = document.createElement('div');
-            string.className = 'gb-bulb-string';
-            string.style.left = pct + '%';
-            string.style.top = (9 + droop * 0.33) + '%';
-            string.style.height = stringH + 'px';
-            el.appendChild(string);
+            var cap = document.createElement('div');
+            cap.className = 'gb-bulb-cap';
+            cap.style.left = pct + '%';
+            cap.style.top = yPos + '%';
+            el.appendChild(cap);
 
-            /* Bulb */
             var bulb = document.createElement('div');
             bulb.className = 'gb-bulb';
             bulb.style.left = pct + '%';
-            bulb.style.top = (9 + droop * 0.33 + stringH) + '%';
+            bulb.style.top = (yPos + 5) + '%';
             bulb.style.background = c.bg;
             bulb.style.setProperty('--gc', c.glow);
-            bulb.style.animationDelay = (i * 0.28) + 's';
+            bulb.style.animationDelay = (i * 0.22) + 's';
             el.appendChild(bulb);
         }
 
         document.body.appendChild(el);
-        state.creative = el;
+        state.creativeExtra.push(el);
     }
 
     /* ═══════════════════════════════════════════
        FOG - Halloween atmospheric effect
-       Two layers drifting at different speeds
     ═══════════════════════════════════════════ */
     function createFog() {
         var f1 = document.createElement('div');
         f1.className = 'gb-fog gb-fog-1';
         document.body.appendChild(f1);
+        state.creativeExtra.push(f1);
 
         var f2 = document.createElement('div');
         f2.className = 'gb-fog gb-fog-2';
         document.body.appendChild(f2);
-
-        state.creative = f1;
-        /* Store both for cleanup */
-        f1._pair = f2;
+        state.creativeExtra.push(f2);
     }
 
     /* ═══════════════════════════════════════════
-       SUN FLARE - Summer warm glow effect
+       SUN FLARE - Summer warm glow
     ═══════════════════════════════════════════ */
     function createSunFlare() {
         var el = document.createElement('div');
         el.className = 'gb-sunflare';
         document.body.appendChild(el);
-        state.creative = el;
+        state.creativeExtra.push(el);
+    }
+
+    /* ═══════════════════════════════════════════
+       HEAT SHIMMER - Summer ground heat effect
+    ═══════════════════════════════════════════ */
+    function createHeatShimmer() {
+        var el = document.createElement('div');
+        el.className = 'gb-heatshimmer';
+        document.body.appendChild(el);
+        state.creativeExtra.push(el);
+    }
+
+    /* ═══════════════════════════════════════════
+       FROST - Winter corner frost effect
+    ═══════════════════════════════════════════ */
+    function createFrost() {
+        ['tl','tr','bl','br'].forEach(function(pos) {
+            var el = document.createElement('div');
+            el.className = 'gb-frost gb-frost-' + pos;
+            document.body.appendChild(el);
+            state.creativeExtra.push(el);
+        });
+    }
+
+    /* ═══════════════════════════════════════════
+       ROSE PETALS - Valentine's floating petals
+    ═══════════════════════════════════════════ */
+    function createRosePetals() {
+        var count = isMobile ? 6 : 14;
+        var colors = ['#E91E63', '#F06292', '#EC407A', '#AD1457'];
+        for (var i = 0; i < count; i++) {
+            var petal = document.createElement('div');
+            petal.className = 'gb-rosepetal';
+            var size = rand(6, 14);
+            var dur = rand(10, 22);
+            var delay = rand(0, dur);
+            var opacity = rand(0.15, 0.35);
+            petal.style.width = size + 'px';
+            petal.style.height = size * 1.4 + 'px';
+            petal.style.left = rand(2, 98) + '%';
+            petal.style.background = colors[randInt(0, colors.length - 1)];
+            petal.style.setProperty('--pd', dur.toFixed(1) + 's');
+            petal.style.setProperty('--op', opacity.toFixed(2));
+            petal.style.animationDelay = delay.toFixed(1) + 's';
+            // Attach to body within a fixed container
+            var wrap = document.createElement('div');
+            wrap.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:hidden';
+            wrap.appendChild(petal);
+            document.body.appendChild(wrap);
+            state.creativeExtra.push(wrap);
+        }
+    }
+
+    /* ═══════════════════════════════════════════
+       BUTTERFLIES - Easter spring effect
+    ═══════════════════════════════════════════ */
+    function createButterflies() {
+        if (isMobile) return;
+        var count = 4;
+        var colors = ['#F48FB1', '#81C784', '#90CAF9', '#CE93D8'];
+        for (var i = 0; i < count; i++) {
+            var bfly = document.createElement('div');
+            bfly.className = 'gb-butterfly';
+            bfly.style.position = 'fixed';
+            bfly.style.left = rand(10, 85) + '%';
+            bfly.style.top = rand(15, 70) + '%';
+            bfly.style.pointerEvents = 'none';
+            bfly.style.zIndex = '2';
+            bfly.style.opacity = rand(0.2, 0.4).toFixed(2);
+            bfly.style.setProperty('--bd', rand(8, 16).toFixed(1) + 's');
+            bfly.style.animationDelay = rand(0, 5).toFixed(1) + 's';
+            var wingSize = rand(6, 10);
+            var c = colors[i % colors.length];
+            bfly.innerHTML = '<span class="gb-butterfly-wing" style="width:' + wingSize + 'px;height:' + (wingSize * 1.3) + 'px;background:' + c + '"></span>' +
+                '<span class="gb-butterfly-wing right" style="width:' + wingSize + 'px;height:' + (wingSize * 1.3) + 'px;background:' + c + '"></span>';
+            document.body.appendChild(bfly);
+            state.creativeExtra.push(bfly);
+        }
+    }
+
+    /* ═══════════════════════════════════════════
+       SPARKLE FIELD - Eid/Ramadan twinkling stars
+    ═══════════════════════════════════════════ */
+    function createSparkleField() {
+        var count = isMobile ? 15 : 35;
+        for (var i = 0; i < count; i++) {
+            var spark = document.createElement('div');
+            spark.className = 'gb-sparkle';
+            var size = rand(2, 5);
+            spark.style.width = size + 'px';
+            spark.style.height = size + 'px';
+            spark.style.left = rand(2, 98) + '%';
+            spark.style.top = rand(2, 95) + '%';
+            spark.style.background = Math.random() > 0.5 ? '#FDD835' : '#FFF9C4';
+            spark.style.setProperty('--sd', rand(2, 5).toFixed(1) + 's');
+            spark.style.setProperty('--op', rand(0.2, 0.55).toFixed(2));
+            spark.style.animationDelay = rand(0, 4).toFixed(1) + 's';
+            document.body.appendChild(spark);
+            state.creativeExtra.push(spark);
+        }
+    }
+
+    /* ═══════════════════════════════════════════
+       NEON FLASH - Black Friday dramatic effect
+    ═══════════════════════════════════════════ */
+    function createNeonFlash() {
+        var el = document.createElement('div');
+        el.className = 'gb-neonflash';
+        el.style.inset = '0';
+        el.style.background = 'radial-gradient(ellipse at 50% 50%, rgba(255,23,68,0.15) 0%, transparent 70%)';
+        document.body.appendChild(el);
+        state.creativeExtra.push(el);
     }
 
     /* ═══════════════════════════════════════════
        CONFETTI - New Year one-shot burst
-       Fires once on apply, 60-80 pieces, fades out
     ═══════════════════════════════════════════ */
     function createConfetti() {
         var wrap = document.createElement('div');
         wrap.className = 'gb-confetti-wrap';
-        var count = isMobile ? 35 : 65;
-        var colors = ['#FFD700', '#C0C0C0', '#f5e6cc', '#0D47A1', '#FFD700', '#fff'];
-        var shapes = ['rect', 'rect', 'circle', 'strip'];
+        var count = isMobile ? 40 : 80;
+        var colors = ['#FFD700', '#C0C0C0', '#f5e6cc', '#0D47A1', '#E91E63', '#fff', '#FF6F00', '#4CAF50'];
 
         for (var i = 0; i < count; i++) {
             var piece = document.createElement('div');
             piece.className = 'gb-conf';
             var color = colors[Math.floor(Math.random() * colors.length)];
-            var shape = shapes[Math.floor(Math.random() * shapes.length)];
-            var left = rand(5, 95);
-            var dur = rand(2.5, 5);
-            var rot = rand(360, 1080);
-            var delay = rand(0, 0.8);
+            var left = rand(3, 97);
+            var dur = rand(2.5, 5.5);
+            var rot = rand(360, 1440);
+            var delay = rand(0, 1);
+            var shape = Math.random();
 
             piece.style.left = left + '%';
             piece.style.setProperty('--cd', dur.toFixed(1) + 's');
             piece.style.setProperty('--cr', rot.toFixed(0) + 'deg');
-            piece.style.animationDelay = delay.toFixed(1) + 's';
+            piece.style.animationDelay = delay.toFixed(2) + 's';
             piece.style.background = color;
 
-            if (shape === 'circle') {
+            if (shape < 0.25) {
                 piece.style.width = rand(5, 9) + 'px';
                 piece.style.height = piece.style.width;
                 piece.style.borderRadius = '50%';
-            } else if (shape === 'strip') {
+            } else if (shape < 0.5) {
                 piece.style.width = rand(2, 4) + 'px';
-                piece.style.height = rand(12, 20) + 'px';
+                piece.style.height = rand(14, 22) + 'px';
                 piece.style.borderRadius = '2px';
+            } else if (shape < 0.75) {
+                var s = rand(6, 10);
+                piece.style.width = s + 'px';
+                piece.style.height = s + 'px';
+                piece.style.transform = 'rotate(45deg)';
             } else {
-                piece.style.width = rand(6, 10) + 'px';
+                piece.style.width = rand(7, 11) + 'px';
                 piece.style.height = rand(4, 7) + 'px';
                 piece.style.borderRadius = '1px';
             }
@@ -672,28 +1072,28 @@
         }
 
         document.body.appendChild(wrap);
-        state.creative = wrap;
+        state.creativeExtra.push(wrap);
 
-        /* Auto-remove after animation completes */
         setTimeout(function() {
             if (wrap.parentNode) wrap.remove();
-            if (state.creative === wrap) state.creative = null;
-        }, 6000);
+            var idx = state.creativeExtra.indexOf(wrap);
+            if (idx > -1) state.creativeExtra.splice(idx, 1);
+        }, 7000);
     }
 
     /* ═══════════════════════════════════════════
-       CORNER ORNAMENTS - SVG decorations in viewport corners
+       CORNER ORNAMENTS
     ═══════════════════════════════════════════ */
     function createCorners(type) {
         var svg, size, pos;
 
         if (type === 'holly') {
             svg = HOLLY_SVG;
-            size = isMobile ? 80 : 130;
+            size = isMobile ? 100 : 160;
             pos = { top: '0', left: '0' };
         } else if (type === 'cobweb') {
             svg = COBWEB_SVG;
-            size = isMobile ? 100 : 170;
+            size = isMobile ? 120 : 200;
             pos = { top: '0', left: '0' };
         } else {
             return;
@@ -707,19 +1107,30 @@
         el.innerHTML = svg;
         document.body.appendChild(el);
         state.corners.push(el);
+
+        // Mirror for right corner (cobweb only)
+        if (type === 'cobweb') {
+            var el2 = document.createElement('div');
+            el2.className = 'gb-corner';
+            el2.style.width = (size * 0.7) + 'px';
+            el2.style.height = (size * 0.7) + 'px';
+            el2.style.top = '0';
+            el2.style.right = '0';
+            el2.style.transform = 'scaleX(-1)';
+            el2.innerHTML = svg;
+            document.body.appendChild(el2);
+            state.corners.push(el2);
+        }
     }
 
     /* ═══════════════════════════════════════════
        LOGO NEON CIRCLE GLOW
-       Changes the hero circle border/shadow per theme
     ═══════════════════════════════════════════ */
     function applyLogoGlow(theme) {
         if (!theme.neon) return;
 
-        /* Hero neon circle */
         var heroCircle = document.querySelector('.showcase-neon-circle');
         if (heroCircle) {
-            /* Save originals for restore */
             if (!state.savedNeon) {
                 state.savedNeon = {
                     border: heroCircle.style.border || '',
@@ -732,7 +1143,6 @@
             heroCircle.style.transition = 'border 1.5s ease, box-shadow 1.5s ease';
         }
 
-        /* Nav logo glow */
         if (theme.navGlow) {
             document.querySelectorAll('.nav-logo img').forEach(function(img) {
                 if (!state.savedNavGlow) {
@@ -761,10 +1171,9 @@
     }
 
     /* ═══════════════════════════════════════════
-       SANTA HAT - Properly positioned on logos
+       SANTA HAT
     ═══════════════════════════════════════════ */
     function addSantaHats() {
-        /* Nav logos - 45px images */
         document.querySelectorAll('.nav-logo').forEach(function(logo) {
             logo.style.position = 'relative';
             logo.style.overflow = 'visible';
@@ -783,7 +1192,6 @@
             state.logoDeco.push(hat);
         });
 
-        /* Big hero logo - .showcase-neon-circle (320px) */
         var heroCircle = document.querySelector('.showcase-neon-circle');
         if (heroCircle) {
             heroCircle.style.overflow = 'visible';
@@ -817,7 +1225,6 @@
 
     /* ═══════════════════════════════════════════
        ATMOSPHERE OVERLAY
-       Subtle gradient overlays for mood
     ═══════════════════════════════════════════ */
     function createAtmosphere(theme) {
         if (!theme.atmosphere) return;
@@ -826,6 +1233,41 @@
         el.style.background = theme.atmosphere;
         document.body.appendChild(el);
         state.atmosphere = el;
+    }
+
+    /* ═══════════════════════════════════════════
+       CELEBRATION BANNER
+       Premium themed announcement at top
+    ═══════════════════════════════════════════ */
+    function createBanner(theme) {
+        if (state.banner) { state.banner.remove(); state.banner = null; }
+        if (!theme.banner) return;
+        try { if (sessionStorage.getItem('gb-banner-off') === state.id) return; } catch(e) {}
+
+        var b = theme.banner;
+        state.banner = document.createElement('div');
+        state.banner.className = 'gb-banner';
+        state.banner.style.background = b.bg;
+        state.banner.style.color = b.color;
+
+        state.banner.innerHTML =
+            '<div class="gb-banner-icon">' + (b.icon || '') + '</div>' +
+            '<div class="gb-banner-text">' + b.text + '</div>' +
+            '<div class="gb-banner-sub">' + b.sub + '</div>' +
+            '<div class="gb-banner-shine"></div>';
+
+        document.body.appendChild(state.banner);
+
+        // Auto-hide after 12 seconds
+        setTimeout(function() {
+            if (state.banner) {
+                state.banner.style.animation = 'gb-bannerout 0.6s ease forwards';
+                var ref = state.banner;
+                setTimeout(function() { if (ref && ref.parentNode) ref.remove(); }, 600);
+                state.banner = null;
+                try { sessionStorage.setItem('gb-banner-off', state.id); } catch(e) {}
+            }
+        }, 12000);
     }
 
     /* ═══════════════════════════════════════════
@@ -920,13 +1362,26 @@
     ═══════════════════════════════════════════ */
     function createCreative(theme) {
         if (!theme.creative) return;
-        if (theme.creative === 'stringLights') createStringLights();
-        else if (theme.creative === 'fog') createFog();
-        else if (theme.creative === 'sunFlare') createSunFlare();
-        else if (theme.creative === 'confetti') createConfetti();
+        var list = Array.isArray(theme.creative) ? theme.creative : [theme.creative];
+        list.forEach(function(c) {
+            if (c === 'stringLights') createStringLights();
+            else if (c === 'fog') createFog();
+            else if (c === 'sunFlare') createSunFlare();
+            else if (c === 'heatShimmer') createHeatShimmer();
+            else if (c === 'confetti') createConfetti();
+            else if (c === 'frost') createFrost();
+            else if (c === 'rosePetals') createRosePetals();
+            else if (c === 'butterflies') createButterflies();
+            else if (c === 'sparkleField') createSparkleField();
+            else if (c === 'neonFlash') createNeonFlash();
+        });
     }
 
     function removeCreative() {
+        state.creativeExtra.forEach(function(el) {
+            if (el && el.parentNode) el.remove();
+        });
+        state.creativeExtra = [];
         if (state.creative) {
             if (state.creative._pair) state.creative._pair.remove();
             state.creative.remove();
@@ -948,17 +1403,13 @@
 
         injectCSS();
 
-        /* 1. Logo glow (highest impact, zero performance cost) */
+        /* 1. Logo glow */
         applyLogoGlow(theme);
 
-        /* 2. Particles or Snowfall */
-        if (theme.snow) {
-            createSnowfall();
-        } else if (theme.particles) {
-            createParticles(theme);
-        }
+        /* 2. SVG Particles */
+        createParticles(theme);
 
-        /* 3. Creative element (string lights, fog, confetti, sun flare) */
+        /* 3. Creative elements */
         createCreative(theme);
 
         /* 4. Corner ornaments */
@@ -970,13 +1421,16 @@
         /* 6. Santa hat */
         if (theme.hat) addSantaHats();
 
-        /* 7. Toast notification */
+        /* 7. Celebration banner */
+        createBanner(theme);
+
+        /* 8. Toast notification */
         createToast(theme);
 
-        /* 8. Top border accent */
+        /* 9. Top border accent */
         createBorder(theme);
 
-        /* 9. Nav accent line */
+        /* 10. Nav accent line */
         createNavLine(theme);
     }
 
@@ -984,6 +1438,7 @@
         if (state.container) { state.container.remove(); state.container = null; }
         if (state.toast) { state.toast.remove(); state.toast = null; }
         if (state.border) { state.border.remove(); state.border = null; }
+        if (state.banner) { state.banner.remove(); state.banner = null; }
         removeNavLine();
         removeCreative();
         if (state.atmosphere) { state.atmosphere.remove(); state.atmosphere = null; }
