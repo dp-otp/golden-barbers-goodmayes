@@ -1,5 +1,5 @@
 /**
- * Golden Barbers – Premium Seasonal Theme Effects v21
+ * Golden Barbers – Premium Seasonal Theme Effects v22
  *
  * Clean rewrite: premium quality, subtle execution.
  * Colour palette + atmospheric decorations + connotation elements + banner.
@@ -123,6 +123,7 @@
 
     /* ═══════════════════════════════════════════
        SVG TEMPLATES (compact, clean vectors)
+       Used for web patterns and corner decorations.
     ═══════════════════════════════════════════ */
     var SVG = {
         web: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.5">'
@@ -132,15 +133,6 @@
             + '<line x1="0" y1="0" x2="200" y2="140"/>'
             + '<path d="M30,0 Q20,20 0,30"/><path d="M70,0 Q45,45 0,70"/>'
             + '<path d="M115,0 Q75,75 0,115"/><path d="M165,0 Q110,110 0,165"/></svg>',
-
-        lantern: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 55" fill="currentColor">'
-            + '<rect x="12" y="0" width="6" height="5" rx="1" opacity="0.5"/>'
-            + '<path d="M15,5 Q4,5 4,28 Q4,45 15,47 Q26,45 26,28 Q26,5 15,5Z" opacity="0.5"/>'
-            + '<ellipse cx="15" cy="26" rx="4" ry="8" fill="rgba(255,200,50,0.3)"/></svg>',
-
-        crescent: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="currentColor">'
-            + '<path d="M35,5 A30,30 0 1,0 35,75 A22,22 0 1,1 35,5Z" opacity="0.7"/>'
-            + '<polygon points="62,12 64,18 70,18 65,22 67,28 62,24 57,28 59,22 54,18 60,18" opacity="0.6"/></svg>',
 
         leaves: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="currentColor" opacity="0.8">'
             + '<ellipse cx="35" cy="30" rx="20" ry="10" transform="rotate(-30 35 30)"/>'
@@ -153,18 +145,14 @@
             + '<circle cx="30" cy="30" r="9"/><circle cx="22" cy="21" r="6"/><circle cx="38" cy="21" r="6"/>'
             + '<circle cx="22" cy="39" r="6"/><circle cx="38" cy="39" r="6"/>'
             + '<circle cx="72" cy="65" r="7"/><circle cx="66" cy="58" r="5"/><circle cx="78" cy="58" r="5"/>'
-            + '<circle cx="66" cy="72" r="5"/><circle cx="78" cy="72" r="5"/></svg>',
-
-        palm: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200" fill="currentColor">'
-            + '<rect x="44" y="80" width="12" height="120" rx="4" opacity="0.6"/>'
-            + '<path d="M50,85 Q15,45 5,55 Q28,25 50,18 Q72,25 95,55 Q85,45 50,85Z" opacity="0.5"/>'
-            + '<path d="M50,65 Q8,22 0,35 Q32,2 50,0 Q68,2 100,35 Q92,22 50,65Z" opacity="0.4"/></svg>'
+            + '<circle cx="66" cy="72" r="5"/><circle cx="78" cy="72" r="5"/></svg>'
     };
 
     /* ═══════════════════════════════════════════
        CONNOTATION ICON SYSTEM
-       PNGs for high-quality existing assets,
-       inline SVGs for everything else.
+       PNGs for existing high-quality assets,
+       emoji for everything else (full-colour,
+       platform-native, zero external deps).
     ═══════════════════════════════════════════ */
     var ASSET_PATH = (function () {
         var scripts = document.getElementsByTagName('script');
@@ -181,48 +169,55 @@
         heart: 'heart.png', rose: 'rose.png', easterEgg: 'easter-egg.png'
     };
 
-    var SVG_ICONS = {
-        pumpkin: '<svg viewBox="0 0 40 40" fill="currentColor"><path d="M20,5c-2,0-3,1-3,3v2c-5,0-10,4-10,12s5,14,13,14s13-6,13-14S25,10,23,10V8c0-2-1-3-3-3z" opacity="0.9"/><path d="M18,8c0-1.5,1-2,2-2s2,.5,2,2v3h-4V8z" fill="#4a7c10"/><circle cx="15" cy="22" r="2" fill="rgba(0,0,0,0.7)"/><circle cx="25" cy="22" r="2" fill="rgba(0,0,0,0.7)"/><path d="M16,28c2,2,6,2,8,0" fill="none" stroke="rgba(0,0,0,0.7)" stroke-width="1.5"/></svg>',
-        bunnyEars: '<svg viewBox="0 0 50 30"><ellipse cx="15" cy="15" rx="5" ry="14" fill="currentColor" opacity="0.85"/><ellipse cx="15" cy="13" rx="2.5" ry="10" fill="#ffb6c1" opacity="0.5"/><ellipse cx="35" cy="15" rx="5" ry="14" fill="currentColor" opacity="0.85"/><ellipse cx="35" cy="13" rx="2.5" ry="10" fill="#ffb6c1" opacity="0.5"/></svg>',
-        springFlower: '<svg viewBox="0 0 30 30" fill="currentColor"><circle cx="15" cy="15" r="4" fill="#ffeb3b" opacity="0.8"/><ellipse cx="15" cy="7" rx="4" ry="5" opacity="0.6"/><ellipse cx="15" cy="23" rx="4" ry="5" opacity="0.6"/><ellipse cx="7" cy="15" rx="5" ry="4" opacity="0.6"/><ellipse cx="23" cy="15" rx="5" ry="4" opacity="0.6"/></svg>',
-        basket: '<svg viewBox="0 0 40 35" fill="currentColor"><path d="M5,15h30l-3,18c-.5,2-2,2-2,2H10s-1.5,0-2-2L5,15z" opacity="0.7"/><path d="M8,15c0,0,4-12,12-12s12,12,12,12" fill="none" stroke="currentColor" stroke-width="2" opacity="0.6"/><line x1="5" y1="15" x2="35" y2="15" stroke="currentColor" stroke-width="2.5" opacity="0.8"/></svg>',
-        sunglasses: '<svg viewBox="0 0 50 22"><path d="M4,10c0-1,1-2,2-2h38c1,0,2,1,2,2" fill="none" stroke="currentColor" stroke-width="2" opacity="0.8"/><rect x="3" y="9" width="16" height="12" rx="3" fill="currentColor" opacity="0.85"/><rect x="31" y="9" width="16" height="12" rx="3" fill="currentColor" opacity="0.85"/><path d="M19,14c2-2,10-2,12,0" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/></svg>',
-        palmFrond: '<svg viewBox="0 0 60 80" fill="currentColor"><path d="M30,78c0-30,0-50,0-75" stroke="currentColor" stroke-width="2" fill="none" opacity="0.6"/><path d="M30,10C15,15,5,30,2,45c5-10,15-20,28-20" opacity="0.5"/><path d="M30,10C45,15,55,30,58,45c-5-10-15-20-28-20" opacity="0.5"/><path d="M30,25C18,28,10,40,8,50c4-8,12-16,22-14" opacity="0.4"/><path d="M30,25C42,28,50,40,52,50c-4-8-12-16-22-14" opacity="0.4"/></svg>',
-        sun: '<svg viewBox="0 0 60 60" fill="currentColor"><circle cx="30" cy="30" r="12" opacity="0.8"/><g opacity="0.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="30" y1="4" x2="30" y2="14"/><line x1="30" y1="46" x2="30" y2="56"/><line x1="4" y1="30" x2="14" y2="30"/><line x1="46" y1="30" x2="56" y2="30"/><line x1="11" y1="11" x2="18" y2="18"/><line x1="42" y1="42" x2="49" y2="49"/><line x1="49" y1="11" x2="42" y2="18"/><line x1="18" y1="42" x2="11" y2="49"/></g></svg>',
-        acorn: '<svg viewBox="0 0 24 30" fill="currentColor"><ellipse cx="12" cy="20" rx="8" ry="10" opacity="0.7"/><path d="M4,14c0-4,3-7,8-7s8,3,8,7c0,1-1,2-2,2H6c-1,0-2-1-2-2z" opacity="0.85"/><rect x="11" y="3" width="2" height="5" rx="1" opacity="0.6"/></svg>',
-        mushroom: '<svg viewBox="0 0 36 40" fill="currentColor"><path d="M18,2C8,2,2,10,2,17c0,2,1,3,3,3h26c2,0,3-1,3-3C34,10,28,2,18,2z" opacity="0.8"/><rect x="13" y="18" width="10" height="18" rx="2" opacity="0.6"/><circle cx="10" cy="12" r="3" fill="rgba(255,255,255,0.3)"/><circle cx="22" cy="9" r="2" fill="rgba(255,255,255,0.3)"/></svg>',
-        hotDrink: '<svg viewBox="0 0 30 32" fill="currentColor"><rect x="4" y="10" width="18" height="18" rx="2" opacity="0.7"/><path d="M22,14c4,0,6,2,6,5s-2,5-6,5" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"/><path d="M8,8c1-3,2-3,3,0s2,3,3,0" fill="none" stroke="currentColor" stroke-width="1" opacity="0.35"/></svg>',
-        scarf: '<svg viewBox="0 0 60 25" fill="currentColor"><path d="M0,8c10-3,20,3,30,0s20-3,30,0v8c-10,3-20-3-30,0s-20,3-30,0z" opacity="0.75"/><path d="M28,16v8c0,1,2,1,2,0v-8" opacity="0.65"/></svg>',
-        star: '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15,9 22,9 16.5,14 18.5,22 12,17.5 5.5,22 7.5,14 2,9 9,9" opacity="0.8"/></svg>',
-        mosque: '<svg viewBox="0 0 120 60" fill="currentColor" opacity="0.08"><rect x="10" y="30" width="100" height="30"/><path d="M30,30c0-15,10-25,30-25s30,10,30,25"/><rect x="15" y="15" width="6" height="45" rx="3"/><rect x="99" y="15" width="6" height="45" rx="3"/></svg>',
-        crescentStar: '<svg viewBox="0 0 40 40" fill="currentColor"><path d="M18,4A15,15,0,1,0,18,36A11,11,0,1,1,18,4Z" opacity="0.7"/><polygon points="34,8 35.5,12 40,12 36.5,15 38,19 34,16.5 30,19 31.5,15 28,12 32.5,12" opacity="0.6"/></svg>',
-        ketupat: '<svg viewBox="0 0 30 40" fill="currentColor"><path d="M15,2L4,15v10l11,13l11-13V15L15,2z" opacity="0.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8,15h14M8,20h14M8,25h14" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.4"/></svg>',
-        firework: '<svg viewBox="0 0 40 40" fill="currentColor"><circle cx="20" cy="20" r="3" opacity="0.8"/><g stroke="currentColor" stroke-width="1" opacity="0.5" stroke-linecap="round"><line x1="20" y1="5" x2="20" y2="13"/><line x1="20" y1="27" x2="20" y2="35"/><line x1="5" y1="20" x2="13" y2="20"/><line x1="27" y1="20" x2="35" y2="20"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="25" y1="25" x2="31" y2="31"/></g></svg>',
-        saleTag: '<svg viewBox="0 0 28 32" fill="currentColor"><path d="M4,4l20,0l0,22l-10,6l-10-6z" opacity="0.8"/><circle cx="14" cy="10" r="3" fill="rgba(255,255,255,0.4)"/><rect x="9" y="17" width="10" height="1.5" rx="0.5" fill="rgba(255,255,255,0.3)"/></svg>',
-        shoppingBag: '<svg viewBox="0 0 30 36" fill="currentColor"><rect x="3" y="10" width="24" height="24" rx="2" opacity="0.7"/><path d="M10,12V8c0-3,2-5,5-5s5,2,5,5v4" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"/></svg>',
-        champagne: '<svg viewBox="0 0 20 44" fill="currentColor"><path d="M7,0h6l2,20c0,3-2,5-5,5s-5-2-5-5L7,0z" opacity="0.65"/><rect x="9" y="24" width="2" height="14" opacity="0.5"/><ellipse cx="10" cy="40" rx="6" ry="2" opacity="0.5"/></svg>',
-        clock: '<svg viewBox="0 0 40 40" fill="currentColor"><circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/><line x1="20" y1="20" x2="20" y2="8" stroke="currentColor" stroke-width="2" opacity="0.7" stroke-linecap="round"/><line x1="20" y1="20" x2="28" y2="17" stroke="currentColor" stroke-width="1.5" opacity="0.6" stroke-linecap="round"/><circle cx="20" cy="20" r="2" opacity="0.8"/></svg>',
-        lightning: '<svg viewBox="0 0 24 36" fill="currentColor"><polygon points="14,0 6,16 12,16 8,36 20,14 13,14 18,0" opacity="0.8"/></svg>',
-        megaphone: '<svg viewBox="0 0 40 30" fill="currentColor"><path d="M12,8h4l16-6v26l-16-6h-4c-2,0-4-2-4-4v-6c0-2,2-4,4-4z" opacity="0.7"/><rect x="6" y="18" width="6" height="8" rx="1" opacity="0.5"/></svg>',
-        timer: '<svg viewBox="0 0 36 40" fill="currentColor"><rect x="14" y="1" width="8" height="4" rx="1" opacity="0.5"/><circle cx="18" cy="23" r="13" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/><line x1="18" y1="23" x2="18" y2="13" stroke="currentColor" stroke-width="2" opacity="0.7" stroke-linecap="round"/><circle cx="18" cy="23" r="2" opacity="0.7"/></svg>',
-        cupidArrow: '<svg viewBox="0 0 120 20" fill="currentColor"><line x1="10" y1="10" x2="110" y2="10" stroke="currentColor" stroke-width="1.5" opacity="0.6"/><polygon points="110,10 100,5 100,15" opacity="0.7"/><path d="M10,10L5,5M10,10L5,15" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="12" cy="7" r="3" fill="#e91e63" opacity="0.5"/></svg>',
-        loveLetter: '<svg viewBox="0 0 36 28" fill="currentColor"><rect x="2" y="6" width="32" height="20" rx="2" opacity="0.7"/><path d="M2,6l16,11L34,6" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/><path d="M14,2l4,6l4-6" fill="#e91e63" opacity="0.6"/></svg>'
+    var EMOJI_ICONS = {
+        pumpkin: '\uD83C\uDF83',
+        bunnyEars: '\uD83D\uDC30',
+        springFlower: '\uD83C\uDF38',
+        basket: '\uD83E\uDDFA',
+        sunglasses: '\uD83D\uDD76\uFE0F',
+        palmFrond: '\uD83C\uDF34',
+        sun: '\u2600\uFE0F',
+        acorn: '\uD83C\uDF30',
+        mushroom: '\uD83C\uDF44',
+        hotDrink: '\u2615',
+        scarf: '\uD83E\uDDE3',
+        lantern: '\uD83C\uDFEE',
+        crescentStar: '\u262A\uFE0F',
+        star: '\u2B50',
+        mosque: '\uD83D\uDD4C',
+        ketupat: '\uD83C\uDF81',
+        firework: '\uD83C\uDF86',
+        saleTag: '\uD83C\uDFF7\uFE0F',
+        shoppingBag: '\uD83D\uDECD\uFE0F',
+        champagne: '\uD83E\uDD42',
+        clock: '\uD83D\uDD5B',
+        lightning: '\u26A1',
+        megaphone: '\uD83D\uDCE2',
+        timer: '\u23F1\uFE0F',
+        cupidArrow: '\uD83D\uDC98',
+        loveLetter: '\uD83D\uDC8C'
     };
 
     function createIcon(name, size, color) {
         var el = document.createElement('div');
         el.className = 'gb-con';
-        el.style.cssText = 'width:' + size + 'px;height:' + size + 'px;pointer-events:none;line-height:0;flex-shrink:0';
-        if (color) el.style.color = color;
         if (PNG_ICONS[name]) {
+            el.style.cssText = 'width:' + size + 'px;height:' + size + 'px;pointer-events:none;line-height:0;flex-shrink:0';
             var img = document.createElement('img');
             img.src = ASSET_PATH + PNG_ICONS[name];
             img.alt = '';
             img.draggable = false;
             img.style.cssText = 'width:100%;height:100%;object-fit:contain;pointer-events:none';
             el.appendChild(img);
+        } else if (EMOJI_ICONS[name]) {
+            el.textContent = EMOJI_ICONS[name];
+            el.style.cssText = 'font-size:' + size + 'px;line-height:1;width:' + size + 'px;height:' + size + 'px;'
+                + 'display:flex;align-items:center;justify-content:center;'
+                + 'pointer-events:none;flex-shrink:0;user-select:none;overflow:hidden';
         } else {
-            var svgStr = SVG_ICONS[name] || SVG[name] || '';
+            el.style.cssText = 'width:' + size + 'px;height:' + size + 'px;pointer-events:none;line-height:0;flex-shrink:0';
+            if (color) el.style.color = color;
+            var svgStr = SVG[name] || '';
             if (svgStr) {
                 el.innerHTML = svgStr;
                 var s = el.querySelector('svg');
@@ -544,40 +539,6 @@
         });
     }
 
-    /* --- Hanging Elements (lanterns, ornaments) --- */
-    function renderHang(container, cfg) {
-        var svgContent = SVG[cfg.svg];
-        if (!svgContent) return;
-        var count = isMobile ? Math.max(2, cfg.count - 1) : cfg.count;
-
-        for (var i = 0; i < count; i++) {
-            var wrap = document.createElement('div');
-            var left = 12 + (i / Math.max(count - 1, 1)) * 76;
-            var stringH = 15 + Math.random() * 35;
-            var sz = 18 + Math.random() * 12;
-
-            wrap.style.cssText = 'position:absolute;top:0;left:' + left + '%;'
-                + 'display:flex;flex-direction:column;align-items:center;'
-                + 'transform-origin:top center;'
-                + (reducedMotion ? '' : 'animation:gbSwing ' + (3 + Math.random()*2) + 's ' + (Math.random()*2) + 's ease-in-out infinite;');
-
-            // String
-            var str = document.createElement('div');
-            str.style.cssText = 'width:1px;height:' + stringH + 'px;background:rgba(255,255,255,0.1)';
-
-            // Element
-            var item = document.createElement('div');
-            item.innerHTML = svgContent;
-            item.style.cssText = 'width:' + sz + 'px;height:' + Math.round(sz * 1.4) + 'px;color:' + (cfg.color || '#d4af37') + ';opacity:0.5';
-            var svgEl = item.querySelector('svg');
-            if (svgEl) svgEl.style.cssText = 'width:100%;height:100%';
-
-            wrap.appendChild(str);
-            wrap.appendChild(item);
-            container.appendChild(wrap);
-        }
-    }
-
     /* --- Bottom Overlay (fog) --- */
     function renderFog(container, cfg) {
         var el = document.createElement('div');
@@ -637,7 +598,6 @@
         lights: renderLights,
         particles: renderParticles,
         corner: renderCorner,
-        hang: renderHang,
         fog: renderFog,
         frost: function(container) { renderFrost(container); },
         border: renderBorder
@@ -645,6 +605,7 @@
 
     /* ═══════════════════════════════════════════
        CONNOTATION PLACEMENT RENDERERS
+       All sizes reduced for subtle, premium accents.
     ═══════════════════════════════════════════ */
 
     /* --- Logo accessory (hat, ears on logo) --- */
@@ -653,11 +614,12 @@
         if (!logo) return;
         logo.style.position = 'relative';
         logo.style.overflow = 'visible';
-        var size = isMobile ? 28 : 36;
+        var size = isMobile ? 18 : 24;
         var el = createIcon(cfg.icon, size, accent);
-        el.style.cssText = 'position:absolute;top:' + (cfg.oY || -12) + 'px;left:50%;'
-            + 'transform:translateX(-50%) rotate(' + (cfg.tilt || 0) + 'deg);'
-            + 'z-index:10;opacity:0.9;animation:gbFadeIn 1s ease;pointer-events:none';
+        var oX = cfg.oX || 0;
+        el.style.cssText = 'position:absolute;top:' + (cfg.oY || -10) + 'px;left:50%;'
+            + 'transform:translateX(-50%) translateX(' + oX + 'px) rotate(' + (cfg.tilt || 0) + 'deg);'
+            + 'z-index:10;opacity:0.85;animation:gbFadeIn 1s ease;pointer-events:none';
         logo.appendChild(trackEl(el));
     }
 
@@ -667,10 +629,10 @@
         if (!logo) return;
         logo.style.position = 'relative';
         logo.style.overflow = 'visible';
-        var size = isMobile ? 18 : 24;
+        var size = isMobile ? 10 : 14;
         var el = createIcon(cfg.icon, size, accent);
-        el.style.cssText = 'position:absolute;top:' + (cfg.oY || 5) + 'px;'
-            + 'right:-' + (cfg.oX || 15) + 'px;z-index:10;opacity:0.8;'
+        el.style.cssText = 'position:absolute;top:' + (cfg.oY || 0) + 'px;'
+            + 'right:-' + (cfg.oX || 12) + 'px;z-index:10;opacity:0.7;'
             + 'animation:gbFadeIn 1s ease;pointer-events:none';
         logo.appendChild(trackEl(el));
     }
@@ -681,25 +643,25 @@
         if (!logo) return;
         logo.style.position = 'relative';
         logo.style.overflow = 'visible';
-        var size = isMobile ? 48 : 60;
+        var size = isMobile ? 20 : 26;
         var el = createIcon(cfg.icon, size, accent);
-        el.style.cssText = 'position:absolute;left:50%;bottom:-6px;'
-            + 'transform:translateX(-50%);opacity:0.75;z-index:10;'
+        el.style.cssText = 'position:absolute;left:50%;bottom:-4px;'
+            + 'transform:translateX(-50%);opacity:0.7;z-index:10;'
             + 'pointer-events:none;animation:gbFadeIn 1s ease';
         logo.appendChild(trackEl(el));
     }
 
-    /* --- Sun glow behind logo --- */
+    /* --- Glow behind logo --- */
     function placeLogoBehind(cfg, accent) {
         var logo = document.querySelector('.nav-logo');
         if (!logo) return;
         logo.style.position = 'relative';
-        var size = isMobile ? 60 : 80;
+        var size = isMobile ? 40 : 50;
         var el = document.createElement('div');
         el.className = 'gb-con';
         el.style.cssText = 'position:absolute;left:50%;top:50%;width:' + size + 'px;height:' + size + 'px;'
             + 'transform:translate(-50%,-50%);border-radius:50%;z-index:-1;pointer-events:none;'
-            + 'background:radial-gradient(circle,' + rgba(accent, 0.25) + ',' + rgba(accent, 0.08) + ' 40%,transparent 70%);'
+            + 'background:radial-gradient(circle,' + rgba(accent, 0.2) + ',' + rgba(accent, 0.06) + ' 40%,transparent 70%);'
             + 'animation:gbFadeIn 2s ease';
         logo.appendChild(trackEl(el));
     }
@@ -715,14 +677,14 @@
             var wrap = document.createElement('div');
             wrap.className = 'gb-con';
             var pct = 20 + (i / Math.max(count - 1, 1)) * 60;
-            var stringH = 12 + Math.random() * 20;
-            var size = isMobile ? 22 : 30;
-            wrap.style.cssText = 'position:absolute;bottom:-' + (stringH + size) + 'px;left:' + pct + '%;'
+            var stringH = 8 + Math.random() * 12;
+            var size = isMobile ? 12 : 16;
+            wrap.style.cssText = 'position:absolute;bottom:-' + (stringH + size + 4) + 'px;left:' + pct + '%;'
                 + 'display:flex;flex-direction:column;align-items:center;z-index:9999;pointer-events:none;'
                 + 'transform-origin:top center;'
                 + (reducedMotion ? '' : 'animation:gbSwing ' + (3 + Math.random() * 2) + 's ease-in-out infinite;');
             var thread = document.createElement('div');
-            thread.style.cssText = 'width:1px;height:' + stringH + 'px;background:' + rgba(accent, 0.2);
+            thread.style.cssText = 'width:1px;height:' + stringH + 'px;background:' + rgba(accent, 0.15);
             wrap.appendChild(thread);
             wrap.appendChild(createIcon(cfg.icon, size, accent));
             nav.appendChild(trackEl(wrap));
@@ -737,14 +699,14 @@
             var tag = tags[t];
             tag.style.position = 'relative';
             tag.style.overflow = 'visible';
-            var size = isMobile ? 20 : 28;
+            var size = isMobile ? 12 : 16;
             var left = createIcon(cfg.icon, size, accent);
-            left.style.cssText = 'position:absolute;left:-' + (size + 8) + 'px;top:50%;'
-                + 'transform:translateY(-50%);opacity:0.65;animation:gbFadeIn 1s ease;pointer-events:none';
+            left.style.cssText = 'position:absolute;left:-' + (size + 6) + 'px;top:50%;'
+                + 'transform:translateY(-50%);opacity:0.55;animation:gbFadeIn 1s ease;pointer-events:none';
             tag.appendChild(trackEl(left));
             var right = createIcon(cfg.icon, size, accent);
-            right.style.cssText = 'position:absolute;right:-' + (size + 8) + 'px;top:50%;'
-                + 'transform:translateY(-50%) scaleX(-1);opacity:0.65;animation:gbFadeIn 1s ease;pointer-events:none';
+            right.style.cssText = 'position:absolute;right:-' + (size + 6) + 'px;top:50%;'
+                + 'transform:translateY(-50%) scaleX(-1);opacity:0.55;animation:gbFadeIn 1s ease;pointer-events:none';
             tag.appendChild(trackEl(right));
         }
     }
@@ -756,11 +718,11 @@
             var line = lines[i];
             line.style.position = 'relative';
             line.style.overflow = 'visible';
-            var size = isMobile ? 14 : 18;
+            var size = isMobile ? 10 : 12;
             var icon = createIcon(cfg.icon, size, accent);
             var side = line.nextElementSibling ? 'right' : 'left';
-            icon.style.cssText = 'position:absolute;top:50%;' + side + ':-' + (size / 2 + 4) + 'px;'
-                + 'transform:translateY(-50%);opacity:0.55;animation:gbFadeIn 1s ease;pointer-events:none';
+            icon.style.cssText = 'position:absolute;top:50%;' + side + ':-' + (size / 2 + 3) + 'px;'
+                + 'transform:translateY(-50%);opacity:0.45;animation:gbFadeIn 1s ease;pointer-events:none';
             line.appendChild(trackEl(icon));
         }
     }
@@ -772,28 +734,28 @@
         for (var i = 0; i < titles.length; i++) {
             var title = titles[i];
             title.style.position = 'relative';
-            var size = isMobile ? 30 : 45;
+            var size = isMobile ? 22 : 30;
             var l = createIcon(cfg.icon, size, accent);
             l.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-70%,-50%) rotate(-30deg);'
-                + 'opacity:0.12;z-index:-1;animation:gbFadeIn 1s ease;pointer-events:none';
+                + 'opacity:0.1;z-index:-1;animation:gbFadeIn 1s ease;pointer-events:none';
             title.appendChild(trackEl(l));
             var r = createIcon(cfg.icon, size, accent);
             r.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-30%,-50%) rotate(30deg) scaleX(-1);'
-                + 'opacity:0.12;z-index:-1;animation:gbFadeIn 1s ease;pointer-events:none';
+                + 'opacity:0.1;z-index:-1;animation:gbFadeIn 1s ease;pointer-events:none';
             title.appendChild(trackEl(r));
         }
     }
 
-    /* --- Sunglasses perched on a title letter --- */
+    /* --- Icon perched on a title letter --- */
     function placeTitleLetter(cfg, accent) {
         var title = document.querySelector('.section-tag span') || document.querySelector('.section-header h2');
         if (!title) return;
         title.style.position = 'relative';
         title.style.overflow = 'visible';
-        var size = isMobile ? 22 : 30;
+        var size = isMobile ? 14 : 18;
         var el = createIcon(cfg.icon, size, accent);
-        el.style.cssText = 'position:absolute;left:2px;top:-' + Math.round(size * 0.3) + 'px;'
-            + 'opacity:0.6;z-index:10;pointer-events:none;animation:gbFadeIn 1s ease';
+        el.style.cssText = 'position:absolute;left:2px;top:-' + Math.round(size * 0.35) + 'px;'
+            + 'opacity:0.5;z-index:10;pointer-events:none;animation:gbFadeIn 1s ease';
         title.appendChild(trackEl(el));
     }
 
@@ -803,10 +765,10 @@
         if (!cta) return;
         cta.style.position = 'relative';
         cta.style.overflow = 'visible';
-        var size = isMobile ? 14 : 18;
+        var size = isMobile ? 10 : 12;
         var el = createIcon(cfg.icon, size, accent);
         el.style.cssText = 'position:absolute;right:-' + (size + 2) + 'px;top:50%;'
-            + 'transform:translateY(-50%);opacity:0.7;animation:gbFadeIn 1s ease;pointer-events:none';
+            + 'transform:translateY(-50%);opacity:0.6;animation:gbFadeIn 1s ease;pointer-events:none';
         cta.appendChild(trackEl(el));
     }
 
@@ -817,12 +779,12 @@
             var card = cards[i];
             card.style.position = 'relative';
             card.style.overflow = 'visible';
-            var size = isMobile ? 18 : 24;
+            var size = isMobile ? 10 : 14;
             var icon = createIcon(cfg.icon, size, accent);
             var pos = cfg.pos || 'top-right';
             var p = pos.split('-');
-            icon.style.cssText = 'position:absolute;' + p[0] + ':-' + Math.round(size / 3) + 'px;'
-                + p[1] + ':-' + Math.round(size / 3) + 'px;opacity:0.65;z-index:5;'
+            icon.style.cssText = 'position:absolute;' + p[0] + ':-' + Math.round(size / 4) + 'px;'
+                + p[1] + ':-' + Math.round(size / 4) + 'px;opacity:0.5;z-index:5;'
                 + 'animation:gbFadeIn 1s ease;pointer-events:none';
             card.appendChild(trackEl(icon));
         }
@@ -835,12 +797,12 @@
         footer.style.position = 'relative';
         footer.style.overflow = 'visible';
         var count = isMobile ? 2 : 3;
-        var size = isMobile ? 24 : 32;
+        var size = isMobile ? 14 : 18;
         for (var i = 0; i < count; i++) {
             var icon = createIcon(cfg.icon, size, accent);
             var pct = 15 + (i / Math.max(count - 1, 1)) * 70;
-            icon.style.cssText = 'position:absolute;top:-' + Math.round(size * 0.6) + 'px;left:' + pct + '%;'
-                + 'opacity:0.55;animation:gbFadeIn 1.5s ease;pointer-events:none';
+            icon.style.cssText = 'position:absolute;top:-' + Math.round(size * 0.5) + 'px;left:' + pct + '%;'
+                + 'opacity:0.4;animation:gbFadeIn 1.5s ease;pointer-events:none';
             footer.appendChild(trackEl(icon));
         }
     }
@@ -851,10 +813,10 @@
         if (!footer) return;
         footer.style.position = 'relative';
         footer.style.overflow = 'visible';
-        var size = isMobile ? 28 : 36;
+        var size = isMobile ? 16 : 20;
         var icon = createIcon(cfg.icon, size, accent);
         icon.style.cssText = 'position:absolute;top:-' + Math.round(size * 0.5) + 'px;right:15%;'
-            + 'opacity:0.5;animation:gbFadeIn 1.5s ease;pointer-events:none';
+            + 'opacity:0.4;animation:gbFadeIn 1.5s ease;pointer-events:none';
         footer.appendChild(trackEl(icon));
     }
 
@@ -865,14 +827,14 @@
         footer.style.position = 'relative';
         footer.style.overflow = 'visible';
         var count = isMobile ? 4 : 7;
-        var size = isMobile ? 16 : 22;
+        var size = isMobile ? 10 : 12;
         var wrap = document.createElement('div');
         wrap.className = 'gb-con';
         wrap.style.cssText = 'position:absolute;top:-' + Math.round(size * 0.4) + 'px;left:5%;right:5%;'
             + 'display:flex;justify-content:space-between;pointer-events:none;animation:gbFadeIn 1.5s ease';
         for (var i = 0; i < count; i++) {
             var icon = createIcon(cfg.icon, size, accent);
-            icon.style.opacity = '0.45';
+            icon.style.opacity = '0.35';
             wrap.appendChild(icon);
         }
         footer.appendChild(trackEl(wrap));
@@ -880,28 +842,28 @@
 
     /* --- Edge peekers (items peeking from page edges) --- */
     function placeEdgePeek(cfg, accent) {
-        var size = isMobile ? 40 : 60;
+        var size = isMobile ? 22 : 28;
         var left = createIcon(cfg.icon, size, accent);
-        left.style.cssText = 'position:fixed;left:-' + Math.round(size * 0.35) + 'px;bottom:20%;'
-            + 'opacity:0.3;z-index:9997;pointer-events:none;animation:gbFadeIn 2s ease';
+        left.style.cssText = 'position:fixed;left:-' + Math.round(size * 0.4) + 'px;bottom:20%;'
+            + 'opacity:0.2;z-index:9997;pointer-events:none;animation:gbFadeIn 2s ease';
         document.body.appendChild(trackEl(left));
         var right = createIcon(cfg.icon, size, accent);
-        right.style.cssText = 'position:fixed;right:-' + Math.round(size * 0.35) + 'px;bottom:30%;'
-            + 'opacity:0.3;z-index:9997;pointer-events:none;transform:scaleX(-1);animation:gbFadeIn 2s ease';
+        right.style.cssText = 'position:fixed;right:-' + Math.round(size * 0.4) + 'px;bottom:30%;'
+            + 'opacity:0.2;z-index:9997;pointer-events:none;transform:scaleX(-1);animation:gbFadeIn 2s ease';
         document.body.appendChild(trackEl(right));
     }
 
-    /* --- Hero corner element (crescent, clock, timer, sun) --- */
+    /* --- Hero corner element --- */
     function placeHeroCorner(cfg, accent) {
         var hero = document.querySelector('.hero-content') || document.querySelector('.hero');
         if (!hero) return;
         hero.style.position = 'relative';
-        var size = isMobile ? 40 : 60;
+        var size = isMobile ? 22 : 30;
         var icon = createIcon(cfg.icon, size, accent);
         var pos = cfg.pos || 'top-right';
         var p = pos.split('-');
         icon.style.cssText = 'position:absolute;' + p[0] + ':10px;' + p[1] + ':10px;'
-            + 'opacity:0.35;z-index:5;animation:gbFadeIn 2s ease;pointer-events:none';
+            + 'opacity:0.25;z-index:5;animation:gbFadeIn 2s ease;pointer-events:none';
         hero.appendChild(trackEl(icon));
     }
 
@@ -911,38 +873,40 @@
         if (!hero) return;
         hero.style.position = 'relative';
         var count = isMobile ? Math.ceil((cfg.count || 5) * 0.6) : (cfg.count || 5);
-        var size = isMobile ? 16 : 24;
+        var size = isMobile ? 10 : 14;
         for (var i = 0; i < count; i++) {
             var icon = createIcon(cfg.icon, size, accent);
-            icon.style.cssText = 'position:absolute;left:' + (10 + Math.random() * 80) + '%;'
-                + 'top:' + (10 + Math.random() * 70) + '%;'
-                + 'transform:rotate(' + (Math.random() * 40 - 20) + 'deg);'
-                + 'opacity:' + (0.15 + Math.random() * 0.2) + ';z-index:3;pointer-events:none;'
+            icon.style.cssText = 'position:absolute;left:' + (5 + Math.random() * 90) + '%;'
+                + 'top:' + (5 + Math.random() * 80) + '%;'
+                + 'transform:rotate(' + (Math.random() * 30 - 15) + 'deg);'
+                + 'opacity:' + (0.12 + Math.random() * 0.15) + ';z-index:3;pointer-events:none;'
                 + 'animation:gbFadeIn 2s ease';
             hero.appendChild(trackEl(icon));
         }
     }
 
-    /* --- Arrow through hero title --- */
+    /* --- Accent beside hero title --- */
     function placeHeroThrough(cfg, accent) {
         var title = document.querySelector('.hero-title') || document.querySelector('.hero h1');
         if (!title) return;
         title.style.position = 'relative';
         title.style.overflow = 'visible';
-        var icon = createIcon(cfg.icon, isMobile ? 80 : 120, accent);
-        icon.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg);'
-            + 'opacity:0.3;z-index:10;pointer-events:none;animation:gbFadeIn 1.5s ease';
+        var size = isMobile ? 20 : 28;
+        var icon = createIcon(cfg.icon, size, accent);
+        icon.style.cssText = 'position:absolute;right:-' + (size + 4) + 'px;top:50%;transform:translateY(-50%);'
+            + 'opacity:0.4;z-index:10;pointer-events:none;animation:gbFadeIn 1.5s ease';
         title.appendChild(trackEl(icon));
     }
 
-    /* --- Hero background (mosque silhouette) --- */
+    /* --- Hero background accent --- */
     function placeHeroBg(cfg, accent) {
         var hero = document.querySelector('.hero');
         if (!hero) return;
         hero.style.position = 'relative';
-        var icon = createIcon(cfg.icon, isMobile ? 200 : 350, accent);
-        icon.style.cssText = 'position:absolute;bottom:0;left:50%;transform:translateX(-50%);'
-            + 'z-index:1;pointer-events:none;animation:gbFadeIn 3s ease';
+        var size = isMobile ? 50 : 70;
+        var icon = createIcon(cfg.icon, size, accent);
+        icon.style.cssText = 'position:absolute;bottom:10px;right:5%;'
+            + 'opacity:0.12;z-index:1;pointer-events:none;animation:gbFadeIn 3s ease';
         hero.appendChild(trackEl(icon));
     }
 
@@ -951,28 +915,28 @@
         var hero = document.querySelector('.hero');
         if (!hero) return;
         hero.style.position = 'relative';
-        var spots = [{x:'15%',y:'20%'},{x:'75%',y:'15%'},{x:'50%',y:'35%'},{x:'85%',y:'40%'}];
+        var spots = [{x:'10%',y:'15%'},{x:'80%',y:'10%'},{x:'45%',y:'25%'},{x:'90%',y:'30%'}];
         var count = Math.min(cfg.count || 3, spots.length);
         for (var i = 0; i < count; i++) {
-            var size = (isMobile ? 30 : 50) + Math.random() * 20;
+            var size = isMobile ? 16 : 22;
             var icon = createIcon(cfg.icon, size, accent);
             icon.style.cssText = 'position:absolute;left:' + spots[i].x + ';top:' + spots[i].y + ';'
-                + 'opacity:' + (0.15 + Math.random() * 0.15) + ';z-index:2;pointer-events:none;'
+                + 'opacity:' + (0.15 + Math.random() * 0.1) + ';z-index:2;pointer-events:none;'
                 + 'animation:gbFadeIn 2s ' + (i * 0.5) + 's ease both'
                 + (reducedMotion ? '' : ',gbTwinkle ' + (3 + Math.random() * 2) + 's ease-in-out infinite');
             hero.appendChild(trackEl(icon));
         }
     }
 
-    /* --- Hero accent (megaphone) --- */
+    /* --- Hero accent element --- */
     function placeHeroAccent(cfg, accent) {
         var hero = document.querySelector('.hero-content') || document.querySelector('.hero');
         if (!hero) return;
         hero.style.position = 'relative';
-        var size = isMobile ? 35 : 50;
+        var size = isMobile ? 18 : 24;
         var icon = createIcon(cfg.icon, size, accent);
-        icon.style.cssText = 'position:absolute;left:10%;top:30%;transform:rotate(-15deg);'
-            + 'opacity:0.3;z-index:3;pointer-events:none;animation:gbFadeIn 1.5s ease';
+        icon.style.cssText = 'position:absolute;left:8%;top:20%;transform:rotate(-15deg);'
+            + 'opacity:0.25;z-index:3;pointer-events:none;animation:gbFadeIn 1.5s ease';
         hero.appendChild(trackEl(icon));
     }
 
@@ -981,12 +945,12 @@
         var positions = cfg.positions || ['top-left', 'top-right'];
         for (var i = 0; i < positions.length; i++) {
             var p = positions[i].split('-');
-            var size = isMobile ? 80 : 120;
+            var size = isMobile ? 50 : 70;
             var el = document.createElement('div');
             el.className = 'gb-con';
             el.innerHTML = SVG.web;
             el.style.cssText = 'position:fixed;' + p[0] + ':0;' + p[1] + ':0;'
-                + 'width:' + size + 'px;height:' + size + 'px;opacity:0.15;z-index:9997;pointer-events:none;'
+                + 'width:' + size + 'px;height:' + size + 'px;opacity:0.12;z-index:9997;pointer-events:none;'
                 + (p[1] === 'right' ? 'transform:scaleX(-1);' : '')
                 + 'animation:gbFadeIn 1.5s ease';
             var svg = el.querySelector('svg');
