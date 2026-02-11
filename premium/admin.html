@@ -1216,33 +1216,98 @@
             .payment-details { grid-template-columns: 1fr; }
         }
 
-        /* Theme Cards */
+        /* Theme Cards – Premium Glass Morphism */
         .theme-card {
-            border-radius: 14px;
-            padding: 20px;
+            border-radius: 16px;
+            padding: 22px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             overflow: hidden;
-            border: 2px solid transparent;
+            border: 1.5px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
-        .theme-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
-        .theme-card.active-theme { border-color: #fff !important; }
-        .theme-card .theme-emoji { font-size: 32px; margin-bottom: 10px; display: block; }
-        .theme-card .theme-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-        .theme-card .theme-desc { font-size: 12px; opacity: 0.75; margin-bottom: 12px; }
+        .theme-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            padding: 1.5px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent, rgba(255,255,255,0.04));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .theme-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+        }
+        .theme-card.active-theme {
+            border-color: transparent !important;
+            animation: gb-admin-pulse 2s ease-in-out infinite;
+        }
+        @keyframes gb-admin-pulse {
+            0%, 100% { box-shadow: 0 0 0 2px var(--tc, #fff), 0 0 15px var(--tc, rgba(255,255,255,0.2)); }
+            50% { box-shadow: 0 0 0 2px var(--tc, #fff), 0 0 30px var(--tc, rgba(255,255,255,0.4)); }
+        }
+        .theme-card .theme-emoji {
+            font-size: 36px;
+            margin-bottom: 12px;
+            display: block;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+        }
+        .theme-card .theme-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .theme-card .theme-desc { font-size: 12px; opacity: 0.65; margin-bottom: 14px; line-height: 1.4; }
         .theme-card .theme-colors {
-            display: flex; gap: 6px; margin-bottom: 12px;
+            display: flex; gap: 8px; margin-bottom: 14px;
         }
         .theme-card .theme-swatch {
-            width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2);
+            width: 24px; height: 24px; border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.15);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+            transition: transform 0.2s;
         }
+        .theme-card:hover .theme-swatch { transform: scale(1.1); }
         .theme-card .theme-apply-btn {
-            width: 100%; padding: 10px; border-radius: 8px; border: none;
-            font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s;
+            width: 100%; padding: 11px; border-radius: 10px; border: none;
+            font-weight: 700; font-size: 13px; cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-        .theme-card .theme-apply-btn:hover { opacity: 0.9; transform: scale(1.02); }
+        .theme-card .theme-apply-btn:hover { transform: scale(1.03); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        /* Theme features badges */
+        .theme-features {
+            display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px;
+        }
+        .theme-feature-badge {
+            font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+            padding: 3px 8px; border-radius: 4px;
+            background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        /* Sticky bar / Popup toggle controls */
+        .theme-control-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .theme-control-label {
+            font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6);
+        }
+        .theme-mini-toggle {
+            width: 36px; height: 20px; border-radius: 10px;
+            background: rgba(255,255,255,0.1); cursor: pointer;
+            position: relative; transition: all 0.3s;
+        }
+        .theme-mini-toggle::after {
+            content: ''; position: absolute; top: 2px; left: 2px;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: rgba(255,255,255,0.3); transition: all 0.3s;
+        }
+        .theme-mini-toggle.active { background: rgba(76,175,80,0.6); }
+        .theme-mini-toggle.active::after { left: 18px; background: #4caf50; }
 
         @media (max-width: 768px) {
             .stats-bar { grid-template-columns: repeat(2, 1fr); }
@@ -1391,19 +1456,72 @@
                     Seasonal Themes
                 </h2>
                 <div id="themeSuccess" class="success-message">Theme applied!</div>
-                <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Apply seasonal themes to your website. Themes change colours, add banners, and can include a special discount. Saved to Firebase - goes live instantly.</p>
+                <p style="color: #666; font-size: 13px; margin-bottom: 8px;">Transform your website with seasonal themes. Each theme includes particles, banners, decorations, notification bar, and optional flash sale popup.</p>
+                <p style="color: #555; font-size: 12px; margin-bottom: 20px;">Saved to Firebase \u2013 goes live instantly across all pages.</p>
 
                 <!-- Currently Active Theme -->
-                <div id="activeThemeBanner" style="display: none; border-radius: 12px; padding: 20px; margin-bottom: 25px; text-align: center; position: relative; overflow: hidden;">
-                    <span id="activeThemeEmoji" style="font-size: 36px;"></span>
-                    <h3 id="activeThemeName" style="font-size: 18px; font-weight: 700; margin: 8px 0 4px;"></h3>
-                    <p id="activeThemeBannerText" style="font-size: 13px; opacity: 0.85;"></p>
-                    <button onclick="removeTheme()" style="margin-top: 12px; padding: 8px 20px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer;">Remove Theme</button>
+                <div id="activeThemeBanner" style="display: none; border-radius: 16px; padding: 24px; margin-bottom: 25px; text-align: center; position: relative; overflow: hidden;">
+                    <span id="activeThemeEmoji" style="font-size: 40px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));"></span>
+                    <h3 id="activeThemeName" style="font-size: 18px; font-weight: 800; margin: 10px 0 4px; letter-spacing: 0.5px;"></h3>
+                    <p id="activeThemeBannerText" style="font-size: 13px; opacity: 0.8;"></p>
+                    <div style="display: flex; gap: 8px; justify-content: center; margin-top: 14px;">
+                        <button onclick="removeTheme()" style="padding: 8px 20px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer; backdrop-filter: blur(4px); transition: all 0.2s;">Remove Theme</button>
+                    </div>
                 </div>
 
                 <!-- Theme Cards Grid -->
-                <div id="themeGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
+                <div id="themeGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
                     <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Notification Bar & Popup Controls -->
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                    Theme Components
+                </h2>
+                <p style="color: #666; font-size: 13px; margin-bottom: 20px;">Control which promotional components appear when a theme is active. These are in addition to the particles, decorations, and border effects.</p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+                    <!-- Sticky Notification Bar Control -->
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 18px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                            <div>
+                                <div style="font-size: 14px; font-weight: 700; color: #fff;">Sticky Notification Bar</div>
+                                <div style="font-size: 11px; color: #666; margin-top: 2px;">Top-of-page promotional bar</div>
+                            </div>
+                            <div class="theme-mini-toggle active" id="stickyBarToggle" onclick="this.classList.toggle('active'); saveStickyBarConfig()"></div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label style="font-size: 11px;">Custom Message (optional)</label>
+                            <input type="text" id="stickyBarText" placeholder="Leave blank for theme default" oninput="saveStickyBarConfig()">
+                        </div>
+                        <div id="stickyBarPreview" style="border-radius: 8px; padding: 8px 12px; font-size: 11px; font-weight: 600; text-align: center; display: none;">Preview</div>
+                    </div>
+
+                    <!-- Flash Sale Popup Control -->
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 18px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                            <div>
+                                <div style="font-size: 14px; font-weight: 700; color: #fff;">Flash Sale Popup</div>
+                                <div style="font-size: 11px; color: #666; margin-top: 2px;">Countdown popup with discount code</div>
+                            </div>
+                            <div class="theme-mini-toggle" id="popupToggle" onclick="this.classList.toggle('active'); savePopupConfig()"></div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label style="font-size: 11px;">Popup Title (optional)</label>
+                            <input type="text" id="popupTitle" placeholder="Leave blank for theme default" oninput="savePopupConfig()">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label style="font-size: 11px;">Discount Code</label>
+                            <input type="text" id="popupCode" placeholder="e.g. XMAS25" style="text-transform: uppercase;" oninput="savePopupConfig()">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="font-size: 11px;">Countdown Hours</label>
+                            <input type="number" id="popupHours" placeholder="e.g. 24" min="1" max="720" oninput="savePopupConfig()">
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1450,14 +1568,15 @@
                     <div class="toggle-switch" id="themeDiscountToggle" onclick="this.classList.toggle('active'); updateThemeDiscountPreview()"></div>
                 </div>
 
-                <!-- Live Banner Preview -->
-                <div id="themeDiscountPreview" style="display: none; border-radius: 12px; padding: 18px 20px; margin-top: 15px; text-align: center; position: relative; overflow: hidden;">
-                    <p style="font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;" id="themeDiscountPreviewLabel">Limited Time</p>
-                    <p style="font-size: 18px; font-weight: 800; margin-bottom: 6px;" id="themeDiscountPreviewText">20% OFF all services</p>
-                    <p style="font-size: 13px; opacity: 0.8;" id="themeDiscountPreviewCode">Use code: <strong>XMAS25</strong></p>
+                <!-- Live Banner Preview – Premium Glass -->
+                <div id="themeDiscountPreview" style="display: none; border-radius: 16px; padding: 22px 24px; margin-top: 18px; text-align: center; position: relative; overflow: hidden; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08);">
+                    <div style="position: absolute; inset: 0; opacity: 0.04; background: radial-gradient(ellipse at 30% 20%, #fff 0%, transparent 60%); pointer-events: none;"></div>
+                    <p style="font-size: 10px; opacity: 0.5; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; font-weight: 600;" id="themeDiscountPreviewLabel">Limited Time</p>
+                    <p style="font-size: 20px; font-weight: 900; margin-bottom: 8px; letter-spacing: 0.5px;" id="themeDiscountPreviewText">20% OFF all services</p>
+                    <p style="font-size: 13px; opacity: 0.7; font-weight: 500;" id="themeDiscountPreviewCode">Use code: <strong style="letter-spacing: 2px;">XMAS25</strong></p>
                 </div>
 
-                <button class="btn" style="margin-top: 20px;" onclick="saveThemeDiscount()">Save Theme Discount</button>
+                <button class="btn" style="margin-top: 20px; border-radius: 10px;" onclick="saveThemeDiscount()">Save Theme Discount</button>
             </div>
         </div>
         </div>
@@ -2925,6 +3044,7 @@
                 renderThemeGrid();
                 updateActiveThemeBanner();
                 renderDiscountRecommendations();
+                loadThemeComponentConfig(data);
             });
         }
 
@@ -2933,19 +3053,28 @@
             grid.innerHTML = Object.keys(SEASONAL_THEMES).map(function(id) {
                 var t = SEASONAL_THEMES[id];
                 var isActive = id === activeThemeId;
-                var grad = 'linear-gradient(135deg, ' + t.colors.primary + '22, ' + t.colors.secondary + '22)';
-                var borderColor = isActive ? t.colors.primary : 'rgba(255,255,255,0.08)';
-                return '<div class="theme-card' + (isActive ? ' active-theme' : '') + '" style="background: ' + grad + '; border-color: ' + borderColor + ';">' +
+                var grad = 'linear-gradient(135deg, ' + t.colors.primary + '12, ' + t.colors.secondary + '08, ' + t.colors.bg + ')';
+                var features = [];
+                if (t.hasParticles !== false) features.push('Particles');
+                if (t.hasBanner !== false) features.push('Banner');
+                if (t.hasStickyBar !== false) features.push('Sticky Bar');
+                if (['christmas','halloween','blackfriday','newyear','eid','valentines'].indexOf(id) > -1) features.push('Popup');
+                if (['christmas','halloween','easter','summer'].indexOf(id) > -1) features.push('Hat');
+
+                return '<div class="theme-card' + (isActive ? ' active-theme' : '') + '" style="background: ' + grad + ';--tc:' + t.colors.primary + ';">' +
                     '<span class="theme-emoji">' + t.emoji + '</span>' +
                     '<div class="theme-name" style="color: ' + t.colors.primary + ';">' + t.name + '</div>' +
-                    '<div class="theme-desc" style="color: #aaa;">' + t.desc + '</div>' +
+                    '<div class="theme-desc">' + t.desc + '</div>' +
+                    '<div class="theme-features">' + features.map(function(f) {
+                        return '<span class="theme-feature-badge">' + f + '</span>';
+                    }).join('') + '</div>' +
                     '<div class="theme-colors">' +
-                        '<div class="theme-swatch" style="background: ' + t.colors.primary + ';"></div>' +
+                        '<div class="theme-swatch" style="background: ' + t.colors.primary + ';box-shadow:0 0 12px ' + t.colors.primary + '40;"></div>' +
                         '<div class="theme-swatch" style="background: ' + t.colors.secondary + ';"></div>' +
                         '<div class="theme-swatch" style="background: ' + t.colors.accent + ';"></div>' +
                     '</div>' +
                     (isActive
-                        ? '<button class="theme-apply-btn" onclick="removeTheme()" style="background: rgba(239,68,68,0.2); color: #ef4444;">Active - Tap to Remove</button>'
+                        ? '<button class="theme-apply-btn" onclick="removeTheme()" style="background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.2);">Active \u2013 Tap to Remove</button>'
                         : '<button class="theme-apply-btn" onclick="applyTheme(\'' + id + '\')" style="background: ' + t.colors.primary + '; color: ' + (id === 'blackfriday' ? t.colors.accent : '#fff') + ';">Apply Theme</button>'
                     ) +
                 '</div>';
@@ -2959,6 +3088,8 @@
             banner.style.display = 'block';
             banner.style.background = 'linear-gradient(135deg, ' + t.colors.primary + ', ' + t.colors.secondary + ')';
             banner.style.color = t.textColor;
+            banner.style.boxShadow = '0 4px 20px ' + t.colors.primary + '40, inset 0 1px 0 rgba(255,255,255,0.1)';
+            banner.style.border = '1px solid rgba(255,255,255,0.1)';
             document.getElementById('activeThemeEmoji').textContent = t.emoji;
             document.getElementById('activeThemeName').textContent = t.name + ' Theme Active';
             document.getElementById('activeThemeBannerText').textContent = t.banner;
@@ -2967,6 +3098,8 @@
         function applyTheme(themeId) {
             var t = SEASONAL_THEMES[themeId];
             if (!t) return;
+            var stickyToggle = document.getElementById('stickyBarToggle');
+            var popupToggle = document.getElementById('popupToggle');
             database.ref('siteTheme').set({
                 themeId: themeId,
                 name: t.name,
@@ -2974,7 +3107,14 @@
                 banner: t.banner,
                 colors: t.colors,
                 textColor: t.textColor,
-                appliedAt: new Date().toISOString()
+                appliedAt: new Date().toISOString(),
+                showStickyBar: stickyToggle ? stickyToggle.classList.contains('active') : true,
+                stickyText: document.getElementById('stickyBarText') ? document.getElementById('stickyBarText').value : '',
+                showPopup: popupToggle ? popupToggle.classList.contains('active') : false,
+                popupTitle: document.getElementById('popupTitle') ? document.getElementById('popupTitle').value : '',
+                popupCode: document.getElementById('popupCode') ? document.getElementById('popupCode').value : '',
+                popupHours: document.getElementById('popupHours') ? parseInt(document.getElementById('popupHours').value) || 0 : 0,
+                popupEndTime: popupToggle && popupToggle.classList.contains('active') ? new Date(Date.now() + (parseInt(document.getElementById('popupHours').value) || 24) * 3600000).toISOString() : ''
             }).then(function() {
                 var s = document.getElementById('themeSuccess');
                 s.textContent = t.emoji + ' ' + t.name + ' theme is now LIVE!';
@@ -2991,6 +3131,64 @@
                 s.classList.add('show');
                 setTimeout(function() { s.classList.remove('show'); }, 3000);
             });
+        }
+
+        /* Sticky bar & popup config save functions */
+        function saveStickyBarConfig() {
+            if (!activeThemeId) return;
+            var stickyToggle = document.getElementById('stickyBarToggle');
+            var updates = {
+                showStickyBar: stickyToggle.classList.contains('active'),
+                stickyText: document.getElementById('stickyBarText').value
+            };
+            database.ref('siteTheme').update(updates);
+            updateStickyBarPreview();
+        }
+
+        function savePopupConfig() {
+            if (!activeThemeId) return;
+            var popupToggle = document.getElementById('popupToggle');
+            var hours = parseInt(document.getElementById('popupHours').value) || 24;
+            var updates = {
+                showPopup: popupToggle.classList.contains('active'),
+                popupTitle: document.getElementById('popupTitle').value,
+                popupCode: document.getElementById('popupCode').value.toUpperCase(),
+                popupHours: hours,
+                popupEndTime: popupToggle.classList.contains('active') ? new Date(Date.now() + hours * 3600000).toISOString() : ''
+            };
+            database.ref('siteTheme').update(updates);
+        }
+
+        function updateStickyBarPreview() {
+            var preview = document.getElementById('stickyBarPreview');
+            if (!preview || !activeThemeId) { if (preview) preview.style.display = 'none'; return; }
+            var t = SEASONAL_THEMES[activeThemeId];
+            var stickyToggle = document.getElementById('stickyBarToggle');
+            if (!stickyToggle || !stickyToggle.classList.contains('active')) { preview.style.display = 'none'; return; }
+            var customText = document.getElementById('stickyBarText').value;
+            preview.style.display = 'block';
+            preview.style.background = 'linear-gradient(135deg, ' + t.colors.primary + ', ' + t.colors.secondary + ')';
+            preview.style.color = t.textColor || '#fff';
+            preview.textContent = t.emoji + ' ' + (customText || t.banner);
+        }
+
+        function loadThemeComponentConfig(data) {
+            if (!data) return;
+            var stickyToggle = document.getElementById('stickyBarToggle');
+            var popupToggle = document.getElementById('popupToggle');
+            if (stickyToggle) {
+                if (data.showStickyBar !== false) stickyToggle.classList.add('active');
+                else stickyToggle.classList.remove('active');
+            }
+            if (document.getElementById('stickyBarText')) document.getElementById('stickyBarText').value = data.stickyText || '';
+            if (popupToggle) {
+                if (data.showPopup) popupToggle.classList.add('active');
+                else popupToggle.classList.remove('active');
+            }
+            if (document.getElementById('popupTitle')) document.getElementById('popupTitle').value = data.popupTitle || '';
+            if (document.getElementById('popupCode')) document.getElementById('popupCode').value = data.popupCode || '';
+            if (document.getElementById('popupHours')) document.getElementById('popupHours').value = data.popupHours || '';
+            updateStickyBarPreview();
         }
 
         // Discount Recommendation Buttons (per theme)

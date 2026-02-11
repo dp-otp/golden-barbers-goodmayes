@@ -11,7 +11,9 @@
         bokehEls: [], decorEls: [], extraEls: [],
         banner: null, bannerTimer: null, border: null, navLine: null,
         style: null, hatEls: [], dealEls: [], id: null,
-        savedBorder: null, savedShadow: null, savedNavGlow: null
+        savedBorder: null, savedShadow: null, savedNavGlow: null,
+        stickyBar: null, popup: null, popupTimer: null,
+        themeStyleEls: [], countdownInterval: null
     };
 
     var isMainPage = (function () {
@@ -147,7 +149,10 @@
                 { type: 'svg', svg: 'ornament', pos: 'side-right-45', w: isMobile ? 25 : 40, h: isMobile ? 34 : 55, opacity: .5 }
             ],
             heroHat: { type: 'img', src: IMG.santaHat }, lights: true,
-            deal: { text: 'Festive Deals!', style: 'ribbon', color: '#C62828', accent: '#FFD700' }
+            deal: { text: 'Festive Deals!', style: 'ribbon', color: '#C62828', accent: '#FFD700' },
+            frontendAccent: '#FFD700', frontendAccentRgba: 'rgba(255,215,0,',
+            stickyBar: { text: 'Festive Season Special \u2013 Book your Christmas cut today!', bg: '#C62828', bgEnd: '#8E0000', color: '#fff', icon: '\uD83C\uDF84' },
+            popup: { title: 'FESTIVE DEALS', sub: 'Premium grooming for the holiday season', accent: '#C62828', accent2: '#1B5E20', overline: 'Merry Christmas', code: 'XMAS25', countdownHours: 48, btnColor: '#fff' }
         },
         valentines: {
             particleType: 'hearts', particleCount: isMobile ? 8 : 16,
@@ -164,7 +169,10 @@
                 { type: 'img', src: IMG.rose, pos: 'side-right-50', w: isMobile ? 30 : 45, h: isMobile ? 70 : 100 },
                 { type: 'img', src: IMG.heart, pos: 'nav-dangle-70', w: isMobile ? 20 : 30, h: isMobile ? 20 : 30, opacity: .6 }
             ],
-            deal: { text: 'Couples Special!', style: 'ribbon', color: '#AD1457', accent: '#F48FB1' }
+            deal: { text: 'Couples Special!', style: 'ribbon', color: '#AD1457', accent: '#F48FB1' },
+            frontendAccent: '#F48FB1', frontendAccentRgba: 'rgba(244,143,177,',
+            stickyBar: { text: "Valentine's Special \u2013 Look sharp for your someone special!", bg: '#AD1457', bgEnd: '#880E4F', color: '#fff', icon: '\u2764\uFE0F' },
+            popup: { title: "VALENTINE'S DEAL", sub: 'Couples grooming package available', accent: '#E91E63', overline: "Valentine's Day", code: 'LOVE15', countdownHours: 24, btnColor: '#fff' }
         },
         winter: {
             particleType: 'snow', particleCount: isMobile ? 14 : 25,
@@ -181,7 +189,9 @@
                 { type: 'img', src: IMG.snowflake, pos: 'side-right-30', w: isMobile ? 22 : 35, h: isMobile ? 22 : 35, opacity: .25, rotate: 45 },
                 { type: 'img', src: IMG.snowflake, pos: 'nav-dangle-75', w: isMobile ? 25 : 35, h: isMobile ? 25 : 35, opacity: .35 }
             ],
-            frost: true, hanging: 'icicles'
+            frost: true, hanging: 'icicles',
+            frontendAccent: '#4FC3F7', frontendAccentRgba: 'rgba(79,195,247,',
+            stickyBar: { text: 'Winter Warmth \u2013 Free hot towel with every cut this season!', bg: '#01579B', bgEnd: '#0277BD', color: '#E1F5FE', icon: '\u2744\uFE0F' }
         },
         halloween: {
             particleType: 'embers', particleCount: isMobile ? 8 : 15,
@@ -200,7 +210,10 @@
             ],
             bottom: 'graveyard', heroHat: { type: 'svg', svg: 'witchHat' }, fog: true,
             vignette: 'radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.35) 100%)',
-            deal: { text: 'Spooky Savings!', style: 'ribbon', color: '#4A148C', accent: '#FF6F00' }
+            deal: { text: 'Spooky Savings!', style: 'ribbon', color: '#4A148C', accent: '#FF6F00' },
+            frontendAccent: '#FF6F00', frontendAccentRgba: 'rgba(255,111,0,',
+            stickyBar: { text: 'Spooky Season \u2013 Flash deals all week!', bg: '#4A148C', bgEnd: '#1A0530', color: '#FFE0B2', icon: '\uD83C\uDF83' },
+            popup: { title: 'SPOOKY FLASH DEAL', sub: 'Get a killer look this Halloween', accent: '#FF6F00', accent2: '#4A148C', overline: 'Halloween Special', countdownHours: 6, btnColor: '#000' }
         },
         easter: {
             particleType: 'petals', particleCount: isMobile ? 8 : 16,
@@ -217,7 +230,9 @@
                 { type: 'img', src: IMG.bunny, pos: 'side-right-55', w: isMobile ? 35 : 50, h: isMobile ? 35 : 50 }
             ],
             bottom: 'grass', heroHat: { type: 'img', src: IMG.bunny, isBunny: true },
-            deal: { text: 'Spring Deals!', style: 'ribbon', color: '#2E7D32', accent: '#C8E6C9' }
+            deal: { text: 'Spring Deals!', style: 'ribbon', color: '#2E7D32', accent: '#C8E6C9' },
+            frontendAccent: '#81C784', frontendAccentRgba: 'rgba(129,199,132,',
+            stickyBar: { text: 'Spring into style \u2013 Fresh cuts for the new season!', bg: '#2E7D32', bgEnd: '#1B5E20', color: '#C8E6C9', icon: '\uD83D\uDC23' }
         },
         summer: {
             particleType: 'sparkle', particleCount: isMobile ? 8 : 15,
@@ -233,7 +248,9 @@
                 { type: 'esvg', svg: 'palmTree', pos: 'side-right-35', w: isMobile ? 50 : 80, h: isMobile ? 80 : 130 }
             ],
             bottom: 'waves', heroHat: { type: 'img', src: IMG.sunglasses, isGlasses: true },
-            deal: { text: 'Summer Sale!', style: 'ribbon', color: '#E65100', accent: '#FFF3E0' }
+            deal: { text: 'Summer Sale!', style: 'ribbon', color: '#E65100', accent: '#FFF3E0' },
+            frontendAccent: '#FF8F00', frontendAccentRgba: 'rgba(255,143,0,',
+            stickyBar: { text: 'Summer Vibes \u2013 Stay fresh all season long!', bg: '#E65100', bgEnd: '#FF6D00', color: '#FFF3E0', icon: '\u2600\uFE0F' }
         },
         eid: {
             particleType: 'stars', particleCount: isMobile ? 8 : 16,
@@ -249,7 +266,10 @@
                 { type: 'img', src: IMG.crescentMoon, pos: 'nav-dangle-30', w: isMobile ? 32 : 45, h: isMobile ? 32 : 45, opacity: .7 },
                 { type: 'img', src: IMG.lantern, pos: 'nav-dangle-70', w: isMobile ? 28 : 40, h: isMobile ? 28 : 40 }
             ],
-            hanging: 'lanterns', sparkleField: true
+            hanging: 'lanterns', sparkleField: true,
+            frontendAccent: '#FDD835', frontendAccentRgba: 'rgba(253,216,53,',
+            stickyBar: { text: 'Eid Mubarak \u2013 Celebrate with a fresh new look!', bg: '#1B5E20', bgEnd: '#2E7D32', color: '#FFF9C4', icon: '\u2728' },
+            popup: { title: 'EID SPECIAL', sub: 'Premium grooming for the celebration', accent: '#FDD835', accent2: '#2E7D32', overline: 'Eid Mubarak', code: 'EID20', countdownHours: 72, btnColor: '#000' }
         },
         ramadan: {
             particleType: 'stars', particleCount: isMobile ? 8 : 15,
@@ -266,7 +286,9 @@
                 { type: 'img', src: IMG.lantern, pos: 'nav-dangle-50', w: isMobile ? 26 : 38, h: isMobile ? 26 : 38 },
                 { type: 'img', src: IMG.lantern, pos: 'nav-dangle-75', w: isMobile ? 26 : 38, h: isMobile ? 26 : 38 }
             ],
-            hanging: 'lanterns', sparkleField: true
+            hanging: 'lanterns', sparkleField: true,
+            frontendAccent: '#B8860B', frontendAccentRgba: 'rgba(184,134,11,',
+            stickyBar: { text: 'Ramadan Kareem \u2013 Evening appointments available', bg: '#1A237E', bgEnd: '#0D1450', color: '#E8EAF6', icon: '\u262A\uFE0F' }
         },
         'black-friday': {
             particleType: 'tags', particleCount: isMobile ? 6 : 12,
@@ -283,7 +305,10 @@
                 { type: 'esvg', svg: 'priceTag', pos: 'nav-dangle-75', w: isMobile ? 25 : 35, h: isMobile ? 25 : 35, rotate: -10 }
             ],
             neonFlash: true,
-            deal: { style: 'brush' }
+            deal: { style: 'brush' },
+            frontendAccent: '#FF1744', frontendAccentRgba: 'rgba(255,23,68,',
+            stickyBar: { text: 'BLACK FRIDAY \u2013 Biggest deals of the year! Up to 30% OFF', bg: '#000', bgEnd: '#111', color: '#FFD600', icon: '\uD83D\uDCB0', gradient: 'linear-gradient(135deg,#000,#1a0008)' },
+            popup: { title: 'BLACK FRIDAY MEGA SALE', sub: 'Our biggest deals of the entire year', accent: '#FF1744', accent2: '#FFD600', overline: 'Limited Time Only', code: 'BFRIDAY30', countdownHours: 3, btnColor: '#000', showCountdown: true }
         },
         'new-year': {
             particleType: 'confetti', particleCount: isMobile ? 12 : 25,
@@ -301,7 +326,10 @@
                 { type: 'esvg', svg: 'fireworks', pos: 'side-left-35', w: isMobile ? 35 : 50, h: isMobile ? 35 : 50, opacity: .5 }
             ],
             heroHat: { type: 'esvg', svg: 'topHat' },
-            deal: { text: 'New Year Deal!', style: 'ribbon', color: '#0D47A1', accent: '#FFD700' }
+            deal: { text: 'New Year Deal!', style: 'ribbon', color: '#0D47A1', accent: '#FFD700' },
+            frontendAccent: '#FFD700', frontendAccentRgba: 'rgba(255,215,0,',
+            stickyBar: { text: 'Happy New Year \u2013 New year, fresh look! Book now', bg: '#0D47A1', bgEnd: '#1565C0', color: '#fff', icon: '\uD83C\uDF89' },
+            popup: { title: 'NEW YEAR SPECIAL', sub: 'Start the year looking your best', accent: '#FFD700', accent2: '#0D47A1', overline: 'Happy New Year', code: 'NEWYEAR15', countdownHours: 168, btnColor: '#000' }
         }
     };
     THEMES.blackfriday = THEMES['black-friday'];
@@ -316,9 +344,9 @@
             '.gb-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}',
             '.gb-bokeh{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:gb-bfloat 30s ease-in-out infinite}',
             '@keyframes gb-bfloat{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(15px,-20px) scale(1.05)}50%{transform:translate(-10px,15px) scale(.95)}75%{transform:translate(20px,10px) scale(1.03)}}',
-            /* Bottom slide-up banner */
-            '.gb-banner{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:10001;font-family:"Outfit",sans-serif;pointer-events:auto;max-width:500px;width:calc(100% - 40px);opacity:0;animation:gb-slideup .6s cubic-bezier(.34,1.56,.64,1) 1.5s forwards}',
-            '.gb-banner-inner{padding:16px 48px 16px 20px;display:flex;align-items:center;gap:14px;position:relative}',
+            /* Bottom slide-up banner – glass morphism upgrade */
+            '.gb-banner{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:10001;font-family:"Inter","Outfit",sans-serif;pointer-events:auto;max-width:520px;width:calc(100% - 40px);opacity:0;animation:gb-slideup .6s cubic-bezier(.34,1.56,.64,1) 1.5s forwards;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}',
+            '.gb-banner-inner{padding:18px 48px 18px 20px;display:flex;align-items:center;gap:14px;position:relative;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}',
             '@keyframes gb-slideup{from{opacity:0;transform:translateX(-50%) translateY(30px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}',
             '@keyframes gb-slidedown{to{opacity:0;transform:translateX(-50%) translateY(30px)}}',
             '@keyframes gb-barfill{to{transform:scaleX(0)}}',
@@ -370,11 +398,45 @@
             '@keyframes gb-shift{0%{background-position:0 0}100%{background-position:200% 0}}',
             '@keyframes gb-shimr{0%,100%{opacity:.5}50%{opacity:1}}',
             '@keyframes gb-nbar{0%,100%{box-shadow:0 0 6px var(--nc),0 0 14px var(--nc)}50%{box-shadow:0 0 3px var(--nc),0 0 6px var(--nc);opacity:.7}}',
-            '.gb-nav-line{position:absolute;bottom:-1px;left:0;width:100%;height:2px;border-radius:2px;pointer-events:none;opacity:0;animation:gb-fin 1s ease .8s forwards}',
             '@keyframes gb-fin{to{opacity:1}}',
+            /* Nav line shimmer highlight sweep */
+            '.gb-nav-line{position:absolute;bottom:-1px;left:0;width:100%;height:2px;border-radius:2px;pointer-events:none;opacity:0;animation:gb-fin 1s ease .8s forwards;overflow:hidden}',
+            '.gb-nav-line::after{content:"";position:absolute;top:0;left:-60%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:gb-shsweep 4s ease-in-out 2s infinite}',
+            '@keyframes gb-shsweep{0%{left:-60%}40%{left:100%}100%{left:100%}}',
+            /* Sticky notification bar */
+            '.gb-sticky-bar{position:fixed;top:0;left:0;width:100%;z-index:10002;font-family:"Inter",sans-serif;pointer-events:auto;transform:translateY(-100%);animation:gb-stickyin .5s cubic-bezier(.34,1.56,.64,1) .5s forwards}',
+            '.gb-sticky-bar-inner{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 48px 10px 20px;font-size:13px;font-weight:600;letter-spacing:.5px;text-align:center;position:relative}',
+            '.gb-sticky-bar-icon{flex-shrink:0;display:flex;align-items:center;font-size:16px}',
+            '.gb-sticky-bar-text{flex:1;text-align:center}',
+            '.gb-sticky-bar-close{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.6);width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s}',
+            '.gb-sticky-bar-close:hover{background:rgba(255,255,255,.2);color:#fff}',
+            '@keyframes gb-stickyin{to{transform:translateY(0)}}',
+            '@keyframes gb-stickyout{to{transform:translateY(-100%)}}',
+            /* Flash sale popup modal */
+            '.gb-popup-overlay{position:fixed;inset:0;z-index:10003;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.65);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:0;animation:gb-popfade .4s ease 3.5s forwards;pointer-events:auto}',
+            '.gb-popup-modal{max-width:440px;width:calc(100% - 40px);border-radius:20px;overflow:hidden;transform:scale(.9) translateY(20px);opacity:0;animation:gb-popscale .5s cubic-bezier(.34,1.56,.64,1) 3.5s forwards;position:relative}',
+            '.gb-popup-header{padding:28px 24px 20px;text-align:center;position:relative;overflow:hidden}',
+            '.gb-popup-body{padding:20px 24px 28px;text-align:center}',
+            '.gb-popup-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:2;transition:all .2s}',
+            '.gb-popup-close:hover{background:rgba(0,0,0,.5);color:#fff}',
+            '@keyframes gb-popfade{to{opacity:1}}',
+            '@keyframes gb-popscale{to{opacity:1;transform:scale(1) translateY(0)}}',
+            '@keyframes gb-popout{to{opacity:0;transform:scale(.9) translateY(20px)}}',
+            /* Countdown timer */
+            '.gb-countdown{display:flex;gap:8px;justify-content:center;margin:16px 0}',
+            '.gb-countdown-unit{display:flex;flex-direction:column;align-items:center;min-width:52px;padding:10px 6px;border-radius:10px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08)}',
+            '.gb-countdown-num{font-size:24px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}',
+            '.gb-countdown-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;opacity:.6;margin-top:4px}',
+            /* Section themed dividers */
+            '.gb-section-divider{height:1px;max-width:600px;margin:0 auto;pointer-events:none;opacity:0;animation:gb-fin 2s ease 1s forwards}',
+            /* Themed trust numbers */
+            '.gb-themed-num{transition:color 1s ease,text-shadow 1s ease}',
+            /* Themed CTA buttons */
+            '.gb-themed-btn{transition:all .3s cubic-bezier(.34,1.56,.64,1)!important}',
+            '.gb-themed-btn:hover{transform:translateY(-3px)!important}',
             /* Responsive */
-            '@media(max-width:600px){.gb-banner{bottom:12px;width:calc(100% - 24px)}.gb-banner-inner{padding:12px 42px 12px 14px}.gb-lights,.gb-hanging{display:none}.gb-frost-tl,.gb-frost-tr{width:140px;height:140px}.gb-dangle{top:60px}}',
-            '@media(prefers-reduced-motion:reduce){.gb-canvas,.gb-bokeh,.gb-fog,.gb-sparkle,.gb-nflash,.gb-dangle-item{animation:none!important}}'
+            '@media(max-width:600px){.gb-banner{bottom:12px;width:calc(100% - 24px)}.gb-banner-inner{padding:14px 42px 14px 14px}.gb-lights,.gb-hanging{display:none}.gb-frost-tl,.gb-frost-tr{width:140px;height:140px}.gb-dangle{top:60px}.gb-sticky-bar-inner{font-size:11px;padding:8px 40px 8px 14px}.gb-popup-modal{max-width:360px}.gb-countdown-unit{min-width:44px;padding:8px 4px}.gb-countdown-num{font-size:20px}}',
+            '@media(prefers-reduced-motion:reduce){.gb-canvas,.gb-bokeh,.gb-fog,.gb-sparkle,.gb-nflash,.gb-dangle-item,.gb-nav-line::after{animation:none!important}}'
         ].join('\n');
         document.head.appendChild(state.style);
     }
@@ -469,13 +531,14 @@
             html += '<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Biggest deals of the year!</div>';
             html += '</div>';
         } else {
-            /* Standard themed banner */
-            innerStyle = 'background:' + b.bg + ';box-shadow:' + b.shadow + ';border-radius:16px;border:1px solid ' + b.accent + '40';
+            /* Standard themed banner – premium glass */
+            innerStyle = 'background:' + b.bg + ';box-shadow:' + b.shadow + ',inset 0 1px 0 rgba(255,255,255,.06);border-radius:16px;border:1px solid ' + b.accent + '25';
             html = '<div class="gb-banner-inner" style="' + innerStyle + '">';
-            html += '<div style="flex-shrink:0;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:' + b.iconBg + '">' + icon + '</div>';
+            html += '<div style="flex-shrink:0;width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:' + b.iconBg + ';border:1px solid ' + b.accent + '15;box-shadow:0 0 20px ' + b.accent + '15">' + icon + '</div>';
             html += '<div style="flex:1">';
-            html += '<div style="font-size:11px;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;color:' + b.titleColor + '">' + b.title + '</div>';
-            html += '<div style="font-size:12.5px;font-weight:400;margin-top:3px;color:rgba(255,255,255,.6)">' + b.sub + '</div>';
+            html += '<div style="font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:2px">Limited Time</div>';
+            html += '<div style="font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:' + b.titleColor + '">' + b.title + '</div>';
+            html += '<div style="font-size:12px;font-weight:400;margin-top:3px;color:rgba(255,255,255,.55);line-height:1.3">' + b.sub + '</div>';
             html += '</div>';
         }
 
@@ -768,6 +831,158 @@
         document.body.appendChild(el); state.extraEls.push(el);
     }
 
+    /* ═══ STICKY NOTIFICATION BAR ═══ */
+    function createStickyBar(theme, themeId, data) {
+        if (!theme.stickyBar) return;
+        /* Check session storage - only show once per session per theme */
+        try { if (sessionStorage.getItem('gb-sticky-' + themeId)) return; } catch (e) { }
+        var sb = theme.stickyBar;
+        var customText = (data && data.stickyText) ? data.stickyText : sb.text;
+        var el = document.createElement('div'); el.className = 'gb-sticky-bar';
+        var bg = sb.gradient || ('linear-gradient(135deg,' + sb.bg + ',' + (sb.bgEnd || sb.bg) + ')');
+        el.innerHTML = '<div class="gb-sticky-bar-inner" style="background:' + bg + ';color:' + sb.color + '">' +
+            '<span class="gb-sticky-bar-icon">' + (sb.icon || '') + '</span>' +
+            '<span class="gb-sticky-bar-text">' + customText + '</span>' +
+            '<button class="gb-sticky-bar-close" onclick="this.closest(\'.gb-sticky-bar\').dispatchEvent(new Event(\'dismiss\'))">&times;</button>' +
+            '</div>';
+        document.body.appendChild(el);
+        state.stickyBar = el;
+        el.addEventListener('dismiss', function () {
+            el.style.animation = 'gb-stickyout .3s ease forwards';
+            setTimeout(function () { if (el.parentNode) el.remove(); }, 300);
+            state.stickyBar = null;
+            try { sessionStorage.setItem('gb-sticky-' + themeId, '1'); } catch (e) { }
+        });
+        /* Push body down to accommodate bar */
+        document.body.style.paddingTop = '40px';
+        document.body.style.transition = 'padding-top .5s ease';
+    }
+
+    /* ═══ FLASH SALE POPUP MODAL ═══ */
+    function createFlashPopup(theme, themeId, data) {
+        if (!theme.popup) return;
+        /* Check session storage */
+        try { if (sessionStorage.getItem('gb-popup-' + themeId)) return; } catch (e) { }
+        var p = theme.popup;
+        var customTitle = (data && data.popupTitle) ? data.popupTitle : p.title;
+        var customSub = (data && data.popupSub) ? data.popupSub : p.sub;
+
+        var overlay = document.createElement('div'); overlay.className = 'gb-popup-overlay';
+        var headerBg = p.headerBg || ('linear-gradient(135deg,' + p.accent + '30,' + (p.accent2 || p.accent) + '15)');
+        var modalBg = p.modalBg || 'rgba(15,15,15,.95)';
+
+        var html = '<div class="gb-popup-modal" style="background:' + modalBg + ';border:1px solid ' + p.accent + '20;box-shadow:0 25px 80px rgba(0,0,0,.6),0 0 40px ' + p.accent + '10">';
+        html += '<button class="gb-popup-close" onclick="this.closest(\'.gb-popup-overlay\').dispatchEvent(new Event(\'dismiss\'))">&times;</button>';
+        /* Header */
+        html += '<div class="gb-popup-header" style="background:' + headerBg + '">';
+        html += '<div style="font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:' + p.accent + ';opacity:.8;margin-bottom:8px">' + (p.overline || 'Special Offer') + '</div>';
+        html += '<div style="font-size:26px;font-weight:900;letter-spacing:1px;color:#fff;line-height:1.1">' + customTitle + '</div>';
+        if (customSub) html += '<div style="font-size:13px;color:rgba(255,255,255,.5);margin-top:8px">' + customSub + '</div>';
+        html += '</div>';
+        /* Body with countdown */
+        html += '<div class="gb-popup-body">';
+        if (p.showCountdown !== false) {
+            html += '<div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px">Offer ends in</div>';
+            html += '<div class="gb-countdown" id="gb-popup-countdown">';
+            html += '<div class="gb-countdown-unit" style="border-color:' + p.accent + '20"><span class="gb-countdown-num" style="color:' + p.accent + '" data-unit="hours">00</span><span class="gb-countdown-label">Hours</span></div>';
+            html += '<div class="gb-countdown-unit" style="border-color:' + p.accent + '20"><span class="gb-countdown-num" style="color:' + p.accent + '" data-unit="mins">00</span><span class="gb-countdown-label">Minutes</span></div>';
+            html += '<div class="gb-countdown-unit" style="border-color:' + p.accent + '20"><span class="gb-countdown-num" style="color:' + p.accent + '" data-unit="secs">00</span><span class="gb-countdown-label">Seconds</span></div>';
+            html += '</div>';
+        }
+        if (p.code) {
+            html += '<div style="margin-top:16px;padding:10px 16px;background:rgba(255,255,255,.05);border:1px dashed ' + p.accent + '40;border-radius:8px;display:inline-block">';
+            html += '<span style="font-size:11px;color:rgba(255,255,255,.4)">Use code: </span><span style="font-size:15px;font-weight:800;color:' + p.accent + ';letter-spacing:2px">' + p.code + '</span>';
+            html += '</div>';
+        }
+        html += '<button onclick="this.closest(\'.gb-popup-overlay\').dispatchEvent(new Event(\'dismiss\'))" style="display:block;width:100%;margin-top:18px;padding:14px;background:' + p.accent + ';color:' + (p.btnColor || '#000') + ';border:none;border-radius:12px;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s">Book Now</button>';
+        html += '</div></div>';
+
+        overlay.innerHTML = html;
+        document.body.appendChild(overlay);
+        state.popup = overlay;
+
+        overlay.addEventListener('dismiss', function () {
+            var modal = overlay.querySelector('.gb-popup-modal');
+            if (modal) modal.style.animation = 'gb-popout .3s ease forwards';
+            overlay.style.animation = 'gb-popfade .3s ease reverse forwards';
+            setTimeout(function () { if (overlay.parentNode) overlay.remove(); }, 300);
+            state.popup = null;
+            if (state.countdownInterval) { clearInterval(state.countdownInterval); state.countdownInterval = null; }
+            try { sessionStorage.setItem('gb-popup-' + themeId, '1'); } catch (e) { }
+        });
+
+        /* Start countdown */
+        if (p.showCountdown !== false) {
+            var endTime = data && data.popupEndTime ? new Date(data.popupEndTime).getTime() : Date.now() + (p.countdownHours || 4) * 3600000;
+            function updateCountdown() {
+                var now = Date.now(), diff = Math.max(0, endTime - now);
+                var h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
+                var cd = document.getElementById('gb-popup-countdown');
+                if (!cd) return;
+                var nums = cd.querySelectorAll('.gb-countdown-num');
+                if (nums[0]) nums[0].textContent = h < 10 ? '0' + h : h;
+                if (nums[1]) nums[1].textContent = m < 10 ? '0' + m : m;
+                if (nums[2]) nums[2].textContent = s < 10 ? '0' + s : s;
+                if (diff <= 0 && state.countdownInterval) { clearInterval(state.countdownInterval); state.countdownInterval = null; }
+            }
+            updateCountdown();
+            state.countdownInterval = setInterval(updateCountdown, 1000);
+        }
+    }
+
+    /* ═══ FRONTEND THEMING – Section dividers, trust blocks, CTAs ═══ */
+    function themeFrontend(theme, themeId) {
+        var accent = theme.frontendAccent || (theme.banner && theme.banner.titleColor) || '#d4af37';
+        var accentRgba = theme.frontendAccentRgba || 'rgba(212,175,55,';
+
+        /* Themed section dividers */
+        document.querySelectorAll('.section').forEach(function (sec, i) {
+            if (i === 0) return;
+            var existing = sec.previousElementSibling;
+            if (existing && existing.classList.contains('gb-section-divider')) return;
+            var div = document.createElement('div');
+            div.className = 'gb-section-divider';
+            div.style.background = 'linear-gradient(90deg,transparent,' + accentRgba + '.15),' + accentRgba + '.3),' + accentRgba + '.15),transparent)';
+            sec.parentNode.insertBefore(div, sec);
+            state.themeStyleEls.push(div);
+        });
+
+        /* Theme trust block numbers */
+        document.querySelectorAll('.trust-number, .stat-number, .metric-value').forEach(function (el) {
+            el.classList.add('gb-themed-num');
+            el.dataset.gbOrigColor = el.style.color || '';
+            el.style.color = accent;
+            el.style.textShadow = '0 0 20px ' + accentRgba + '.3)';
+            state.themeStyleEls.push(el);
+        });
+
+        /* Theme primary CTA buttons */
+        document.querySelectorAll('.cta-primary, .btn-primary, .hero-cta .btn:first-child').forEach(function (el) {
+            el.classList.add('gb-themed-btn');
+            el.dataset.gbOrigBg = el.style.background || '';
+            el.dataset.gbOrigShadow = el.style.boxShadow || '';
+            el.style.background = accent;
+            el.style.boxShadow = '0 4px 20px ' + accentRgba + '.3)';
+            state.themeStyleEls.push(el);
+        });
+    }
+    function unthemeFrontend() {
+        state.themeStyleEls.forEach(function (el) {
+            if (el.classList.contains('gb-section-divider')) {
+                if (el.parentNode) el.remove();
+            } else if (el.classList.contains('gb-themed-num')) {
+                el.style.color = el.dataset.gbOrigColor || '';
+                el.style.textShadow = '';
+                el.classList.remove('gb-themed-num');
+            } else if (el.classList.contains('gb-themed-btn')) {
+                el.style.background = el.dataset.gbOrigBg || '';
+                el.style.boxShadow = el.dataset.gbOrigShadow || '';
+                el.classList.remove('gb-themed-btn');
+            }
+        });
+        state.themeStyleEls = [];
+    }
+
     /* ═══ BORDER & NAV LINE ═══ */
     function createBorder(theme) {
         if (!theme.topBorder) return;
@@ -797,10 +1012,11 @@
         var themeKey = data.themeId.toLowerCase().replace(/[\s_']/g, '-');
         injectCSS();
 
-        /* ALL PAGES: glow, border, nav line */
+        /* ALL PAGES: glow, border, nav line, sticky bar */
         applyGlow(theme);
         createBorder(theme);
         createNavLine(theme);
+        createStickyBar(theme, themeKey, data);
 
         /* MAIN PAGES ONLY: full effects */
         if (isMainPage) {
@@ -817,7 +1033,10 @@
             if (theme.lights) createLights();
             if (theme.heroHat) addAccessory(theme.heroHat);
             if (theme.deal) createDealFeature(theme, themeKey);
+            themeFrontend(theme, themeKey);
             createBanner(theme, themeKey);
+            /* Popup shows after banner (delayed) */
+            if (data.showPopup !== false) createFlashPopup(theme, themeKey, data);
         }
     }
 
@@ -828,14 +1047,21 @@
         state.bokehEls.forEach(function (e) { e.remove(); }); state.bokehEls = [];
         state.decorEls.forEach(function (e) { e.remove(); }); state.decorEls = [];
         state.extraEls.forEach(function (e) { e.remove(); }); state.extraEls = [];
-        /* FIX: Properly remove banner + clear timer */
         if (state.bannerTimer) { clearTimeout(state.bannerTimer); state.bannerTimer = null; }
         if (state.banner) { state.banner.remove(); state.banner = null; }
         if (state.border) { state.border.remove(); state.border = null; }
         if (state.navLine) { state.navLine.remove(); state.navLine = null; }
         state.hatEls.forEach(function (e) { if (e.parentNode) e.remove(); }); state.hatEls = [];
-        /* FIX: Remove deal elements */
         state.dealEls.forEach(function (e) { if (e.parentNode) e.remove(); }); state.dealEls = [];
+        /* Sticky bar cleanup */
+        if (state.stickyBar) { state.stickyBar.remove(); state.stickyBar = null; }
+        document.body.style.paddingTop = ''; document.body.style.transition = '';
+        /* Popup cleanup */
+        if (state.popup) { state.popup.remove(); state.popup = null; }
+        if (state.popupTimer) { clearTimeout(state.popupTimer); state.popupTimer = null; }
+        if (state.countdownInterval) { clearInterval(state.countdownInterval); state.countdownInterval = null; }
+        /* Frontend theming cleanup */
+        unthemeFrontend();
         document.querySelectorAll('.nav-logo').forEach(function (l) { l.style.removeProperty('position'); l.style.removeProperty('overflow'); });
         removeGlow();
         state.id = null;
