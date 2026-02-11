@@ -70,10 +70,11 @@
 
     /* ═══ Custom detailed SVGs ═══ */
     var CSVG = {};
-    CSVG.mistletoe = '<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="mberry" cx=".35" cy=".3" r=".65"><stop offset="0%" stop-color="#fff" stop-opacity=".6"/><stop offset="100%" stop-color="#f5f5f5"/></radialGradient><linearGradient id="mleaf" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4a8c3f"/><stop offset="100%" stop-color="#2d5a27"/></linearGradient><linearGradient id="mbow" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e53935"/><stop offset="100%" stop-color="#b71c1c"/></linearGradient></defs><g transform="translate(60,20)"><ellipse cx="-18" cy="10" rx="22" ry="8" fill="url(#mleaf)" transform="rotate(-35 -18 10)"/><path d="M-18 10L-18 2" stroke="#2d5a27" stroke-width=".8" opacity=".5"/><ellipse cx="18" cy="10" rx="22" ry="8" fill="url(#mleaf)" transform="rotate(35 18 10)"/><path d="M18 10L18 2" stroke="#2d5a27" stroke-width=".8" opacity=".5"/><ellipse cx="-10" cy="30" rx="20" ry="7" fill="url(#mleaf)" transform="rotate(-20 -10 30)"/><ellipse cx="10" cy="30" rx="20" ry="7" fill="url(#mleaf)" transform="rotate(20 10 30)"/><ellipse cx="0" cy="18" rx="18" ry="7" fill="url(#mleaf)" transform="rotate(-5 0 18)"/><circle cx="-5" cy="42" r="5.5" fill="url(#mberry)" stroke="#ddd" stroke-width=".3"/><circle cx="5" cy="44" r="5" fill="url(#mberry)" stroke="#ddd" stroke-width=".3"/><circle cx="0" cy="36" r="4.5" fill="url(#mberry)" stroke="#ddd" stroke-width=".3"/><circle cx="-3" cy="42" r="1.5" fill="white" opacity=".4"/><circle cx="3" cy="44" r="1.2" fill="white" opacity=".35"/><path d="M-15 52C-15 52,-8 60,0 56C8 60,15 52,15 52" fill="url(#mbow)" stroke="#8e0000" stroke-width=".5"/><path d="M-12 54C-16 58,-18 64,-14 68L-8 60Z" fill="url(#mbow)"/><path d="M12 54C16 58,18 64,14 68L8 60Z" fill="url(#mbow)"/><line x1="0" y1="0" x2="0" y2="-12" stroke="#5a3a1a" stroke-width="2" stroke-linecap="round"/></g></svg>';
-    CSVG.holly = '<svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hleaf1" x1="0" y1="0" x2=".8" y2="1"><stop offset="0%" stop-color="#2e7d32"/><stop offset="100%" stop-color="#1b5e20"/></linearGradient><radialGradient id="hberry" cx=".35" cy=".3" r=".65"><stop offset="0%" stop-color="#ef5350"/><stop offset="40%" stop-color="#e53935"/><stop offset="100%" stop-color="#b71c1c"/></radialGradient></defs><path d="M10 55C5 45,15 30,25 35C30 25,45 20,55 30C65 20,80 22,85 35C95 28,108 38,100 52C110 60,105 78,90 75C95 85,85 92,72 85C62 95,45 92,42 80C30 88,15 80,22 68C10 72,2 62,10 55Z" fill="url(#hleaf1)" opacity=".9"/><path d="M52 30L55 55L58 75" stroke="#1b5e20" stroke-width="1.5" fill="none" opacity=".4"/><path d="M25 38L45 50L72 82" stroke="#1b5e20" stroke-width="1" fill="none" opacity=".3"/><path d="M85 38L65 52L45 78" stroke="#1b5e20" stroke-width="1" fill="none" opacity=".3"/><circle cx="50" cy="55" r="8" fill="url(#hberry)"/><circle cx="62" cy="50" r="7" fill="url(#hberry)"/><circle cx="55" cy="64" r="6.5" fill="url(#hberry)"/><circle cx="47" cy="53" r="2.5" fill="white" opacity=".3"/><circle cx="59" cy="48" r="2" fill="white" opacity=".25"/><circle cx="52" cy="62" r="2" fill="white" opacity=".25"/></svg>';
-    CSVG.ornament = '<svg viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="oball" cx=".35" cy=".3" r=".7"><stop offset="0%" stop-color="#ef5350"/><stop offset="40%" stop-color="#e53935"/><stop offset="100%" stop-color="#b71c1c"/></radialGradient><linearGradient id="ocap"><stop offset="0%" stop-color="#ffd54f"/><stop offset="100%" stop-color="#f9a825"/></linearGradient></defs><circle cx="40" cy="62" r="38" fill="url(#oball)"/><ellipse cx="30" cy="50" rx="12" ry="18" fill="white" opacity=".12" transform="rotate(-20 30 50)"/><rect x="33" y="18" width="14" height="10" rx="2" fill="url(#ocap)"/><rect x="36" y="14" width="8" height="6" rx="3" fill="url(#ocap)"/><circle cx="40" cy="12" r="4" fill="none" stroke="#d4af37" stroke-width="2"/><path d="M25 62C25 62,40 48,55 62" stroke="rgba(255,255,255,.15)" stroke-width="1.5" fill="none"/><path d="M22 72C22 72,40 58,58 72" stroke="rgba(255,255,255,.1)" stroke-width="1" fill="none"/></svg>';
-    CSVG.witchHat = '<svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="what" x1=".2" y1="0" x2=".8" y2="1"><stop offset="0%" stop-color="#4a148c"/><stop offset="100%" stop-color="#1a0530"/></linearGradient></defs><path d="M50 2C48 2,35 50,22 78h56C65 50,52 2,50 2Z" fill="url(#what)"/><path d="M50 2C52 15,44 45,35 70h30C56 45,53 15,50 2Z" fill="#6a1b9a" opacity=".25"/><ellipse cx="50" cy="80" rx="46" ry="10" fill="url(#what)"/><ellipse cx="50" cy="78" rx="42" ry="8" fill="#2a0845"/><rect x="30" y="68" width="40" height="8" rx="1" fill="#FF6F00" opacity=".85"/><rect x="42" y="66" width="16" height="12" rx="2" fill="#FFB300"/><path d="M50 2Q55 8,48 20Q58 18,50 2Z" fill="#6a1b9a" opacity=".4"/></svg>';
+    CSVG.mistletoe = '<svg viewBox="0 0 130 170" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ml" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4a8c3f"/><stop offset="100%" stop-color="#2d5a27"/></linearGradient><linearGradient id="ml2" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5a9c4f"/><stop offset="100%" stop-color="#3a7a33"/></linearGradient><radialGradient id="mb" cx=".4" cy=".35" r=".6"><stop offset="0%" stop-color="#fff"/><stop offset="40%" stop-color="#f5f5f5"/><stop offset="100%" stop-color="#e0e0e0"/></radialGradient><linearGradient id="mr" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ef5350"/><stop offset="100%" stop-color="#c62828"/></linearGradient></defs><line x1="65" y1="0" x2="65" y2="22" stroke="#5a3a1a" stroke-width="2.5" stroke-linecap="round"/><g transform="translate(65,22)"><ellipse cx="-22" cy="8" rx="26" ry="10" fill="url(#ml)" transform="rotate(-35 -22 8)"/><ellipse cx="22" cy="8" rx="26" ry="10" fill="url(#ml)" transform="rotate(35 22 8)"/><ellipse cx="0" cy="18" rx="24" ry="9" fill="url(#ml2)"/><ellipse cx="-15" cy="30" rx="22" ry="8" fill="url(#ml)" transform="rotate(-15 -15 30)"/><ellipse cx="15" cy="30" rx="22" ry="8" fill="url(#ml2)" transform="rotate(15 15 30)"/><ellipse cx="-8" cy="40" rx="20" ry="7.5" fill="url(#ml2)" transform="rotate(-8 -8 40)"/><ellipse cx="8" cy="40" rx="20" ry="7.5" fill="url(#ml)" transform="rotate(8 8 40)"/><path d="M-22 8L-22 0M22 8L22 0M0 18L0 10M-15 30L-15 22M15 30L15 22" stroke="#2d5a27" stroke-width=".7" fill="none" opacity=".35"/><circle cx="-6" cy="52" r="6.5" fill="url(#mb)" stroke="#ddd" stroke-width=".4"/><circle cx="6" cy="54" r="6" fill="url(#mb)" stroke="#ddd" stroke-width=".4"/><circle cx="0" cy="44" r="5.5" fill="url(#mb)" stroke="#ddd" stroke-width=".4"/><circle cx="-12" cy="58" r="5" fill="url(#mb)" stroke="#ddd" stroke-width=".3"/><circle cx="12" cy="58" r="5" fill="url(#mb)" stroke="#ddd" stroke-width=".3"/><circle cx="0" cy="62" r="4.5" fill="url(#mb)" stroke="#ddd" stroke-width=".3"/><circle cx="-4" cy="49" r="2" fill="white" opacity=".5"/><circle cx="4" cy="51" r="1.6" fill="white" opacity=".45"/><circle cx="-1" cy="42" r="1.5" fill="white" opacity=".4"/><path d="M-20 70C-20 70,-12 80,0 75C12 80,20 70,20 70" fill="url(#mr)" stroke="#8e0000" stroke-width=".6"/><path d="M-16 72C-22 78,-24 86,-18 90L-10 80Z" fill="url(#mr)"/><path d="M16 72C22 78,24 86,18 90L10 80Z" fill="url(#mr)"/><ellipse cx="0" cy="72" rx="6" ry="3.5" fill="#c62828" opacity=".4"/></g></svg>';
+    CSVG.holly = '<svg viewBox="0 0 200 170" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hl1" x1="0" y1="0" x2=".8" y2="1"><stop offset="0%" stop-color="#3e9142"/><stop offset="100%" stop-color="#1a5e1e"/></linearGradient><linearGradient id="hl2" x1=".8" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4caf50"/><stop offset="100%" stop-color="#2e7d32"/></linearGradient><radialGradient id="hb" cx=".3" cy=".3" r=".65"><stop offset="0%" stop-color="#ff6659"/><stop offset="50%" stop-color="#e53935"/><stop offset="100%" stop-color="#ab000d"/></radialGradient></defs><g opacity=".95"><path d="M25 80C18 65,30 48,48 42c5-15,22-22,40-15 15-12,32-10,42-2 15-8,32 0,28 18 12 10,8 28-5 28 5 12-2 25-18 20-12 10-28 8-38-2-12 10-28 10-38 2-12 8-25 2-29-12z" fill="url(#hl1)"/><path d="M48 42L62 58M88 28L78 50M130 28L108 48M125 46L100 62M63 94L75 72M42 82L58 68" stroke="#1b5e20" stroke-width=".8" fill="none" opacity=".28"/></g><g opacity=".88"><path d="M50 130c-6-15,8-30,24-32 6-12,22-16,36-10 14-8,28-4,35 6 12-2,22 8,18 20 8 8,5 22-8 22 5 10-6 20-18 18-12 5-25 2-32-5-12 8-25 5-30-5s-18-5-22-16z" fill="url(#hl2)" transform="translate(-8,2)"/><path d="M65 105c8 5,12 15,12 25M80 98c-2 12,0 22,5 30M95 100c-5 8-5 18-2 28" stroke="#1b5e20" stroke-width=".6" fill="none" opacity=".25"/></g><circle cx="82" cy="90" r="9.5" fill="url(#hb)"/><circle cx="99" cy="84" r="8" fill="url(#hb)"/><circle cx="90" cy="76" r="7.5" fill="url(#hb)"/><circle cx="106" cy="94" r="8.5" fill="url(#hb)"/><circle cx="93" cy="100" r="9" fill="url(#hb)"/><circle cx="78" cy="86" r="2.8" fill="#fff" opacity=".45"/><circle cx="95" cy="80" r="2.2" fill="#fff" opacity=".38"/><circle cx="87" cy="73" r="2" fill="#fff" opacity=".32"/><circle cx="102" cy="90" r="2" fill="#fff" opacity=".32"/><circle cx="89" cy="96" r="2.5" fill="#fff" opacity=".4"/><g stroke="#2d5a27" stroke-width=".9" opacity=".4" stroke-linecap="round"><line x1="28" y1="55" x2="18" y2="42"/><line x1="28" y1="55" x2="22" y2="40"/><line x1="28" y1="55" x2="26" y2="38"/><line x1="138" y1="42" x2="150" y2="32"/><line x1="138" y1="42" x2="148" y2="28"/><line x1="55" y1="35" x2="45" y2="22"/><line x1="55" y1="35" x2="50" y2="20"/></g></svg>';
+    CSVG.ornament = '<svg viewBox="0 0 90 130" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="ob" cx=".35" cy=".3" r=".7"><stop offset="0%" stop-color="#ff5252"/><stop offset="25%" stop-color="#ef5350"/><stop offset="60%" stop-color="#e53935"/><stop offset="100%" stop-color="#b71c1c"/></radialGradient><linearGradient id="oc" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd54f"/><stop offset="50%" stop-color="#f9a825"/><stop offset="100%" stop-color="#f57f17"/></linearGradient><linearGradient id="os" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(255,255,255,.2)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></linearGradient></defs><line x1="45" y1="2" x2="45" y2="14" stroke="rgba(255,255,255,.15)" stroke-width="1"/><circle cx="45" cy="68" r="44" fill="url(#ob)"/><ellipse cx="33" cy="50" rx="15" ry="24" fill="url(#os)" transform="rotate(-15 33 50)"/><path d="M18 68c0 0,24-18,54 0" stroke="rgba(255,255,255,.1)" stroke-width="1.2" fill="none"/><path d="M14 80c0 0,30-15,62 0" stroke="rgba(255,255,255,.07)" stroke-width="1" fill="none"/><circle cx="45" cy="68" r="20" fill="none" stroke="rgba(255,215,0,.12)" stroke-width=".6"/><g opacity=".12"><path d="M35 55l2.5 5-5-3h6l-5 3z" fill="#ffd700"/><path d="M55 75l2.5 5-5-3h6l-5 3z" fill="#ffd700"/><path d="M32 82l2 4-4-2.5h5l-4 2.5z" fill="#ffd700"/><path d="M58 58l2 4-4-2.5h5l-4 2.5z" fill="#ffd700"/></g><rect x="36" y="18" width="18" height="10" rx="2.5" fill="url(#oc)"/><rect x="36" y="19" width="18" height="3.5" rx="1.5" fill="rgba(255,255,255,.15)"/><rect x="39" y="12" width="12" height="8" rx="5" fill="url(#oc)"/><path d="M42 10a5 5 0 0 1 6 0" stroke="#d4af37" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>';
+    CSVG.witchHat = '<svg viewBox="0 0 110 130" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wh" x1=".2" y1="0" x2=".8" y2="1"><stop offset="0%" stop-color="#5e1b8c"/><stop offset="40%" stop-color="#3a0e60"/><stop offset="100%" stop-color="#1a0530"/></linearGradient><linearGradient id="wb" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#FF8F00"/><stop offset="50%" stop-color="#FFB300"/><stop offset="100%" stop-color="#FF8F00"/></linearGradient><radialGradient id="wg" cx=".5" cy=".5" r=".5"><stop offset="0%" stop-color="#FFD54F"/><stop offset="100%" stop-color="#F57F17"/></radialGradient></defs><path d="M55 5C52 5,36 55,22 88h66C74 55,58 5,55 5Z" fill="url(#wh)"/><path d="M55 5C58 18,48 52,40 82h30C62 52,57 18,55 5Z" fill="#7b1fa2" opacity=".15"/><path d="M55 5Q62 14,52 30Q64 26,55 5Z" fill="#9c27b0" opacity=".2"/><ellipse cx="55" cy="92" rx="52" ry="13" fill="url(#wh)"/><ellipse cx="55" cy="90" rx="48" ry="10" fill="#2a0845" opacity=".5"/><rect x="30" y="78" width="50" height="10" rx="2" fill="url(#wb)" opacity=".9"/><rect x="44" y="76" width="22" height="14" rx="3.5" fill="url(#wg)"/><rect x="49" y="79" width="12" height="8" rx="2" fill="none" stroke="#B8860B" stroke-width="1.2"/><circle cx="42" y="18" r="1.5" fill="#FFD54F" opacity=".6"/><circle cx="64" cy="30" r="1.2" fill="#FFD54F" opacity=".5"/><circle cx="46" cy="48" r="1.8" fill="#FFD54F" opacity=".4"/><circle cx="36" cy="65" r="1.2" fill="#FFD54F" opacity=".5"/><circle cx="68" cy="58" r="1.5" fill="#FFD54F" opacity=".45"/><path d="M38 16l2-3.5 2 3.5-3.5-2.2h4z" fill="#FFD54F" opacity=".35"/><path d="M66 45l1.5-2.8 1.5 2.8-2.8-1.8h3.2z" fill="#FFD54F" opacity=".3"/></svg>';
+    CSVG.frostCorner = '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="fc" cx="0" cy="0" r="1"><stop offset="0%" stop-color="rgba(200,230,255,.15)"/><stop offset="100%" stop-color="rgba(200,230,255,0)"/></radialGradient></defs><circle cx="0" cy="0" r="180" fill="url(#fc)"/><g stroke="rgba(200,230,255,.12)" fill="none" stroke-linecap="round"><path d="M0 30Q30 30,30 0" stroke-width="1.2"/><path d="M0 60Q60 55,55 0" stroke-width="1"/><path d="M0 100Q80 90,90 0" stroke-width=".8"/><path d="M0 140Q120 120,130 0" stroke-width=".6"/><path d="M0 180Q160 150,170 0" stroke-width=".4"/></g><g fill="rgba(200,230,255,.1)"><circle cx="15" cy="15" r="3.5"/><circle cx="42" cy="8" r="2.5"/><circle cx="8" cy="45" r="3"/><circle cx="32" cy="32" r="2"/><circle cx="58" cy="18" r="2.5"/><circle cx="20" cy="65" r="2"/><circle cx="72" cy="10" r="2"/><circle cx="10" cy="82" r="2.5"/></g><g transform="translate(35,35) scale(.6)" stroke="rgba(200,230,255,.2)" stroke-width="1.5" fill="none" stroke-linecap="round"><line x1="0" y1="-20" x2="0" y2="20"/><line x1="-17" y1="-10" x2="17" y2="10"/><line x1="-17" y1="10" x2="17" y2="-10"/><line x1="0" y1="-12" x2="-5" y2="-17"/><line x1="0" y1="-12" x2="5" y2="-17"/><line x1="0" y1="12" x2="-5" y2="17"/><line x1="0" y1="12" x2="5" y2="17"/></g></svg>';
 
     /* ═══ Banner icon SVGs (22x22) ═══ */
     var BI = {
@@ -157,11 +158,11 @@
             topBorder: 'repeating-linear-gradient(90deg,#C62828 0,#C62828 8px,transparent 8px,transparent 14px,#1B5E20 14px,#1B5E20 22px,transparent 22px,transparent 28px)',
             navLine: 'linear-gradient(90deg,transparent,#C62828,#d4af37,#1B5E20,transparent)',
             decor: [
-                { type: 'svg', svg: 'holly', pos: 'tl', w: isMobile ? 80 : 130, h: isMobile ? 65 : 110, top: 0 },
-                { type: 'svg', svg: 'ornament', pos: 'nav-dangle-20', w: isMobile ? 28 : 40, h: isMobile ? 38 : 55 },
-                { type: 'svg', svg: 'mistletoe', pos: 'nav-dangle-50', w: isMobile ? 38 : 55, h: isMobile ? 45 : 65 },
-                { type: 'img', src: IMG.candyCane, pos: 'nav-dangle-80', w: isMobile ? 25 : 35, h: isMobile ? 35 : 50 },
-                { type: 'svg', svg: 'ornament', pos: 'side-right-45', w: isMobile ? 25 : 40, h: isMobile ? 34 : 55, opacity: .5 }
+                { type: 'svg', svg: 'holly', pos: 'tl', w: isMobile ? 110 : 200, h: isMobile ? 90 : 170, top: 0 },
+                { type: 'svg', svg: 'ornament', pos: 'tr', w: isMobile ? 45 : 75, h: isMobile ? 60 : 100, top: isMobile ? 75 : 80 },
+                { type: 'svg', svg: 'mistletoe', pos: 'side-left-35', w: isMobile ? 50 : 80, h: isMobile ? 65 : 110, opacity: .6 },
+                { type: 'svg', svg: 'ornament', pos: 'side-right-50', w: isMobile ? 40 : 65, h: isMobile ? 55 : 90, opacity: .45 },
+                { type: 'img', src: IMG.candyCane, pos: 'side-right-28', w: isMobile ? 30 : 50, h: isMobile ? 45 : 75, opacity: .55 }
             ],
             heroHat: { type: 'img', src: IMG.santaHat }, lights: true,
             deal: { text: 'Festive Deals!', style: 'ribbon', color: '#C62828', accent: '#FFD700' },
@@ -181,9 +182,10 @@
             topBorder: 'linear-gradient(90deg,#E91E63,#F48FB1,#E91E63,#F48FB1,#E91E63)', topBorderAnim: true,
             navLine: 'linear-gradient(90deg,transparent,#F48FB1,#E91E63,#F48FB1,transparent)',
             decor: [
-                { type: 'img', src: IMG.heart, pos: 'nav-dangle-30', w: isMobile ? 28 : 40, h: isMobile ? 28 : 40 },
-                { type: 'img', src: IMG.rose, pos: 'side-right-50', w: isMobile ? 30 : 45, h: isMobile ? 70 : 100 },
-                { type: 'img', src: IMG.heart, pos: 'nav-dangle-70', w: isMobile ? 20 : 30, h: isMobile ? 20 : 30, opacity: .6 }
+                { type: 'img', src: IMG.heart, pos: 'tl', w: isMobile ? 50 : 80, h: isMobile ? 50 : 80, top: isMobile ? 75 : 80, opacity: .55 },
+                { type: 'img', src: IMG.rose, pos: 'side-right-38', w: isMobile ? 45 : 70, h: isMobile ? 100 : 160, opacity: .65 },
+                { type: 'img', src: IMG.heart, pos: 'tr', w: isMobile ? 35 : 55, h: isMobile ? 35 : 55, top: isMobile ? 80 : 85, opacity: .4 },
+                { type: 'img', src: IMG.heart, pos: 'side-left-55', w: isMobile ? 25 : 40, h: isMobile ? 25 : 40, opacity: .25 }
             ],
             deal: { text: 'Couples Special!', style: 'ribbon', color: '#AD1457', accent: '#F48FB1' },
             frontendAccent: '#F48FB1', frontendAccentRgba: 'rgba(244,143,177,',
@@ -202,9 +204,10 @@
             topBorder: 'linear-gradient(90deg,rgba(79,195,247,0),rgba(79,195,247,.5),rgba(225,245,254,.8),rgba(79,195,247,.5),rgba(79,195,247,0))', topBorderShimmer: true,
             navLine: 'linear-gradient(90deg,transparent,rgba(79,195,247,.4),rgba(225,245,254,.7),rgba(79,195,247,.4),transparent)',
             decor: [
-                { type: 'img', src: IMG.snowflake, pos: 'nav-dangle-25', w: isMobile ? 30 : 45, h: isMobile ? 30 : 45, opacity: .4 },
-                { type: 'img', src: IMG.snowflake, pos: 'side-right-30', w: isMobile ? 22 : 35, h: isMobile ? 22 : 35, opacity: .25, rotate: 45 },
-                { type: 'img', src: IMG.snowflake, pos: 'nav-dangle-75', w: isMobile ? 25 : 35, h: isMobile ? 25 : 35, opacity: .35 }
+                { type: 'svg', svg: 'frostCorner', pos: 'tl', w: isMobile ? 130 : 220, h: isMobile ? 130 : 220, top: 0 },
+                { type: 'img', src: IMG.snowflake, pos: 'tr', w: isMobile ? 50 : 80, h: isMobile ? 50 : 80, top: isMobile ? 75 : 80, opacity: .45 },
+                { type: 'img', src: IMG.snowflake, pos: 'side-right-38', w: isMobile ? 38 : 60, h: isMobile ? 38 : 60, opacity: .3, rotate: 30 },
+                { type: 'img', src: IMG.snowflake, pos: 'side-left-52', w: isMobile ? 30 : 50, h: isMobile ? 30 : 50, opacity: .22, rotate: -20 }
             ],
             frost: true, hanging: 'icicles',
             frontendAccent: '#4FC3F7', frontendAccentRgba: 'rgba(79,195,247,',
@@ -222,9 +225,10 @@
             topBorder: 'linear-gradient(90deg,#4A148C,#FF6F00,#4A148C)', topBorderGlow: 'rgba(255,111,0,.3)',
             navLine: 'linear-gradient(90deg,#4A148C,#FF6F00,#4A148C,#FF6F00,#4A148C)',
             decor: [
-                { type: 'esvg', svg: 'spiderWeb', pos: 'tl', w: isMobile ? 120 : 200, h: isMobile ? 120 : 200, top: 0 },
-                { type: 'img', src: IMG.bat, pos: 'nav-dangle-65', w: isMobile ? 28 : 40, h: isMobile ? 28 : 40 },
-                { type: 'esvg', svg: 'pumpkin', pos: 'nav-dangle-30', w: isMobile ? 30 : 45, h: isMobile ? 30 : 45 }
+                { type: 'esvg', svg: 'spiderWeb', pos: 'tl', w: isMobile ? 160 : 280, h: isMobile ? 160 : 280, top: 0 },
+                { type: 'svg', svg: 'witchHat', pos: 'tr', w: isMobile ? 55 : 90, h: isMobile ? 65 : 105, top: isMobile ? 72 : 78 },
+                { type: 'img', src: IMG.bat, pos: 'side-right-32', w: isMobile ? 42 : 68, h: isMobile ? 42 : 68, opacity: .65 },
+                { type: 'esvg', svg: 'pumpkin', pos: 'side-left-48', w: isMobile ? 42 : 68, h: isMobile ? 42 : 68, opacity: .55 }
             ],
             bottom: 'graveyard', heroHat: { type: 'svg', svg: 'witchHat' }, fog: true,
             vignette: 'radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.35) 100%)',
@@ -245,8 +249,9 @@
             topBorder: 'repeating-linear-gradient(90deg,#F48FB1 0,#F48FB1 12px,#81C784 12px,#81C784 24px,#FFF59D 24px,#FFF59D 36px,#90CAF9 36px,#90CAF9 48px)',
             navLine: 'linear-gradient(90deg,#F48FB1,#81C784,#FFF59D,#81C784,#F48FB1)',
             decor: [
-                { type: 'img', src: IMG.easterEgg, pos: 'nav-dangle-40', w: isMobile ? 55 : 90, h: isMobile ? 30 : 48 },
-                { type: 'img', src: IMG.bunny, pos: 'side-right-55', w: isMobile ? 35 : 50, h: isMobile ? 35 : 50 }
+                { type: 'img', src: IMG.easterEgg, pos: 'tl', w: isMobile ? 70 : 115, h: isMobile ? 42 : 68, top: isMobile ? 75 : 80 },
+                { type: 'img', src: IMG.bunny, pos: 'side-right-42', w: isMobile ? 50 : 82, h: isMobile ? 50 : 82, opacity: .65 },
+                { type: 'img', src: IMG.easterEgg, pos: 'tr', w: isMobile ? 48 : 75, h: isMobile ? 30 : 45, top: isMobile ? 78 : 82, opacity: .45 }
             ],
             bottom: 'grass', heroHat: { type: 'img', src: IMG.bunny, isBunny: true },
             deal: { text: 'Spring Deals!', style: 'ribbon', color: '#2E7D32', accent: '#C8E6C9' },
@@ -265,7 +270,8 @@
             topBorder: 'linear-gradient(90deg,#FF8F00,#0288D1,#FF8F00,#0288D1)', topBorderAnim: true,
             navLine: 'linear-gradient(90deg,#FF8F00,#0288D1,#FF8F00,#0288D1,#FF8F00)',
             decor: [
-                { type: 'esvg', svg: 'palmTree', pos: 'side-right-35', w: isMobile ? 50 : 80, h: isMobile ? 80 : 130 }
+                { type: 'esvg', svg: 'palmTree', pos: 'side-right-28', w: isMobile ? 70 : 120, h: isMobile ? 110 : 190, opacity: .65 },
+                { type: 'esvg', svg: 'palmTree', pos: 'side-left-42', w: isMobile ? 50 : 85, h: isMobile ? 80 : 140, opacity: .35 }
             ],
             bottom: 'waves', heroHat: { type: 'img', src: IMG.sunglasses, isGlasses: true },
             deal: { text: 'Summer Sale!', style: 'ribbon', color: '#E65100', accent: '#FFF3E0' },
@@ -284,8 +290,9 @@
             topBorder: 'repeating-linear-gradient(90deg,transparent 0,transparent 8px,#FDD835 8px,#FDD835 12px)',
             navLine: 'linear-gradient(90deg,transparent,#2E7D32,#FDD835,#2E7D32,transparent)',
             decor: [
-                { type: 'img', src: IMG.crescentMoon, pos: 'nav-dangle-30', w: isMobile ? 32 : 45, h: isMobile ? 32 : 45, opacity: .7 },
-                { type: 'img', src: IMG.lantern, pos: 'nav-dangle-70', w: isMobile ? 28 : 40, h: isMobile ? 28 : 40 }
+                { type: 'img', src: IMG.crescentMoon, pos: 'tl', w: isMobile ? 55 : 88, h: isMobile ? 55 : 88, top: isMobile ? 75 : 80, opacity: .65 },
+                { type: 'img', src: IMG.lantern, pos: 'side-right-38', w: isMobile ? 45 : 72, h: isMobile ? 45 : 72, opacity: .55 },
+                { type: 'img', src: IMG.lantern, pos: 'side-left-52', w: isMobile ? 38 : 58, h: isMobile ? 38 : 58, opacity: .4 }
             ],
             hanging: 'lanterns', sparkleField: true,
             frontendAccent: '#FDD835', frontendAccentRgba: 'rgba(253,216,53,',
@@ -304,9 +311,10 @@
             topBorder: 'linear-gradient(90deg,rgba(184,134,11,0),#B8860B,rgba(184,134,11,.5),#B8860B,rgba(184,134,11,0))', topBorderShimmer: true,
             navLine: 'linear-gradient(90deg,transparent,#1A237E,#B8860B,#1A237E,transparent)',
             decor: [
-                { type: 'img', src: IMG.crescentMoon, pos: 'nav-dangle-25', w: isMobile ? 28 : 40, h: isMobile ? 28 : 40, opacity: .6 },
-                { type: 'img', src: IMG.lantern, pos: 'nav-dangle-50', w: isMobile ? 26 : 38, h: isMobile ? 26 : 38 },
-                { type: 'img', src: IMG.lantern, pos: 'nav-dangle-75', w: isMobile ? 26 : 38, h: isMobile ? 26 : 38 }
+                { type: 'esvg', svg: 'mosque', pos: 'tl', w: isMobile ? 55 : 92, h: isMobile ? 55 : 92, top: isMobile ? 75 : 80, opacity: .45 },
+                { type: 'img', src: IMG.crescentMoon, pos: 'tr', w: isMobile ? 50 : 82, h: isMobile ? 50 : 82, top: isMobile ? 75 : 80, opacity: .55 },
+                { type: 'img', src: IMG.lantern, pos: 'side-right-38', w: isMobile ? 42 : 68, h: isMobile ? 42 : 68, opacity: .48 },
+                { type: 'img', src: IMG.lantern, pos: 'side-left-48', w: isMobile ? 35 : 56, h: isMobile ? 35 : 56, opacity: .35 }
             ],
             hanging: 'lanterns', sparkleField: true,
             frontendAccent: '#B8860B', frontendAccentRgba: 'rgba(184,134,11,',
@@ -325,9 +333,10 @@
             topBorder: 'linear-gradient(90deg,#DD2C00,#FF6F00,#BF360C,#FFB300,#DD2C00)', topBorderAnim: true,
             navLine: 'linear-gradient(90deg,transparent,#DD2C00,#FFB300,#DD2C00,transparent)',
             decor: [
-                { type: 'esvg', svg: 'mapleLeaf', pos: 'nav-dangle-25', w: isMobile ? 28 : 42, h: isMobile ? 28 : 42 },
-                { type: 'esvg', svg: 'mapleLeaf', pos: 'nav-dangle-75', w: isMobile ? 22 : 32, h: isMobile ? 22 : 32, opacity: .6, rotate: -20 },
-                { type: 'esvg', svg: 'mapleLeaf', pos: 'side-right-40', w: isMobile ? 25 : 38, h: isMobile ? 25 : 38, opacity: .35, rotate: 15 }
+                { type: 'esvg', svg: 'mapleLeaf', pos: 'tl', w: isMobile ? 55 : 92, h: isMobile ? 55 : 92, top: isMobile ? 75 : 80, opacity: .55 },
+                { type: 'esvg', svg: 'mapleLeaf', pos: 'side-right-32', w: isMobile ? 42 : 68, h: isMobile ? 42 : 68, opacity: .45, rotate: 15 },
+                { type: 'esvg', svg: 'mapleLeaf', pos: 'tr', w: isMobile ? 38 : 58, h: isMobile ? 38 : 58, top: isMobile ? 78 : 85, opacity: .35, rotate: -25 },
+                { type: 'esvg', svg: 'mapleLeaf', pos: 'side-left-50', w: isMobile ? 30 : 48, h: isMobile ? 30 : 48, opacity: .28, rotate: 30 }
             ],
             deal: { text: 'Autumn Sale!', style: 'ribbon', color: '#BF360C', accent: '#FFAB91' },
             frontendAccent: '#FF6F00', frontendAccentRgba: 'rgba(255,111,0,',
@@ -346,8 +355,9 @@
             topBorder: '#FF1744', topBorderNeon: '#FF1744',
             navLine: 'linear-gradient(90deg,#FF1744,#FFD600,#FF1744,#FFD600,#FF1744)',
             decor: [
-                { type: 'esvg', svg: 'priceTag', pos: 'nav-dangle-25', w: isMobile ? 28 : 40, h: isMobile ? 28 : 40 },
-                { type: 'esvg', svg: 'priceTag', pos: 'nav-dangle-75', w: isMobile ? 25 : 35, h: isMobile ? 25 : 35, rotate: -10 }
+                { type: 'esvg', svg: 'priceTag', pos: 'tl', w: isMobile ? 50 : 82, h: isMobile ? 50 : 82, top: isMobile ? 75 : 80, opacity: .55 },
+                { type: 'esvg', svg: 'priceTag', pos: 'side-right-38', w: isMobile ? 42 : 68, h: isMobile ? 42 : 68, opacity: .45, rotate: -10 },
+                { type: 'esvg', svg: 'gift', pos: 'tr', w: isMobile ? 40 : 62, h: isMobile ? 40 : 62, top: isMobile ? 78 : 82, opacity: .45 }
             ],
             neonFlash: true,
             deal: { style: 'brush' },
@@ -367,9 +377,10 @@
             topBorder: 'linear-gradient(90deg,transparent,#FFD700,#fff,#FFD700,transparent)', topBorderAnim: true,
             navLine: 'linear-gradient(90deg,transparent,#0D47A1,#FFD700,#0D47A1,transparent)',
             decor: [
-                { type: 'esvg', svg: 'fireworks', pos: 'nav-dangle-20', w: isMobile ? 38 : 55, h: isMobile ? 38 : 55 },
-                { type: 'esvg', svg: 'champagne', pos: 'nav-dangle-80', w: isMobile ? 35 : 50, h: isMobile ? 35 : 50 },
-                { type: 'esvg', svg: 'fireworks', pos: 'side-left-35', w: isMobile ? 35 : 50, h: isMobile ? 35 : 50, opacity: .5 }
+                { type: 'esvg', svg: 'fireworks', pos: 'tl', w: isMobile ? 55 : 88, h: isMobile ? 55 : 88, top: isMobile ? 75 : 80, opacity: .55 },
+                { type: 'esvg', svg: 'champagne', pos: 'tr', w: isMobile ? 50 : 82, h: isMobile ? 50 : 82, top: isMobile ? 75 : 80, opacity: .5 },
+                { type: 'esvg', svg: 'fireworks', pos: 'side-left-38', w: isMobile ? 42 : 65, h: isMobile ? 42 : 65, opacity: .38 },
+                { type: 'esvg', svg: 'fireworks', pos: 'side-right-48', w: isMobile ? 35 : 55, h: isMobile ? 35 : 55, opacity: .3 }
             ],
             heroHat: { type: 'esvg', svg: 'topHat' },
             deal: { text: 'New Year Deal!', style: 'ribbon', color: '#0D47A1', accent: '#FFD700' },
@@ -392,8 +403,9 @@
         topBorder: '#FF1744', topBorderNeon: '#FF1744',
         navLine: 'linear-gradient(90deg,#FF1744,#FFD600,#FF1744,#FFD600,#FF1744)',
         decor: [
-            { type: 'esvg', svg: 'gift', pos: 'nav-dangle-30', w: isMobile ? 28 : 42, h: isMobile ? 28 : 42 },
-            { type: 'esvg', svg: 'priceTag', pos: 'nav-dangle-70', w: isMobile ? 25 : 38, h: isMobile ? 25 : 38 }
+            { type: 'esvg', svg: 'gift', pos: 'tl', w: isMobile ? 50 : 82, h: isMobile ? 50 : 82, top: isMobile ? 75 : 80, opacity: .55 },
+            { type: 'esvg', svg: 'priceTag', pos: 'side-right-38', w: isMobile ? 42 : 68, h: isMobile ? 42 : 68, opacity: .45 },
+            { type: 'esvg', svg: 'priceTag', pos: 'tr', w: isMobile ? 38 : 58, h: isMobile ? 38 : 58, top: isMobile ? 78 : 82, opacity: .38, rotate: -15 }
         ],
         neonFlash: true,
         deal: { text: 'FLASH DEAL!', style: 'brush', color: '#FF1744', accent: '#FFD600' },
@@ -1166,7 +1178,6 @@
             if (theme.vignette) createVignette(theme.vignette);
             if (theme.lights) createLights();
             if (theme.heroHat) addAccessory(theme.heroHat);
-            createHeroTakeover(theme);
             themeFrontend(theme, themeKey);
             createPromoBanner(theme, themeKey);
             /* Popup shows after banner (delayed) */
@@ -1218,3 +1229,7 @@
 
     window.GBThemeEffects = { apply: apply, remove: remove };
 })();
+
+
+
+
