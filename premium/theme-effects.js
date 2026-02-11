@@ -1,7 +1,7 @@
 /**
- * Golden Barbers – Premium Seasonal Theme Effects (Renovated Final)
- * Real PNG images + Twemoji SVGs, hero overlay banners, full connotations.
- * Main pages (index/services): full effects. Others: glow+border only.
+ * Golden Barbers – Premium Seasonal Theme Effects v10
+ * Creative placements, hats on LOGO images, bottom slide-up banners,
+ * deal features, proper cleanup on remove.
  */
 (function () {
     'use strict';
@@ -9,8 +9,8 @@
     var state = {
         canvas: null, ctx: null, raf: null, particles: [],
         bokehEls: [], decorEls: [], extraEls: [],
-        banner: null, border: null, navLine: null,
-        style: null, hatEls: [], id: null,
+        banner: null, bannerTimer: null, border: null, navLine: null,
+        style: null, hatEls: [], dealEls: [], id: null,
         savedBorder: null, savedShadow: null, savedNavGlow: null
     };
 
@@ -34,9 +34,7 @@
     }
 
     /* ═══════════════════════════════════════════
-       IMAGE ASSETS
-       Real PNGs from theme-assets/ folder +
-       Twemoji SVGs inline for missing items
+       IMAGE ASSETS (real PNGs in theme-assets/)
     ═══════════════════════════════════════════ */
     var IMG = {
         santaHat: 'theme-assets/santa-hat.png',
@@ -52,7 +50,7 @@
         bunny: 'theme-assets/bunny.png'
     };
 
-    // Twemoji SVGs (inline, high-quality, scalable) for items without real PNGs
+    /* ═══ Twemoji SVGs (inline) ═══ */
     var ESVG = {};
     ESVG.pumpkin = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#F4900C" d="M32.664 8.519C29.364 5.134 23.42 4.75 18 4.75S6.636 5.134 3.336 8.519C.582 11.344 0 15.751 0 19.791c0 5.263 1.982 11.311 6.357 14.244C9.364 36.051 13.95 35.871 18 35.871s8.636.18 11.643-1.836C34.018 31.101 36 25.054 36 19.791c0-4.04-.582-8.447-3.336-11.272z"/><path fill="#3F7123" d="M20.783 5.444c.069.42-.222.764-.647.764h-4.451c-.426 0-.717-.344-.647-.764l.745-4.472c.07-.421.476-.764.902-.764h2.451c.426 0 .832.344.901.764l.746 4.472z"/><path fill="#642116" d="M20.654 21.159l-1.598-2.596c-.291-.542-.673-.813-1.057-.817-.383.004-.766.275-1.057.817l-1.598 2.596c-.587 1.093.873 1.716 2.654 1.716s3.243-.624 2.656-1.716z"/></svg>';
     ESVG.spiderWeb = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><g stroke="rgba(255,255,255,.18)" fill="none" stroke-linecap="round"><line x1="0" y1="0" x2="200" y2="0" stroke-width="1.2"/><line x1="0" y1="0" x2="0" y2="200" stroke-width="1.2"/><line x1="0" y1="0" x2="190" y2="190" stroke-width=".9"/><line x1="0" y1="0" x2="95" y2="200" stroke-width=".7"/><line x1="0" y1="0" x2="200" y2="95" stroke-width=".7"/><path d="M30 0Q30 30,0 30" stroke-width=".8"/><path d="M65 0Q65 65,0 65" stroke-width=".7"/><path d="M105 0Q105 105,0 105" stroke-width=".6"/><path d="M150 0Q150 150,0 150" stroke-width=".5"/><path d="M190 0Q190 190,0 190" stroke-width=".4"/></g><circle cx="3" cy="3" r="3" fill="rgba(255,255,255,.15)"/></svg>';
@@ -64,14 +62,14 @@
     ESVG.mosque = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#F4900C" d="M23 4.326c0 4.368-9.837 6.652-9.837 13.206 0 2.184 1.085 4.468 2.177 4.468h15.291c1.093 0 2.192-2.284 2.192-4.468C32.823 10.977 23 8.694 23 4.326z"/><path fill="#FFD983" d="M35 33.815C35 35.022 34.711 36 32.815 36h-19.66C11.26 36 11 35.022 11 33.815V22.894c0-1.206.26-1.894 2.156-1.894h19.66c1.895 0 2.184.688 2.184 1.894v10.921z"/><path fill="#662113" d="M26 29c0-3-1.896-5-3-5s-3 2-3 5v7h6v-7zm-8 2.333c0-2-1.264-3.333-2-3.333s-2 1.333-2 3.333V36h4v-4.667zm14 0c0-2-1.264-3.333-2-3.333s-2 1.333-2 3.333V36h4v-4.667z"/><path fill="#FFD983" d="M9 34c0 1.104-.896 2-2 2H5c-1.104 0-2-.896-2-2V8c0-1.104.896-2 2-2h2c1.104 0 2 .896 2 2v26z"/><path fill="#F4900C" d="M5.995.326c0 1.837-2.832 2.918-2.832 5.675 0 .919.312 2 .627 2h4.402c.314 0 .631-1.081.631-2 0-2.757-2.828-3.838-2.828-5.675z"/></svg>';
     ESVG.gift = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#FDD888" d="M33 31c0 2.2-1.8 4-4 4H7c-2.2 0-4-1.8-4-4V14c0-2.2 1.8-4 4-4h22c2.2 0 4 1.8 4 4v17z"/><path fill="#FDD888" d="M36 11c0 2.2-1.8 4-4 4H4c-2.2 0-4-1.8-4-4s1.8-4 4-4h28c2.2 0 4 1.8 4 4z"/><path fill="#DA2F47" d="M19 3h-2c-1.657 0-3 1.343-3 3v29h8V6c0-1.656-1.343-3-3-3z"/><path fill="#DA2F47" d="M16 7c1.1 0 1.263-.516.361-1.147L9.639 1.147c-.902-.631-2.085-.366-2.631.589L4.992 5.264C4.446 6.219 4.9 7 6 7h10zm4 0c-1.1 0-1.263-.516-.361-1.147l6.723-4.706c.901-.631 2.085-.366 2.631.589l2.016 3.527C31.554 6.219 31.1 7 30 7H20z"/></svg>';
 
-    // Custom detailed SVGs for items without real PNGs or emoji
+    /* ═══ Custom detailed SVGs ═══ */
     var CSVG = {};
     CSVG.mistletoe = '<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="mberry" cx=".35" cy=".3" r=".65"><stop offset="0%" stop-color="#fff" stop-opacity=".6"/><stop offset="100%" stop-color="#f5f5f5"/></radialGradient><linearGradient id="mleaf" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4a8c3f"/><stop offset="100%" stop-color="#2d5a27"/></linearGradient><linearGradient id="mbow" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e53935"/><stop offset="100%" stop-color="#b71c1c"/></linearGradient></defs><g transform="translate(60,20)"><ellipse cx="-18" cy="10" rx="22" ry="8" fill="url(#mleaf)" transform="rotate(-35 -18 10)"/><path d="M-18 10L-18 2" stroke="#2d5a27" stroke-width=".8" opacity=".5"/><ellipse cx="18" cy="10" rx="22" ry="8" fill="url(#mleaf)" transform="rotate(35 18 10)"/><path d="M18 10L18 2" stroke="#2d5a27" stroke-width=".8" opacity=".5"/><ellipse cx="-10" cy="30" rx="20" ry="7" fill="url(#mleaf)" transform="rotate(-20 -10 30)"/><ellipse cx="10" cy="30" rx="20" ry="7" fill="url(#mleaf)" transform="rotate(20 10 30)"/><ellipse cx="0" cy="18" rx="18" ry="7" fill="url(#mleaf)" transform="rotate(-5 0 18)"/><circle cx="-5" cy="42" r="5.5" fill="url(#mberry)" stroke="#ddd" stroke-width=".3"/><circle cx="5" cy="44" r="5" fill="url(#mberry)" stroke="#ddd" stroke-width=".3"/><circle cx="0" cy="36" r="4.5" fill="url(#mberry)" stroke="#ddd" stroke-width=".3"/><circle cx="-3" cy="42" r="1.5" fill="white" opacity=".4"/><circle cx="3" cy="44" r="1.2" fill="white" opacity=".35"/><path d="M-15 52C-15 52,-8 60,0 56C8 60,15 52,15 52" fill="url(#mbow)" stroke="#8e0000" stroke-width=".5"/><path d="M-12 54C-16 58,-18 64,-14 68L-8 60Z" fill="url(#mbow)"/><path d="M12 54C16 58,18 64,14 68L8 60Z" fill="url(#mbow)"/><line x1="0" y1="0" x2="0" y2="-12" stroke="#5a3a1a" stroke-width="2" stroke-linecap="round"/></g></svg>';
     CSVG.holly = '<svg viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hleaf1" x1="0" y1="0" x2=".8" y2="1"><stop offset="0%" stop-color="#2e7d32"/><stop offset="100%" stop-color="#1b5e20"/></linearGradient><radialGradient id="hberry" cx=".35" cy=".3" r=".65"><stop offset="0%" stop-color="#ef5350"/><stop offset="40%" stop-color="#e53935"/><stop offset="100%" stop-color="#b71c1c"/></radialGradient></defs><path d="M10 55C5 45,15 30,25 35C30 25,45 20,55 30C65 20,80 22,85 35C95 28,108 38,100 52C110 60,105 78,90 75C95 85,85 92,72 85C62 95,45 92,42 80C30 88,15 80,22 68C10 72,2 62,10 55Z" fill="url(#hleaf1)" opacity=".9"/><path d="M52 30L55 55L58 75" stroke="#1b5e20" stroke-width="1.5" fill="none" opacity=".4"/><path d="M25 38L45 50L72 82" stroke="#1b5e20" stroke-width="1" fill="none" opacity=".3"/><path d="M85 38L65 52L45 78" stroke="#1b5e20" stroke-width="1" fill="none" opacity=".3"/><circle cx="50" cy="55" r="8" fill="url(#hberry)"/><circle cx="62" cy="50" r="7" fill="url(#hberry)"/><circle cx="55" cy="64" r="6.5" fill="url(#hberry)"/><circle cx="47" cy="53" r="2.5" fill="white" opacity=".3"/><circle cx="59" cy="48" r="2" fill="white" opacity=".25"/><circle cx="52" cy="62" r="2" fill="white" opacity=".25"/></svg>';
     CSVG.ornament = '<svg viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="oball" cx=".35" cy=".3" r=".7"><stop offset="0%" stop-color="#ef5350"/><stop offset="40%" stop-color="#e53935"/><stop offset="100%" stop-color="#b71c1c"/></radialGradient><linearGradient id="ocap"><stop offset="0%" stop-color="#ffd54f"/><stop offset="100%" stop-color="#f9a825"/></linearGradient></defs><circle cx="40" cy="62" r="38" fill="url(#oball)"/><ellipse cx="30" cy="50" rx="12" ry="18" fill="white" opacity=".12" transform="rotate(-20 30 50)"/><rect x="33" y="18" width="14" height="10" rx="2" fill="url(#ocap)"/><rect x="36" y="14" width="8" height="6" rx="3" fill="url(#ocap)"/><circle cx="40" cy="12" r="4" fill="none" stroke="#d4af37" stroke-width="2"/><path d="M25 62C25 62,40 48,55 62" stroke="rgba(255,255,255,.15)" stroke-width="1.5" fill="none"/><path d="M22 72C22 72,40 58,58 72" stroke="rgba(255,255,255,.1)" stroke-width="1" fill="none"/></svg>';
     CSVG.witchHat = '<svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="what" x1=".2" y1="0" x2=".8" y2="1"><stop offset="0%" stop-color="#4a148c"/><stop offset="100%" stop-color="#1a0530"/></linearGradient></defs><path d="M50 2C48 2,35 50,22 78h56C65 50,52 2,50 2Z" fill="url(#what)"/><path d="M50 2C52 15,44 45,35 70h30C56 45,53 15,50 2Z" fill="#6a1b9a" opacity=".25"/><ellipse cx="50" cy="80" rx="46" ry="10" fill="url(#what)"/><ellipse cx="50" cy="78" rx="42" ry="8" fill="#2a0845"/><rect x="30" y="68" width="40" height="8" rx="1" fill="#FF6F00" opacity=".85"/><rect x="42" y="66" width="16" height="12" rx="2" fill="#FFB300"/><path d="M50 2Q55 8,48 20Q58 18,50 2Z" fill="#6a1b9a" opacity=".4"/></svg>';
 
-    // Banner icon SVGs (small, 22x22)
+    /* ═══ Banner icon SVGs (22x22) ═══ */
     var BI = {
         christmas: '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2l2.4 7.2h7.6l-6.2 4.5 2.4 7.3-6.2-4.5-6.2 4.5 2.4-7.3L2 9.2h7.6z" fill="#FFD700"/></svg>',
         valentines: '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 21C5.5 15.5 3 12 3 8.5 3 5.4 5.4 3 8 3c1.6 0 3 .8 4 2.1C13 3.8 14.4 3 16 3c2.6 0 5 2.4 5 5.5 0 3.5-2.5 7-9 12.5z" fill="#E91E63"/></svg>',
@@ -119,13 +117,16 @@
         c.fillStyle = col; c.shadowBlur = 6; c.shadowColor = col; c.fill(); c.restore();
     }
 
-    /* ═══ BOTTOM SILHOUETTES (custom SVGs, keep inline) ═══ */
+    /* ═══ BOTTOM SILHOUETTES ═══ */
     var SILHOUETTE = {};
     SILHOUETTE.graveyard = '<svg viewBox="0 0 800 55" preserveAspectRatio="none"><path d="M0 55V48h40V28c0-8 7-14 14-14s14 6 14 14v20h60V32c0-6 5-11 11-11s11 5 11 11v16h80V35c0-10 8-18 18-18s18 8 18 18v13h60V30c0-8 7-14 14-14s14 6 14 14v18h55V40h10V22c0-5 4-9 9-9s9 4 9 9v18h10v8h70V42c0-7 6-13 13-13s13 6 13 13v6h55V32c0-10 8-18 18-18s18 8 18 18v16h50V55z" fill="rgba(20,0,35,.5)"/></svg>';
     SILHOUETTE.waves = '<svg viewBox="0 0 800 40" preserveAspectRatio="none"><path d="M0 40V25c30-10 60-10 90 0s60 10 90 0 60-10 90 0 60 10 90 0 60-10 90 0 60 10 90 0 60-10 90 0 55-10 80 0V40z" fill="rgba(2,136,209,.12)"/><path d="M0 40V32c25-7 50-7 75 0s50 7 75 0 50-7 75 0 50 7 75 0 50-7 75 0 50 7 75 0 50-7 75 0 50 7 75 0 50-7 80 0V40z" fill="rgba(2,136,209,.07)"/></svg>';
     SILHOUETTE.grass = '<svg viewBox="0 0 800 30" preserveAspectRatio="none"><path d="M0 30V22l5-8 5 8 8-12 6 12 4-6 5 6 7-10 6 10 5-7 4 7 8-14 5 14 6-9 5 9 4-5 5 5 7-11 6 11 5-8 4 8 8-13 5 13 6-7 5 7 4-10 5 10 7-12 6 12 5-6 4 6 8-9 5 9 6-11 5 11 4-8 5 8 7-10 6 10 5-7 4 7 8-12 5 12 6-8 5 8 4-6 5 6 7-9 6 9 5-10 5 10 7-12 6 12 5-6 4 6 8-14 5 14 6-9 5 9 4-5 5 5 7-11 6 11 5-8 4 8 8-13 5 13 6-7 5 7V30z" fill="rgba(129,199,132,.15)"/></svg>';
 
-    /* ═══ THEME CONFIGS ═══ */
+    /* ═══════════════════════════════════════════
+       THEME CONFIGS
+       Creative placements: nav-dangle-N%, side-right-N%, side-left-N%
+    ═══════════════════════════════════════════ */
     var THEMES = {
         christmas: {
             particleType: 'snow', particleCount: isMobile ? 12 : 22,
@@ -139,12 +140,14 @@
             topBorder: 'repeating-linear-gradient(90deg,#C62828 0,#C62828 8px,transparent 8px,transparent 14px,#1B5E20 14px,#1B5E20 22px,transparent 22px,transparent 28px)',
             navLine: 'linear-gradient(90deg,transparent,#C62828,#d4af37,#1B5E20,transparent)',
             decor: [
-                { type: 'img', src: IMG.candyCane, pos: 'tr', w: 55, h: 55, mw: 35, mh: 35, rotate: 15 },
-                { type: 'svg', svg: 'holly', pos: 'tl', w: isMobile ? 80 : 130, h: isMobile ? 65 : 110 },
-                { type: 'svg', svg: 'mistletoe', pos: 'tr-low', w: isMobile ? 55 : 85, h: isMobile ? 65 : 100, right: 60, top: 5 },
-                { type: 'svg', svg: 'ornament', pos: 'bl', w: isMobile ? 35 : 55, h: isMobile ? 48 : 75 }
+                { type: 'svg', svg: 'holly', pos: 'tl', w: isMobile ? 80 : 130, h: isMobile ? 65 : 110, top: 0 },
+                { type: 'svg', svg: 'ornament', pos: 'nav-dangle-20', w: isMobile ? 28 : 40, h: isMobile ? 38 : 55 },
+                { type: 'svg', svg: 'mistletoe', pos: 'nav-dangle-50', w: isMobile ? 38 : 55, h: isMobile ? 45 : 65 },
+                { type: 'img', src: IMG.candyCane, pos: 'nav-dangle-80', w: isMobile ? 25 : 35, h: isMobile ? 35 : 50 },
+                { type: 'svg', svg: 'ornament', pos: 'side-right-45', w: isMobile ? 25 : 40, h: isMobile ? 34 : 55, opacity: .5 }
             ],
-            heroHat: { type: 'img', src: IMG.santaHat }, lights: true
+            heroHat: { type: 'img', src: IMG.santaHat }, lights: true,
+            deal: { text: 'Festive Deals!', style: 'ribbon', color: '#C62828', accent: '#FFD700' }
         },
         valentines: {
             particleType: 'hearts', particleCount: isMobile ? 8 : 16,
@@ -157,9 +160,11 @@
             topBorder: 'linear-gradient(90deg,#E91E63,#F48FB1,#E91E63,#F48FB1,#E91E63)', topBorderAnim: true,
             navLine: 'linear-gradient(90deg,transparent,#F48FB1,#E91E63,#F48FB1,transparent)',
             decor: [
-                { type: 'img', src: IMG.heart, pos: 'tr', w: 60, h: 60, mw: 40, mh: 40, rotate: -15 },
-                { type: 'img', src: IMG.rose, pos: 'bl', w: 45, h: 100, mw: 30, mh: 70 }
-            ]
+                { type: 'img', src: IMG.heart, pos: 'nav-dangle-30', w: isMobile ? 28 : 40, h: isMobile ? 28 : 40 },
+                { type: 'img', src: IMG.rose, pos: 'side-right-50', w: isMobile ? 30 : 45, h: isMobile ? 70 : 100 },
+                { type: 'img', src: IMG.heart, pos: 'nav-dangle-70', w: isMobile ? 20 : 30, h: isMobile ? 20 : 30, opacity: .6 }
+            ],
+            deal: { text: 'Couples Special!', style: 'ribbon', color: '#AD1457', accent: '#F48FB1' }
         },
         winter: {
             particleType: 'snow', particleCount: isMobile ? 14 : 25,
@@ -172,8 +177,9 @@
             topBorder: 'linear-gradient(90deg,rgba(79,195,247,0),rgba(79,195,247,.5),rgba(225,245,254,.8),rgba(79,195,247,.5),rgba(79,195,247,0))', topBorderShimmer: true,
             navLine: 'linear-gradient(90deg,transparent,rgba(79,195,247,.4),rgba(225,245,254,.7),rgba(79,195,247,.4),transparent)',
             decor: [
-                { type: 'img', src: IMG.snowflake, pos: 'tr', w: 60, h: 60, mw: 40, mh: 40, opacity: .4 },
-                { type: 'img', src: IMG.snowflake, pos: 'tl', w: 40, h: 40, mw: 25, mh: 25, opacity: .25, rotate: 45 }
+                { type: 'img', src: IMG.snowflake, pos: 'nav-dangle-25', w: isMobile ? 30 : 45, h: isMobile ? 30 : 45, opacity: .4 },
+                { type: 'img', src: IMG.snowflake, pos: 'side-right-30', w: isMobile ? 22 : 35, h: isMobile ? 22 : 35, opacity: .25, rotate: 45 },
+                { type: 'img', src: IMG.snowflake, pos: 'nav-dangle-75', w: isMobile ? 25 : 35, h: isMobile ? 25 : 35, opacity: .35 }
             ],
             frost: true, hanging: 'icicles'
         },
@@ -188,12 +194,13 @@
             topBorder: 'linear-gradient(90deg,#4A148C,#FF6F00,#4A148C)', topBorderGlow: 'rgba(255,111,0,.3)',
             navLine: 'linear-gradient(90deg,#4A148C,#FF6F00,#4A148C,#FF6F00,#4A148C)',
             decor: [
-                { type: 'esvg', svg: 'spiderWeb', pos: 'tl', w: isMobile ? 120 : 200, h: isMobile ? 120 : 200 },
-                { type: 'img', src: IMG.bat, pos: 'tr', w: 50, h: 50, mw: 35, mh: 35, rotate: -10 },
-                { type: 'esvg', svg: 'pumpkin', pos: 'bl', w: isMobile ? 40 : 60, h: isMobile ? 40 : 60 }
+                { type: 'esvg', svg: 'spiderWeb', pos: 'tl', w: isMobile ? 120 : 200, h: isMobile ? 120 : 200, top: 0 },
+                { type: 'img', src: IMG.bat, pos: 'nav-dangle-65', w: isMobile ? 28 : 40, h: isMobile ? 28 : 40 },
+                { type: 'esvg', svg: 'pumpkin', pos: 'nav-dangle-30', w: isMobile ? 30 : 45, h: isMobile ? 30 : 45 }
             ],
             bottom: 'graveyard', heroHat: { type: 'svg', svg: 'witchHat' }, fog: true,
-            vignette: 'radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.35) 100%)'
+            vignette: 'radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.35) 100%)',
+            deal: { text: 'Spooky Savings!', style: 'ribbon', color: '#4A148C', accent: '#FF6F00' }
         },
         easter: {
             particleType: 'petals', particleCount: isMobile ? 8 : 16,
@@ -206,10 +213,11 @@
             topBorder: 'repeating-linear-gradient(90deg,#F48FB1 0,#F48FB1 12px,#81C784 12px,#81C784 24px,#FFF59D 24px,#FFF59D 36px,#90CAF9 36px,#90CAF9 48px)',
             navLine: 'linear-gradient(90deg,#F48FB1,#81C784,#FFF59D,#81C784,#F48FB1)',
             decor: [
-                { type: 'img', src: IMG.easterEgg, pos: 'bl', w: isMobile ? 80 : 130, h: isMobile ? 43 : 70 },
-                { type: 'img', src: IMG.bunny, pos: 'tr', w: 50, h: 50, mw: 35, mh: 35 }
+                { type: 'img', src: IMG.easterEgg, pos: 'nav-dangle-40', w: isMobile ? 55 : 90, h: isMobile ? 30 : 48 },
+                { type: 'img', src: IMG.bunny, pos: 'side-right-55', w: isMobile ? 35 : 50, h: isMobile ? 35 : 50 }
             ],
-            bottom: 'grass', heroHat: { type: 'img', src: IMG.bunny, isBunny: true }
+            bottom: 'grass', heroHat: { type: 'img', src: IMG.bunny, isBunny: true },
+            deal: { text: 'Spring Deals!', style: 'ribbon', color: '#2E7D32', accent: '#C8E6C9' }
         },
         summer: {
             particleType: 'sparkle', particleCount: isMobile ? 8 : 15,
@@ -222,9 +230,10 @@
             topBorder: 'linear-gradient(90deg,#FF8F00,#0288D1,#FF8F00,#0288D1)', topBorderAnim: true,
             navLine: 'linear-gradient(90deg,#FF8F00,#0288D1,#FF8F00,#0288D1,#FF8F00)',
             decor: [
-                { type: 'esvg', svg: 'palmTree', pos: 'bl', w: isMobile ? 50 : 80, h: isMobile ? 80 : 130 }
+                { type: 'esvg', svg: 'palmTree', pos: 'side-right-35', w: isMobile ? 50 : 80, h: isMobile ? 80 : 130 }
             ],
-            bottom: 'waves', heroHat: { type: 'img', src: IMG.sunglasses, isGlasses: true }
+            bottom: 'waves', heroHat: { type: 'img', src: IMG.sunglasses, isGlasses: true },
+            deal: { text: 'Summer Sale!', style: 'ribbon', color: '#E65100', accent: '#FFF3E0' }
         },
         eid: {
             particleType: 'stars', particleCount: isMobile ? 8 : 16,
@@ -237,8 +246,8 @@
             topBorder: 'repeating-linear-gradient(90deg,transparent 0,transparent 8px,#FDD835 8px,#FDD835 12px)',
             navLine: 'linear-gradient(90deg,transparent,#2E7D32,#FDD835,#2E7D32,transparent)',
             decor: [
-                { type: 'img', src: IMG.crescentMoon, pos: 'tr', w: 55, h: 55, mw: 40, mh: 40, opacity: .7 },
-                { type: 'img', src: IMG.lantern, pos: 'tl', w: 50, h: 50, mw: 35, mh: 35, top: 80 }
+                { type: 'img', src: IMG.crescentMoon, pos: 'nav-dangle-30', w: isMobile ? 32 : 45, h: isMobile ? 32 : 45, opacity: .7 },
+                { type: 'img', src: IMG.lantern, pos: 'nav-dangle-70', w: isMobile ? 28 : 40, h: isMobile ? 28 : 40 }
             ],
             hanging: 'lanterns', sparkleField: true
         },
@@ -253,8 +262,9 @@
             topBorder: 'linear-gradient(90deg,rgba(184,134,11,0),#B8860B,rgba(184,134,11,.5),#B8860B,rgba(184,134,11,0))', topBorderShimmer: true,
             navLine: 'linear-gradient(90deg,transparent,#1A237E,#B8860B,#1A237E,transparent)',
             decor: [
-                { type: 'img', src: IMG.crescentMoon, pos: 'tr', w: 50, h: 50, mw: 35, mh: 35, opacity: .6 },
-                { type: 'img', src: IMG.lantern, pos: 'tl', w: 45, h: 45, mw: 30, mh: 30, top: 80 }
+                { type: 'img', src: IMG.crescentMoon, pos: 'nav-dangle-25', w: isMobile ? 28 : 40, h: isMobile ? 28 : 40, opacity: .6 },
+                { type: 'img', src: IMG.lantern, pos: 'nav-dangle-50', w: isMobile ? 26 : 38, h: isMobile ? 26 : 38 },
+                { type: 'img', src: IMG.lantern, pos: 'nav-dangle-75', w: isMobile ? 26 : 38, h: isMobile ? 26 : 38 }
             ],
             hanging: 'lanterns', sparkleField: true
         },
@@ -265,13 +275,15 @@
                 { color: 'rgba(255,214,0,.05)', size: 170, x: 70, y: 45, blur: 55 }
             ],
             glow: { border: '2.5px solid rgba(255,23,68,.65)', shadowMin: '0 0 20px rgba(255,23,68,.3),0 0 40px rgba(255,214,0,.1),inset 0 0 12px rgba(255,23,68,.06)', shadowMax: '0 0 35px rgba(255,23,68,.55),0 0 65px rgba(255,214,0,.18),inset 0 0 20px rgba(255,23,68,.12)', nav: '0 0 10px rgba(255,23,68,.18)' },
-            banner: { bg: '#000', accent: '#FF1744', shadow: '0 8px 32px rgba(0,0,0,.7),0 0 25px rgba(255,23,68,.2)', iconBg: 'rgba(255,23,68,.18)', title: 'BLACK FRIDAY', titleColor: '#fff', sub: 'Biggest deals of the year!', timer: '#FF1744' },
+            banner: { bg: '#000', accent: '#FF1744', shadow: '0 8px 32px rgba(0,0,0,.8),0 0 30px rgba(255,23,68,.15)', iconBg: 'rgba(255,23,68,.18)', title: 'BLACK FRIDAY', titleColor: '#fff', sub: 'Biggest deals of the year!', timer: '#FF1744', isBF: true },
             topBorder: '#FF1744', topBorderNeon: '#FF1744',
             navLine: 'linear-gradient(90deg,#FF1744,#FFD600,#FF1744,#FFD600,#FF1744)',
             decor: [
-                { type: 'esvg', svg: 'priceTag', pos: 'tr', w: isMobile ? 35 : 55, h: isMobile ? 35 : 55, rotate: 15 }
+                { type: 'esvg', svg: 'priceTag', pos: 'nav-dangle-25', w: isMobile ? 28 : 40, h: isMobile ? 28 : 40 },
+                { type: 'esvg', svg: 'priceTag', pos: 'nav-dangle-75', w: isMobile ? 25 : 35, h: isMobile ? 25 : 35, rotate: -10 }
             ],
-            neonFlash: true
+            neonFlash: true,
+            deal: { style: 'brush' }
         },
         'new-year': {
             particleType: 'confetti', particleCount: isMobile ? 12 : 25,
@@ -284,10 +296,12 @@
             topBorder: 'linear-gradient(90deg,transparent,#FFD700,#fff,#FFD700,transparent)', topBorderAnim: true,
             navLine: 'linear-gradient(90deg,transparent,#0D47A1,#FFD700,#0D47A1,transparent)',
             decor: [
-                { type: 'esvg', svg: 'fireworks', pos: 'tl', w: isMobile ? 50 : 80, h: isMobile ? 50 : 80 },
-                { type: 'esvg', svg: 'champagne', pos: 'tr', w: isMobile ? 45 : 70, h: isMobile ? 45 : 70 }
+                { type: 'esvg', svg: 'fireworks', pos: 'nav-dangle-20', w: isMobile ? 38 : 55, h: isMobile ? 38 : 55 },
+                { type: 'esvg', svg: 'champagne', pos: 'nav-dangle-80', w: isMobile ? 35 : 50, h: isMobile ? 35 : 50 },
+                { type: 'esvg', svg: 'fireworks', pos: 'side-left-35', w: isMobile ? 35 : 50, h: isMobile ? 35 : 50, opacity: .5 }
             ],
-            heroHat: { type: 'esvg', svg: 'topHat' }
+            heroHat: { type: 'esvg', svg: 'topHat' },
+            deal: { text: 'New Year Deal!', style: 'ribbon', color: '#0D47A1', accent: '#FFD700' }
         }
     };
     THEMES.blackfriday = THEMES['black-friday'];
@@ -302,49 +316,65 @@
             '.gb-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}',
             '.gb-bokeh{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:gb-bfloat 30s ease-in-out infinite}',
             '@keyframes gb-bfloat{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(15px,-20px) scale(1.05)}50%{transform:translate(-10px,15px) scale(.95)}75%{transform:translate(20px,10px) scale(1.03)}}',
-            /* Hero Overlay Banner */
-            '.gb-banner{position:fixed;top:72px;left:0;right:0;z-index:10001;font-family:"Outfit",sans-serif;pointer-events:auto;opacity:0;transform:translateY(-20px);animation:gb-bin .6s cubic-bezier(.34,1.56,.64,1) .8s forwards}',
-            '.gb-banner-inner{max-width:720px;margin:0 auto;padding:16px 48px 16px 20px;display:flex;align-items:center;gap:14px;border-radius:0 0 16px 16px;position:relative;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}',
-            '.gb-banner-icon{flex-shrink:0;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center}',
-            '.gb-banner-text{flex:1}',
-            '.gb-banner-title{font-size:11px;font-weight:800;letter-spacing:3.5px;text-transform:uppercase}',
-            '.gb-banner-sub{font-size:12.5px;font-weight:400;margin-top:3px;color:rgba(255,255,255,.6)}',
-            '.gb-banner-x{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.5);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;transition:background .2s}',
-            '.gb-banner-x:hover{background:rgba(255,255,255,.18)}',
-            '.gb-banner-bar{height:2px;background:rgba(255,255,255,.06);border-radius:0 0 16px 16px;overflow:hidden}',
-            '.gb-banner-bar-fill{height:100%;width:100%;transform-origin:left;animation:gb-barfill 8s linear forwards}',
-            '@keyframes gb-bin{to{opacity:1;transform:translateY(0)}}',
-            '@keyframes gb-bout{to{opacity:0;transform:translateY(-20px)}}',
+            /* Bottom slide-up banner */
+            '.gb-banner{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:10001;font-family:"Outfit",sans-serif;pointer-events:auto;max-width:500px;width:calc(100% - 40px);opacity:0;animation:gb-slideup .6s cubic-bezier(.34,1.56,.64,1) 1.5s forwards}',
+            '.gb-banner-inner{padding:16px 48px 16px 20px;display:flex;align-items:center;gap:14px;position:relative}',
+            '@keyframes gb-slideup{from{opacity:0;transform:translateX(-50%) translateY(30px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}',
+            '@keyframes gb-slidedown{to{opacity:0;transform:translateX(-50%) translateY(30px)}}',
             '@keyframes gb-barfill{to{transform:scaleX(0)}}',
             /* Decorations */
             '.gb-decor{position:fixed;pointer-events:none;z-index:2;opacity:0;animation:gb-fin 2s ease .6s forwards}',
             '.gb-decor img,.gb-decor svg{width:100%;height:100%;display:block;object-fit:contain}',
+            /* Nav dangle - items hanging from nav bar */
+            '.gb-dangle{position:fixed;top:70px;pointer-events:none;z-index:998;opacity:0;animation:gb-fin 1.5s ease .5s forwards}',
+            '.gb-dangle-line{width:1px;margin:0 auto}',
+            '.gb-dangle-item{transform-origin:top center;animation:gb-swing 4s ease-in-out infinite}',
+            '.gb-dangle-item img,.gb-dangle-item svg{width:100%;height:100%;display:block;object-fit:contain}',
+            '@keyframes gb-swing{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}',
+            /* Deal feature */
+            '.gb-deal{position:fixed;pointer-events:none;z-index:999;opacity:0;animation:gb-dealpop .8s cubic-bezier(.34,1.56,.64,1) 2s forwards}',
+            '@keyframes gb-dealpop{to{opacity:1}}',
+            /* Bottom silhouette */
             '.gb-bottom{position:fixed;bottom:0;left:0;width:100%;pointer-events:none;z-index:1;opacity:0;animation:gb-fin 3s ease 1s forwards}',
             '.gb-bottom svg{width:100%;height:100%;display:block}',
+            /* Hanging (icicles/lanterns) */
             '.gb-hanging{position:fixed;top:70px;left:0;width:100%;pointer-events:none;z-index:998;opacity:0;animation:gb-fin 1.5s ease .5s forwards}',
+            /* Frost */
             '.gb-frost{position:fixed;pointer-events:none;z-index:2;opacity:0;animation:gb-fin 3s ease 1s forwards}',
             '.gb-frost-tl{top:0;left:0;width:220px;height:220px;background:radial-gradient(ellipse at 0% 0%,rgba(200,230,255,.1) 0%,transparent 70%)}',
             '.gb-frost-tr{top:0;right:0;width:220px;height:220px;background:radial-gradient(ellipse at 100% 0%,rgba(200,230,255,.1) 0%,transparent 70%)}',
+            /* Fog */
             '.gb-fog{position:fixed;bottom:0;left:0;width:200%;height:35vh;pointer-events:none;z-index:1;opacity:0}',
             '.gb-fog-a{background:linear-gradient(to top,rgba(255,255,255,.07) 0%,transparent 100%);animation:gb-fin 3s ease 1s forwards,gb-fogd 28s linear infinite}',
             '.gb-fog-b{background:linear-gradient(to top,rgba(255,255,255,.05) 0%,transparent 100%);animation:gb-fin 3s ease 1.5s forwards,gb-fogd 42s linear infinite reverse}',
             '@keyframes gb-fogd{to{transform:translateX(-50%)}}',
+            /* Vignette */
             '.gb-vignette{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;animation:gb-fin 2.5s ease .5s forwards}',
+            /* Sparkle field */
             '.gb-sparkle{position:fixed;pointer-events:none;z-index:1;border-radius:50%;animation:gb-twinkle var(--sd) ease-in-out infinite}',
             '@keyframes gb-twinkle{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:var(--op);transform:scale(1)}}',
+            /* Neon flash */
             '.gb-nflash{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;animation:gb-nf 4s ease-in-out infinite}',
             '@keyframes gb-nf{0%,100%{opacity:0}20%{opacity:.07}35%{opacity:0}55%{opacity:.05}70%{opacity:0}85%{opacity:.09}95%{opacity:0}}',
-            '.gb-hat{position:absolute;pointer-events:none;z-index:10;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5));animation:gb-hatdrop .8s cubic-bezier(.34,1.56,.64,1) .5s both}',
-            '@keyframes gb-hatdrop{0%{transform:rotate(var(--hr)) translateY(-12px) scale(.8);opacity:0}100%{transform:rotate(var(--hr)) translateY(0) scale(1);opacity:1}}',
+            /* Hat on hero (sibling in showcase) */
+            '.gb-hero-hat{position:absolute;pointer-events:none;z-index:10;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5));animation:gb-hatdrop .8s cubic-bezier(.34,1.56,.64,1) .5s both}',
+            '.gb-hero-hat img,.gb-hero-hat svg{width:100%;height:100%;display:block;object-fit:contain}',
+            /* Hat on nav logo */
+            '.gb-nav-hat{position:absolute;pointer-events:none;z-index:10;filter:drop-shadow(0 1px 4px rgba(0,0,0,.4));animation:gb-hatdrop .8s cubic-bezier(.34,1.56,.64,1) .5s both}',
+            '.gb-nav-hat img,.gb-nav-hat svg{width:100%;height:100%;display:block;object-fit:contain}',
+            '@keyframes gb-hatdrop{0%{opacity:0;transform:translateY(-12px) scale(.8)}100%{opacity:1;transform:translateY(0) scale(1)}}',
+            /* String lights */
             '.gb-lights{position:fixed;top:70px;left:0;width:100%;height:75px;pointer-events:none;z-index:998;opacity:0;animation:gb-fin 1.5s ease .5s forwards}',
+            /* Border & nav line */
             '.gb-bdr{position:fixed;top:0;left:0;width:100%;z-index:9998;pointer-events:none}',
             '@keyframes gb-shift{0%{background-position:0 0}100%{background-position:200% 0}}',
             '@keyframes gb-shimr{0%,100%{opacity:.5}50%{opacity:1}}',
             '@keyframes gb-nbar{0%,100%{box-shadow:0 0 6px var(--nc),0 0 14px var(--nc)}50%{box-shadow:0 0 3px var(--nc),0 0 6px var(--nc);opacity:.7}}',
             '.gb-nav-line{position:absolute;bottom:-1px;left:0;width:100%;height:2px;border-radius:2px;pointer-events:none;opacity:0;animation:gb-fin 1s ease .8s forwards}',
             '@keyframes gb-fin{to{opacity:1}}',
-            '@media(max-width:600px){.gb-banner-inner{padding:12px 42px 12px 14px;border-radius:0 0 12px 12px}.gb-lights,.gb-hanging{display:none}.gb-frost-tl,.gb-frost-tr{width:140px;height:140px}}',
-            '@media(prefers-reduced-motion:reduce){.gb-canvas,.gb-bokeh,.gb-fog,.gb-sparkle,.gb-nflash{animation:none!important}}'
+            /* Responsive */
+            '@media(max-width:600px){.gb-banner{bottom:12px;width:calc(100% - 24px)}.gb-banner-inner{padding:12px 42px 12px 14px}.gb-lights,.gb-hanging{display:none}.gb-frost-tl,.gb-frost-tr{width:140px;height:140px}.gb-dangle{top:60px}}',
+            '@media(prefers-reduced-motion:reduce){.gb-canvas,.gb-bokeh,.gb-fog,.gb-sparkle,.gb-nflash,.gb-dangle-item{animation:none!important}}'
         ].join('\n');
         document.head.appendChild(state.style);
     }
@@ -416,31 +446,57 @@
         });
     }
 
-    /* ═══ HERO OVERLAY BANNER ═══ */
+    /* ═══ BANNER – BOTTOM SLIDE-UP ═══ */
     function createBanner(theme, themeId) {
         if (!theme.banner) return;
-        try { if (sessionStorage.getItem('gb-ban9') === state.id) return; } catch (e) { }
+        try { if (sessionStorage.getItem('gb-ban10') === state.id) return; } catch (e) { }
         var b = theme.banner;
         var icon = BI[themeId] || BI[themeId.replace(/-/g, '')] || '';
         var el = document.createElement('div'); el.className = 'gb-banner';
-        el.innerHTML = '<div class="gb-banner-inner" style="background:' + b.bg + ';box-shadow:' + b.shadow + ';border-left:3px solid ' + b.accent + ';border-right:3px solid ' + b.accent + '">' +
-            '<div class="gb-banner-icon" style="background:' + b.iconBg + '">' + icon + '</div>' +
-            '<div class="gb-banner-text"><div class="gb-banner-title" style="color:' + b.titleColor + '">' + b.title + '</div>' +
-            '<div class="gb-banner-sub">' + b.sub + '</div></div>' +
-            '<button class="gb-banner-x" aria-label="Close">&times;</button></div>' +
-            '<div class="gb-banner-bar" style="max-width:720px;margin:0 auto"><div class="gb-banner-bar-fill" style="background:' + b.timer + '"></div></div>';
+
+        var isBF = b.isBF || themeId === 'black-friday' || themeId === 'blackfriday';
+        var innerStyle, html;
+
+        if (isBF) {
+            /* Black Friday: brush paint stroke style */
+            innerStyle = 'background:#000;box-shadow:0 8px 32px rgba(0,0,0,.8),0 0 30px rgba(255,23,68,.15);border-radius:4px;border:none;position:relative;overflow:hidden';
+            html = '<div class="gb-banner-inner" style="' + innerStyle + '">';
+            html += '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.2" viewBox="0 0 500 80" preserveAspectRatio="none"><path d="M0 40C50 10,100 70,200 35C300 0,350 60,500 40V80H0Z" fill="#FF1744"/><path d="M0 50C80 30,150 65,250 40C350 15,420 55,500 45V80H0Z" fill="#FF1744" opacity=".5"/></svg>';
+            html += '<div style="flex-shrink:0;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,23,68,.25);position:relative">' + icon + '</div>';
+            html += '<div style="flex:1;position:relative">';
+            html += '<div style="font-size:13px;font-weight:900;letter-spacing:4px;color:#fff">BLACK FRIDAY</div>';
+            html += '<div style="font-size:18px;font-weight:900;color:#FF1744;letter-spacing:2px;margin-top:2px">MEGA SALE</div>';
+            html += '<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Biggest deals of the year!</div>';
+            html += '</div>';
+        } else {
+            /* Standard themed banner */
+            innerStyle = 'background:' + b.bg + ';box-shadow:' + b.shadow + ';border-radius:16px;border:1px solid ' + b.accent + '40';
+            html = '<div class="gb-banner-inner" style="' + innerStyle + '">';
+            html += '<div style="flex-shrink:0;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:' + b.iconBg + '">' + icon + '</div>';
+            html += '<div style="flex:1">';
+            html += '<div style="font-size:11px;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;color:' + b.titleColor + '">' + b.title + '</div>';
+            html += '<div style="font-size:12.5px;font-weight:400;margin-top:3px;color:rgba(255,255,255,.6)">' + b.sub + '</div>';
+            html += '</div>';
+        }
+
+        html += '<button onclick="this.closest(\'.gb-banner\').dispatchEvent(new Event(\'dismiss\'))" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.5);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center">&times;</button>';
+        html += '</div>';
+        html += '<div style="height:2px;background:rgba(255,255,255,.06);border-radius:0 0 16px 16px;overflow:hidden;margin-top:-1px"><div style="height:100%;width:100%;background:' + (b.timer || b.accent) + ';transform-origin:left;animation:gb-barfill 10s linear forwards"></div></div>';
+
+        el.innerHTML = html;
         document.body.appendChild(el);
         state.banner = el;
-        el.querySelector('.gb-banner-x').addEventListener('click', dismissBanner);
-        setTimeout(function () { if (state.banner) dismissBanner(); }, 8000);
+        el.addEventListener('dismiss', dismissBanner);
+        state.bannerTimer = setTimeout(function () { if (state.banner) dismissBanner(); }, 10000);
     }
     function dismissBanner() {
         if (!state.banner) return;
-        state.banner.style.animation = 'gb-bout .4s ease forwards';
+        if (state.bannerTimer) { clearTimeout(state.bannerTimer); state.bannerTimer = null; }
+        state.banner.style.animation = 'gb-slidedown .4s ease forwards';
         var r = state.banner;
         setTimeout(function () { if (r && r.parentNode) r.remove(); }, 400);
         state.banner = null;
-        try { sessionStorage.setItem('gb-ban9', state.id); } catch (e) { }
+        try { sessionStorage.setItem('gb-ban10', state.id); } catch (e) { }
     }
 
     /* ═══ STRING LIGHTS ═══ */
@@ -494,35 +550,64 @@
         document.body.appendChild(el); state.extraEls.push(el);
     }
 
-    /* ═══ DECORATIONS (Real PNGs + SVGs) ═══ */
+    /* ═══ DECORATIONS – CREATIVE PLACEMENT ═══ */
+    function getDecorContent(cfg) {
+        if (cfg.type === 'img') return '<img src="' + cfg.src + '" alt="" loading="lazy">';
+        if (cfg.type === 'svg') return CSVG[cfg.svg] || '';
+        if (cfg.type === 'esvg') return ESVG[cfg.svg] || '';
+        return '';
+    }
+
     function createDecorations(theme) {
         if (!theme.decor) return;
         theme.decor.forEach(function (cfg) {
-            var el = document.createElement('div'); el.className = 'gb-decor';
+            var content = getDecorContent(cfg);
+            if (!content) return;
             var w = isMobile && cfg.mw ? cfg.mw : cfg.w;
             var h = isMobile && cfg.mh ? cfg.mh : cfg.h;
-            el.style.width = w + 'px'; el.style.height = h + 'px';
+            var pos = cfg.pos || 'tl';
 
-            // Position
-            if (cfg.pos === 'tl') { el.style.top = (cfg.top || 5) + 'px'; el.style.left = '5px'; }
-            else if (cfg.pos === 'tr') { el.style.top = (cfg.top || 5) + 'px'; el.style.right = '5px'; }
-            else if (cfg.pos === 'tr-low') { el.style.top = (cfg.top || 5) + 'px'; el.style.right = (cfg.right || 5) + 'px'; }
-            else if (cfg.pos === 'bl') { el.style.bottom = '10px'; el.style.left = '5px'; }
-            else if (cfg.pos === 'br') { el.style.bottom = '10px'; el.style.right = '5px'; }
-
-            if (cfg.rotate) el.style.transform = 'rotate(' + cfg.rotate + 'deg)';
-            if (cfg.opacity) el.style.opacity = cfg.opacity;
-
-            // Content: real image or SVG
-            if (cfg.type === 'img') {
-                el.innerHTML = '<img src="' + cfg.src + '" alt="" loading="lazy">';
-            } else if (cfg.type === 'svg') {
-                el.innerHTML = CSVG[cfg.svg] || '';
-            } else if (cfg.type === 'esvg') {
-                el.innerHTML = ESVG[cfg.svg] || '';
+            /* NAV DANGLE: items hanging from nav bar on a string */
+            if (pos.indexOf('nav-dangle-') === 0) {
+                var pct = parseInt(pos.split('-')[2]) || 50;
+                var el = document.createElement('div'); el.className = 'gb-dangle';
+                el.style.left = pct + '%'; el.style.transform = 'translateX(-50%)';
+                var lineH = isMobile ? 18 : 30;
+                el.innerHTML = '<div class="gb-dangle-line" style="height:' + lineH + 'px;background:rgba(255,255,255,.12)"></div>' +
+                    '<div class="gb-dangle-item" style="width:' + w + 'px;height:' + h + 'px">' + content + '</div>';
+                if (cfg.opacity) el.style.opacity = cfg.opacity;
+                document.body.appendChild(el); state.decorEls.push(el);
+                return;
             }
 
-            document.body.appendChild(el); state.decorEls.push(el);
+            /* SIDE FLOAT: along viewport edges */
+            if (pos.indexOf('side-') === 0) {
+                var parts = pos.split('-');
+                var side = parts[1]; // 'left' or 'right'
+                var yPct = parseInt(parts[2]) || 50;
+                var el2 = document.createElement('div'); el2.className = 'gb-decor';
+                el2.style.width = w + 'px'; el2.style.height = h + 'px';
+                el2.style.top = yPct + '%';
+                if (side === 'right') el2.style.right = '10px'; else el2.style.left = '10px';
+                if (cfg.opacity) el2.style.opacity = cfg.opacity;
+                if (cfg.rotate) el2.style.transform = 'rotate(' + cfg.rotate + 'deg)';
+                el2.innerHTML = content;
+                document.body.appendChild(el2); state.decorEls.push(el2);
+                return;
+            }
+
+            /* STANDARD CORNER positions */
+            var el3 = document.createElement('div'); el3.className = 'gb-decor';
+            el3.style.width = w + 'px'; el3.style.height = h + 'px';
+            var topVal = cfg.top !== undefined ? cfg.top : 80;
+            if (pos === 'tl') { el3.style.top = topVal + 'px'; el3.style.left = '5px'; }
+            else if (pos === 'tr') { el3.style.top = topVal + 'px'; el3.style.right = '5px'; }
+            else if (pos === 'bl') { el3.style.bottom = '10px'; el3.style.left = '5px'; }
+            else if (pos === 'br') { el3.style.bottom = '10px'; el3.style.right = '5px'; }
+            if (cfg.rotate) el3.style.transform = 'rotate(' + cfg.rotate + 'deg)';
+            if (cfg.opacity) el3.style.opacity = cfg.opacity;
+            el3.innerHTML = content;
+            document.body.appendChild(el3); state.decorEls.push(el3);
         });
     }
 
@@ -535,50 +620,90 @@
         document.body.appendChild(el); state.decorEls.push(el);
     }
 
-    /* ═══ HERO ACCESSORIES (hat on BOTH logos) ═══ */
+    /* ═══ HERO ACCESSORIES – HAT ON LOGO IMAGES ONLY ═══ */
     function addAccessory(cfg) {
         if (!cfg) return;
         var content;
-        if (cfg.type === 'img') {
-            content = '<img src="' + cfg.src + '" alt="" style="width:100%;height:100%;object-fit:contain">';
-        } else if (cfg.type === 'svg') {
-            content = CSVG[cfg.svg] || '';
-        } else if (cfg.type === 'esvg') {
-            content = ESVG[cfg.svg] || '';
-        }
+        if (cfg.type === 'img') content = '<img src="' + cfg.src + '" alt="" style="width:100%;height:100%;object-fit:contain">';
+        else if (cfg.type === 'svg') content = CSVG[cfg.svg] || '';
+        else if (cfg.type === 'esvg') content = ESVG[cfg.svg] || '';
         if (!content) return;
 
-        // Hero circle
-        var hero = document.querySelector('.showcase-neon-circle');
-        if (hero) {
-            hero.style.overflow = 'visible';
-            var h = document.createElement('div'); h.className = 'gb-hat';
+        /* HERO CIRCLE HAT – appended to circle's parent as sibling, NOT touching circle overflow */
+        var circle = document.querySelector('.showcase-neon-circle');
+        if (circle) {
+            var parent = circle.offsetParent || circle.parentElement;
+            var cTop = circle.offsetTop;
+            var cLeft = circle.offsetLeft;
+            var cW = circle.offsetWidth || 320;
+
+            var h = document.createElement('div'); h.className = 'gb-hero-hat';
             h.innerHTML = content;
+
             if (cfg.isGlasses) {
-                h.style.cssText = 'width:120px;height:48px;top:35%;left:50%;margin-left:-60px'; h.style.setProperty('--hr', '0deg');
+                var gW = cW * 0.38, gH = gW * 0.4;
+                h.style.cssText = 'width:' + gW + 'px;height:' + gH + 'px;top:' + (cTop + cW * 0.33) + 'px;left:' + (cLeft + (cW - gW) / 2) + 'px';
             } else if (cfg.isBunny) {
-                h.style.cssText = 'width:100px;height:85px;top:-55px;left:50%;margin-left:-50px'; h.style.setProperty('--hr', '0deg');
+                var bW = cW * 0.32, bH = bW * 0.85;
+                h.style.cssText = 'width:' + bW + 'px;height:' + bH + 'px;top:' + (cTop - bH * 0.65) + 'px;left:' + (cLeft + (cW - bW) / 2) + 'px';
             } else {
-                // Default: top-right (santa hat, witch hat, top hat)
-                h.style.cssText = 'width:85px;height:75px;top:-22px;right:15px;left:auto'; h.style.setProperty('--hr', '18deg');
+                /* Default: hat sits on top-right of circle (santa hat, witch hat, top hat) */
+                var hatW = cW * 0.27, hatH = hatW * 0.88;
+                h.style.cssText = 'width:' + hatW + 'px;height:' + hatH + 'px;top:' + (cTop - hatH * 0.28) + 'px;left:' + (cLeft + cW * 0.58) + 'px;transform:rotate(18deg)';
             }
-            hero.appendChild(h); state.hatEls.push(h);
+            parent.appendChild(h); state.hatEls.push(h);
         }
 
-        // Nav logo(s)
+        /* NAV LOGO HAT – positioned over the IMG only, not the text */
         document.querySelectorAll('.nav-logo').forEach(function (logo) {
-            logo.style.position = 'relative'; logo.style.overflow = 'visible';
-            var nh = document.createElement('div'); nh.className = 'gb-hat';
+            var img = logo.querySelector('img');
+            if (!img) return;
+            logo.style.position = 'relative';
+            logo.style.overflow = 'visible';
+            var imgW = img.offsetWidth || 45;
+            var nh = document.createElement('div'); nh.className = 'gb-nav-hat';
             nh.innerHTML = content;
+
             if (cfg.isGlasses) {
-                nh.style.cssText = 'width:42px;height:17px;top:7px;left:50%;margin-left:-21px'; nh.style.setProperty('--hr', '0deg');
+                nh.style.cssText = 'width:' + (imgW * 0.9) + 'px;height:' + (imgW * 0.35) + 'px;top:' + (imgW * 0.15) + 'px;left:0';
             } else if (cfg.isBunny) {
-                nh.style.cssText = 'width:36px;height:30px;top:-20px;left:50%;margin-left:-18px'; nh.style.setProperty('--hr', '0deg');
+                nh.style.cssText = 'width:' + (imgW * 0.7) + 'px;height:' + (imgW * 0.6) + 'px;top:' + (-imgW * 0.4) + 'px;left:' + (imgW * 0.15) + 'px';
             } else {
-                nh.style.cssText = 'width:30px;height:26px;top:-15px;right:-5px;left:auto'; nh.style.setProperty('--hr', '16deg');
+                /* Hat on top-right of the logo IMG */
+                nh.style.cssText = 'width:' + (imgW * 0.6) + 'px;height:' + (imgW * 0.52) + 'px;top:' + (-imgW * 0.32) + 'px;left:' + (imgW * 0.45) + 'px;transform:rotate(16deg)';
             }
             logo.appendChild(nh); state.hatEls.push(nh);
         });
+    }
+
+    /* ═══ DEAL FEATURES – Creative discount elements ═══ */
+    function createDealFeature(theme, themeId) {
+        if (!theme.deal) return;
+        var d = theme.deal;
+        var el = document.createElement('div'); el.className = 'gb-deal';
+
+        if (d.style === 'brush') {
+            /* Black Friday: Brush paint stroke SALE badge */
+            var bw = isMobile ? 110 : 160;
+            el.style.cssText = 'right:' + (isMobile ? 8 : 20) + 'px;top:' + (isMobile ? 'auto' : '45%') + ';' + (isMobile ? 'bottom:80px' : 'transform:translateY(-50%) rotate(-5deg)');
+            el.innerHTML = '<div style="position:relative;width:' + bw + 'px;text-align:center">' +
+                '<svg viewBox="0 0 200 90" style="position:absolute;inset:0;width:100%;height:100%"><path d="M10 45C30 15,70 5,100 20C130 35,170 10,190 45C170 80,130 70,100 75C70 80,30 70,10 45Z" fill="#FF1744" opacity=".9"/><path d="M15 48C35 22,75 12,100 25C125 38,165 18,185 48C165 75,125 68,100 72C75 76,35 68,15 48Z" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/></svg>' +
+                '<div style="position:relative;padding:' + (isMobile ? '15px 8px' : '20px 12px') + ';font-family:Outfit,sans-serif">' +
+                '<div style="font-size:' + (isMobile ? 10 : 14) + 'px;font-weight:900;color:#fff;letter-spacing:3px">SALE</div>' +
+                '<div style="font-size:' + (isMobile ? 15 : 22) + 'px;font-weight:900;color:#FFD600;letter-spacing:1px;margin-top:2px">UP TO 50%</div>' +
+                '</div></div>';
+        } else if (d.style === 'ribbon') {
+            /* Ribbon/tag style for most themes */
+            var rw = isMobile ? 85 : 120;
+            el.style.cssText = 'right:' + (isMobile ? 5 : 15) + 'px;top:' + (isMobile ? 'auto' : '42%') + ';' + (isMobile ? 'bottom:80px' : 'transform:translateY(-50%) rotate(3deg)');
+            el.innerHTML = '<div style="width:' + rw + 'px;padding:' + (isMobile ? '10px 6px' : '14px 10px') + ';background:' + d.color + ';border-radius:4px 4px 0 0;text-align:center;font-family:Outfit,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.4);position:relative">' +
+                '<div style="font-size:' + (isMobile ? 9 : 11) + 'px;font-weight:800;color:' + d.accent + ';letter-spacing:1.5px">' + d.text + '</div>' +
+                '<div style="position:absolute;bottom:-10px;left:0;width:0;height:0;border-left:' + (rw / 2) + 'px solid ' + d.color + ';border-right:' + (rw / 2) + 'px solid ' + d.color + ';border-bottom:10px solid transparent"></div>' +
+                '</div>';
+        }
+        if (el.innerHTML) {
+            document.body.appendChild(el); state.dealEls.push(el);
+        }
     }
 
     /* ═══ PULSING GLOW ═══ */
@@ -672,12 +797,12 @@
         var themeKey = data.themeId.toLowerCase().replace(/[\s_']/g, '-');
         injectCSS();
 
-        // ALL PAGES: glow, border, nav line
+        /* ALL PAGES: glow, border, nav line */
         applyGlow(theme);
         createBorder(theme);
         createNavLine(theme);
 
-        // MAIN PAGES ONLY: everything else
+        /* MAIN PAGES ONLY: full effects */
         if (isMainPage) {
             createBokeh(theme);
             initCanvas(); spawnParticles(theme); animateParticles();
@@ -691,6 +816,7 @@
             if (theme.vignette) createVignette(theme.vignette);
             if (theme.lights) createLights();
             if (theme.heroHat) addAccessory(theme.heroHat);
+            if (theme.deal) createDealFeature(theme, themeKey);
             createBanner(theme, themeKey);
         }
     }
@@ -702,13 +828,15 @@
         state.bokehEls.forEach(function (e) { e.remove(); }); state.bokehEls = [];
         state.decorEls.forEach(function (e) { e.remove(); }); state.decorEls = [];
         state.extraEls.forEach(function (e) { e.remove(); }); state.extraEls = [];
+        /* FIX: Properly remove banner + clear timer */
+        if (state.bannerTimer) { clearTimeout(state.bannerTimer); state.bannerTimer = null; }
         if (state.banner) { state.banner.remove(); state.banner = null; }
         if (state.border) { state.border.remove(); state.border = null; }
         if (state.navLine) { state.navLine.remove(); state.navLine = null; }
         state.hatEls.forEach(function (e) { if (e.parentNode) e.remove(); }); state.hatEls = [];
+        /* FIX: Remove deal elements */
+        state.dealEls.forEach(function (e) { if (e.parentNode) e.remove(); }); state.dealEls = [];
         document.querySelectorAll('.nav-logo').forEach(function (l) { l.style.removeProperty('position'); l.style.removeProperty('overflow'); });
-        var hero = document.querySelector('.showcase-neon-circle');
-        if (hero) hero.style.removeProperty('overflow');
         removeGlow();
         state.id = null;
     }
