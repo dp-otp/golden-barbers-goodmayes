@@ -59,6 +59,7 @@
     ESVG.fireworks = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#269" d="M36 32c0 2.209-1.791 4-4 4H4c-2.209 0-4-1.791-4-4V4c0-2.209 1.791-4 4-4h28c2.209 0 4 1.791 4 4v28z"/><path fill="#55ACEE" d="M18 2.249L21.751 6H27v5.249L30.751 15 27 18.751V24h-5.249L18 27.751 14.249 24H9v-5.249L5.249 15 9 11.249V6h5.249z"/><path fill="#FFD983" d="M15 15zm3-10.406l2.234 5.069 4.852-1.417-1.418 4.851 6.486 2.235-6.486 2.234 1.418 4.851L20.234 21 18 33.154 15.765 21l-4.85 1.417 1.417-4.851-6.487-2.234 6.487-2.235-1.417-4.851 4.85 1.417z"/><circle fill="#F5F8FA" cx="18" cy="15" r="3"/></svg>';
     ESVG.champagne = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#264612" d="M34.9 23.787l-5.067-5.067c-3.664-3.664-7.322-4.14-14.358-6.945l-3.149 3.149c3.231 6.61 3.236 10.739 6.9 14.403l5.068 5.068c.993.993 1.787 1.81 2.782.816l8.409-8.412c.996-.996.408-2.019-.585-3.012z"/><path fill="#FFE8B6" d="M16.205 12.164s1.739.644-.56 2.943c-2.122 2.122-2.917.651-2.917.651l-3.447-3.447 3.536-3.536 3.388 3.389z"/><path fill="#FFE8B6" d="M28.373 20.089c-.781-.78-2.048-.78-2.829 0l-4.949 4.95c-.781.78-.781 2.047 0 2.828l4.242 4.242c.781.781 2.048.781 2.829 0l4.949-4.949c.781-.781.781-2.048 0-2.828l-4.242-4.243z"/><circle fill="#CCD6DD" cx="7.189" cy="27.5" r="1.5"/><path fill="#CCD6DD" d="M9.609 13.234c.051-.237.08-.482.08-.734 0-1.933-1.567-3.5-3.5-3.5-1.764 0-3.208 1.308-3.45 3.005-.017 0-.033-.005-.05-.005-1.104 0-2 .896-2 2s.896 2 2 2c.033 0 .063-.008.095-.01-.058.16-.095.33-.095.51 0 .46.212.867.539 1.143-.332.357-.539.831-.539 1.357 0 1.104.896 2 2 2 0 .375.11.721.289 1.021-.727.103-1.289.723-1.289 1.479 0 .828.672 1.5 1.5 1.5s1.5-.672 1.5-1.5c0-.18-.037-.35-.095-.51.032.002.062.01.095.01 1.104 0 2-.896 2-2 0-.601-.27-1.133-.69-1.5.419-.367.69-.899.69-1.5 0-.378-.111-.728-.294-1.03.097.015.193.03.294.03 1.104 0 2-.896 2-2 0-.771-.441-1.432-1.08-1.766z"/></svg>';
     ESVG.topHat = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#31373D" d="M30.198 27.385L32 3.816c0-.135-.008-.263-.021-.373.003-.033.021-.075.021-.11C32 1.529 25.731.066 18 .066c-7.732 0-14 1.462-14 3.267 0 .035.017.068.022.102-.014.11-.022.23-.022.365l1.802 23.585C2.298 28.295 0 29.576 0 31c0 2.762 8.611 5 18 5s18-2.238 18-5c0-1.424-2.298-2.705-5.802-3.615z"/><path fill="#744EAA" d="M30.198 27.385l.446-5.829c-7.705 2.157-17.585 2.207-25.316-.377l.393 5.142c.069.304.113.65.113 1.076 0 1.75 1.289 2.828 2.771 3.396 4.458 1.708 13.958 1.646 18.807.149 1.467-.453 2.776-1.733 2.776-3.191 0-.119.015-.241.024-.361l-.014-.005z"/></svg>';
+    ESVG.mapleLeaf = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#DD2C00" d="M31.831 14.151l-4.724-1.383 2.899-2.783c.322-.31.1-.854-.345-.846l-4.871.085 1.108-3.592c.127-.413-.387-.71-.684-.396l-5.392 5.703-1.349-3.754c-.108-.3-.52-.328-.666-.045L16.1 11.076l-2.642-4.754c-.173-.312-.632-.233-.699.12l-.886 4.696-4.218-2.972c-.298-.21-.686.102-.558.449l1.88 5.078-4.36-1.088c-.37-.092-.595.385-.321.681l3.768 4.069-4.51 1.24c-.367.101-.384.624-.024.751l4.341 1.531-2.464 3.209c-.229.299.046.728.407.635l4.463-1.149-1.1 5.31c-.068.327.285.568.542.37l5.063-3.906 1.014 5.085c.066.33.515.386.657.082l2.175-4.676 3.47 4.242c.21.256.611.107.621-.231l.143-4.703 5.146 2.174c.319.135.619-.214.427-.497l-3.183-4.716 5.077-.54c.383-.041.454-.556.101-.739l-4.891-2.533 3.357-3.63c.256-.277.042-.72-.346-.609z"/></svg>';
     ESVG.palmTree = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#C1694F" d="M21.978 20.424c-.054-.804-.137-1.582-.247-2.325-.133-.89-.299-1.728-.485-2.513-.171-.723-.356-1.397-.548-2.017-.288-.931-.584-1.738-.852-2.4-.527-1.299-.943-2.043-.943-2.043l-3.613.466s.417.87.868 2.575c.183.692.371 1.524.54 2.495.086.49.166 1.012.238 1.573.1.781.183 1.632.242 2.549.034.518.058 1.058.074 1.619.006.204.015.401.018.611.01.656-.036 1.323-.118 1.989-.074.6-.182 1.197-.311 1.789-.185.848-.413 1.681-.67 2.475-.208.643-.431 1.261-.655 1.84-.344.891-.69 1.692-.989 2.359-.502 1.119-.871 1.863-.871 2.018 0 .49.35 1.408 2.797 2.02 3.827.956 4.196-.621 4.196-.621s.243-.738.526-2.192c.14-.718.289-1.605.424-2.678.081-.642.156-1.348.222-2.116.068-.8.125-1.667.165-2.605.03-.71.047-1.47.055-2.259.002-.246.008-.484.008-.737 0-.64-.03-1.261-.071-1.872z"/><path fill="#3E721D" d="M32.61 4.305c-.044-.061-4.48-5.994-10.234-3.39-2.581 1.167-4.247 3.074-4.851 5.535-1.125-1.568-2.835-2.565-5.093-2.968C6.233 2.376 2.507 9.25 2.47 9.32c-.054.102-.031.229.056.305s.217.081.311.015c.028-.02 2.846-1.993 7.543-1.157 4.801.854 8.167 1.694 8.201 1.702.02.005.041.007.061.007.069 0 .136-.028.184-.08.032-.035 3.22-3.46 6.153-4.787 4.339-1.961 7.298-.659 7.326-.646.104.046.227.018.298-.07.072-.087.075-.213.007-.304z"/><path fill="#5C913B" d="M27.884 7.63c-4.405-2.328-7.849-1.193-9.995.22-2.575-.487-7.334-.459-11.364 4.707-4.983 6.387-.618 14.342-.573 14.422.067.119.193.191.327.191.015 0 .031-.001.046-.003.151-.019.276-.127.316-.274.015-.054 1.527-5.52 5.35-10.118 2.074-2.496 4.55-4.806 6.308-6.34 1.762.298 4.327.947 6.846 2.354 4.958 2.773 7.234 7.466 7.257 7.513.068.144.211.226.379.212.158-.018.289-.133.325-.287.02-.088 1.968-8.8-5.222-12.597z"/></svg>';
     ESVG.priceTag = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#FFD983" d="M32.017 20.181L17.345 5.746C16.687 5.087 15.823 5 14.96 5H4.883C3.029 5 2 6.029 2 7.883v10.082c0 .861.089 1.723.746 2.38L17.3 35.017c1.311 1.31 3.378 1.31 4.688 0l10.059-10.088c1.31-1.312 1.28-3.438-.03-4.748zm-23.596-8.76c-.585.585-1.533.585-2.118 0s-.586-1.533 0-2.118c.585-.586 1.533-.585 2.118 0 .585.586.586 1.533 0 2.118z"/><path fill="#D99E82" d="M9.952 7.772c-1.43-1.431-3.749-1.431-5.179 0-1.431 1.43-1.431 3.749 0 5.18 1.43 1.43 3.749 1.43 5.18 0 1.43-1.431 1.429-3.749-.001-5.18zm-1.53 3.65c-.585.585-1.534.585-2.119 0-.585-.585-.586-1.534 0-2.119.585-.587 1.534-.585 2.119 0 .585.585.586 1.533 0 2.119z"/></svg>';
     ESVG.mosque = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#F4900C" d="M23 4.326c0 4.368-9.837 6.652-9.837 13.206 0 2.184 1.085 4.468 2.177 4.468h15.291c1.093 0 2.192-2.284 2.192-4.468C32.823 10.977 23 8.694 23 4.326z"/><path fill="#FFD983" d="M35 33.815C35 35.022 34.711 36 32.815 36h-19.66C11.26 36 11 35.022 11 33.815V22.894c0-1.206.26-1.894 2.156-1.894h19.66c1.895 0 2.184.688 2.184 1.894v10.921z"/><path fill="#662113" d="M26 29c0-3-1.896-5-3-5s-3 2-3 5v7h6v-7zm-8 2.333c0-2-1.264-3.333-2-3.333s-2 1.333-2 3.333V36h4v-4.667zm14 0c0-2-1.264-3.333-2-3.333s-2 1.333-2 3.333V36h4v-4.667z"/><path fill="#FFD983" d="M9 34c0 1.104-.896 2-2 2H5c-1.104 0-2-.896-2-2V8c0-1.104.896-2 2-2h2c1.104 0 2 .896 2 2v26z"/><path fill="#F4900C" d="M5.995.326c0 1.837-2.832 2.918-2.832 5.675 0 .919.312 2 .627 2h4.402c.314 0 .631-1.081.631-2 0-2.757-2.828-3.838-2.828-5.675z"/></svg>';
@@ -84,6 +85,7 @@
         'black-friday': '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FF1744" stroke-width="1.8"><path d="M20.6 8.6l-7.2 7.2a2 2 0 01-2.8 0L3 8.2V3h5.2l8.6 8.6a2 2 0 010 2.8z"/><circle cx="7" cy="7" r="1.5" fill="#FF1744" stroke="none"/></svg>',
         'new-year': '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="2.5" fill="#FFD700" stroke="none"/></svg>'
     };
+    BI.autumn = '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.71c.79-.47 1.76-.45 2.56.05l1.11 2.58 1.86-.68-1.31-3.07C13.62 16.3 16 13.05 17 8z" fill="#BF360C"/><path d="M20.49 9.71c-2.35 2.29-5.44 3.58-8.68 3.62L12 13.5l.19.19c-.05.05-.09.11-.14.17 1.14 1.05 2.01 2.39 2.49 3.91l.17-.04c2.64-.65 5.34-.74 8.02-.28-.15-2.63-.85-5.19-2.24-7.74z" fill="#FF6F00"/></svg>';
     BI.blackfriday = BI['black-friday']; BI.newyear = BI['new-year'];
 
     /* ═══ CANVAS DRAW FUNCTIONS ═══ */
@@ -117,6 +119,16 @@
         var c = state.ctx; c.save(); c.translate(x, y); c.scale(s / 20, s / 20);
         c.beginPath(); c.moveTo(-6, -10); c.lineTo(6, -10); c.lineTo(6, 6); c.lineTo(0, 12); c.lineTo(-6, 6); c.closePath();
         c.fillStyle = col; c.shadowBlur = 6; c.shadowColor = col; c.fill(); c.restore();
+    }
+    function leaf(x, y, s, col, rot) {
+        var c = state.ctx; c.save(); c.translate(x, y); c.rotate(rot);
+        c.beginPath(); c.moveTo(0, -s); c.bezierCurveTo(s * .6, -s * .6, s * .8, s * .2, 0, s);
+        c.bezierCurveTo(-s * .8, s * .2, -s * .6, -s * .6, 0, -s);
+        c.fillStyle = col; c.shadowBlur = s * .3; c.shadowColor = col; c.fill();
+        /* Leaf vein */
+        c.beginPath(); c.moveTo(0, -s * .8); c.lineTo(0, s * .7);
+        c.strokeStyle = 'rgba(0,0,0,.15)'; c.lineWidth = .5; c.stroke();
+        c.restore();
     }
 
     /* ═══ BOTTOM SILHOUETTES ═══ */
@@ -290,6 +302,27 @@
             frontendAccent: '#B8860B', frontendAccentRgba: 'rgba(184,134,11,',
             stickyBar: { text: 'Ramadan Kareem \u2013 Evening appointments available', bg: '#1A237E', bgEnd: '#0D1450', color: '#E8EAF6', icon: '\u262A\uFE0F' }
         },
+        autumn: {
+            particleType: 'leaves', particleCount: isMobile ? 10 : 20,
+            bokeh: [
+                { color: 'rgba(221,44,0,.06)', size: 190, x: 20, y: 25, blur: 65 },
+                { color: 'rgba(255,143,0,.05)', size: 160, x: 75, y: 40, blur: 55 },
+                { color: 'rgba(141,110,99,.04)', size: 140, x: 50, y: 70, blur: 50 }
+            ],
+            glow: { border: '2.5px solid rgba(221,44,0,.55)', shadowMin: '0 0 20px rgba(221,44,0,.25),0 0 40px rgba(255,143,0,.12),inset 0 0 12px rgba(221,44,0,.05)', shadowMax: '0 0 35px rgba(221,44,0,.45),0 0 65px rgba(255,143,0,.2),inset 0 0 20px rgba(221,44,0,.1)', nav: '0 0 10px rgba(221,44,0,.15)' },
+            banner: { bg: 'linear-gradient(135deg,#1a0f05,#120800)', accent: '#DD2C00', shadow: '0 8px 32px rgba(0,0,0,.6)', iconBg: 'rgba(221,44,0,.15)', title: 'AUTUMN VIBES', titleColor: '#FFAB91', sub: 'Fresh look for the new season!', timer: '#DD2C00' },
+            topBorder: 'linear-gradient(90deg,#DD2C00,#FF6F00,#BF360C,#FFB300,#DD2C00)', topBorderAnim: true,
+            navLine: 'linear-gradient(90deg,transparent,#DD2C00,#FFB300,#DD2C00,transparent)',
+            decor: [
+                { type: 'esvg', svg: 'mapleLeaf', pos: 'nav-dangle-25', w: isMobile ? 28 : 42, h: isMobile ? 28 : 42 },
+                { type: 'esvg', svg: 'mapleLeaf', pos: 'nav-dangle-75', w: isMobile ? 22 : 32, h: isMobile ? 22 : 32, opacity: .6, rotate: -20 },
+                { type: 'esvg', svg: 'mapleLeaf', pos: 'side-right-40', w: isMobile ? 25 : 38, h: isMobile ? 25 : 38, opacity: .35, rotate: 15 }
+            ],
+            deal: { text: 'Autumn Sale!', style: 'ribbon', color: '#BF360C', accent: '#FFAB91' },
+            frontendAccent: '#FF6F00', frontendAccentRgba: 'rgba(255,111,0,',
+            stickyBar: { text: 'Autumn Sale \u2013 Warm up with a fresh new style!', bg: '#BF360C', bgEnd: '#DD2C00', color: '#FFAB91', icon: '\uD83C\uDF42' },
+            popup: { title: 'AUTUMN SPECIAL', sub: 'New season, new look', accent: '#DD2C00', accent2: '#FF6F00', overline: 'Limited Time', code: 'AUTUMN20', countdownHours: 48, btnColor: '#fff' }
+        },
         'black-friday': {
             particleType: 'tags', particleCount: isMobile ? 6 : 12,
             bokeh: [
@@ -334,6 +367,26 @@
     };
     THEMES.blackfriday = THEMES['black-friday'];
     THEMES.newyear = THEMES['new-year'];
+    THEMES.flashsale = THEMES['flash-sale'] = {
+        particleType: 'confetti', particleCount: isMobile ? 10 : 20,
+        bokeh: [
+            { color: 'rgba(255,23,68,.07)', size: 200, x: 25, y: 20, blur: 70 },
+            { color: 'rgba(255,215,0,.05)', size: 170, x: 70, y: 45, blur: 55 }
+        ],
+        glow: { border: '2.5px solid rgba(255,23,68,.7)', shadowMin: '0 0 20px rgba(255,23,68,.35),0 0 40px rgba(255,215,0,.1),inset 0 0 12px rgba(255,23,68,.06)', shadowMax: '0 0 35px rgba(255,23,68,.6),0 0 65px rgba(255,215,0,.2),inset 0 0 20px rgba(255,23,68,.12)', nav: '0 0 12px rgba(255,23,68,.2)' },
+        banner: { bg: 'linear-gradient(135deg,#1a0008,#0a0000)', accent: '#FF1744', shadow: '0 8px 32px rgba(0,0,0,.7),0 0 20px rgba(255,23,68,.15)', iconBg: 'rgba(255,23,68,.2)', title: 'FLASH SALE', titleColor: '#FF1744', sub: 'Limited time only \u2013 Don\'t miss out!', timer: '#FF1744' },
+        topBorder: '#FF1744', topBorderNeon: '#FF1744',
+        navLine: 'linear-gradient(90deg,#FF1744,#FFD600,#FF1744,#FFD600,#FF1744)',
+        decor: [
+            { type: 'esvg', svg: 'gift', pos: 'nav-dangle-30', w: isMobile ? 28 : 42, h: isMobile ? 28 : 42 },
+            { type: 'esvg', svg: 'priceTag', pos: 'nav-dangle-70', w: isMobile ? 25 : 38, h: isMobile ? 25 : 38 }
+        ],
+        neonFlash: true,
+        deal: { text: 'FLASH DEAL!', style: 'brush', color: '#FF1744', accent: '#FFD600' },
+        frontendAccent: '#FF1744', frontendAccentRgba: 'rgba(255,23,68,',
+        stickyBar: { text: 'FLASH SALE \u2013 Up to 50% OFF for a limited time only!', bg: '#000', bgEnd: '#1a0008', color: '#FF1744', icon: '\u26A1', gradient: 'linear-gradient(135deg,#1a0008,#000)' },
+        popup: { title: 'FLASH SALE', sub: 'Save up to 50% \u2013 for a limited time only!', accent: '#FF1744', accent2: '#FFD600', overline: '% Flash Sale %', code: 'FLASH50', countdownHours: 3, btnColor: '#fff', showCountdown: true }
+    };
 
     /* ═══ CSS INJECTION ═══ */
     function injectCSS() {
@@ -459,12 +512,13 @@
         else if (type === 'tags') colors = ['#FF1744', '#FFD600', '#FF1744', '#FFD600'];
         else if (type === 'confetti') colors = ['#FFD700', '#C0C0C0', '#E91E63', '#0D47A1', '#fff', '#4CAF50'];
         else if (type === 'sparkle') colors = ['#FFD54F', '#FF8F00', '#FFF9C4', '#0288D1'];
+        else if (type === 'leaves') colors = ['#DD2C00', '#FF6F00', '#BF360C', '#E65100', '#FFB300', '#8D6E63'];
         for (var i = 0; i < count; i++) {
             var layer = i < count * .4 ? 0 : i < count * .75 ? 1 : 2;
             var sm = layer === 0 ? .5 : layer === 1 ? 1 : 1.8;
             var spm = layer === 0 ? .3 : layer === 1 ? .6 : 1;
             var om = layer === 0 ? .35 : layer === 1 ? .6 : 1;
-            var bs = type === 'snow' ? rand(2, 6) : type === 'hearts' ? rand(8, 18) : type === 'embers' ? rand(1, 3.5) : type === 'petals' ? rand(3, 7) : type === 'stars' ? rand(3, 8) : type === 'tags' ? rand(8, 16) : type === 'confetti' ? rand(3, 8) : rand(2, 5);
+            var bs = type === 'snow' ? rand(2, 6) : type === 'hearts' ? rand(8, 18) : type === 'embers' ? rand(1, 3.5) : type === 'petals' ? rand(3, 7) : type === 'stars' ? rand(3, 8) : type === 'tags' ? rand(8, 16) : type === 'confetti' ? rand(3, 8) : type === 'leaves' ? rand(5, 12) : rand(2, 5);
             state.particles.push({
                 x: rand(0, W), y: rand(-H * .2, H), baseSize: bs, size: bs * sm,
                 speed: (type === 'embers' ? rand(.3, .8) : type === 'confetti' ? rand(.8, 2.5) : rand(.4, 1.2)) * spm,
@@ -493,6 +547,7 @@
             else if (p.type === 'confetti') { c.save(); c.translate(p.x, p.y); c.rotate(p.rotation); c.fillStyle = p.color; c.fillRect(-p.size / 2, -1, p.size, 2.5); c.restore(); }
             else if (p.type === 'petals') { c.save(); c.translate(p.x, p.y); c.rotate(p.rotation); c.fillStyle = p.color; c.beginPath(); c.ellipse(0, 0, p.size * .5, p.size, 0, 0, Math.PI * 2); c.fill(); c.restore(); }
             else if (p.type === 'sparkle') { c.save(); c.translate(p.x, p.y); var pulse = .5 + .5 * Math.sin(Date.now() * .002 + p.wobbleOff); c.globalAlpha = p.opacity * pulse; c.fillStyle = p.color; c.shadowBlur = p.size * 3; c.shadowColor = p.color; c.beginPath(); c.arc(0, 0, p.size * pulse, 0, Math.PI * 2); c.fill(); c.shadowBlur = 0; c.restore(); }
+            else if (p.type === 'leaves') { leaf(p.x, p.y, p.size, p.color, p.rotation); }
         }
         c.globalAlpha = 1; c.shadowBlur = 0;
         state.raf = requestAnimationFrame(animateParticles);

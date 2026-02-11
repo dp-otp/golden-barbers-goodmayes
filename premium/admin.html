@@ -1271,11 +1271,13 @@
         }
         .theme-card:hover .theme-swatch { transform: scale(1.1); }
         .theme-card .theme-apply-btn {
-            width: 100%; padding: 11px; border-radius: 10px; border: none;
-            font-weight: 700; font-size: 13px; cursor: pointer;
+            width: 100% !important; padding: 11px !important; border-radius: 10px !important; border: none !important;
+            font-weight: 700 !important; font-size: 13px !important; cursor: pointer;
             transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-transform: uppercase; letter-spacing: 1px;
+            text-transform: uppercase !important; letter-spacing: 1px !important;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-family: inherit; line-height: 1.4;
+            -webkit-appearance: none; appearance: none;
         }
         .theme-card .theme-apply-btn:hover { transform: scale(1.03); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         /* Theme features badges */
@@ -3012,6 +3014,14 @@
                 textColor: '#E8EAF6',
                 suggestedDiscount: 'Ramadan Special: Evening appointments 20% OFF!'
             },
+            autumn: {
+                name: 'Autumn', emoji: '\uD83C\uDF42',
+                desc: 'Drifting autumn leaves, warm amber-orange palette with cozy tones',
+                colors: { primary: '#DD2C00', secondary: '#FF6F00', accent: '#FFAB91', bg: '#0A0604' },
+                banner: 'Autumn Vibes at Golden Barbers!',
+                textColor: '#FFAB91',
+                suggestedDiscount: 'Autumn Special: 20% OFF all cuts!'
+            },
             blackfriday: {
                 name: 'Black Friday', emoji: '\uD83D\uDCB0',
                 desc: 'Fast-falling deals, lightning bolts & neon pulsing border with electric energy',
@@ -3027,6 +3037,14 @@
                 banner: 'Happy New Year from Golden Barbers!',
                 textColor: '#fff',
                 suggestedDiscount: 'New Year New Look: 15% OFF all January!'
+            },
+            flashsale: {
+                name: 'Flash Sale', emoji: '\u26A1',
+                desc: 'Neon red urgency, confetti, gift boxes & countdown timer \u2013 maximum conversion energy',
+                colors: { primary: '#FF1744', secondary: '#1a0008', accent: '#FFD600', bg: '#050000' },
+                banner: 'FLASH SALE at Golden Barbers!',
+                textColor: '#FFD600',
+                suggestedDiscount: 'FLASH SALE: Up to 50% OFF!'
             }
         };
 
@@ -3058,7 +3076,7 @@
                 if (t.hasParticles !== false) features.push('Particles');
                 if (t.hasBanner !== false) features.push('Banner');
                 if (t.hasStickyBar !== false) features.push('Sticky Bar');
-                if (['christmas','halloween','blackfriday','newyear','eid','valentines'].indexOf(id) > -1) features.push('Popup');
+                if (['christmas','halloween','blackfriday','newyear','eid','valentines','autumn','flashsale'].indexOf(id) > -1) features.push('Popup');
                 if (['christmas','halloween','easter','summer'].indexOf(id) > -1) features.push('Hat');
 
                 return '<div class="theme-card' + (isActive ? ' active-theme' : '') + '" style="background: ' + grad + ';--tc:' + t.colors.primary + ';">' +
@@ -3121,15 +3139,47 @@
                 s.classList.add('show');
                 setTimeout(function() { s.classList.remove('show'); }, 3000);
             });
+
+            // Auto-switch discount banner colors/text to match new theme
+            database.ref('siteDiscount').once('value', function(snap) {
+                var d = snap.val();
+                if (d && d.active) {
+                    var rec = DISCOUNT_RECS[themeId];
+                    database.ref('siteDiscount').update({
+                        colors: t.colors,
+                        textColor: t.textColor,
+                        themeId: themeId,
+                        themeName: t.name,
+                        text: rec ? rec[0].text : t.banner,
+                        type: rec ? rec[0].type : d.type,
+                        value: rec ? rec[0].value : d.value,
+                        updatedAt: new Date().toISOString()
+                    });
+                }
+            });
         }
 
         function removeTheme() {
             if (!confirm('Remove the active theme from the website?')) return;
-            database.ref('siteTheme').remove().then(function() {
+            // Remove theme and clear any active discount tied to it
+            Promise.all([
+                database.ref('siteTheme').remove(),
+                database.ref('siteDiscount').remove()
+            ]).then(function() {
                 var s = document.getElementById('themeSuccess');
-                s.textContent = 'Theme removed. Website reverted to default.';
+                s.textContent = 'Theme & discount removed. Website reverted to default.';
                 s.classList.add('show');
                 setTimeout(function() { s.classList.remove('show'); }, 3000);
+                // Reset discount form fields
+                var dtText = document.getElementById('themeDiscountText');
+                var dtCode = document.getElementById('themeDiscountCode');
+                var dtValue = document.getElementById('themeDiscountValue');
+                var dtToggle = document.getElementById('themeDiscountToggle');
+                if (dtText) dtText.value = '';
+                if (dtCode) dtCode.value = '';
+                if (dtValue) dtValue.value = '';
+                if (dtToggle) dtToggle.classList.remove('active');
+                updateThemeDiscountPreview();
             });
         }
 
@@ -3233,6 +3283,11 @@
                 { text: 'Ramadan Kareem: 15% OFF all services!', type: 'percent', value: 15 },
                 { text: 'Late night cuts: \u00A33 OFF after 6pm!', type: 'fixed', value: 3 }
             ],
+            autumn: [
+                { text: 'Autumn Special: 20% OFF all cuts!', type: 'percent', value: 20 },
+                { text: 'Warm up deal: Cut + Hot Towel for \u00A318!', type: 'fixed', value: 18 },
+                { text: 'Season change: \u00A35 OFF any fade!', type: 'fixed', value: 5 }
+            ],
             blackfriday: [
                 { text: 'BLACK FRIDAY: 30% OFF EVERYTHING!', type: 'percent', value: 30 },
                 { text: 'Flash Sale: Golden Luxury \u00A330 (was \u00A345)!', type: 'fixed', value: 30 },
@@ -3242,6 +3297,11 @@
                 { text: 'New Year New Look: 15% OFF all January!', type: 'percent', value: 15 },
                 { text: 'Start 2026 fresh: \u00A35 OFF any fade!', type: 'fixed', value: 5 },
                 { text: 'New Year Bundle: Cut + Hot Towel for \u00A318!', type: 'fixed', value: 18 }
+            ],
+            flashsale: [
+                { text: 'FLASH SALE: 50% OFF all services \u2013 TODAY ONLY!', type: 'percent', value: 50 },
+                { text: 'Lightning Deal: Any fade for \u00A38!', type: 'fixed', value: 8 },
+                { text: 'FLASH: 30% OFF premium cuts \u2013 ends midnight!', type: 'percent', value: 30 }
             ]
         };
 

@@ -496,17 +496,7 @@
             font-family:'Outfit',sans-serif; font-size:12px; font-weight:600;
             cursor:pointer; padding:4px 8px;
         }
-        .discount-banner {
-            padding:14px 18px;
-            border-radius:16px;
-            text-align:center;
-            margin-bottom:14px;
-            animation:fadeIn 0.4s ease;
-        }
-        .discount-banner-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; opacity:0.85; margin-bottom:4px; }
-        .discount-banner-text { font-size:15px; font-weight:700; margin-bottom:4px; }
-        .discount-banner-code { font-size:12px; opacity:0.9; }
-        .discount-banner-code strong { font-size:14px; }
+        /* discount-banner removed – codes only shown on main site, not pay page */
 
         /* Savings line in amount hero */
         .savings-line {
@@ -547,9 +537,6 @@
         </div>
 
         <div id="paymentContent" class="payment-content">
-            <!-- Discount Banner (loaded from Firebase) -->
-            <div class="discount-banner" id="discountBanner" style="display:none;"></div>
-
             <!-- Amount -->
             <div class="amount-hero">
                 <div class="amount-label">Amount Due</div>
@@ -1073,29 +1060,10 @@
             availableDiscounts = data ? Object.keys(data).map(function(k) { var d = data[k]; d._key = k; return d; }) : [];
         });
 
-        // Load site-wide discount banner from Firebase
+        // Load site discount data from Firebase (for code validation only, no banner shown)
         db.ref('siteDiscount').on('value', function(snapshot) {
             siteDiscountData = snapshot.val();
-            showDiscountBanner();
         });
-
-        function showDiscountBanner() {
-            var banner = document.getElementById('discountBanner');
-            if (!banner) return;
-            if (!siteDiscountData || !siteDiscountData.active) {
-                banner.style.display = 'none';
-                return;
-            }
-            var bg = 'linear-gradient(135deg, ' + (siteDiscountData.colors ? siteDiscountData.colors.primary : '#d4af37') + ', ' + (siteDiscountData.colors ? siteDiscountData.colors.secondary : '#a88a2d') + ')';
-            var tc = siteDiscountData.textColor || '#fff';
-            banner.style.background = bg;
-            banner.style.color = tc;
-            banner.style.display = 'block';
-            banner.innerHTML =
-                '<div class="discount-banner-label">' + (siteDiscountData.themeName || 'Special Offer') + '</div>' +
-                '<div class="discount-banner-text">' + siteDiscountData.text + '</div>' +
-                (siteDiscountData.code ? '<div class="discount-banner-code">Use code: <strong>' + siteDiscountData.code + '</strong></div>' : '');
-        }
 
         function applyDiscountCode() {
             var input = document.getElementById('discountInput').value.trim().toUpperCase();
