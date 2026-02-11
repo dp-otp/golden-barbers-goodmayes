@@ -1,5 +1,5 @@
 /**
- * Golden Barbers – Premium Seasonal Theme Effects v15
+ * Golden Barbers – Premium Seasonal Theme Effects v17
  * Hero seasonal takeovers, atmospheric page film, premium promo banners,
  * nav transformation, enhanced particles with glow, section accent theming.
  */
@@ -147,7 +147,7 @@
     ═══════════════════════════════════════════ */
     var THEMES = {
         christmas: {
-            particleType: 'snow', particleCount: isMobile ? 3 : 6,
+            particleType: 'snow', particleCount: isMobile ? 8 : 18,
             bokeh: [
                 { color: 'rgba(200,60,60,.015)', size: 180, x: 15, y: 20, blur: 60 },
                 { color: 'rgba(46,125,50,.012)', size: 150, x: 75, y: 35, blur: 55 },
@@ -157,20 +157,17 @@
             banner: { bg: 'linear-gradient(135deg,#0d1f12 0%,#1a0808 50%,#0d1f12 100%)', accent: '#C62828', shadow: '0 8px 32px rgba(0,0,0,.6)', iconBg: 'rgba(198,40,40,.15)', title: 'MERRY CHRISTMAS', titleColor: '#FFD700', sub: 'Wishing you joy & style this festive season!', timer: '#C62828' },
             topBorder: 'repeating-linear-gradient(90deg,#C62828 0,#C62828 8px,transparent 8px,transparent 14px,#1B5E20 14px,#1B5E20 22px,transparent 22px,transparent 28px)',
             navLine: 'linear-gradient(90deg,transparent,#C62828,#d4af37,#1B5E20,transparent)',
-            decor: [
-                { type: 'img', src: IMG.holly, pos: 'nav-tl', w: isMobile ? 34 : 52, h: isMobile ? 32 : 50 },
-                { type: 'img', src: IMG.ornament, pos: 'nav-tr', w: isMobile ? 32 : 50, h: isMobile ? 31 : 49 }
-            ],
+            decor: [],
             heroHat: { type: 'img', src: IMG.santaHat }, lights: true,
             deal: { text: 'Festive Deals!', style: 'ribbon', color: '#C62828', accent: '#FFD700' },
-            frontendAccent: '#FFD700', frontendAccentRgba: 'rgba(255,215,0,',
+            frontendAccent: '#C62828', frontendAccentRgba: 'rgba(198,40,40,',
             stickyBar: { text: 'Festive Season Special \u2013 Book your Christmas cut today!', bg: '#C62828', bgEnd: '#8E0000', color: '#fff', icon: '\uD83C\uDF84' },
             popup: { title: 'FESTIVE DEALS', sub: 'Premium grooming for the holiday season', accent: '#C62828', accent2: '#1B5E20', overline: 'Merry Christmas', code: 'XMAS25', countdownHours: 48, btnColor: '#fff' },
-            heroTitle: 'MERRY CHRISTMAS', heroSub: 'Wishing you joy & style this festive season', heroGradient: 'linear-gradient(135deg, rgba(139,0,0,.82) 0%, rgba(10,60,10,.7) 50%, rgba(139,0,0,.82) 100%)', atmosphere: ['rgba(200,60,60,.04)', 'rgba(46,125,50,.03)'], navAccent: '#C62828',
+            heroTitle: 'MERRY CHRISTMAS', heroSub: 'Wishing you joy & style this festive season', heroGradient: 'linear-gradient(135deg, rgba(139,0,0,.82) 0%, rgba(10,60,10,.7) 50%, rgba(139,0,0,.82) 100%)', atmosphere: ['rgba(200,60,60,.08)', 'rgba(46,125,50,.06)'], navAccent: '#C62828',
             dividerText: 'Festive Specials', heroBadge: { text: 'Christmas Season', icon: '\uD83C\uDF84' }
         },
         valentines: {
-            particleType: 'hearts', particleCount: isMobile ? 3 : 5,
+            particleType: 'hearts', particleCount: isMobile ? 6 : 14,
             bokeh: [
                 { color: 'rgba(233,30,99,.015)', size: 190, x: 25, y: 25, blur: 65 },
                 { color: 'rgba(244,143,177,.012)', size: 150, x: 70, y: 45, blur: 50 }
@@ -179,19 +176,16 @@
             banner: { bg: 'linear-gradient(135deg,#2a0815,#1f0d18)', accent: '#E91E63', shadow: '0 8px 32px rgba(0,0,0,.6)', iconBg: 'rgba(233,30,99,.15)', title: "HAPPY VALENTINE'S", titleColor: '#F48FB1', sub: 'Look sharp for your special someone!', timer: '#E91E63' },
             topBorder: 'linear-gradient(90deg,#E91E63,#F48FB1,#E91E63,#F48FB1,#E91E63)', topBorderAnim: true,
             navLine: 'linear-gradient(90deg,transparent,#F48FB1,#E91E63,#F48FB1,transparent)',
-            decor: [
-                { type: 'img', src: IMG.heart, pos: 'nav-tl', w: isMobile ? 28 : 42, h: isMobile ? 28 : 42 },
-                { type: 'img', src: IMG.rose, pos: 'nav-tr', w: isMobile ? 22 : 34, h: isMobile ? 50 : 78 }
-            ],
+            decor: [],
             deal: { text: 'Couples Special!', style: 'ribbon', color: '#AD1457', accent: '#F48FB1' },
-            frontendAccent: '#F48FB1', frontendAccentRgba: 'rgba(244,143,177,',
+            frontendAccent: '#E91E63', frontendAccentRgba: 'rgba(233,30,99,',
             stickyBar: { text: "Valentine's Special \u2013 Look sharp for your someone special!", bg: '#AD1457', bgEnd: '#880E4F', color: '#fff', icon: '\u2764\uFE0F' },
             popup: { title: "VALENTINE'S DEAL", sub: 'Couples grooming package available', accent: '#E91E63', overline: "Valentine's Day", code: 'LOVE15', countdownHours: 24, btnColor: '#fff' },
-            heroTitle: "VALENTINE'S DAY", heroSub: 'Look sharp for your special someone', heroGradient: 'linear-gradient(135deg, rgba(173,20,87,.8) 0%, rgba(233,30,99,.6) 100%)', atmosphere: ['rgba(233,30,99,.04)', 'rgba(244,143,177,.03)'], navAccent: '#E91E63',
+            heroTitle: "VALENTINE'S DAY", heroSub: 'Look sharp for your special someone', heroGradient: 'linear-gradient(135deg, rgba(173,20,87,.8) 0%, rgba(233,30,99,.6) 100%)', atmosphere: ['rgba(233,30,99,.08)', 'rgba(244,143,177,.06)'], navAccent: '#E91E63',
             dividerText: "Valentine's Specials", heroBadge: { text: "Valentine's Day", icon: '\u2764\uFE0F' }
         },
         winter: {
-            particleType: 'snow', particleCount: isMobile ? 4 : 7,
+            particleType: 'snow', particleCount: isMobile ? 10 : 22,
             bokeh: [
                 { color: 'rgba(100,180,246,.015)', size: 180, x: 20, y: 20, blur: 60 },
                 { color: 'rgba(79,195,247,.012)', size: 160, x: 70, y: 40, blur: 55 }
@@ -200,18 +194,15 @@
             banner: { bg: 'linear-gradient(135deg,#0a1628,#0d2137)', accent: '#64B5F6', shadow: '0 8px 32px rgba(0,0,0,.6)', iconBg: 'rgba(100,181,246,.15)', title: 'WINTER WARMTH', titleColor: '#E1F5FE', sub: 'Warm up with a fresh new look', timer: '#64B5F6' },
             topBorder: 'linear-gradient(90deg,rgba(79,195,247,0),rgba(79,195,247,.5),rgba(225,245,254,.8),rgba(79,195,247,.5),rgba(79,195,247,0))', topBorderShimmer: true,
             navLine: 'linear-gradient(90deg,transparent,rgba(79,195,247,.4),rgba(225,245,254,.7),rgba(79,195,247,.4),transparent)',
-            decor: [
-                { type: 'img', src: IMG.snowflake, pos: 'nav-tl', w: isMobile ? 26 : 40, h: isMobile ? 26 : 40 },
-                { type: 'img', src: IMG.snowflake, pos: 'nav-tr', w: isMobile ? 22 : 34, h: isMobile ? 22 : 34 }
-            ],
+            decor: [],
             frost: true, hanging: 'icicles',
             frontendAccent: '#4FC3F7', frontendAccentRgba: 'rgba(79,195,247,',
             stickyBar: { text: 'Winter Warmth \u2013 Free hot towel with every cut this season!', bg: '#01579B', bgEnd: '#0277BD', color: '#E1F5FE', icon: '\u2744\uFE0F' },
-            heroTitle: 'WINTER WARMTH', heroSub: 'Warm up with a fresh new look', heroGradient: 'linear-gradient(135deg, rgba(10,30,60,.85) 0%, rgba(100,180,246,.5) 100%)', atmosphere: ['rgba(100,180,246,.04)', 'rgba(79,195,247,.03)'], navAccent: '#64B5F6',
+            heroTitle: 'WINTER WARMTH', heroSub: 'Warm up with a fresh new look', heroGradient: 'linear-gradient(135deg, rgba(10,30,60,.85) 0%, rgba(100,180,246,.5) 100%)', atmosphere: ['rgba(100,180,246,.08)', 'rgba(79,195,247,.06)'], navAccent: '#64B5F6',
             dividerText: 'Winter Warmth', heroBadge: { text: 'Winter Season', icon: '\u2744\uFE0F' }
         },
         halloween: {
-            particleType: 'embers', particleCount: isMobile ? 3 : 6,
+            particleType: 'embers', particleCount: isMobile ? 8 : 18,
             bokeh: [
                 { color: 'rgba(255,111,0,.015)', size: 180, x: 20, y: 25, blur: 60 },
                 { color: 'rgba(106,27,154,.012)', size: 160, x: 75, y: 40, blur: 55 }
@@ -220,21 +211,18 @@
             banner: { bg: 'linear-gradient(135deg,#1a0a2e,#2e1500)', accent: '#FF6F00', shadow: '0 8px 32px rgba(0,0,0,.6)', iconBg: 'rgba(255,111,0,.15)', title: 'HAPPY HALLOWEEN', titleColor: '#FFE0B2', sub: 'Get a killer look this spooky season', timer: '#FF6F00' },
             topBorder: 'linear-gradient(90deg,#4A148C,#FF6F00,#4A148C)', topBorderGlow: 'rgba(255,111,0,.3)',
             navLine: 'linear-gradient(90deg,#4A148C,#FF6F00,#4A148C,#FF6F00,#4A148C)',
-            decor: [
-                { type: 'esvg', svg: 'spiderWeb', pos: 'nav-tl', w: isMobile ? 55 : 85, h: isMobile ? 55 : 85 },
-                { type: 'img', src: IMG.witchHat, pos: 'nav-tr', w: isMobile ? 35 : 52, h: isMobile ? 27 : 40 }
-            ],
+            decor: [],
             bottom: 'graveyard', heroHat: { type: 'img', src: IMG.witchHat }, fog: true,
             vignette: 'radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.35) 100%)',
             deal: { text: 'Spooky Savings!', style: 'ribbon', color: '#4A148C', accent: '#FF6F00' },
             frontendAccent: '#FF6F00', frontendAccentRgba: 'rgba(255,111,0,',
             stickyBar: { text: 'Spooky Season \u2013 Flash deals all week!', bg: '#4A148C', bgEnd: '#1A0530', color: '#FFE0B2', icon: '\uD83C\uDF83' },
             popup: { title: 'SPOOKY FLASH DEAL', sub: 'Get a killer look this Halloween', accent: '#FF6F00', accent2: '#4A148C', overline: 'Halloween Special', countdownHours: 6, btnColor: '#000' },
-            heroTitle: 'HAPPY HALLOWEEN', heroSub: 'Get a killer look this spooky season', heroGradient: 'linear-gradient(135deg, rgba(26,5,48,.88) 0%, rgba(255,111,0,.45) 100%)', atmosphere: ['rgba(106,27,154,.04)', 'rgba(255,111,0,.03)'], navAccent: '#FF6F00',
+            heroTitle: 'HAPPY HALLOWEEN', heroSub: 'Get a killer look this spooky season', heroGradient: 'linear-gradient(135deg, rgba(26,5,48,.88) 0%, rgba(255,111,0,.45) 100%)', atmosphere: ['rgba(106,27,154,.08)', 'rgba(255,111,0,.06)'], navAccent: '#FF6F00',
             dividerText: 'Spooky Specials', heroBadge: { text: 'Spooky Season', icon: '\uD83C\uDF83' }
         },
         easter: {
-            particleType: 'petals', particleCount: isMobile ? 3 : 5,
+            particleType: 'petals', particleCount: isMobile ? 6 : 14,
             bokeh: [
                 { color: 'rgba(129,199,132,.015)', size: 170, x: 20, y: 30, blur: 55 },
                 { color: 'rgba(244,143,177,.012)', size: 150, x: 75, y: 35, blur: 50 }
@@ -243,19 +231,16 @@
             banner: { bg: 'linear-gradient(135deg,#0f1f0f,#1a0f1a)', accent: '#81C784', shadow: '0 8px 32px rgba(0,0,0,.6)', iconBg: 'rgba(129,199,132,.15)', title: 'HAPPY EASTER', titleColor: '#C8E6C9', sub: 'Spring into a fresh new look!', timer: '#81C784' },
             topBorder: 'repeating-linear-gradient(90deg,#F48FB1 0,#F48FB1 12px,#81C784 12px,#81C784 24px,#FFF59D 24px,#FFF59D 36px,#90CAF9 36px,#90CAF9 48px)',
             navLine: 'linear-gradient(90deg,#F48FB1,#81C784,#FFF59D,#81C784,#F48FB1)',
-            decor: [
-                { type: 'img', src: IMG.easterEgg, pos: 'nav-tl', w: isMobile ? 35 : 52, h: isMobile ? 22 : 32 },
-                { type: 'img', src: IMG.bunny, pos: 'nav-tr', w: isMobile ? 28 : 42, h: isMobile ? 28 : 42 }
-            ],
+            decor: [],
             bottom: 'grass', heroHat: { type: 'img', src: IMG.bunny, isBunny: true },
             deal: { text: 'Spring Deals!', style: 'ribbon', color: '#2E7D32', accent: '#C8E6C9' },
             frontendAccent: '#81C784', frontendAccentRgba: 'rgba(129,199,132,',
             stickyBar: { text: 'Spring into style \u2013 Fresh cuts for the new season!', bg: '#2E7D32', bgEnd: '#1B5E20', color: '#C8E6C9', icon: '\uD83D\uDC23' },
-            heroTitle: 'HAPPY EASTER', heroSub: 'Spring into a fresh new look', heroGradient: 'linear-gradient(135deg, rgba(46,125,50,.7) 0%, rgba(244,143,177,.5) 100%)', atmosphere: ['rgba(129,199,132,.04)', 'rgba(244,143,177,.03)'], navAccent: '#81C784',
+            heroTitle: 'HAPPY EASTER', heroSub: 'Spring into a fresh new look', heroGradient: 'linear-gradient(135deg, rgba(46,125,50,.7) 0%, rgba(244,143,177,.5) 100%)', atmosphere: ['rgba(129,199,132,.08)', 'rgba(244,143,177,.06)'], navAccent: '#81C784',
             dividerText: 'Spring Specials', heroBadge: { text: 'Easter Season', icon: '\uD83D\uDC23' }
         },
         summer: {
-            particleType: 'sparkle', particleCount: isMobile ? 3 : 5,
+            particleType: 'sparkle', particleCount: isMobile ? 6 : 14,
             bokeh: [
                 { color: 'rgba(255,200,100,.015)', size: 200, x: 80, y: 10, blur: 75 },
                 { color: 'rgba(2,136,209,.012)', size: 160, x: 20, y: 60, blur: 55 }
@@ -264,19 +249,16 @@
             banner: { bg: 'linear-gradient(135deg,#1f1200,#001520)', accent: '#FF8F00', shadow: '0 8px 32px rgba(0,0,0,.6)', iconBg: 'rgba(255,143,0,.15)', title: 'SUMMER VIBES', titleColor: '#FFF3E0', sub: 'Stay fresh all summer long!', timer: '#FF8F00' },
             topBorder: 'linear-gradient(90deg,#FF8F00,#0288D1,#FF8F00,#0288D1)', topBorderAnim: true,
             navLine: 'linear-gradient(90deg,#FF8F00,#0288D1,#FF8F00,#0288D1,#FF8F00)',
-            decor: [
-                { type: 'esvg', svg: 'palmTree', pos: 'nav-tl', w: isMobile ? 28 : 42, h: isMobile ? 44 : 68 },
-                { type: 'esvg', svg: 'palmTree', pos: 'nav-tr', w: isMobile ? 24 : 36, h: isMobile ? 38 : 58 }
-            ],
+            decor: [],
             bottom: 'waves', heroHat: { type: 'img', src: IMG.sunglasses, isGlasses: true },
             deal: { text: 'Summer Sale!', style: 'ribbon', color: '#E65100', accent: '#FFF3E0' },
             frontendAccent: '#FF8F00', frontendAccentRgba: 'rgba(255,143,0,',
             stickyBar: { text: 'Summer Vibes \u2013 Stay fresh all season long!', bg: '#E65100', bgEnd: '#FF6D00', color: '#FFF3E0', icon: '\u2600\uFE0F' },
-            heroTitle: 'SUMMER VIBES', heroSub: 'Stay fresh all summer long', heroGradient: 'linear-gradient(135deg, rgba(230,81,0,.7) 0%, rgba(2,136,209,.5) 100%)', atmosphere: ['rgba(255,143,0,.04)', 'rgba(2,136,209,.03)'], navAccent: '#FF8F00',
+            heroTitle: 'SUMMER VIBES', heroSub: 'Stay fresh all summer long', heroGradient: 'linear-gradient(135deg, rgba(230,81,0,.7) 0%, rgba(2,136,209,.5) 100%)', atmosphere: ['rgba(255,143,0,.08)', 'rgba(2,136,209,.06)'], navAccent: '#FF8F00',
             dividerText: 'Summer Specials', heroBadge: { text: 'Summer Vibes', icon: '\u2600\uFE0F' }
         },
         eid: {
-            particleType: 'stars', particleCount: isMobile ? 3 : 5,
+            particleType: 'stars', particleCount: isMobile ? 6 : 14,
             bokeh: [
                 { color: 'rgba(253,216,53,.015)', size: 190, x: 30, y: 20, blur: 65 },
                 { color: 'rgba(46,125,50,.012)', size: 150, x: 70, y: 50, blur: 50 }
@@ -285,19 +267,16 @@
             banner: { bg: 'linear-gradient(135deg,#0f1f0a,#1a1a05)', accent: '#FDD835', shadow: '0 8px 32px rgba(0,0,0,.6)', iconBg: 'rgba(253,216,53,.15)', title: 'EID MUBARAK', titleColor: '#FFF9C4', sub: 'Celebrate in style with a fresh look!', timer: '#FDD835' },
             topBorder: 'repeating-linear-gradient(90deg,transparent 0,transparent 8px,#FDD835 8px,#FDD835 12px)',
             navLine: 'linear-gradient(90deg,transparent,#2E7D32,#FDD835,#2E7D32,transparent)',
-            decor: [
-                { type: 'img', src: IMG.crescentMoon, pos: 'nav-tl', w: isMobile ? 28 : 42, h: isMobile ? 28 : 42 },
-                { type: 'img', src: IMG.lantern, pos: 'nav-tr', w: isMobile ? 24 : 36, h: isMobile ? 24 : 36 }
-            ],
+            decor: [],
             hanging: 'lanterns', sparkleField: true,
             frontendAccent: '#FDD835', frontendAccentRgba: 'rgba(253,216,53,',
             stickyBar: { text: 'Eid Mubarak \u2013 Celebrate with a fresh new look!', bg: '#1B5E20', bgEnd: '#2E7D32', color: '#FFF9C4', icon: '\u2728' },
             popup: { title: 'EID SPECIAL', sub: 'Premium grooming for the celebration', accent: '#FDD835', accent2: '#2E7D32', overline: 'Eid Mubarak', code: 'EID20', countdownHours: 72, btnColor: '#000' },
-            heroTitle: 'EID MUBARAK', heroSub: 'Celebrate in style with a fresh look', heroGradient: 'linear-gradient(135deg, rgba(30,60,20,.85) 0%, rgba(253,216,53,.4) 100%)', atmosphere: ['rgba(253,216,53,.04)', 'rgba(46,125,50,.03)'], navAccent: '#FDD835',
+            heroTitle: 'EID MUBARAK', heroSub: 'Celebrate in style with a fresh look', heroGradient: 'linear-gradient(135deg, rgba(30,60,20,.85) 0%, rgba(253,216,53,.4) 100%)', atmosphere: ['rgba(253,216,53,.08)', 'rgba(46,125,50,.06)'], navAccent: '#FDD835',
             dividerText: 'Eid Specials', heroBadge: { text: 'Eid Mubarak', icon: '\u2728' }
         },
         ramadan: {
-            particleType: 'stars', particleCount: isMobile ? 3 : 5,
+            particleType: 'stars', particleCount: isMobile ? 6 : 14,
             bokeh: [
                 { color: 'rgba(184,134,11,.015)', size: 190, x: 25, y: 20, blur: 65 },
                 { color: 'rgba(26,35,126,.012)', size: 170, x: 70, y: 45, blur: 55 }
@@ -306,18 +285,15 @@
             banner: { bg: 'linear-gradient(135deg,#0a0a2e,#1a1025)', accent: '#B8860B', shadow: '0 8px 32px rgba(0,0,0,.6)', iconBg: 'rgba(184,134,11,.15)', title: 'RAMADAN KAREEM', titleColor: '#E8EAF6', sub: 'Wishing you a blessed & beautiful month', timer: '#B8860B' },
             topBorder: 'linear-gradient(90deg,rgba(184,134,11,0),#B8860B,rgba(184,134,11,.5),#B8860B,rgba(184,134,11,0))', topBorderShimmer: true,
             navLine: 'linear-gradient(90deg,transparent,#1A237E,#B8860B,#1A237E,transparent)',
-            decor: [
-                { type: 'img', src: IMG.crescentMoon, pos: 'nav-tl', w: isMobile ? 28 : 42, h: isMobile ? 28 : 42 },
-                { type: 'img', src: IMG.lantern, pos: 'nav-tr', w: isMobile ? 24 : 36, h: isMobile ? 24 : 36 }
-            ],
+            decor: [],
             hanging: 'lanterns', sparkleField: true,
             frontendAccent: '#B8860B', frontendAccentRgba: 'rgba(184,134,11,',
             stickyBar: { text: 'Ramadan Kareem \u2013 Evening appointments available', bg: '#1A237E', bgEnd: '#0D1450', color: '#E8EAF6', icon: '\u262A\uFE0F' },
-            heroTitle: 'RAMADAN KAREEM', heroSub: 'Wishing you a blessed & beautiful month', heroGradient: 'linear-gradient(135deg, rgba(10,10,46,.88) 0%, rgba(184,134,11,.4) 100%)', atmosphere: ['rgba(184,134,11,.04)', 'rgba(26,35,126,.03)'], navAccent: '#B8860B',
+            heroTitle: 'RAMADAN KAREEM', heroSub: 'Wishing you a blessed & beautiful month', heroGradient: 'linear-gradient(135deg, rgba(10,10,46,.88) 0%, rgba(184,134,11,.4) 100%)', atmosphere: ['rgba(184,134,11,.08)', 'rgba(26,35,126,.06)'], navAccent: '#B8860B',
             dividerText: 'Ramadan Specials', heroBadge: { text: 'Ramadan Kareem', icon: '\u262A\uFE0F' }
         },
         autumn: {
-            particleType: 'leaves', particleCount: isMobile ? 3 : 6,
+            particleType: 'leaves', particleCount: isMobile ? 8 : 18,
             bokeh: [
                 { color: 'rgba(221,44,0,.015)', size: 190, x: 20, y: 25, blur: 65 },
                 { color: 'rgba(255,143,0,.012)', size: 160, x: 75, y: 40, blur: 55 },
@@ -327,19 +303,16 @@
             banner: { bg: 'linear-gradient(135deg,#1a0f05,#120800)', accent: '#DD2C00', shadow: '0 8px 32px rgba(0,0,0,.6)', iconBg: 'rgba(221,44,0,.15)', title: 'AUTUMN VIBES', titleColor: '#FFAB91', sub: 'Fresh look for the new season!', timer: '#DD2C00' },
             topBorder: 'linear-gradient(90deg,#DD2C00,#FF6F00,#BF360C,#FFB300,#DD2C00)', topBorderAnim: true,
             navLine: 'linear-gradient(90deg,transparent,#DD2C00,#FFB300,#DD2C00,transparent)',
-            decor: [
-                { type: 'esvg', svg: 'mapleLeaf', pos: 'nav-tl', w: isMobile ? 30 : 46, h: isMobile ? 30 : 46 },
-                { type: 'esvg', svg: 'mapleLeaf', pos: 'nav-tr', w: isMobile ? 26 : 38, h: isMobile ? 26 : 38, rotate: -25 }
-            ],
+            decor: [],
             deal: { text: 'Autumn Sale!', style: 'ribbon', color: '#BF360C', accent: '#FFAB91' },
             frontendAccent: '#FF6F00', frontendAccentRgba: 'rgba(255,111,0,',
             stickyBar: { text: 'Autumn Sale \u2013 Warm up with a fresh new style!', bg: '#BF360C', bgEnd: '#DD2C00', color: '#FFAB91', icon: '\uD83C\uDF42' },
             popup: { title: 'AUTUMN SPECIAL', sub: 'New season, new look', accent: '#DD2C00', accent2: '#FF6F00', overline: 'Limited Time', code: 'AUTUMN20', countdownHours: 48, btnColor: '#fff' },
-            heroTitle: 'AUTUMN VIBES', heroSub: 'Fresh look for the new season', heroGradient: 'linear-gradient(135deg, rgba(191,54,12,.75) 0%, rgba(255,143,0,.5) 100%)', atmosphere: ['rgba(221,44,0,.04)', 'rgba(255,143,0,.03)'], navAccent: '#DD2C00',
+            heroTitle: 'AUTUMN VIBES', heroSub: 'Fresh look for the new season', heroGradient: 'linear-gradient(135deg, rgba(191,54,12,.75) 0%, rgba(255,143,0,.5) 100%)', atmosphere: ['rgba(221,44,0,.08)', 'rgba(255,143,0,.06)'], navAccent: '#DD2C00',
             dividerText: 'Autumn Specials', heroBadge: { text: 'Autumn Vibes', icon: '\uD83C\uDF42' }
         },
         'black-friday': {
-            particleType: 'tags', particleCount: isMobile ? 3 : 5,
+            particleType: 'tags', particleCount: isMobile ? 6 : 14,
             bokeh: [
                 { color: 'rgba(255,23,68,.015)', size: 200, x: 30, y: 25, blur: 70 },
                 { color: 'rgba(255,214,0,.012)', size: 170, x: 70, y: 45, blur: 55 }
@@ -348,20 +321,17 @@
             banner: { bg: '#000', accent: '#FF1744', shadow: '0 8px 32px rgba(0,0,0,.8),0 0 30px rgba(255,23,68,.15)', iconBg: 'rgba(255,23,68,.18)', title: 'BLACK FRIDAY', titleColor: '#fff', sub: 'Biggest deals of the year!', timer: '#FF1744', isBF: true },
             topBorder: '#FF1744', topBorderNeon: '#FF1744',
             navLine: 'linear-gradient(90deg,#FF1744,#FFD600,#FF1744,#FFD600,#FF1744)',
-            decor: [
-                { type: 'esvg', svg: 'priceTag', pos: 'nav-tl', w: isMobile ? 28 : 42, h: isMobile ? 28 : 42 },
-                { type: 'esvg', svg: 'gift', pos: 'nav-tr', w: isMobile ? 26 : 38, h: isMobile ? 26 : 38 }
-            ],
+            decor: [],
             neonFlash: true,
             deal: { style: 'brush' },
             frontendAccent: '#FF1744', frontendAccentRgba: 'rgba(255,23,68,',
             stickyBar: { text: 'BLACK FRIDAY \u2013 Biggest deals of the year! Up to 30% OFF', bg: '#000', bgEnd: '#111', color: '#FFD600', icon: '\uD83D\uDCB0', gradient: 'linear-gradient(135deg,#000,#1a0008)' },
             popup: { title: 'BLACK FRIDAY MEGA SALE', sub: 'Our biggest deals of the entire year', accent: '#FF1744', accent2: '#FFD600', overline: 'Limited Time Only', code: 'BFRIDAY30', countdownHours: 3, btnColor: '#000', showCountdown: true },
-            heroTitle: 'BLACK FRIDAY', heroSub: 'Biggest deals of the year!', heroGradient: 'linear-gradient(135deg, rgba(0,0,0,.95) 0%, rgba(255,23,68,.3) 100%)', atmosphere: ['rgba(255,23,68,.04)', 'rgba(255,214,0,.02)'], navAccent: '#FF1744',
+            heroTitle: 'BLACK FRIDAY', heroSub: 'Biggest deals of the year!', heroGradient: 'linear-gradient(135deg, rgba(0,0,0,.95) 0%, rgba(255,23,68,.3) 100%)', atmosphere: ['rgba(255,23,68,.08)', 'rgba(255,214,0,.05)'], navAccent: '#FF1744',
             dividerText: 'Black Friday Deals', heroBadge: { text: 'Black Friday', icon: '\uD83D\uDCB0' }
         },
         'new-year': {
-            particleType: 'confetti', particleCount: isMobile ? 3 : 6,
+            particleType: 'confetti', particleCount: isMobile ? 8 : 18,
             bokeh: [
                 { color: 'rgba(255,215,0,.015)', size: 210, x: 40, y: 20, blur: 70 },
                 { color: 'rgba(13,71,161,.012)', size: 170, x: 75, y: 50, blur: 55 }
@@ -370,23 +340,20 @@
             banner: { bg: 'linear-gradient(135deg,#0a0a2e,#0d1535)', accent: '#FFD700', shadow: '0 8px 32px rgba(0,0,0,.6),0 0 20px rgba(255,215,0,.12)', iconBg: 'rgba(255,215,0,.15)', title: 'HAPPY NEW YEAR', titleColor: '#FFD700', sub: 'New year, fresh look \u2013 Start the year right!', timer: '#FFD700' },
             topBorder: 'linear-gradient(90deg,transparent,#FFD700,#fff,#FFD700,transparent)', topBorderAnim: true,
             navLine: 'linear-gradient(90deg,transparent,#0D47A1,#FFD700,#0D47A1,transparent)',
-            decor: [
-                { type: 'esvg', svg: 'fireworks', pos: 'nav-tl', w: isMobile ? 28 : 42, h: isMobile ? 28 : 42 },
-                { type: 'esvg', svg: 'champagne', pos: 'nav-tr', w: isMobile ? 26 : 40, h: isMobile ? 26 : 40 }
-            ],
+            decor: [],
             heroHat: { type: 'esvg', svg: 'topHat' },
             deal: { text: 'New Year Deal!', style: 'ribbon', color: '#0D47A1', accent: '#FFD700' },
-            frontendAccent: '#FFD700', frontendAccentRgba: 'rgba(255,215,0,',
+            frontendAccent: '#0D47A1', frontendAccentRgba: 'rgba(13,71,161,',
             stickyBar: { text: 'Happy New Year \u2013 New year, fresh look! Book now', bg: '#0D47A1', bgEnd: '#1565C0', color: '#fff', icon: '\uD83C\uDF89' },
             popup: { title: 'NEW YEAR SPECIAL', sub: 'Start the year looking your best', accent: '#FFD700', accent2: '#0D47A1', overline: 'Happy New Year', code: 'NEWYEAR15', countdownHours: 168, btnColor: '#000' },
-            heroTitle: 'HAPPY NEW YEAR', heroSub: 'New year, fresh look – Start the year right!', heroGradient: 'linear-gradient(135deg, rgba(10,10,46,.88) 0%, rgba(255,215,0,.3) 100%)', atmosphere: ['rgba(255,215,0,.04)', 'rgba(13,71,161,.03)'], navAccent: '#FFD700',
+            heroTitle: 'HAPPY NEW YEAR', heroSub: 'New year, fresh look – Start the year right!', heroGradient: 'linear-gradient(135deg, rgba(10,10,46,.88) 0%, rgba(255,215,0,.3) 100%)', atmosphere: ['rgba(255,215,0,.08)', 'rgba(13,71,161,.06)'], navAccent: '#FFD700',
             dividerText: 'New Year Specials', heroBadge: { text: 'Happy New Year', icon: '\uD83C\uDF89' }
         }
     };
     THEMES.blackfriday = THEMES['black-friday'];
     THEMES.newyear = THEMES['new-year'];
     THEMES.flashsale = THEMES['flash-sale'] = {
-        particleType: 'confetti', particleCount: isMobile ? 3 : 5,
+        particleType: 'confetti', particleCount: isMobile ? 8 : 16,
         bokeh: [
             { color: 'rgba(255,23,68,.015)', size: 200, x: 25, y: 20, blur: 70 },
             { color: 'rgba(255,215,0,.012)', size: 170, x: 70, y: 45, blur: 55 }
@@ -395,16 +362,13 @@
         banner: { bg: 'linear-gradient(135deg,#1a0008,#0a0000)', accent: '#FF1744', shadow: '0 8px 32px rgba(0,0,0,.7),0 0 20px rgba(255,23,68,.15)', iconBg: 'rgba(255,23,68,.2)', title: 'FLASH SALE', titleColor: '#FF1744', sub: 'Limited time only \u2013 Don\'t miss out!', timer: '#FF1744' },
         topBorder: '#FF1744', topBorderNeon: '#FF1744',
         navLine: 'linear-gradient(90deg,#FF1744,#FFD600,#FF1744,#FFD600,#FF1744)',
-        decor: [
-            { type: 'esvg', svg: 'gift', pos: 'nav-tl', w: isMobile ? 28 : 42, h: isMobile ? 28 : 42 },
-            { type: 'esvg', svg: 'priceTag', pos: 'nav-tr', w: isMobile ? 26 : 38, h: isMobile ? 26 : 38, rotate: -15 }
-        ],
+        decor: [],
         neonFlash: true,
         deal: { text: 'FLASH DEAL!', style: 'brush', color: '#FF1744', accent: '#FFD600' },
         frontendAccent: '#FF1744', frontendAccentRgba: 'rgba(255,23,68,',
         stickyBar: { text: 'FLASH SALE \u2013 Up to 50% OFF for a limited time only!', bg: '#000', bgEnd: '#1a0008', color: '#FF1744', icon: '\u26A1', gradient: 'linear-gradient(135deg,#1a0008,#000)' },
         popup: { title: 'FLASH SALE', sub: 'Save up to 50% \u2013 for a limited time only!', accent: '#FF1744', accent2: '#FFD600', overline: '% Flash Sale %', code: 'FLASH50', countdownHours: 3, btnColor: '#fff', showCountdown: true },
-        heroTitle: '⚡ FLASH SALE', heroSub: 'Limited time only – Don\'t miss out!', heroGradient: 'linear-gradient(135deg, rgba(26,0,8,.92) 0%, rgba(255,23,68,.4) 100%)', atmosphere: ['rgba(255,23,68,.04)', 'rgba(255,214,0,.02)'], navAccent: '#FF1744',
+        heroTitle: '⚡ FLASH SALE', heroSub: 'Limited time only – Don\'t miss out!', heroGradient: 'linear-gradient(135deg, rgba(26,0,8,.92) 0%, rgba(255,23,68,.4) 100%)', atmosphere: ['rgba(255,23,68,.08)', 'rgba(255,214,0,.05)'], navAccent: '#FF1744',
         dividerText: 'Flash Sale', heroBadge: { text: 'Flash Sale', icon: '\u26A1' }
     };
 
@@ -485,6 +449,8 @@
             '@keyframes gb-shimr{0%,100%{opacity:.5}50%{opacity:1}}',
             '@keyframes gb-nbar{0%,100%{box-shadow:0 0 6px var(--nc),0 0 14px var(--nc)}50%{box-shadow:0 0 3px var(--nc),0 0 6px var(--nc);opacity:.7}}',
             '@keyframes gb-fin{to{opacity:1}}',
+            '@keyframes gb-hero-ov{to{opacity:.3}}',
+            '@keyframes gb-section-ov{to{opacity:.18}}',
             /* Nav line shimmer highlight sweep */
             '.gb-nav-line{position:absolute;bottom:-1px;left:0;width:100%;height:2px;border-radius:2px;pointer-events:none;opacity:0;animation:gb-fin 1s ease .8s forwards;overflow:hidden}',
             '.gb-nav-line::after{content:"";position:absolute;top:0;left:-60%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:gb-shsweep 4s ease-in-out 2s infinite}',
@@ -577,7 +543,7 @@
             else { p.y += p.speed; if (p.y > H + 20) { p.y = -20; p.x = rand(0, W); } }
             p.x += p.drift + Math.sin(p.y * p.wobbleSpeed + p.wobbleOff) * .4;
             if (p.x < -30) p.x = W + 30; if (p.x > W + 30) p.x = -30;
-            p.rotation += p.rotSpeed; c.globalAlpha = p.opacity; c.shadowBlur = p.size * .8; c.shadowColor = p.color || 'rgba(255,255,255,.3)';
+            p.rotation += p.rotSpeed; c.globalAlpha = p.opacity; c.shadowBlur = p.size * 2.5; c.shadowColor = p.color || 'rgba(255,255,255,.5)';
             if (p.type === 'snow') snowflake(p.x, p.y, p.size);
             else if (p.type === 'hearts') heart(p.x, p.y, p.size, p.color);
             else if (p.type === 'embers') ember(p.x, p.y, p.size, p.color);
@@ -953,7 +919,13 @@
     function createAtmosphere(theme) {
         if (!theme.atmosphere || !theme.atmosphere.length) return;
         var el = document.createElement('div'); el.className = 'gb-atmosphere';
-        var colors = theme.atmosphere;
+        /* Boost alpha 3x for visible colour wash across the page */
+        var colors = theme.atmosphere.map(function(c) {
+            var idx = c.lastIndexOf(',');
+            if (idx < 0) return c;
+            var alpha = parseFloat(c.substring(idx + 1));
+            return c.substring(0, idx + 1) + Math.min(alpha * 3, 0.3).toFixed(2) + ')';
+        });
         var layers = [
             { color: colors[0], x: '20%', y: '30%', size: '60vmax', delay: '0s', dur: '25s' },
             { color: colors[1] || colors[0], x: '70%', y: '60%', size: '50vmax', delay: '-8s', dur: '32s' },
@@ -977,8 +949,9 @@
         var accentRgba = theme.frontendAccentRgba || 'rgba(212,175,55,';
         state.savedNavBg = nav.style.background || '';
         nav.style.transition = 'all .8s ease';
-        nav.style.borderColor = accent + '40';
-        nav.style.boxShadow = '0 0 20px ' + accentRgba + '.12),0 8px 32px rgba(0,0,0,.3)';
+        nav.style.borderColor = accentRgba + '0.25)';
+        nav.style.boxShadow = '0 0 30px ' + accentRgba + '.15),0 8px 40px rgba(0,0,0,.4)';
+        nav.style.background = 'linear-gradient(135deg, rgba(5,5,5,.92),' + accentRgba + '0.06),rgba(5,5,5,.92))';
         state.navThemeEls.push(nav);
 
         /* Theme the CTA button */
@@ -1266,61 +1239,80 @@
         state.themeCSS = document.createElement('style');
         state.themeCSS.id = 'gb-theme-page';
         state.themeCSS.textContent = [
-            /* Marquee section gets subtle themed tint */
+            /* ═══ HERO SECTION – dramatic gradient overlay (biggest visual impact) ═══ */
+            '[data-gb-theme] .hero{position:relative}',
+            '[data-gb-theme] .hero::after{content:"";position:absolute;inset:0;background:' + (theme.heroGradient || 'none') + ';pointer-events:none;z-index:2;opacity:0;animation:gb-hero-ov 2s ease .3s forwards}',
+            '[data-gb-theme] .hero-content{position:relative;z-index:5}',
+            '[data-gb-theme] .hero-showcase{position:relative;z-index:4}',
+            '[data-gb-theme] .showcase-neon-circle{box-shadow:0 0 50px ' + accentRgba + '0.35),0 0 100px ' + accentRgba + '0.15),inset 0 0 40px ' + accentRgba + '0.1) !important;transition:box-shadow 2s ease}',
+            '[data-gb-theme] .hero-badge{border-color:' + accentRgba + '0.4) !important;background:' + accentRgba + '0.08) !important}',
+            '[data-gb-theme] .hero-badge-dot{background:' + accent + ' !important;box-shadow:0 0 12px ' + accent + ' !important}',
+
+            /* ═══ MARQUEE – visible themed tint ═══ */
             '[data-gb-theme] .marquee-section{position:relative;overflow:hidden}',
-            '[data-gb-theme] .marquee-section::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,' + accentRgba + '0.06),transparent 50%,' + accentRgba + '0.04));pointer-events:none;z-index:0}',
-            '[data-gb-theme] .marquee-item{color:' + accent + ' !important;text-shadow:0 0 30px ' + accentRgba + '0.3)}',
+            '[data-gb-theme] .marquee-section::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,' + accentRgba + '0.15),transparent 50%,' + accentRgba + '0.10));pointer-events:none;z-index:0}',
+            '[data-gb-theme] .marquee-item{color:' + accent + ' !important;text-shadow:0 0 30px ' + accentRgba + '0.4)}',
 
-            /* Hero section tint */
-            '[data-gb-theme] .hero-badge{border-color:' + accentRgba + '0.3) !important}',
-            '[data-gb-theme] .hero-badge-dot{background:' + accent + ' !important;box-shadow:0 0 8px ' + accent + ' !important}',
+            /* ═══ STATS – visible background gradient + bold numbers ═══ */
+            '[data-gb-theme] .stats{position:relative;overflow:hidden}',
+            '[data-gb-theme] .stats::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,' + accentRgba + '0.10),transparent 40%,' + accentRgba + '0.06));pointer-events:none}',
+            '[data-gb-theme] .stat-number{color:' + accent + ' !important;text-shadow:0 0 25px ' + accentRgba + '0.5) !important}',
+            '[data-gb-theme] .stat-label{color:' + accentRgba + '0.7) !important}',
 
-            /* Stats section enhanced */
-            '[data-gb-theme] .stats{position:relative}',
-            '[data-gb-theme] .stats::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,' + accentRgba + '0.03),transparent 40%,' + accentRgba + '0.02));pointer-events:none}',
-            '[data-gb-theme] .stat-number{color:' + accent + ' !important;text-shadow:0 0 20px ' + accentRgba + '0.3) !important}',
-
-            /* Testimonials themed */
-            '[data-gb-theme] .testimonial-quote{color:' + accentRgba + '0.25) !important}',
+            /* ═══ TESTIMONIALS – themed cards with visible accent ═══ */
+            '[data-gb-theme] .testimonials{position:relative;overflow:hidden}',
+            '[data-gb-theme] .testimonials::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,' + accentRgba + '0.08),transparent 65%);pointer-events:none}',
+            '[data-gb-theme] .testimonial-quote{color:' + accentRgba + '0.35) !important}',
             '[data-gb-theme] .testimonial-stars{color:' + accent + ' !important}',
-            '[data-gb-theme] .testimonial-card{border-color:' + accentRgba + '0.1) !important;transition:border-color .8s}',
-            '[data-gb-theme] .testimonial-card:hover{border-color:' + accentRgba + '0.25) !important}',
+            '[data-gb-theme] .testimonial-card{border-color:' + accentRgba + '0.2) !important;box-shadow:0 0 25px ' + accentRgba + '0.08) !important;transition:border-color .8s,box-shadow .8s}',
+            '[data-gb-theme] .testimonial-card:hover{border-color:' + accentRgba + '0.4) !important;box-shadow:0 0 35px ' + accentRgba + '0.15) !important}',
 
-            /* CTA section themed */
-            '[data-gb-theme] .cta{position:relative}',
-            '[data-gb-theme] .cta::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,' + accentRgba + '0.08),transparent 70%);pointer-events:none}',
+            /* ═══ CTA – strong radial glow ═══ */
+            '[data-gb-theme] .cta{position:relative;overflow:hidden}',
+            '[data-gb-theme] .cta::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,' + accentRgba + '0.18),transparent 65%);pointer-events:none}',
 
-            /* Service cards enhanced hover */
-            '[data-gb-theme] .service-card{transition:border-color .3s,box-shadow .3s}',
-            '[data-gb-theme] .service-card:hover{border-color:' + accentRgba + '0.3) !important;box-shadow:0 0 25px ' + accentRgba + '0.08) !important}',
+            /* ═══ SERVICES – section background + enhanced cards ═══ */
+            '[data-gb-theme] .services{position:relative;overflow:hidden}',
+            '[data-gb-theme] .services::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent,' + accentRgba + '0.06),' + accentRgba + '0.10));pointer-events:none;z-index:0;opacity:0;animation:gb-section-ov 2s ease 1s forwards}',
+
+            /* ═══ SERVICE CARDS – visible border glow + hover transformation ═══ */
+            '[data-gb-theme] .service-card{border-color:' + accentRgba + '0.15) !important;transition:border-color .3s,box-shadow .3s,transform .3s}',
+            '[data-gb-theme] .service-card:hover{border-color:' + accentRgba + '0.45) !important;box-shadow:0 0 30px ' + accentRgba + '0.12),0 8px 40px rgba(0,0,0,.3) !important;transform:translateY(-4px)}',
+            '[data-gb-theme] .service-card-image::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,' + accentRgba + '0.15));pointer-events:none}',
 
             /* Services page category buttons */
-            '[data-gb-theme] .category-btn.active{background:' + accent + ' !important;color:#fff !important;box-shadow:0 0 15px ' + accentRgba + '0.3) !important}',
-            '[data-gb-theme] .category-btn{border-color:' + accentRgba + '0.2) !important;transition:all .3s}',
+            '[data-gb-theme] .category-btn.active{background:' + accent + ' !important;color:#fff !important;box-shadow:0 0 20px ' + accentRgba + '0.4) !important}',
+            '[data-gb-theme] .category-btn{border-color:' + accentRgba + '0.25) !important;transition:all .3s}',
+            '[data-gb-theme] .category-btn:hover{border-color:' + accent + ' !important;color:' + accent + ' !important}',
 
             /* Services page badges */
-            '[data-gb-theme] .service-badge{background:' + accent + ' !important}',
+            '[data-gb-theme] .service-badge{background:' + accent + ' !important;box-shadow:0 0 12px ' + accentRgba + '0.3) !important}',
 
-            /* Button accents */
-            '[data-gb-theme] .btn-primary{background:' + accent + ' !important;box-shadow:0 4px 20px ' + accentRgba + '0.3) !important}',
+            /* ═══ BUTTONS – bold themed with glow ═══ */
+            '[data-gb-theme] .btn-primary{background:' + accent + ' !important;box-shadow:0 4px 25px ' + accentRgba + '0.4) !important}',
+            '[data-gb-theme] .btn-primary:hover{box-shadow:0 6px 35px ' + accentRgba + '0.6) !important;transform:translateY(-2px)}',
             '[data-gb-theme] .btn-outline{border-color:' + accent + ' !important;color:' + accent + ' !important}',
-            '[data-gb-theme] .btn-outline:hover{background:' + accent + ' !important;color:#fff !important}',
-            '[data-gb-theme] .service-cta{background:' + accent + ' !important;box-shadow:0 2px 12px ' + accentRgba + '0.2) !important}',
+            '[data-gb-theme] .btn-outline:hover{background:' + accent + ' !important;color:#fff !important;box-shadow:0 0 20px ' + accentRgba + '0.3) !important}',
+            '[data-gb-theme] .service-cta{background:' + accent + ' !important;box-shadow:0 2px 15px ' + accentRgba + '0.3) !important}',
 
-            /* Nav CTA */
-            '[data-gb-theme] .nav-cta{background:' + accent + ' !important;box-shadow:0 0 15px ' + accentRgba + '0.3) !important}',
+            /* ═══ NAV – themed glass with accent glow ═══ */
+            '[data-gb-theme] .nav{border-bottom:1px solid ' + accentRgba + '0.2) !important;box-shadow:0 0 25px ' + accentRgba + '0.1),0 8px 32px rgba(0,0,0,.4) !important}',
+            '[data-gb-theme] .nav-cta a,[data-gb-theme] .nav-cta{background:' + accent + ' !important;box-shadow:0 0 20px ' + accentRgba + '0.4) !important}',
 
-            /* Section headers */
+            /* ═══ SECTION HEADERS – bold accent ═══ */
+            '[data-gb-theme] .section-tag{color:' + accent + ' !important;border-color:' + accentRgba + '0.3) !important}',
             '[data-gb-theme] .section-tag span{color:' + accent + ' !important}',
-            '[data-gb-theme] .section-tag-line{background:' + accent + ' !important}',
+            '[data-gb-theme] .section-tag-line{background:' + accent + ' !important;box-shadow:0 0 8px ' + accentRgba + '0.4) !important}',
+            '[data-gb-theme] .section-title .gold{text-shadow:0 0 20px ' + accentRgba + '0.4) !important}',
 
-            /* Neon icons */
-            '[data-gb-theme] .neon-icon{color:' + accent + ' !important;filter:drop-shadow(0 0 8px ' + accentRgba + '0.4))}',
+            /* ═══ NEON ICONS – themed glow ═══ */
+            '[data-gb-theme] .neon-icon{color:' + accent + ' !important;filter:drop-shadow(0 0 12px ' + accentRgba + '0.5))}',
 
-            /* Footer accent */
+            /* ═══ FOOTER – accent links ═══ */
+            '[data-gb-theme] .footer{border-top:1px solid ' + accentRgba + '0.15) !important}',
             '[data-gb-theme] .footer a:hover{color:' + accent + ' !important}',
 
-            /* Smooth transition for all themed elements */
+            /* ═══ GLOBAL transitions ═══ */
             '[data-gb-theme] .gold{transition:color .8s !important}',
             '[data-gb-theme] .section-tag{transition:color .8s,border-color .8s !important}'
         ].join('\n');
