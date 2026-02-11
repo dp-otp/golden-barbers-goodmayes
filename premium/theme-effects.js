@@ -453,6 +453,7 @@
             '@keyframes gb-promo-in{from{transform:translateY(100%)}to{transform:translateY(0)}}',
             '@keyframes gb-promo-out{to{transform:translateY(100%)}}',
             '@keyframes gb-barfill{to{transform:scaleX(0)}}',
+            '@keyframes gb-badge-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:.9}}',
             /* Decorations */
             '.gb-decor{position:fixed;pointer-events:none;z-index:2;opacity:0;animation:gb-fin 2s ease .6s forwards}',
             '.gb-decor img,.gb-decor svg{width:100%;height:100%;display:block;object-fit:contain}',
@@ -513,7 +514,8 @@
             '@keyframes gb-hero-ov{to{opacity:.15}}',
             '@keyframes gb-section-ov{to{opacity:.18}}',
             /* Glassmorphism seasonal panel */
-            '.gb-glass-panel{position:fixed;z-index:999;pointer-events:auto;background:rgba(15,15,15,.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;opacity:0;animation:gb-glass-in 1s cubic-bezier(.34,1.56,.64,1) 1.5s forwards}',
+            '.gb-glass-banner{position:relative;z-index:10;pointer-events:auto;opacity:0;animation:gb-glass-in 1s cubic-bezier(.34,1.56,.64,1) 1.5s forwards}',
+            '.gb-glass-panel{position:relative;background:rgba(15,15,15,.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden}',
             '.gb-glass-panel-accent{position:absolute;top:0;left:0;width:100%;height:3px}',
             '.gb-glass-panel-content{padding:16px 20px;position:relative}',
             '.gb-glass-panel-dismiss{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.3);color:rgba(255,255,255,.5);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}',
@@ -561,6 +563,10 @@
             /* Themed CTA buttons */
             '.gb-themed-btn{transition:all .3s cubic-bezier(.34,1.56,.64,1)!important}',
             '.gb-themed-btn:hover{transform:translateY(-3px)!important}',
+            /* Hero featured photo – glassmorphism framed gallery image */
+            '.gb-hero-photo{position:absolute;z-index:6;bottom:8%;right:5%;width:clamp(140px,22vw,260px);height:clamp(180px,28vw,340px);border-radius:16px;overflow:hidden;border:2px solid rgba(255,255,255,.1);opacity:0;animation:gb-glass-in 1.2s cubic-bezier(.34,1.56,.64,1) .8s forwards}',
+            '.gb-hero-photo-overlay{position:absolute;bottom:0;left:0;width:100%;padding:10px 12px;display:flex;align-items:center;gap:8px;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 100%);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}',
+            '@media(max-width:768px){.gb-hero-photo{bottom:5%;right:3%;width:120px;height:160px;border-radius:12px}.gb-hero-photo-overlay{padding:6px 8px;gap:6px}}',
             /* Premium decorations – connotation icons with glow & float */
             '.gb-pdecor{pointer-events:none;z-index:3;opacity:0;animation:gb-fin 1.8s ease var(--pdecor-delay,.8s) forwards,gb-pdecor-float var(--fd,10s) ease-in-out 2s infinite;transform:rotate(var(--pdecor-rot,0deg))}',
             '.gb-pdecor svg{width:100%;height:100%;display:block}',
@@ -636,20 +642,286 @@
     /* ═══ BOKEH – disabled (looked cheap) ═══ */
     function createBokeh() { }
 
-    /* ═══ PROMO BANNER – FULL-WIDTH BOTTOM BAR ═══ */
+    /* ═══ PROMO BANNER – CUSTOM THEMED BOTTOM BAR ═══ */
+    /* Each theme gets a completely unique visual design */
+    var BANNER_CUSTOM = {
+        'black-friday': {
+            bg: '#000',
+            pattern: 'linear-gradient(135deg,transparent 25%,rgba(255,214,0,.06) 25%,rgba(255,214,0,.06) 35%,transparent 35%,transparent 65%,rgba(255,214,0,.04) 65%,rgba(255,214,0,.04) 75%,transparent 75%)',
+            borderTop: '3px solid #FF1744',
+            glow: '0 -4px 40px rgba(255,23,68,.25),0 -2px 80px rgba(255,214,0,.08)',
+            badge: { text: 'UP TO 30% OFF', bg: '#FF1744', color: '#fff', shadow: '0 4px 20px rgba(255,23,68,.5)' },
+            titleStyle: 'font-size:' + (isMobile ? '16px' : '24px') + ';font-weight:900;letter-spacing:6px;color:#fff;text-shadow:0 0 40px rgba(255,23,68,.5),0 2px 4px rgba(0,0,0,.8)',
+            subStyle: 'color:rgba(255,214,0,.8)',
+            brushStroke: true
+        },
+        christmas: {
+            bg: 'linear-gradient(135deg,#0d1f12 0%,#1a0808 40%,#0d1f12 100%)',
+            pattern: 'radial-gradient(circle at 15% 50%,rgba(198,40,40,.15) 0%,transparent 40%),radial-gradient(circle at 85% 50%,rgba(27,94,32,.12) 0%,transparent 40%),radial-gradient(circle at 50% 20%,rgba(255,215,0,.08) 0%,transparent 50%)',
+            borderTop: '2px solid transparent',
+            borderImage: 'repeating-linear-gradient(90deg,#C62828 0,#C62828 10px,transparent 10px,transparent 16px,#1B5E20 16px,#1B5E20 26px,transparent 26px,transparent 32px,#FFD700 32px,#FFD700 36px,transparent 36px,transparent 42px) 1',
+            glow: '0 -4px 30px rgba(198,40,40,.15),0 -2px 60px rgba(27,94,32,.08)',
+            hangingBaubles: true,
+            titleStyle: 'font-size:' + (isMobile ? '13px' : '16px') + ';font-weight:800;letter-spacing:3px;color:#FFD700;text-shadow:0 0 20px rgba(255,215,0,.4)',
+            subStyle: 'color:rgba(200,230,201,.6)'
+        },
+        valentines: {
+            bg: 'linear-gradient(135deg,#2a0815 0%,#3d0520 50%,#2a0815 100%)',
+            pattern: 'radial-gradient(circle at 20% 30%,rgba(233,30,99,.12) 0%,transparent 35%),radial-gradient(circle at 80% 70%,rgba(244,143,177,.1) 0%,transparent 35%)',
+            borderTop: '2px solid',
+            borderImage: 'linear-gradient(90deg,transparent,#E91E63,#F48FB1,#E91E63,transparent) 1',
+            glow: '0 -4px 30px rgba(233,30,99,.2),0 -2px 60px rgba(244,143,177,.1)',
+            floatingHearts: true,
+            titleStyle: 'font-size:' + (isMobile ? '13px' : '16px') + ';font-weight:800;letter-spacing:3px;color:#F48FB1;text-shadow:0 0 25px rgba(233,30,99,.5)',
+            subStyle: 'color:rgba(244,143,177,.6);font-style:italic'
+        },
+        winter: {
+            bg: 'linear-gradient(135deg,#0a1628 0%,#0d2137 50%,#0a1628 100%)',
+            pattern: 'radial-gradient(circle at 10% 20%,rgba(79,195,247,.08) 0%,transparent 30%),radial-gradient(circle at 90% 80%,rgba(179,229,252,.06) 0%,transparent 30%),radial-gradient(circle at 50% 50%,rgba(225,245,254,.04) 0%,transparent 50%)',
+            borderTop: '2px solid',
+            borderImage: 'linear-gradient(90deg,rgba(79,195,247,0),rgba(79,195,247,.5),rgba(225,245,254,.8),rgba(79,195,247,.5),rgba(79,195,247,0)) 1',
+            glow: '0 -4px 30px rgba(79,195,247,.15),0 -2px 60px rgba(225,245,254,.06)',
+            frostEdge: true,
+            titleStyle: 'font-size:' + (isMobile ? '13px' : '16px') + ';font-weight:700;letter-spacing:3px;color:#E1F5FE;text-shadow:0 0 20px rgba(79,195,247,.4)',
+            subStyle: 'color:rgba(179,229,252,.5)'
+        },
+        halloween: {
+            bg: 'linear-gradient(135deg,#1a0a2e 0%,#2e1500 50%,#1a0a2e 100%)',
+            pattern: 'radial-gradient(circle at 10% 50%,rgba(106,27,154,.2) 0%,transparent 35%),radial-gradient(circle at 90% 50%,rgba(255,111,0,.15) 0%,transparent 35%)',
+            borderTop: '3px solid',
+            borderImage: 'linear-gradient(90deg,#4A148C,#FF6F00,#4A148C,#FF6F00,#4A148C) 1',
+            glow: '0 -4px 40px rgba(255,111,0,.2),0 -2px 80px rgba(106,27,154,.12)',
+            spiderweb: true,
+            titleStyle: 'font-size:' + (isMobile ? '14px' : '18px') + ';font-weight:900;letter-spacing:4px;color:#FFE0B2;text-shadow:0 0 30px rgba(255,111,0,.6),0 0 60px rgba(106,27,154,.3)',
+            subStyle: 'color:rgba(255,224,178,.5)'
+        },
+        easter: {
+            bg: 'linear-gradient(135deg,#0f1f0f 0%,#1a0f1a 50%,#0f1f0f 100%)',
+            pattern: 'radial-gradient(circle at 20% 40%,rgba(129,199,132,.1) 0%,transparent 35%),radial-gradient(circle at 70% 60%,rgba(244,143,177,.08) 0%,transparent 35%),radial-gradient(circle at 45% 20%,rgba(255,245,157,.06) 0%,transparent 40%)',
+            borderTop: '3px solid transparent',
+            borderImage: 'repeating-linear-gradient(90deg,#F48FB1 0,#F48FB1 12px,#81C784 12px,#81C784 24px,#FFF59D 24px,#FFF59D 36px,#90CAF9 36px,#90CAF9 48px) 1',
+            glow: '0 -4px 30px rgba(129,199,132,.15),0 -2px 50px rgba(244,143,177,.08)',
+            eggDeco: true,
+            titleStyle: 'font-size:' + (isMobile ? '13px' : '16px') + ';font-weight:800;letter-spacing:3px;color:#C8E6C9;text-shadow:0 0 20px rgba(129,199,132,.4)',
+            subStyle: 'color:rgba(200,230,201,.5)'
+        },
+        summer: {
+            bg: 'linear-gradient(135deg,#1f1200 0%,#001520 100%)',
+            pattern: 'linear-gradient(180deg,rgba(255,143,0,.08) 0%,transparent 40%,transparent 60%,rgba(2,136,209,.06) 100%)',
+            borderTop: '3px solid transparent',
+            borderImage: 'linear-gradient(90deg,#FF8F00,#0288D1,#FF8F00,#0288D1) 1',
+            glow: '0 -4px 30px rgba(255,143,0,.15),0 -2px 60px rgba(2,136,209,.08)',
+            sunRay: true,
+            titleStyle: 'font-size:' + (isMobile ? '14px' : '18px') + ';font-weight:900;letter-spacing:4px;color:#FFF3E0;text-shadow:0 0 25px rgba(255,143,0,.5)',
+            subStyle: 'color:rgba(255,243,224,.5)'
+        },
+        eid: {
+            bg: 'linear-gradient(135deg,#0f1f0a 0%,#1a1a05 50%,#0f1f0a 100%)',
+            pattern: 'radial-gradient(circle at 50% 50%,rgba(253,216,53,.06) 0%,transparent 50%),radial-gradient(circle at 15% 50%,rgba(46,125,50,.08) 0%,transparent 35%),radial-gradient(circle at 85% 50%,rgba(46,125,50,.08) 0%,transparent 35%)',
+            borderTop: '2px solid',
+            borderImage: 'repeating-linear-gradient(90deg,transparent 0,transparent 8px,#FDD835 8px,#FDD835 12px,transparent 12px,transparent 20px,#2E7D32 20px,#2E7D32 24px,transparent 24px,transparent 32px) 1',
+            glow: '0 -4px 30px rgba(253,216,53,.15),0 -2px 60px rgba(46,125,50,.08)',
+            crescentDeco: true,
+            titleStyle: 'font-size:' + (isMobile ? '14px' : '18px') + ';font-weight:800;letter-spacing:4px;color:#FFF9C4;text-shadow:0 0 25px rgba(253,216,53,.5)',
+            subStyle: 'color:rgba(255,249,196,.5)'
+        },
+        ramadan: {
+            bg: 'linear-gradient(135deg,#0a0a2e 0%,#1a1025 50%,#0a0a2e 100%)',
+            pattern: 'radial-gradient(circle at 50% 0%,rgba(184,134,11,.1) 0%,transparent 50%),radial-gradient(circle at 20% 80%,rgba(26,35,126,.08) 0%,transparent 40%),radial-gradient(circle at 80% 80%,rgba(26,35,126,.08) 0%,transparent 40%)',
+            borderTop: '2px solid',
+            borderImage: 'linear-gradient(90deg,rgba(184,134,11,0),#B8860B,rgba(184,134,11,.5),#B8860B,rgba(184,134,11,0)) 1',
+            glow: '0 -4px 30px rgba(184,134,11,.15),0 -2px 60px rgba(26,35,126,.08)',
+            lanternDeco: true,
+            titleStyle: 'font-size:' + (isMobile ? '14px' : '18px') + ';font-weight:800;letter-spacing:4px;color:#E8EAF6;text-shadow:0 0 25px rgba(184,134,11,.4)',
+            subStyle: 'color:rgba(232,234,246,.45)'
+        },
+        autumn: {
+            bg: 'linear-gradient(135deg,#1a0f05 0%,#120800 100%)',
+            pattern: 'radial-gradient(ellipse at 30% 50%,rgba(221,44,0,.1) 0%,transparent 45%),radial-gradient(ellipse at 70% 50%,rgba(255,179,0,.08) 0%,transparent 45%)',
+            borderTop: '3px solid transparent',
+            borderImage: 'linear-gradient(90deg,#DD2C00,#FF6F00,#BF360C,#FFB300,#DD2C00) 1',
+            glow: '0 -4px 30px rgba(221,44,0,.15),0 -2px 60px rgba(255,143,0,.08)',
+            leafDeco: true,
+            titleStyle: 'font-size:' + (isMobile ? '13px' : '16px') + ';font-weight:800;letter-spacing:3px;color:#FFAB91;text-shadow:0 0 20px rgba(221,44,0,.4)',
+            subStyle: 'color:rgba(255,171,145,.5)'
+        },
+        'new-year': {
+            bg: 'linear-gradient(135deg,#0a0a2e 0%,#0d1535 50%,#0a0a2e 100%)',
+            pattern: 'radial-gradient(circle at 30% 30%,rgba(255,215,0,.1) 0%,transparent 40%),radial-gradient(circle at 70% 70%,rgba(13,71,161,.08) 0%,transparent 40%),radial-gradient(circle at 50% 0%,rgba(255,215,0,.06) 0%,transparent 50%)',
+            borderTop: '2px solid',
+            borderImage: 'linear-gradient(90deg,transparent,#FFD700,#fff,#FFD700,transparent) 1',
+            glow: '0 -4px 30px rgba(255,215,0,.2),0 -2px 60px rgba(13,71,161,.1)',
+            fireworkDeco: true,
+            badge: { text: 'NEW YEAR 2026', bg: 'linear-gradient(135deg,#FFD700,#FFA000)', color: '#000', shadow: '0 4px 20px rgba(255,215,0,.4)' },
+            titleStyle: 'font-size:' + (isMobile ? '14px' : '18px') + ';font-weight:900;letter-spacing:5px;color:#FFD700;text-shadow:0 0 30px rgba(255,215,0,.5),0 0 60px rgba(255,215,0,.2)',
+            subStyle: 'color:rgba(255,255,255,.5)'
+        },
+        'flash-sale': {
+            bg: 'linear-gradient(135deg,#1a0008 0%,#0a0000 100%)',
+            pattern: 'repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,23,68,.03) 40px,rgba(255,23,68,.03) 42px)',
+            borderTop: '3px solid #FF1744',
+            glow: '0 -4px 40px rgba(255,23,68,.3),0 -2px 80px rgba(255,214,0,.08)',
+            badge: { text: 'UP TO 50% OFF', bg: '#FF1744', color: '#fff', shadow: '0 4px 20px rgba(255,23,68,.5)', pulse: true },
+            titleStyle: 'font-size:' + (isMobile ? '16px' : '22px') + ';font-weight:900;letter-spacing:5px;color:#FF1744;text-shadow:0 0 30px rgba(255,23,68,.6),0 0 60px rgba(255,23,68,.2)',
+            subStyle: 'color:rgba(255,214,0,.6)'
+        }
+    };
+    BANNER_CUSTOM.blackfriday = BANNER_CUSTOM['black-friday'];
+    BANNER_CUSTOM.newyear = BANNER_CUSTOM['new-year'];
+    BANNER_CUSTOM.flashsale = BANNER_CUSTOM['flash-sale'];
+
+    function getBannerDecoHtml(themeId, b) {
+        var tid = themeId.replace(/-/g, '');
+        var h = '';
+        if (tid === 'blackfriday') {
+            /* Black Friday: bold brush stroke + lightning bolts */
+            if (!isMobile) {
+                h += '<div style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;pointer-events:none">';
+                h += '<div style="position:absolute;left:-5%;top:-50%;width:30%;height:200%;background:linear-gradient(180deg,transparent,rgba(255,214,0,.08),rgba(255,214,0,.12),rgba(255,214,0,.08),transparent);transform:rotate(25deg)"></div>';
+                h += '<div style="position:absolute;right:15%;top:-50%;width:20%;height:200%;background:linear-gradient(180deg,transparent,rgba(255,214,0,.05),rgba(255,214,0,.08),rgba(255,214,0,.05),transparent);transform:rotate(25deg)"></div>';
+                h += '</div>';
+            }
+            h += '<svg style="position:absolute;left:' + (isMobile ? '8px' : '16px') + ';top:50%;transform:translateY(-50%);width:' + (isMobile ? '28px' : '44px') + ';height:' + (isMobile ? '28px' : '44px') + ';opacity:.6;filter:drop-shadow(0 0 10px rgba(255,214,0,.5))" viewBox="0 0 24 24"><path fill="#FFD600" d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>';
+        } else if (tid === 'christmas') {
+            /* Christmas: hanging ornaments + star */
+            if (!isMobile) {
+                var cols = ['#C62828','#1B5E20','#FFD700','#C62828','#1B5E20'];
+                var xpos = [12, 28, 50, 72, 88];
+                for (var ci = 0; ci < 5; ci++) {
+                    var sz = 6 + (ci % 2) * 3;
+                    h += '<div style="position:absolute;top:-1px;left:' + xpos[ci] + '%;pointer-events:none">';
+                    h += '<div style="width:1px;height:' + (10 + ci * 3) + 'px;background:rgba(255,215,0,.3);margin:0 auto"></div>';
+                    h += '<div style="width:' + sz + 'px;height:' + sz + 'px;border-radius:50%;background:' + cols[ci] + ';box-shadow:0 0 8px ' + cols[ci] + '80,inset 0 -2px 4px rgba(0,0,0,.3);margin:-1px auto 0"></div>';
+                    h += '</div>';
+                }
+            }
+        } else if (tid === 'valentines') {
+            /* Valentine's: floating hearts */
+            if (!isMobile) {
+                var hx = [8, 25, 55, 78, 92];
+                var hy = [20, 60, 15, 70, 35];
+                for (var vi = 0; vi < 5; vi++) {
+                    h += '<div style="position:absolute;left:' + hx[vi] + '%;top:' + hy[vi] + '%;pointer-events:none;opacity:.15;animation:gb-pdecor-float ' + (6 + vi * 2) + 's ease-in-out infinite">';
+                    h += '<svg width="' + (12 + vi * 2) + '" height="' + (12 + vi * 2) + '" viewBox="0 0 24 24"><path fill="' + (vi % 2 ? '#F48FB1' : '#E91E63') + '" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+                    h += '</div>';
+                }
+            }
+        } else if (tid === 'halloween') {
+            /* Halloween: spiderweb corner + bats */
+            if (!isMobile) {
+                h += '<div style="position:absolute;right:50px;top:0;width:50px;height:50px;pointer-events:none;opacity:.12">';
+                h += '<svg viewBox="0 0 50 50"><path stroke="rgba(255,255,255,.5)" fill="none" stroke-width=".5" d="M0,0 Q25,25 50,0 M0,0 Q25,30 0,50 M0,0 L50,50 M0,0 L25,50 M0,0 L50,25"/></svg>';
+                h += '</div>';
+                h += '<svg style="position:absolute;left:15%;top:15%;width:20px;opacity:.2;animation:gb-pdecor-float 5s ease-in-out infinite" viewBox="0 0 24 24"><path fill="#FF6F00" d="M3,12 C3,8 5,4 12,2 C19,4 21,8 21,12 C21,12 18,10 15,12 C15,12 13,10 12,12 C11,10 9,12 9,12 C6,10 3,12 3,12Z"/></svg>';
+                h += '<svg style="position:absolute;right:20%;top:25%;width:16px;opacity:.15;animation:gb-pdecor-float 7s ease-in-out infinite" viewBox="0 0 24 24"><path fill="#6A1B9A" d="M3,12 C3,8 5,4 12,2 C19,4 21,8 21,12 C21,12 18,10 15,12 C15,12 13,10 12,12 C11,10 9,12 9,12 C6,10 3,12 3,12Z"/></svg>';
+            }
+        } else if (tid === 'winter') {
+            /* Winter: crystalline snowflakes */
+            if (!isMobile) {
+                var sx = [8, 30, 60, 85];
+                for (var si = 0; si < 4; si++) {
+                    h += '<svg style="position:absolute;left:' + sx[si] + '%;top:' + (15 + si * 15) + '%;width:' + (14 + si * 3) + 'px;opacity:.12;animation:gb-pdecor-float ' + (7 + si * 2) + 's ease-in-out infinite;filter:drop-shadow(0 0 4px rgba(79,195,247,.4))" viewBox="0 0 24 24"><path fill="#B3E5FC" d="M12,2 L12,22 M2,12 L22,12 M5,5 L19,19 M19,5 L5,19" stroke="#B3E5FC" stroke-width="1" fill="none"/><circle cx="12" cy="12" r="2" fill="#E1F5FE"/></svg>';
+                }
+            }
+        } else if (tid === 'eid' || tid === 'ramadan') {
+            /* Eid/Ramadan: crescent + hanging lanterns */
+            if (!isMobile) {
+                h += '<svg style="position:absolute;left:10%;top:10%;width:32px;opacity:.18;filter:drop-shadow(0 0 8px ' + (tid === 'eid' ? '#FDD835' : '#B8860B') + ')" viewBox="0 0 24 24"><path fill="' + (tid === 'eid' ? '#FDD835' : '#B8860B') + '" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A8,8 0 0,1 12,2Z"/><circle cx="18" cy="6" r="2" fill="' + (tid === 'eid' ? '#FDD835' : '#B8860B') + '"/></svg>';
+                var lx = [30, 55, 75];
+                for (var li = 0; li < 3; li++) {
+                    h += '<div style="position:absolute;top:-1px;left:' + lx[li] + '%;pointer-events:none">';
+                    h += '<div style="width:1px;height:' + (8 + li * 4) + 'px;background:rgba(255,215,0,.2);margin:0 auto"></div>';
+                    h += '<div style="width:8px;height:12px;border-radius:3px 3px 50% 50%;background:linear-gradient(180deg,' + (tid === 'eid' ? '#FDD835' : '#B8860B') + ',' + (tid === 'eid' ? '#F9A825' : '#8B6914') + ');box-shadow:0 0 6px ' + (tid === 'eid' ? 'rgba(253,216,53,.4)' : 'rgba(184,134,11,.4)') + ';margin:0 auto"></div>';
+                    h += '</div>';
+                }
+            }
+        } else if (tid === 'easter') {
+            /* Easter: decorated eggs */
+            if (!isMobile) {
+                var ec = ['#F48FB1','#81C784','#FFF59D','#90CAF9'];
+                var ex = [10, 35, 65, 88];
+                for (var ei = 0; ei < 4; ei++) {
+                    h += '<div style="position:absolute;left:' + ex[ei] + '%;top:' + (20 + ei * 12) + '%;width:10px;height:13px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:' + ec[ei] + ';opacity:.15;transform:rotate(' + (-15 + ei * 10) + 'deg);box-shadow:inset 0 2px 4px rgba(255,255,255,.3)"></div>';
+                }
+            }
+        } else if (tid === 'summer') {
+            /* Summer: sun rays + wave */
+            if (!isMobile) {
+                h += '<div style="position:absolute;left:5%;top:5%;width:36px;height:36px;border-radius:50%;background:radial-gradient(circle,rgba(255,143,0,.2),transparent 70%);box-shadow:0 0 20px rgba(255,143,0,.15);pointer-events:none"></div>';
+                h += '<div style="position:absolute;bottom:0;left:0;width:100%;height:8px;background:linear-gradient(90deg,transparent,rgba(2,136,209,.12),rgba(2,136,209,.08),rgba(2,136,209,.12),transparent);pointer-events:none"></div>';
+            }
+        } else if (tid === 'autumn') {
+            /* Autumn: falling leaves */
+            if (!isMobile) {
+                var lc = ['#DD2C00','#FF6F00','#FFB300','#BF360C'];
+                var lxp = [12, 38, 62, 85];
+                for (var ai = 0; ai < 4; ai++) {
+                    h += '<div style="position:absolute;left:' + lxp[ai] + '%;top:' + (15 + ai * 15) + '%;width:12px;height:12px;pointer-events:none;opacity:.15;transform:rotate(' + (ai * 45 - 30) + 'deg);animation:gb-pdecor-float ' + (6 + ai * 2) + 's ease-in-out infinite">';
+                    h += '<svg viewBox="0 0 24 24"><path fill="' + lc[ai] + '" d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>';
+                    h += '</div>';
+                }
+            }
+        } else if (tid === 'newyear') {
+            /* New Year: firework bursts */
+            if (!isMobile) {
+                var fw = [{ x: 15, c: '#FFD700' }, { x: 50, c: '#fff' }, { x: 82, c: '#FFD700' }];
+                for (var fi = 0; fi < 3; fi++) {
+                    h += '<div style="position:absolute;left:' + fw[fi].x + '%;top:20%;width:24px;height:24px;pointer-events:none;opacity:.12">';
+                    h += '<div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,' + fw[fi].c + ' 0%,transparent 70%)"></div>';
+                    for (var ri = 0; ri < 6; ri++) {
+                        h += '<div style="position:absolute;left:50%;top:50%;width:1px;height:10px;background:' + fw[fi].c + ';transform-origin:bottom center;transform:rotate(' + (ri * 60) + 'deg) translateY(-6px)"></div>';
+                    }
+                    h += '</div>';
+                }
+            }
+        }
+        return h;
+    }
+
     function createPromoBanner(theme, themeId) {
         if (!theme.banner) return;
         try { if (localStorage.getItem('gb-promo-dismissed') === state.id) return; } catch (e) { }
         var b = theme.banner;
         var icon = BI[themeId] || BI[themeId.replace(/-/g, '')] || '';
+        var custom = BANNER_CUSTOM[themeId] || BANNER_CUSTOM[themeId.replace(/-/g, '')] || {};
         var el = document.createElement('div'); el.className = 'gb-promo-banner';
 
-        var html = '<div class="gb-promo-inner" style="background:' + b.bg + ';box-shadow:' + b.shadow + '">';
-        html += '<div class="gb-promo-icon" style="background:' + b.iconBg + ';border:1px solid ' + b.accent + '20;box-shadow:0 0 20px ' + b.accent + '15">' + icon + '</div>';
-        html += '<div style="flex:1">';
-        html += '<div style="font-size:14px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:' + b.titleColor + ';text-shadow:0 0 20px ' + b.accent + '40">' + b.title + '</div>';
-        html += '<div style="font-size:12px;font-weight:400;margin-top:3px;color:rgba(255,255,255,.55);line-height:1.3">' + b.sub + '</div>';
+        var bgStyle = (custom.bg || b.bg);
+        var boxShadow = (custom.glow || b.shadow);
+        var borderTop = custom.borderTop || ('2px solid ' + b.accent);
+
+        var html = '<div class="gb-promo-inner" style="background:' + bgStyle + ';box-shadow:' + boxShadow + ';border-top:' + borderTop + (custom.borderImage ? ';border-image:' + custom.borderImage : '') + '">';
+
+        /* Pattern overlay */
+        if (custom.pattern) {
+            html += '<div style="position:absolute;inset:0;background:' + custom.pattern + ';pointer-events:none"></div>';
+        }
+
+        /* Theme-specific decorations */
+        html += getBannerDecoHtml(themeId, b);
+
+        /* Icon */
+        html += '<div class="gb-promo-icon" style="background:' + b.iconBg + ';border:1px solid ' + b.accent + '20;box-shadow:0 0 20px ' + b.accent + '15;position:relative;z-index:2">' + icon + '</div>';
+
+        /* Text content */
+        html += '<div style="flex:1;position:relative;z-index:2">';
+        html += '<div style="' + (custom.titleStyle || 'font-size:' + (isMobile ? '12px' : '14px') + ';font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:' + b.titleColor + ';text-shadow:0 0 20px ' + b.accent + '40') + '">' + b.title + '</div>';
+        html += '<div style="font-size:' + (isMobile ? '10px' : '12px') + ';font-weight:400;margin-top:3px;line-height:1.3;' + (custom.subStyle || 'color:rgba(255,255,255,.55)') + '">' + b.sub + '</div>';
         html += '</div>';
+
+        /* Custom badge (Black Friday, Flash Sale, New Year) */
+        if (custom.badge && !isMobile) {
+            var bdg = custom.badge;
+            html += '<div style="flex-shrink:0;padding:6px 16px;background:' + bdg.bg + ';color:' + bdg.color + ';font-size:10px;font-weight:900;letter-spacing:2px;border-radius:6px;box-shadow:' + bdg.shadow + ';position:relative;z-index:2' + (bdg.pulse ? ';animation:gb-badge-pulse 2s ease-in-out infinite' : '') + '">' + bdg.text + '</div>';
+        }
+        /* Or discount code badge */
+        else if (theme.popup && theme.popup.code && !isMobile) {
+            html += '<div style="flex-shrink:0;padding:5px 12px;background:' + b.accent + '18;border:1px solid ' + b.accent + '30;border-radius:8px;text-align:center;position:relative;z-index:2">';
+            html += '<div style="font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px">CODE</div>';
+            html += '<div style="font-size:13px;font-weight:800;color:' + b.accent + ';letter-spacing:2px">' + theme.popup.code + '</div>';
+            html += '</div>';
+        }
+
         html += '<button class="gb-promo-close" onclick="this.closest(\'.gb-promo-banner\').dispatchEvent(new Event(\'dismiss\'))">&times;</button>';
         html += '<div class="gb-promo-progress"><div class="gb-promo-progress-bar" style="background:' + (b.timer || b.accent) + '"></div></div>';
         html += '</div>';
@@ -1005,7 +1277,7 @@
             } else {
                 /* Default: hat sits on top-right of circle (santa hat, witch hat, top hat) */
                 var hatW = cW * 0.27, hatH = hatW * 0.88;
-                h.style.cssText = 'width:' + hatW + 'px;height:' + hatH + 'px;top:' + (cTop - hatH * 0.28) + 'px;left:' + (cLeft + cW * 0.58) + 'px;transform:rotate(-18deg) scaleX(-1)';
+                h.style.cssText = 'width:' + hatW + 'px;height:' + hatH + 'px;top:' + (cTop - hatH * 0.28) + 'px;left:' + (cLeft + cW * 0.62) + 'px;transform:rotate(-22deg)';
             }
             parent.appendChild(h); state.hatEls.push(h);
         }
@@ -1026,14 +1298,231 @@
                 nh.style.cssText = 'width:' + (imgW * 0.7) + 'px;height:' + (imgW * 0.6) + 'px;top:' + (-imgW * 0.4) + 'px;left:' + (imgW * 0.15) + 'px';
             } else {
                 /* Hat on top-right of the logo IMG */
-                nh.style.cssText = 'width:' + (imgW * 0.6) + 'px;height:' + (imgW * 0.52) + 'px;top:' + (-imgW * 0.32) + 'px;left:' + (imgW * 0.45) + 'px;transform:rotate(-16deg) scaleX(-1)';
+                nh.style.cssText = 'width:' + (imgW * 0.6) + 'px;height:' + (imgW * 0.52) + 'px;top:' + (-imgW * 0.32) + 'px;left:' + (imgW * 0.45) + 'px;transform:rotate(-20deg)';
             }
             logo.appendChild(nh); state.hatEls.push(nh);
         });
     }
 
-    /* ═══ HERO SEASONAL TAKEOVER ═══ */
-    function createHeroTakeover(theme) {
+    /* ═══ HERO FEATURED PHOTO – gallery image with glassmorphism frame ═══ */
+    function createHeroPhoto(theme) {
+        var hero = document.querySelector('.hero');
+        if (!hero) return;
+        var heroPos = window.getComputedStyle(hero).position;
+        if (heroPos === 'static') hero.style.position = 'relative';
+        var accent = theme.frontendAccent || '#d4af37';
+        var accentRgba = theme.frontendAccentRgba || 'rgba(212,175,55,';
+
+        /* Pick a gallery photo – use the hero showcase images */
+        var photos = ['download (7).jpg', 'download (9).jpg', 'download (10).jpg', 'download (16).jpg'];
+        var photo = photos[Math.floor(Math.random() * photos.length)];
+
+        var el = document.createElement('div');
+        el.className = 'gb-hero-photo';
+        el.style.cssText = 'border-color:' + accentRgba + '0.3);box-shadow:0 0 40px ' + accentRgba + '0.2),0 20px 60px rgba(0,0,0,.5)';
+
+        var html = '<img src="' + photo + '" alt="Golden Barbers" style="width:100%;height:100%;object-fit:cover;border-radius:inherit"/>';
+        /* Glass overlay with logo */
+        html += '<div class="gb-hero-photo-overlay">';
+        html += '<img src="../logo.png" alt="" style="width:' + (isMobile ? '28px' : '36px') + ';height:' + (isMobile ? '28px' : '36px') + ';border-radius:50%;border:2px solid ' + accentRgba + '0.4);object-fit:contain;background:rgba(0,0,0,.7)"/>';
+        html += '<span style="font-size:' + (isMobile ? '9px' : '11px') + ';font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.8)">Golden Barbers</span>';
+        html += '</div>';
+        /* Themed accent bar at bottom */
+        html += '<div style="position:absolute;bottom:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,' + accent + ',' + accentRgba + '0.3),transparent);border-radius:0 0 16px 16px"></div>';
+
+        el.innerHTML = html;
+        hero.appendChild(el);
+        state.extraEls.push(el);
+    }
+
+    /* ═══ HERO DESIGN ELEMENTS – themed decorative compositions per theme ═══ */
+    var HERO_DESIGN = {
+        christmas: {
+            icons: ['bauble', 'christmasStar', 'holly', 'bell', 'giftBox', 'candyCane'], accent: '#C62828', accent2: '#1B5E20',
+            overlayPattern: 'radial-gradient(circle at 20% 15%,rgba(198,40,40,.2) 0%,transparent 35%),radial-gradient(circle at 80% 20%,rgba(27,94,32,.18) 0%,transparent 35%),radial-gradient(circle at 50% 85%,rgba(255,215,0,.12) 0%,transparent 40%)',
+            cornerDeco: true, cornerType: 'holly',
+            titleGlow: '0 0 40px rgba(255,215,0,.5),0 0 80px rgba(198,40,40,.3)',
+            frameStyle: 'border:2px solid rgba(198,40,40,.2);box-shadow:inset 0 0 60px rgba(198,40,40,.08),inset 0 0 30px rgba(27,94,32,.06)'
+        },
+        valentines: {
+            icons: ['heartDuo', 'roseBud', 'cupidArrow', 'loveRing', 'heartDuo', 'roseBud'], accent: '#E91E63', accent2: '#F48FB1',
+            overlayPattern: 'radial-gradient(circle at 30% 30%,rgba(233,30,99,.18) 0%,transparent 40%),radial-gradient(circle at 70% 70%,rgba(244,143,177,.15) 0%,transparent 40%)',
+            heartRain: true,
+            titleGlow: '0 0 40px rgba(233,30,99,.5),0 0 80px rgba(244,143,177,.3)',
+            frameStyle: 'border:2px solid rgba(233,30,99,.15);box-shadow:inset 0 0 60px rgba(233,30,99,.08)'
+        },
+        winter: {
+            icons: ['snowCrystal', 'pineSnow', 'iceCluster', 'snowCrystal', 'pineSnow', 'snowCrystal'], accent: '#4FC3F7', accent2: '#B3E5FC',
+            overlayPattern: 'radial-gradient(circle at 50% 0%,rgba(225,245,254,.12) 0%,transparent 50%),radial-gradient(circle at 20% 80%,rgba(79,195,247,.1) 0%,transparent 35%),radial-gradient(circle at 80% 80%,rgba(79,195,247,.1) 0%,transparent 35%)',
+            frostFrame: true,
+            titleGlow: '0 0 40px rgba(79,195,247,.5),0 0 80px rgba(225,245,254,.2)',
+            frameStyle: 'border:2px solid rgba(79,195,247,.15);box-shadow:inset 0 0 60px rgba(79,195,247,.06),inset 0 0 120px rgba(225,245,254,.04)'
+        },
+        halloween: {
+            icons: ['pumpkinFace', 'ghosty', 'skullIcon', 'cauldron', 'pumpkinFace', 'ghosty'], accent: '#FF6F00', accent2: '#6A1B9A',
+            overlayPattern: 'radial-gradient(circle at 50% 100%,rgba(255,111,0,.15) 0%,transparent 45%),radial-gradient(circle at 20% 20%,rgba(106,27,154,.15) 0%,transparent 40%),radial-gradient(circle at 80% 20%,rgba(106,27,154,.12) 0%,transparent 40%)',
+            spookyVignette: true,
+            titleGlow: '0 0 40px rgba(255,111,0,.6),0 0 80px rgba(106,27,154,.3)',
+            frameStyle: 'border:2px solid rgba(255,111,0,.15);box-shadow:inset 0 0 80px rgba(106,27,154,.1),inset 0 0 40px rgba(255,111,0,.06)'
+        },
+        easter: {
+            icons: ['eggPainted', 'tulip', 'butterfly', 'eggPainted', 'tulip', 'butterfly'], accent: '#81C784', accent2: '#F48FB1',
+            overlayPattern: 'radial-gradient(circle at 25% 25%,rgba(129,199,132,.12) 0%,transparent 35%),radial-gradient(circle at 75% 35%,rgba(244,143,177,.1) 0%,transparent 35%),radial-gradient(circle at 50% 80%,rgba(255,245,157,.08) 0%,transparent 40%)',
+            eggBorder: true,
+            titleGlow: '0 0 30px rgba(129,199,132,.4),0 0 60px rgba(244,143,177,.2)',
+            frameStyle: 'border:2px solid rgba(129,199,132,.12);box-shadow:inset 0 0 50px rgba(129,199,132,.06)'
+        },
+        summer: {
+            icons: ['sunRays', 'palmIsland', 'cocktail', 'sunRays', 'palmIsland', 'cocktail'], accent: '#FF8F00', accent2: '#0288D1',
+            overlayPattern: 'radial-gradient(circle at 80% 10%,rgba(255,200,50,.15) 0%,transparent 40%),linear-gradient(180deg,rgba(255,143,0,.08) 0%,transparent 40%,transparent 70%,rgba(2,136,209,.08) 100%)',
+            sunburstDeco: true,
+            titleGlow: '0 0 40px rgba(255,143,0,.5),0 0 80px rgba(2,136,209,.2)',
+            frameStyle: 'border:2px solid rgba(255,143,0,.12);box-shadow:inset 0 0 60px rgba(255,143,0,.06)'
+        },
+        eid: {
+            icons: ['crescentStar', 'lanternGold', 'mosqueIcon', 'crescentStar', 'lanternGold', 'crescentStar'], accent: '#FDD835', accent2: '#2E7D32',
+            overlayPattern: 'radial-gradient(circle at 50% 20%,rgba(253,216,53,.12) 0%,transparent 45%),radial-gradient(circle at 20% 70%,rgba(46,125,50,.1) 0%,transparent 35%),radial-gradient(circle at 80% 70%,rgba(46,125,50,.1) 0%,transparent 35%)',
+            geometricBorder: true, geoColor: '#FDD835',
+            titleGlow: '0 0 40px rgba(253,216,53,.5),0 0 80px rgba(46,125,50,.2)',
+            frameStyle: 'border:2px solid rgba(253,216,53,.12);box-shadow:inset 0 0 60px rgba(253,216,53,.06)'
+        },
+        ramadan: {
+            icons: ['lanternGold', 'crescentStar', 'mosqueIcon', 'lanternGold', 'crescentStar', 'lanternGold'], accent: '#B8860B', accent2: '#1A237E',
+            overlayPattern: 'radial-gradient(circle at 50% 10%,rgba(184,134,11,.15) 0%,transparent 40%),radial-gradient(circle at 30% 80%,rgba(26,35,126,.1) 0%,transparent 35%),radial-gradient(circle at 70% 80%,rgba(26,35,126,.1) 0%,transparent 35%)',
+            geometricBorder: true, geoColor: '#B8860B',
+            titleGlow: '0 0 40px rgba(184,134,11,.5),0 0 80px rgba(26,35,126,.2)',
+            frameStyle: 'border:2px solid rgba(184,134,11,.12);box-shadow:inset 0 0 60px rgba(184,134,11,.06)'
+        },
+        autumn: {
+            icons: ['oakLeaf', 'mushroom', 'acornNut', 'oakLeaf', 'mushroom', 'oakLeaf'], accent: '#DD2C00', accent2: '#FF6F00',
+            overlayPattern: 'radial-gradient(ellipse at 30% 40%,rgba(221,44,0,.12) 0%,transparent 40%),radial-gradient(ellipse at 70% 60%,rgba(255,179,0,.1) 0%,transparent 40%)',
+            leafScatter: true,
+            titleGlow: '0 0 30px rgba(221,44,0,.4),0 0 60px rgba(255,143,0,.2)',
+            frameStyle: 'border:2px solid rgba(221,44,0,.12);box-shadow:inset 0 0 50px rgba(221,44,0,.06)'
+        },
+        'black-friday': {
+            icons: ['priceStar', 'shoppingBag', 'discountTag', 'lightningBolt', 'priceStar', 'shoppingBag'], accent: '#FF1744', accent2: '#FFD600',
+            overlayPattern: 'linear-gradient(135deg,transparent 20%,rgba(255,214,0,.06) 20%,rgba(255,214,0,.06) 30%,transparent 30%,transparent 50%,rgba(255,23,68,.04) 50%,rgba(255,23,68,.04) 55%,transparent 55%,transparent 70%,rgba(255,214,0,.04) 70%,rgba(255,214,0,.04) 80%,transparent 80%)',
+            diagonalStripes: true,
+            titleGlow: '0 0 50px rgba(255,23,68,.6),0 0 100px rgba(255,214,0,.2)',
+            frameStyle: 'border:2px solid rgba(255,23,68,.2);box-shadow:inset 0 0 80px rgba(255,23,68,.08),inset 0 0 40px rgba(255,214,0,.04)',
+            saleBadge: { text: 'SALE', bg: '#FF1744', glow: 'rgba(255,23,68,.6)' }
+        },
+        'new-year': {
+            icons: ['fireworkBurst', 'champagneGlass', 'partyPopper', 'fireworkBurst', 'champagneGlass', 'partyPopper'], accent: '#FFD700', accent2: '#0D47A1',
+            overlayPattern: 'radial-gradient(circle at 30% 20%,rgba(255,215,0,.12) 0%,transparent 35%),radial-gradient(circle at 70% 20%,rgba(255,215,0,.1) 0%,transparent 35%),radial-gradient(circle at 50% 80%,rgba(13,71,161,.1) 0%,transparent 40%)',
+            sparkleField: true,
+            titleGlow: '0 0 50px rgba(255,215,0,.6),0 0 100px rgba(255,215,0,.2)',
+            frameStyle: 'border:2px solid rgba(255,215,0,.15);box-shadow:inset 0 0 60px rgba(255,215,0,.06),inset 0 0 120px rgba(13,71,161,.04)',
+            yearBadge: true
+        },
+        'flash-sale': {
+            icons: ['lightningBolt', 'megaphone', 'alarmClock', 'priceStar', 'lightningBolt', 'megaphone'], accent: '#FF1744', accent2: '#FFD600',
+            overlayPattern: 'repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,23,68,.03) 40px,rgba(255,23,68,.03) 42px)',
+            titleGlow: '0 0 50px rgba(255,23,68,.6),0 0 100px rgba(255,23,68,.2)',
+            frameStyle: 'border:2px solid rgba(255,23,68,.2);box-shadow:inset 0 0 80px rgba(255,23,68,.08)',
+            saleBadge: { text: '50% OFF', bg: '#FF1744', glow: 'rgba(255,23,68,.6)' }
+        }
+    };
+    HERO_DESIGN.blackfriday = HERO_DESIGN['black-friday'];
+    HERO_DESIGN.newyear = HERO_DESIGN['new-year'];
+    HERO_DESIGN.flashsale = HERO_DESIGN['flash-sale'];
+
+    /* ═══ HERO SEASONAL TAKEOVER – Custom visual compositions per theme ═══ */
+    function getHeroExtraDecoHtml(design, themeKey, accent) {
+        var h = '', tid = (themeKey || '').replace(/-/g, '');
+        if (!design) return h;
+
+        /* Custom pattern overlay */
+        if (design.overlayPattern) {
+            h += '<div style="position:absolute;inset:0;background:' + design.overlayPattern + ';border-radius:inherit;pointer-events:none;z-index:1"></div>';
+        }
+
+        /* Custom decorative frame */
+        if (design.frameStyle) {
+            h += '<div style="position:absolute;inset:10px;border-radius:18px;pointer-events:none;z-index:1;' + design.frameStyle + '"></div>';
+        }
+
+        /* Theme-specific decorative elements */
+        if (tid === 'blackfriday' || tid === 'flashsale') {
+            /* Diagonal gold stripes */
+            h += '<div style="position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:1">';
+            h += '<div style="position:absolute;left:-20%;top:-80%;width:40%;height:250%;background:linear-gradient(180deg,transparent,rgba(255,214,0,.06),rgba(255,214,0,.1),rgba(255,214,0,.06),transparent);transform:rotate(30deg)"></div>';
+            h += '<div style="position:absolute;right:-10%;top:-80%;width:25%;height:250%;background:linear-gradient(180deg,transparent,rgba(255,23,68,.05),rgba(255,23,68,.08),rgba(255,23,68,.05),transparent);transform:rotate(30deg)"></div>';
+            h += '</div>';
+            if (design.saleBadge) {
+                var sb = design.saleBadge;
+                h += '<div style="position:absolute;top:' + (isMobile ? '12px' : '16px') + ';right:' + (isMobile ? '12px' : '20px') + ';background:' + sb.bg + ';color:#fff;font-size:' + (isMobile ? '11px' : '14px') + ';font-weight:900;padding:' + (isMobile ? '4px 10px' : '6px 16px') + ';border-radius:6px;letter-spacing:3px;box-shadow:0 0 25px ' + sb.glow + ';z-index:3;animation:gb-badge-pulse 2s ease-in-out infinite">' + sb.text + '</div>';
+            }
+        } else if (tid === 'christmas') {
+            /* Hanging garland at top + corner holly */
+            h += '<div style="position:absolute;top:0;left:0;width:100%;height:4px;background:repeating-linear-gradient(90deg,#C62828 0,#C62828 10px,#1B5E20 10px,#1B5E20 20px,#FFD700 20px,#FFD700 24px,transparent 24px,transparent 30px);border-radius:20px 20px 0 0;pointer-events:none;z-index:3"></div>';
+            if (!isMobile) {
+                /* Gold stars scattered */
+                var starPos = [{x:8,y:12},{x:92,y:15},{x:15,y:85},{x:88,y:82}];
+                for (var si = 0; si < starPos.length; si++) {
+                    h += '<div style="position:absolute;left:' + starPos[si].x + '%;top:' + starPos[si].y + '%;width:8px;height:8px;pointer-events:none;z-index:1;opacity:.25;animation:gb-pdecor-float ' + (5 + si * 2) + 's ease-in-out infinite"><svg viewBox="0 0 24 24"><path fill="#FFD700" d="M12,1L15.09,8.26L23,9.27L17.5,14.14L18.18,22.02L12,18.77L5.82,22.02L6.5,14.14L1,9.27L8.91,8.26L12,1Z"/></svg></div>';
+                }
+            }
+        } else if (tid === 'valentines') {
+            /* Floating mini hearts */
+            if (!isMobile) {
+                var hp = [{x:6,y:18,s:14},{x:92,y:22,s:10},{x:10,y:78,s:12},{x:88,y:75,s:16},{x:50,y:90,s:10}];
+                for (var hi = 0; hi < hp.length; hi++) {
+                    h += '<div style="position:absolute;left:' + hp[hi].x + '%;top:' + hp[hi].y + '%;width:' + hp[hi].s + 'px;height:' + hp[hi].s + 'px;pointer-events:none;z-index:1;opacity:.2;animation:gb-pdecor-float ' + (5 + hi * 1.5) + 's ease-in-out infinite"><svg viewBox="0 0 24 24"><path fill="' + (hi % 2 ? '#F48FB1' : '#E91E63') + '" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>';
+                }
+            }
+        } else if (tid === 'halloween') {
+            /* Dark vignette + moon glow */
+            h += '<div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,.4) 100%);border-radius:inherit;pointer-events:none;z-index:1"></div>';
+            if (!isMobile) {
+                h += '<div style="position:absolute;top:10%;right:12%;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 40% 40%,rgba(255,224,178,.15),transparent 70%);box-shadow:0 0 30px rgba(255,224,178,.1);pointer-events:none;z-index:1"></div>';
+            }
+        } else if (tid === 'winter') {
+            /* Frost edges + ice glow */
+            h += '<div style="position:absolute;top:0;left:0;width:100%;height:6px;background:linear-gradient(90deg,transparent,rgba(225,245,254,.15),rgba(179,229,252,.2),rgba(225,245,254,.15),transparent);border-radius:20px 20px 0 0;pointer-events:none;z-index:3"></div>';
+            h += '<div style="position:absolute;bottom:0;left:0;width:100%;height:6px;background:linear-gradient(90deg,transparent,rgba(225,245,254,.1),rgba(179,229,252,.15),rgba(225,245,254,.1),transparent);border-radius:0 0 20px 20px;pointer-events:none;z-index:3"></div>';
+        } else if (tid === 'eid' || tid === 'ramadan') {
+            /* Geometric star pattern border + crescent accent */
+            var gc = design.geoColor || accent;
+            h += '<div style="position:absolute;inset:8px;border:1px solid ' + gc + '12;border-radius:18px;pointer-events:none;z-index:1"></div>';
+            h += '<div style="position:absolute;inset:12px;border:1px solid ' + gc + '08;border-radius:16px;pointer-events:none;z-index:1"></div>';
+            if (!isMobile) {
+                /* Corner geometric accents */
+                var cornerSz = 20;
+                h += '<div style="position:absolute;top:6px;left:6px;width:' + cornerSz + 'px;height:' + cornerSz + 'px;border-top:2px solid ' + gc + '25;border-left:2px solid ' + gc + '25;border-radius:8px 0 0 0;pointer-events:none;z-index:2"></div>';
+                h += '<div style="position:absolute;top:6px;right:6px;width:' + cornerSz + 'px;height:' + cornerSz + 'px;border-top:2px solid ' + gc + '25;border-right:2px solid ' + gc + '25;border-radius:0 8px 0 0;pointer-events:none;z-index:2"></div>';
+                h += '<div style="position:absolute;bottom:6px;left:6px;width:' + cornerSz + 'px;height:' + cornerSz + 'px;border-bottom:2px solid ' + gc + '25;border-left:2px solid ' + gc + '25;border-radius:0 0 0 8px;pointer-events:none;z-index:2"></div>';
+                h += '<div style="position:absolute;bottom:6px;right:6px;width:' + cornerSz + 'px;height:' + cornerSz + 'px;border-bottom:2px solid ' + gc + '25;border-right:2px solid ' + gc + '25;border-radius:0 0 8px 0;pointer-events:none;z-index:2"></div>';
+            }
+        } else if (tid === 'summer') {
+            /* Sun ray burst at top corner */
+            if (!isMobile) {
+                h += '<div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,50,.12),transparent 70%);pointer-events:none;z-index:1"></div>';
+                h += '<div style="position:absolute;bottom:0;left:0;width:100%;height:10px;background:linear-gradient(90deg,transparent,rgba(2,136,209,.08),rgba(2,136,209,.12),rgba(2,136,209,.08),transparent);border-radius:0 0 20px 20px;pointer-events:none;z-index:3"></div>';
+            }
+        } else if (tid === 'easter') {
+            /* Colorful top bar */
+            h += '<div style="position:absolute;top:0;left:0;width:100%;height:4px;background:repeating-linear-gradient(90deg,#F48FB1 0,#F48FB1 12px,#81C784 12px,#81C784 24px,#FFF59D 24px,#FFF59D 36px,#90CAF9 36px,#90CAF9 48px);border-radius:20px 20px 0 0;pointer-events:none;z-index:3"></div>';
+        } else if (tid === 'autumn') {
+            /* Warm glow bottom */
+            h += '<div style="position:absolute;bottom:0;left:0;width:100%;height:30%;background:linear-gradient(0deg,rgba(191,54,12,.08),transparent);border-radius:0 0 20px 20px;pointer-events:none;z-index:1"></div>';
+        } else if (tid === 'newyear') {
+            /* Sparkle dots + year badge */
+            if (!isMobile) {
+                var sp = [{x:10,y:15},{x:25,y:80},{x:75,y:10},{x:90,y:75},{x:50,y:92},{x:8,y:50},{x:92,y:45}];
+                for (var spi = 0; spi < sp.length; spi++) {
+                    h += '<div style="position:absolute;left:' + sp[spi].x + '%;top:' + sp[spi].y + '%;width:3px;height:3px;border-radius:50%;background:#FFD700;box-shadow:0 0 6px #FFD700;opacity:.3;pointer-events:none;z-index:1;animation:gb-pdecor-float ' + (4 + spi) + 's ease-in-out infinite"></div>';
+                }
+            }
+            if (design.yearBadge) {
+                h += '<div style="position:absolute;top:' + (isMobile ? '10px' : '14px') + ';right:' + (isMobile ? '10px' : '18px') + ';font-size:' + (isMobile ? '14px' : '20px') + ';font-weight:900;color:rgba(255,215,0,.25);letter-spacing:4px;pointer-events:none;z-index:2;font-family:Inter,sans-serif">2026</div>';
+            }
+        }
+        return h;
+    }
+
+    function createHeroTakeover(theme, themeKey) {
         if (!theme.heroTitle) return;
         var hero = document.querySelector('.hero') || document.querySelector('section.hero');
         if (!hero) return;
@@ -1048,8 +1537,36 @@
         el.style.setProperty('--ht-glow', accent);
 
         var html = '<div class="gb-hero-takeover-bg" style="background:' + theme.heroGradient + '"></div>';
-        html += '<div class="gb-hero-takeover-title">' + theme.heroTitle + '</div>';
-        if (theme.heroSub) html += '<div class="gb-hero-takeover-sub">' + theme.heroSub + '</div>';
+
+        var design = themeKey ? (HERO_DESIGN[themeKey] || HERO_DESIGN[themeKey.replace(/-/g, '')] || null) : null;
+
+        /* ── Custom theme-specific visual composition ── */
+        html += getHeroExtraDecoHtml(design, themeKey, accent);
+
+        /* ── THEMED DESIGN FRAME: decorative icons around the overlay ── */
+        if (design && design.icons) {
+            var positions = [
+                { x: '12%', y: '8%', sz: isMobile ? 36 : 55, rot: -15 },
+                { x: '50%', y: '5%', sz: isMobile ? 28 : 42, rot: 0 },
+                { x: '85%', y: '9%', sz: isMobile ? 34 : 52, rot: 12 },
+                { x: '4%', y: '50%', sz: isMobile ? 30 : 48, rot: -20 },
+                { x: '93%', y: '48%', sz: isMobile ? 30 : 48, rot: 15 },
+                { x: '50%', y: '88%', sz: isMobile ? 26 : 40, rot: 0 }
+            ];
+            for (var di = 0; di < Math.min(design.icons.length, positions.length); di++) {
+                var svgStr = CSVG[design.icons[di]];
+                if (!svgStr) continue;
+                var p = positions[di];
+                html += '<div style="position:absolute;left:' + p.x + ';top:' + p.y + ';width:' + p.sz + 'px;height:' + p.sz + 'px;transform:translate(-50%,-50%) rotate(' + p.rot + 'deg);opacity:.3;filter:drop-shadow(0 0 12px ' + (design.accent || accent) + ');z-index:1;pointer-events:none;animation:gb-pdecor-float ' + (8 + di * 2) + 's ease-in-out infinite">' + svgStr + '</div>';
+            }
+        }
+
+        /* Logo above title */
+        html += '<img src="../logo.png" alt="Golden Barbers" style="width:' + (isMobile ? '48px' : '60px') + ';height:' + (isMobile ? '48px' : '60px') + ';border-radius:50%;border:2px solid ' + accent + '40;object-fit:contain;background:rgba(0,0,0,.5);margin-bottom:12px;position:relative;z-index:2;opacity:.85;box-shadow:0 0 25px ' + accent + '30"/>';
+        /* Title with custom glow per theme */
+        var titleGlow = (design && design.titleGlow) ? ';text-shadow:' + design.titleGlow : '';
+        html += '<div class="gb-hero-takeover-title" style="position:relative;z-index:2' + titleGlow + '">' + theme.heroTitle + '</div>';
+        if (theme.heroSub) html += '<div class="gb-hero-takeover-sub" style="position:relative;z-index:2">' + theme.heroSub + '</div>';
         el.innerHTML = html;
         hero.appendChild(el);
         state.heroTakeover = el;
@@ -1265,7 +1782,7 @@
         }
     }
 
-    /* ═══ GLASSMORPHISM SEASONAL PANEL – frosted glass card with seasonal message ═══ */
+    /* ═══ GLASSMORPHISM SEASONAL PANEL – inline card after hero section ═══ */
     function createGlassPanel(theme, themeKey) {
         if (!theme.banner) return;
         var accent = theme.frontendAccent || '#d4af37';
@@ -1273,29 +1790,47 @@
         var b = theme.banner;
         var icon = BI[themeKey] || BI[themeKey.replace(/-/g, '')] || '';
 
+        /* Insert as inline banner between hero and next section */
+        var hero = document.querySelector('.hero');
+        var insertTarget = hero ? hero.nextElementSibling : null;
+
+        var wrapper = document.createElement('div');
+        wrapper.className = 'gb-glass-banner';
+        wrapper.style.cssText = 'max-width:680px;margin:0 auto;padding:' + (isMobile ? '12px 16px' : '20px 28px');
+
         var el = document.createElement('div');
         el.className = 'gb-glass-panel';
-        /* Position: bottom-right corner, above the fold */
-        el.style.cssText = 'right:20px;bottom:' + (isMobile ? '80px' : '100px') + ';width:' + (isMobile ? '220px' : '280px');
 
         var html = '<div class="gb-glass-panel-accent" style="background:linear-gradient(90deg,' + accent + ',' + accentRgba + '0.3),transparent)"></div>';
-        html += '<button class="gb-glass-panel-dismiss" onclick="this.closest(\'.gb-glass-panel\').style.animation=\'gb-glass-out .3s ease forwards\';setTimeout(function(){var p=document.querySelector(\'.gb-glass-panel\');if(p)p.remove()},300)">&times;</button>';
+        html += '<button class="gb-glass-panel-dismiss" onclick="this.closest(\'.gb-glass-banner\').style.animation=\'gb-glass-out .3s ease forwards\';setTimeout(function(){var p=document.querySelector(\'.gb-glass-banner\');if(p)p.remove()},300)">&times;</button>';
         html += '<div class="gb-glass-panel-content">';
-        html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">';
-        html += '<div style="width:32px;height:32px;border-radius:10px;background:' + accentRgba + '0.12);border:1px solid ' + accentRgba + '0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">' + icon + '</div>';
-        html += '<div style="font-size:' + (isMobile ? '11px' : '13px') + ';font-weight:800;letter-spacing:2px;text-transform:uppercase;color:' + (b.titleColor || '#fff') + ';text-shadow:0 0 15px ' + accentRgba + '0.3)">' + b.title + '</div>';
+        /* Logo + Title row */
+        html += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">';
+        html += '<img src="../logo.png" alt="Golden Barbers" style="width:36px;height:36px;border-radius:50%;border:2px solid ' + accentRgba + '0.3);object-fit:contain;background:#000;flex-shrink:0"/>';
+        html += '<div>';
+        html += '<div style="font-size:' + (isMobile ? '12px' : '15px') + ';font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:' + (b.titleColor || '#fff') + ';text-shadow:0 0 20px ' + accentRgba + '0.4)">' + b.title + '</div>';
+        html += '<div style="font-size:' + (isMobile ? '10px' : '12px') + ';color:rgba(255,255,255,.45);margin-top:2px">' + b.sub + '</div>';
         html += '</div>';
-        html += '<div style="font-size:' + (isMobile ? '10px' : '12px') + ';color:rgba(255,255,255,.5);line-height:1.4">' + b.sub + '</div>';
+        html += '<div style="margin-left:auto;flex-shrink:0;width:36px;height:36px;border-radius:10px;background:' + accentRgba + '0.1);border:1px solid ' + accentRgba + '0.15);display:flex;align-items:center;justify-content:center">' + icon + '</div>';
+        html += '</div>';
         if (theme.popup && theme.popup.code) {
-            html += '<div style="margin-top:10px;padding:6px 12px;background:rgba(0,0,0,.3);border:1px dashed ' + accentRgba + '0.3);border-radius:8px;display:inline-block">';
-            html += '<span style="font-size:9px;color:rgba(255,255,255,.35)">CODE: </span><span style="font-size:12px;font-weight:800;color:' + accent + ';letter-spacing:2px">' + theme.popup.code + '</span>';
+            html += '<div style="display:flex;align-items:center;gap:12px;padding:8px 14px;background:rgba(0,0,0,.25);border:1px solid ' + accentRgba + '0.15);border-radius:10px;margin-top:4px">';
+            html += '<span style="font-size:10px;color:rgba(255,255,255,.35);letter-spacing:1px">USE CODE</span>';
+            html += '<span style="font-size:14px;font-weight:800;color:' + accent + ';letter-spacing:3px">' + theme.popup.code + '</span>';
+            html += '<a href="services.html" style="margin-left:auto;padding:6px 16px;background:' + accent + ';color:#000;border-radius:8px;font-size:11px;font-weight:700;text-decoration:none;letter-spacing:1px">BOOK NOW</a>';
             html += '</div>';
         }
         html += '</div>';
 
         el.innerHTML = html;
-        document.body.appendChild(el);
-        state.extraEls.push(el);
+        wrapper.appendChild(el);
+
+        if (insertTarget && insertTarget.parentNode) {
+            insertTarget.parentNode.insertBefore(wrapper, insertTarget);
+        } else {
+            document.body.appendChild(wrapper);
+        }
+        state.extraEls.push(wrapper);
     }
 
     /* ═══ FRONTEND THEMING – Section dividers, trust blocks, CTAs ═══ */
@@ -1620,6 +2155,8 @@
             if (theme.vignette) createVignette(theme.vignette);
             if (theme.lights) createLights();
             if (theme.heroHat) addAccessory(theme.heroHat);
+            createHeroTakeover(theme, themeKey);
+            createHeroPhoto(theme);
             themeFrontend(theme, themeKey);
             createGlassPanel(theme, themeKey);
             createPromoBanner(theme, themeKey);
