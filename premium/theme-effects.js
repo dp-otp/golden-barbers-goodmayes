@@ -16,7 +16,8 @@
         themeStyleEls: [], countdownInterval: null,
         heroTakeover: null, heroTimeout: null, heroScrollHandler: null,
         promoBanner: null, promoBannerTimer: null,
-        atmosphere: null, navThemeEls: [], savedNavBg: null
+        atmosphere: null, navThemeEls: [], savedNavBg: null,
+        savedCSSVars: null, themeCSS: null
     };
 
     var isMainPage = (function () {
@@ -703,20 +704,20 @@
             var h = isMobile && cfg.mh ? cfg.mh : cfg.h;
             var pos = cfg.pos || 'tl';
 
-            /* NAV CORNER: decorations positioned at nav bar corners */
+            /* NAV CORNER: decorations positioned inside nav bar edges */
             if (pos === 'nav-tl' || pos === 'nav-tr') {
-                var nav = document.querySelector('.nav');
-                if (!nav) return;
-                nav.style.overflow = 'visible';
+                var navInner = document.querySelector('.nav-inner') || document.querySelector('.nav');
+                if (!navInner) return;
+                navInner.style.position = 'relative';
                 var elN = document.createElement('div'); elN.className = 'gb-nav-decor';
                 elN.style.width = w + 'px'; elN.style.height = h + 'px';
-                elN.style.top = -(h * 0.15) + 'px';
-                if (pos === 'nav-tl') elN.style.left = -(w * 0.3) + 'px';
-                else elN.style.right = -(w * 0.3) + 'px';
+                elN.style.top = '50%'; elN.style.transform = 'translateY(-50%)';
+                if (pos === 'nav-tl') elN.style.left = (isMobile ? '50px' : '190px');
+                else elN.style.right = (isMobile ? '55px' : '130px');
                 if (cfg.opacity) elN.style.opacity = cfg.opacity;
-                if (cfg.rotate) elN.style.transform = 'rotate(' + cfg.rotate + 'deg)';
+                if (cfg.rotate) elN.style.transform = 'translateY(-50%) rotate(' + cfg.rotate + 'deg)';
                 elN.innerHTML = content;
-                nav.appendChild(elN); state.decorEls.push(elN);
+                navInner.appendChild(elN); state.decorEls.push(elN);
                 return;
             }
 
@@ -1221,6 +1222,115 @@
         state.navLine.style.background = theme.navLine; nav.appendChild(state.navLine);
     }
 
+    /* ═══ CSS VARIABLE OVERRIDE – transforms entire page colour scheme ═══ */
+    function overrideCSSVars(theme) {
+        var accent = theme.frontendAccent || '#d4af37';
+        var accentRgba = theme.frontendAccentRgba || 'rgba(212,175,55,';
+        var root = document.documentElement;
+
+        /* Save original values */
+        var vars = ['--gold', '--gold-dark', '--gold-light', '--gold-glow', '--gold-neon'];
+        state.savedCSSVars = {};
+        vars.forEach(function (v) {
+            state.savedCSSVars[v] = getComputedStyle(root).getPropertyValue(v).trim();
+        });
+
+        /* Override with theme accent */
+        root.style.setProperty('--gold', accent);
+        root.style.setProperty('--gold-dark', accent);
+        root.style.setProperty('--gold-light', accent);
+        root.style.setProperty('--gold-glow', accentRgba + '0.5)');
+        root.style.setProperty('--gold-neon', accent);
+
+        /* Theme body attribute for additional CSS hooks */
+        document.body.setAttribute('data-gb-theme', 'active');
+    }
+
+    function restoreCSSVars() {
+        if (!state.savedCSSVars) return;
+        var root = document.documentElement;
+        Object.keys(state.savedCSSVars).forEach(function (v) {
+            if (state.savedCSSVars[v]) root.style.setProperty(v, state.savedCSSVars[v]);
+            else root.style.removeProperty(v);
+        });
+        state.savedCSSVars = null;
+        document.body.removeAttribute('data-gb-theme');
+    }
+
+    /* ═══ THEME-SPECIFIC CSS – additional transformations beyond variable override ═══ */
+    function injectThemeCSS(theme) {
+        if (state.themeCSS) return;
+        var accent = theme.frontendAccent || '#d4af37';
+        var accentRgba = theme.frontendAccentRgba || 'rgba(212,175,55,';
+
+        state.themeCSS = document.createElement('style');
+        state.themeCSS.id = 'gb-theme-page';
+        state.themeCSS.textContent = [
+            /* Marquee section gets subtle themed tint */
+            '[data-gb-theme] .marquee-section{position:relative;overflow:hidden}',
+            '[data-gb-theme] .marquee-section::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,' + accentRgba + '0.06),transparent 50%,' + accentRgba + '0.04));pointer-events:none;z-index:0}',
+            '[data-gb-theme] .marquee-item{color:' + accent + ' !important;text-shadow:0 0 30px ' + accentRgba + '0.3)}',
+
+            /* Hero section tint */
+            '[data-gb-theme] .hero-badge{border-color:' + accentRgba + '0.3) !important}',
+            '[data-gb-theme] .hero-badge-dot{background:' + accent + ' !important;box-shadow:0 0 8px ' + accent + ' !important}',
+
+            /* Stats section enhanced */
+            '[data-gb-theme] .stats{position:relative}',
+            '[data-gb-theme] .stats::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,' + accentRgba + '0.03),transparent 40%,' + accentRgba + '0.02));pointer-events:none}',
+            '[data-gb-theme] .stat-number{color:' + accent + ' !important;text-shadow:0 0 20px ' + accentRgba + '0.3) !important}',
+
+            /* Testimonials themed */
+            '[data-gb-theme] .testimonial-quote{color:' + accentRgba + '0.25) !important}',
+            '[data-gb-theme] .testimonial-stars{color:' + accent + ' !important}',
+            '[data-gb-theme] .testimonial-card{border-color:' + accentRgba + '0.1) !important;transition:border-color .8s}',
+            '[data-gb-theme] .testimonial-card:hover{border-color:' + accentRgba + '0.25) !important}',
+
+            /* CTA section themed */
+            '[data-gb-theme] .cta{position:relative}',
+            '[data-gb-theme] .cta::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,' + accentRgba + '0.08),transparent 70%);pointer-events:none}',
+
+            /* Service cards enhanced hover */
+            '[data-gb-theme] .service-card{transition:border-color .3s,box-shadow .3s}',
+            '[data-gb-theme] .service-card:hover{border-color:' + accentRgba + '0.3) !important;box-shadow:0 0 25px ' + accentRgba + '0.08) !important}',
+
+            /* Services page category buttons */
+            '[data-gb-theme] .category-btn.active{background:' + accent + ' !important;color:#fff !important;box-shadow:0 0 15px ' + accentRgba + '0.3) !important}',
+            '[data-gb-theme] .category-btn{border-color:' + accentRgba + '0.2) !important;transition:all .3s}',
+
+            /* Services page badges */
+            '[data-gb-theme] .service-badge{background:' + accent + ' !important}',
+
+            /* Button accents */
+            '[data-gb-theme] .btn-primary{background:' + accent + ' !important;box-shadow:0 4px 20px ' + accentRgba + '0.3) !important}',
+            '[data-gb-theme] .btn-outline{border-color:' + accent + ' !important;color:' + accent + ' !important}',
+            '[data-gb-theme] .btn-outline:hover{background:' + accent + ' !important;color:#fff !important}',
+            '[data-gb-theme] .service-cta{background:' + accent + ' !important;box-shadow:0 2px 12px ' + accentRgba + '0.2) !important}',
+
+            /* Nav CTA */
+            '[data-gb-theme] .nav-cta{background:' + accent + ' !important;box-shadow:0 0 15px ' + accentRgba + '0.3) !important}',
+
+            /* Section headers */
+            '[data-gb-theme] .section-tag span{color:' + accent + ' !important}',
+            '[data-gb-theme] .section-tag-line{background:' + accent + ' !important}',
+
+            /* Neon icons */
+            '[data-gb-theme] .neon-icon{color:' + accent + ' !important;filter:drop-shadow(0 0 8px ' + accentRgba + '0.4))}',
+
+            /* Footer accent */
+            '[data-gb-theme] .footer a:hover{color:' + accent + ' !important}',
+
+            /* Smooth transition for all themed elements */
+            '[data-gb-theme] .gold{transition:color .8s !important}',
+            '[data-gb-theme] .section-tag{transition:color .8s,border-color .8s !important}'
+        ].join('\n');
+        document.head.appendChild(state.themeCSS);
+    }
+
+    function removeThemeCSS() {
+        if (state.themeCSS) { state.themeCSS.remove(); state.themeCSS = null; }
+    }
+
     /* ═══ MAIN API ═══ */
     function apply(data) {
         if (!data || !data.themeId) { remove(); return; }
@@ -1231,6 +1341,10 @@
         state.id = data.themeId;
         var themeKey = data.themeId.toLowerCase().replace(/[\s_']/g, '-');
         injectCSS();
+
+        /* GLOBAL: Override CSS custom properties – transforms entire page colour scheme */
+        overrideCSSVars(theme);
+        injectThemeCSS(theme);
 
         /* ALL PAGES: glow, border, nav line, nav theme, atmosphere */
         applyGlow(theme);
@@ -1253,10 +1367,6 @@
             if (theme.vignette) createVignette(theme.vignette);
             if (theme.lights) createLights();
             if (theme.heroHat) addAccessory(theme.heroHat);
-            createHeroTakeover(theme);
-            createHeroBadge(theme);
-            createSeasonalDividers(theme);
-            themeServiceCards(theme);
             themeFrontend(theme, themeKey);
             createPromoBanner(theme, themeKey);
             /* Popup shows after banner (delayed) */
@@ -1307,6 +1417,9 @@
         if (nav) nav.style.removeProperty('overflow');
         /* Service card position cleanup */
         document.querySelectorAll('.service-card').forEach(function (c) { c.style.removeProperty('position'); });
+        /* CSS variable and themed CSS cleanup */
+        restoreCSSVars();
+        removeThemeCSS();
         removeGlow();
         state.id = null;
     }
