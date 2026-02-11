@@ -1,7 +1,7 @@
 /**
- * Golden Barbers – Premium Seasonal Theme Effects v10
- * Creative placements, hats on LOGO images, bottom slide-up banners,
- * deal features, proper cleanup on remove.
+ * Golden Barbers – Premium Seasonal Theme Effects v13
+ * Hero seasonal takeovers, atmospheric page film, premium promo banners,
+ * nav transformation, enhanced particles with glow, section accent theming.
  */
 (function () {
     'use strict';
@@ -9,11 +9,14 @@
     var state = {
         canvas: null, ctx: null, raf: null, particles: [],
         bokehEls: [], decorEls: [], extraEls: [],
-        banner: null, bannerTimer: null, border: null, navLine: null,
-        style: null, hatEls: [], dealEls: [], id: null,
+        border: null, navLine: null,
+        style: null, hatEls: [], id: null,
         savedBorder: null, savedShadow: null, savedNavGlow: null,
-        stickyBar: null, popup: null, popupTimer: null,
-        themeStyleEls: [], countdownInterval: null
+        popup: null, popupTimer: null,
+        themeStyleEls: [], countdownInterval: null,
+        heroTakeover: null, heroTimeout: null, heroScrollHandler: null,
+        promoBanner: null, promoBannerTimer: null,
+        atmosphere: null, navThemeEls: [], savedNavBg: null
     };
 
     var isMainPage = (function () {
@@ -143,7 +146,7 @@
     ═══════════════════════════════════════════ */
     var THEMES = {
         christmas: {
-            particleType: 'snow', particleCount: isMobile ? 12 : 22,
+            particleType: 'snow', particleCount: isMobile ? 30 : 55,
             bokeh: [
                 { color: 'rgba(200,60,60,.06)', size: 180, x: 15, y: 20, blur: 60 },
                 { color: 'rgba(46,125,50,.05)', size: 150, x: 75, y: 35, blur: 55 },
@@ -164,10 +167,11 @@
             deal: { text: 'Festive Deals!', style: 'ribbon', color: '#C62828', accent: '#FFD700' },
             frontendAccent: '#FFD700', frontendAccentRgba: 'rgba(255,215,0,',
             stickyBar: { text: 'Festive Season Special \u2013 Book your Christmas cut today!', bg: '#C62828', bgEnd: '#8E0000', color: '#fff', icon: '\uD83C\uDF84' },
-            popup: { title: 'FESTIVE DEALS', sub: 'Premium grooming for the holiday season', accent: '#C62828', accent2: '#1B5E20', overline: 'Merry Christmas', code: 'XMAS25', countdownHours: 48, btnColor: '#fff' }
+            popup: { title: 'FESTIVE DEALS', sub: 'Premium grooming for the holiday season', accent: '#C62828', accent2: '#1B5E20', overline: 'Merry Christmas', code: 'XMAS25', countdownHours: 48, btnColor: '#fff' },
+            heroTitle: 'MERRY CHRISTMAS', heroSub: 'Wishing you joy & style this festive season', heroGradient: 'linear-gradient(135deg, rgba(139,0,0,.82) 0%, rgba(10,60,10,.7) 50%, rgba(139,0,0,.82) 100%)', atmosphere: ['rgba(200,60,60,.04)', 'rgba(46,125,50,.03)'], navAccent: '#C62828'
         },
         valentines: {
-            particleType: 'hearts', particleCount: isMobile ? 8 : 16,
+            particleType: 'hearts', particleCount: isMobile ? 22 : 45,
             bokeh: [
                 { color: 'rgba(233,30,99,.06)', size: 190, x: 25, y: 25, blur: 65 },
                 { color: 'rgba(244,143,177,.05)', size: 150, x: 70, y: 45, blur: 50 }
@@ -184,10 +188,11 @@
             deal: { text: 'Couples Special!', style: 'ribbon', color: '#AD1457', accent: '#F48FB1' },
             frontendAccent: '#F48FB1', frontendAccentRgba: 'rgba(244,143,177,',
             stickyBar: { text: "Valentine's Special \u2013 Look sharp for your someone special!", bg: '#AD1457', bgEnd: '#880E4F', color: '#fff', icon: '\u2764\uFE0F' },
-            popup: { title: "VALENTINE'S DEAL", sub: 'Couples grooming package available', accent: '#E91E63', overline: "Valentine's Day", code: 'LOVE15', countdownHours: 24, btnColor: '#fff' }
+            popup: { title: "VALENTINE'S DEAL", sub: 'Couples grooming package available', accent: '#E91E63', overline: "Valentine's Day", code: 'LOVE15', countdownHours: 24, btnColor: '#fff' },
+            heroTitle: "VALENTINE'S DAY", heroSub: 'Look sharp for your special someone', heroGradient: 'linear-gradient(135deg, rgba(173,20,87,.8) 0%, rgba(233,30,99,.6) 100%)', atmosphere: ['rgba(233,30,99,.04)', 'rgba(244,143,177,.03)'], navAccent: '#E91E63'
         },
         winter: {
-            particleType: 'snow', particleCount: isMobile ? 14 : 25,
+            particleType: 'snow', particleCount: isMobile ? 35 : 60,
             bokeh: [
                 { color: 'rgba(100,180,246,.05)', size: 180, x: 20, y: 20, blur: 60 },
                 { color: 'rgba(79,195,247,.04)', size: 160, x: 70, y: 40, blur: 55 }
@@ -203,10 +208,11 @@
             ],
             frost: true, hanging: 'icicles',
             frontendAccent: '#4FC3F7', frontendAccentRgba: 'rgba(79,195,247,',
-            stickyBar: { text: 'Winter Warmth \u2013 Free hot towel with every cut this season!', bg: '#01579B', bgEnd: '#0277BD', color: '#E1F5FE', icon: '\u2744\uFE0F' }
+            stickyBar: { text: 'Winter Warmth \u2013 Free hot towel with every cut this season!', bg: '#01579B', bgEnd: '#0277BD', color: '#E1F5FE', icon: '\u2744\uFE0F' },
+            heroTitle: 'WINTER WARMTH', heroSub: 'Warm up with a fresh new look', heroGradient: 'linear-gradient(135deg, rgba(10,30,60,.85) 0%, rgba(100,180,246,.5) 100%)', atmosphere: ['rgba(100,180,246,.04)', 'rgba(79,195,247,.03)'], navAccent: '#64B5F6'
         },
         halloween: {
-            particleType: 'embers', particleCount: isMobile ? 8 : 15,
+            particleType: 'embers', particleCount: isMobile ? 22 : 40,
             bokeh: [
                 { color: 'rgba(255,111,0,.06)', size: 180, x: 20, y: 25, blur: 60 },
                 { color: 'rgba(106,27,154,.05)', size: 160, x: 75, y: 40, blur: 55 }
@@ -225,10 +231,11 @@
             deal: { text: 'Spooky Savings!', style: 'ribbon', color: '#4A148C', accent: '#FF6F00' },
             frontendAccent: '#FF6F00', frontendAccentRgba: 'rgba(255,111,0,',
             stickyBar: { text: 'Spooky Season \u2013 Flash deals all week!', bg: '#4A148C', bgEnd: '#1A0530', color: '#FFE0B2', icon: '\uD83C\uDF83' },
-            popup: { title: 'SPOOKY FLASH DEAL', sub: 'Get a killer look this Halloween', accent: '#FF6F00', accent2: '#4A148C', overline: 'Halloween Special', countdownHours: 6, btnColor: '#000' }
+            popup: { title: 'SPOOKY FLASH DEAL', sub: 'Get a killer look this Halloween', accent: '#FF6F00', accent2: '#4A148C', overline: 'Halloween Special', countdownHours: 6, btnColor: '#000' },
+            heroTitle: 'HAPPY HALLOWEEN', heroSub: 'Get a killer look this spooky season', heroGradient: 'linear-gradient(135deg, rgba(26,5,48,.88) 0%, rgba(255,111,0,.45) 100%)', atmosphere: ['rgba(106,27,154,.04)', 'rgba(255,111,0,.03)'], navAccent: '#FF6F00'
         },
         easter: {
-            particleType: 'petals', particleCount: isMobile ? 8 : 16,
+            particleType: 'petals', particleCount: isMobile ? 22 : 45,
             bokeh: [
                 { color: 'rgba(129,199,132,.05)', size: 170, x: 20, y: 30, blur: 55 },
                 { color: 'rgba(244,143,177,.05)', size: 150, x: 75, y: 35, blur: 50 }
@@ -244,10 +251,11 @@
             bottom: 'grass', heroHat: { type: 'img', src: IMG.bunny, isBunny: true },
             deal: { text: 'Spring Deals!', style: 'ribbon', color: '#2E7D32', accent: '#C8E6C9' },
             frontendAccent: '#81C784', frontendAccentRgba: 'rgba(129,199,132,',
-            stickyBar: { text: 'Spring into style \u2013 Fresh cuts for the new season!', bg: '#2E7D32', bgEnd: '#1B5E20', color: '#C8E6C9', icon: '\uD83D\uDC23' }
+            stickyBar: { text: 'Spring into style \u2013 Fresh cuts for the new season!', bg: '#2E7D32', bgEnd: '#1B5E20', color: '#C8E6C9', icon: '\uD83D\uDC23' },
+            heroTitle: 'HAPPY EASTER', heroSub: 'Spring into a fresh new look', heroGradient: 'linear-gradient(135deg, rgba(46,125,50,.7) 0%, rgba(244,143,177,.5) 100%)', atmosphere: ['rgba(129,199,132,.04)', 'rgba(244,143,177,.03)'], navAccent: '#81C784'
         },
         summer: {
-            particleType: 'sparkle', particleCount: isMobile ? 8 : 15,
+            particleType: 'sparkle', particleCount: isMobile ? 22 : 45,
             bokeh: [
                 { color: 'rgba(255,200,100,.07)', size: 200, x: 80, y: 10, blur: 75 },
                 { color: 'rgba(2,136,209,.04)', size: 160, x: 20, y: 60, blur: 55 }
@@ -262,10 +270,11 @@
             bottom: 'waves', heroHat: { type: 'img', src: IMG.sunglasses, isGlasses: true },
             deal: { text: 'Summer Sale!', style: 'ribbon', color: '#E65100', accent: '#FFF3E0' },
             frontendAccent: '#FF8F00', frontendAccentRgba: 'rgba(255,143,0,',
-            stickyBar: { text: 'Summer Vibes \u2013 Stay fresh all season long!', bg: '#E65100', bgEnd: '#FF6D00', color: '#FFF3E0', icon: '\u2600\uFE0F' }
+            stickyBar: { text: 'Summer Vibes \u2013 Stay fresh all season long!', bg: '#E65100', bgEnd: '#FF6D00', color: '#FFF3E0', icon: '\u2600\uFE0F' },
+            heroTitle: 'SUMMER VIBES', heroSub: 'Stay fresh all summer long', heroGradient: 'linear-gradient(135deg, rgba(230,81,0,.7) 0%, rgba(2,136,209,.5) 100%)', atmosphere: ['rgba(255,143,0,.04)', 'rgba(2,136,209,.03)'], navAccent: '#FF8F00'
         },
         eid: {
-            particleType: 'stars', particleCount: isMobile ? 8 : 16,
+            particleType: 'stars', particleCount: isMobile ? 22 : 45,
             bokeh: [
                 { color: 'rgba(253,216,53,.06)', size: 190, x: 30, y: 20, blur: 65 },
                 { color: 'rgba(46,125,50,.04)', size: 150, x: 70, y: 50, blur: 50 }
@@ -281,10 +290,11 @@
             hanging: 'lanterns', sparkleField: true,
             frontendAccent: '#FDD835', frontendAccentRgba: 'rgba(253,216,53,',
             stickyBar: { text: 'Eid Mubarak \u2013 Celebrate with a fresh new look!', bg: '#1B5E20', bgEnd: '#2E7D32', color: '#FFF9C4', icon: '\u2728' },
-            popup: { title: 'EID SPECIAL', sub: 'Premium grooming for the celebration', accent: '#FDD835', accent2: '#2E7D32', overline: 'Eid Mubarak', code: 'EID20', countdownHours: 72, btnColor: '#000' }
+            popup: { title: 'EID SPECIAL', sub: 'Premium grooming for the celebration', accent: '#FDD835', accent2: '#2E7D32', overline: 'Eid Mubarak', code: 'EID20', countdownHours: 72, btnColor: '#000' },
+            heroTitle: 'EID MUBARAK', heroSub: 'Celebrate in style with a fresh look', heroGradient: 'linear-gradient(135deg, rgba(30,60,20,.85) 0%, rgba(253,216,53,.4) 100%)', atmosphere: ['rgba(253,216,53,.04)', 'rgba(46,125,50,.03)'], navAccent: '#FDD835'
         },
         ramadan: {
-            particleType: 'stars', particleCount: isMobile ? 8 : 15,
+            particleType: 'stars', particleCount: isMobile ? 22 : 40,
             bokeh: [
                 { color: 'rgba(184,134,11,.06)', size: 190, x: 25, y: 20, blur: 65 },
                 { color: 'rgba(26,35,126,.05)', size: 170, x: 70, y: 45, blur: 55 }
@@ -300,10 +310,11 @@
             ],
             hanging: 'lanterns', sparkleField: true,
             frontendAccent: '#B8860B', frontendAccentRgba: 'rgba(184,134,11,',
-            stickyBar: { text: 'Ramadan Kareem \u2013 Evening appointments available', bg: '#1A237E', bgEnd: '#0D1450', color: '#E8EAF6', icon: '\u262A\uFE0F' }
+            stickyBar: { text: 'Ramadan Kareem \u2013 Evening appointments available', bg: '#1A237E', bgEnd: '#0D1450', color: '#E8EAF6', icon: '\u262A\uFE0F' },
+            heroTitle: 'RAMADAN KAREEM', heroSub: 'Wishing you a blessed & beautiful month', heroGradient: 'linear-gradient(135deg, rgba(10,10,46,.88) 0%, rgba(184,134,11,.4) 100%)', atmosphere: ['rgba(184,134,11,.04)', 'rgba(26,35,126,.03)'], navAccent: '#B8860B'
         },
         autumn: {
-            particleType: 'leaves', particleCount: isMobile ? 10 : 20,
+            particleType: 'leaves', particleCount: isMobile ? 25 : 50,
             bokeh: [
                 { color: 'rgba(221,44,0,.06)', size: 190, x: 20, y: 25, blur: 65 },
                 { color: 'rgba(255,143,0,.05)', size: 160, x: 75, y: 40, blur: 55 },
@@ -321,10 +332,11 @@
             deal: { text: 'Autumn Sale!', style: 'ribbon', color: '#BF360C', accent: '#FFAB91' },
             frontendAccent: '#FF6F00', frontendAccentRgba: 'rgba(255,111,0,',
             stickyBar: { text: 'Autumn Sale \u2013 Warm up with a fresh new style!', bg: '#BF360C', bgEnd: '#DD2C00', color: '#FFAB91', icon: '\uD83C\uDF42' },
-            popup: { title: 'AUTUMN SPECIAL', sub: 'New season, new look', accent: '#DD2C00', accent2: '#FF6F00', overline: 'Limited Time', code: 'AUTUMN20', countdownHours: 48, btnColor: '#fff' }
+            popup: { title: 'AUTUMN SPECIAL', sub: 'New season, new look', accent: '#DD2C00', accent2: '#FF6F00', overline: 'Limited Time', code: 'AUTUMN20', countdownHours: 48, btnColor: '#fff' },
+            heroTitle: 'AUTUMN VIBES', heroSub: 'Fresh look for the new season', heroGradient: 'linear-gradient(135deg, rgba(191,54,12,.75) 0%, rgba(255,143,0,.5) 100%)', atmosphere: ['rgba(221,44,0,.04)', 'rgba(255,143,0,.03)'], navAccent: '#DD2C00'
         },
         'black-friday': {
-            particleType: 'tags', particleCount: isMobile ? 6 : 12,
+            particleType: 'tags', particleCount: isMobile ? 18 : 38,
             bokeh: [
                 { color: 'rgba(255,23,68,.06)', size: 200, x: 30, y: 25, blur: 70 },
                 { color: 'rgba(255,214,0,.05)', size: 170, x: 70, y: 45, blur: 55 }
@@ -341,10 +353,11 @@
             deal: { style: 'brush' },
             frontendAccent: '#FF1744', frontendAccentRgba: 'rgba(255,23,68,',
             stickyBar: { text: 'BLACK FRIDAY \u2013 Biggest deals of the year! Up to 30% OFF', bg: '#000', bgEnd: '#111', color: '#FFD600', icon: '\uD83D\uDCB0', gradient: 'linear-gradient(135deg,#000,#1a0008)' },
-            popup: { title: 'BLACK FRIDAY MEGA SALE', sub: 'Our biggest deals of the entire year', accent: '#FF1744', accent2: '#FFD600', overline: 'Limited Time Only', code: 'BFRIDAY30', countdownHours: 3, btnColor: '#000', showCountdown: true }
+            popup: { title: 'BLACK FRIDAY MEGA SALE', sub: 'Our biggest deals of the entire year', accent: '#FF1744', accent2: '#FFD600', overline: 'Limited Time Only', code: 'BFRIDAY30', countdownHours: 3, btnColor: '#000', showCountdown: true },
+            heroTitle: 'BLACK FRIDAY', heroSub: 'Biggest deals of the year!', heroGradient: 'linear-gradient(135deg, rgba(0,0,0,.95) 0%, rgba(255,23,68,.3) 100%)', atmosphere: ['rgba(255,23,68,.04)', 'rgba(255,214,0,.02)'], navAccent: '#FF1744'
         },
         'new-year': {
-            particleType: 'confetti', particleCount: isMobile ? 12 : 25,
+            particleType: 'confetti', particleCount: isMobile ? 30 : 55,
             bokeh: [
                 { color: 'rgba(255,215,0,.07)', size: 210, x: 40, y: 20, blur: 70 },
                 { color: 'rgba(13,71,161,.05)', size: 170, x: 75, y: 50, blur: 55 }
@@ -362,13 +375,14 @@
             deal: { text: 'New Year Deal!', style: 'ribbon', color: '#0D47A1', accent: '#FFD700' },
             frontendAccent: '#FFD700', frontendAccentRgba: 'rgba(255,215,0,',
             stickyBar: { text: 'Happy New Year \u2013 New year, fresh look! Book now', bg: '#0D47A1', bgEnd: '#1565C0', color: '#fff', icon: '\uD83C\uDF89' },
-            popup: { title: 'NEW YEAR SPECIAL', sub: 'Start the year looking your best', accent: '#FFD700', accent2: '#0D47A1', overline: 'Happy New Year', code: 'NEWYEAR15', countdownHours: 168, btnColor: '#000' }
+            popup: { title: 'NEW YEAR SPECIAL', sub: 'Start the year looking your best', accent: '#FFD700', accent2: '#0D47A1', overline: 'Happy New Year', code: 'NEWYEAR15', countdownHours: 168, btnColor: '#000' },
+            heroTitle: 'HAPPY NEW YEAR', heroSub: 'New year, fresh look – Start the year right!', heroGradient: 'linear-gradient(135deg, rgba(10,10,46,.88) 0%, rgba(255,215,0,.3) 100%)', atmosphere: ['rgba(255,215,0,.04)', 'rgba(13,71,161,.03)'], navAccent: '#FFD700'
         }
     };
     THEMES.blackfriday = THEMES['black-friday'];
     THEMES.newyear = THEMES['new-year'];
     THEMES.flashsale = THEMES['flash-sale'] = {
-        particleType: 'confetti', particleCount: isMobile ? 10 : 20,
+        particleType: 'confetti', particleCount: isMobile ? 25 : 50,
         bokeh: [
             { color: 'rgba(255,23,68,.07)', size: 200, x: 25, y: 20, blur: 70 },
             { color: 'rgba(255,215,0,.05)', size: 170, x: 70, y: 45, blur: 55 }
@@ -385,7 +399,8 @@
         deal: { text: 'FLASH DEAL!', style: 'brush', color: '#FF1744', accent: '#FFD600' },
         frontendAccent: '#FF1744', frontendAccentRgba: 'rgba(255,23,68,',
         stickyBar: { text: 'FLASH SALE \u2013 Up to 50% OFF for a limited time only!', bg: '#000', bgEnd: '#1a0008', color: '#FF1744', icon: '\u26A1', gradient: 'linear-gradient(135deg,#1a0008,#000)' },
-        popup: { title: 'FLASH SALE', sub: 'Save up to 50% \u2013 for a limited time only!', accent: '#FF1744', accent2: '#FFD600', overline: '% Flash Sale %', code: 'FLASH50', countdownHours: 3, btnColor: '#fff', showCountdown: true }
+        popup: { title: 'FLASH SALE', sub: 'Save up to 50% \u2013 for a limited time only!', accent: '#FF1744', accent2: '#FFD600', overline: '% Flash Sale %', code: 'FLASH50', countdownHours: 3, btnColor: '#fff', showCountdown: true },
+        heroTitle: '⚡ FLASH SALE', heroSub: 'Limited time only – Don\'t miss out!', heroGradient: 'linear-gradient(135deg, rgba(26,0,8,.92) 0%, rgba(255,23,68,.4) 100%)', atmosphere: ['rgba(255,23,68,.04)', 'rgba(255,214,0,.02)'], navAccent: '#FF1744'
     };
 
     /* ═══ CSS INJECTION ═══ */
@@ -397,11 +412,16 @@
             '.gb-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}',
             '.gb-bokeh{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:gb-bfloat 30s ease-in-out infinite}',
             '@keyframes gb-bfloat{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(15px,-20px) scale(1.05)}50%{transform:translate(-10px,15px) scale(.95)}75%{transform:translate(20px,10px) scale(1.03)}}',
-            /* Bottom slide-up banner – glass morphism upgrade */
-            '.gb-banner{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:10001;font-family:"Inter","Outfit",sans-serif;pointer-events:auto;max-width:520px;width:calc(100% - 40px);opacity:0;animation:gb-slideup .6s cubic-bezier(.34,1.56,.64,1) 1.5s forwards;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}',
-            '.gb-banner-inner{padding:18px 48px 18px 20px;display:flex;align-items:center;gap:14px;position:relative;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}',
-            '@keyframes gb-slideup{from{opacity:0;transform:translateX(-50%) translateY(30px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}',
-            '@keyframes gb-slidedown{to{opacity:0;transform:translateX(-50%) translateY(30px)}}',
+            /* Premium promo banner – full-width bottom bar */
+            '.gb-promo-banner{position:fixed;bottom:0;left:0;width:100%;z-index:10001;font-family:"Inter","Outfit",sans-serif;pointer-events:auto;transform:translateY(100%);animation:gb-promo-in .6s cubic-bezier(.34,1.56,.64,1) 2s forwards}',
+            '.gb-promo-inner{display:flex;align-items:center;gap:16px;padding:16px 56px 16px 24px;min-height:64px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative;border-top:1px solid rgba(255,255,255,.08)}',
+            '.gb-promo-icon{flex-shrink:0;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center}',
+            '.gb-promo-close{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.5);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s}',
+            '.gb-promo-close:hover{background:rgba(255,255,255,.15);color:#fff}',
+            '.gb-promo-progress{position:absolute;bottom:0;left:0;width:100%;height:3px;background:rgba(255,255,255,.06);overflow:hidden}',
+            '.gb-promo-progress-bar{height:100%;transform-origin:left;animation:gb-barfill 12s linear forwards}',
+            '@keyframes gb-promo-in{from{transform:translateY(100%)}to{transform:translateY(0)}}',
+            '@keyframes gb-promo-out{to{transform:translateY(100%)}}',
             '@keyframes gb-barfill{to{transform:scaleX(0)}}',
             /* Decorations */
             '.gb-decor{position:fixed;pointer-events:none;z-index:2;opacity:0;animation:gb-fin 2s ease .6s forwards}',
@@ -412,9 +432,17 @@
             '.gb-dangle-item{transform-origin:top center;animation:gb-swing 4s ease-in-out infinite}',
             '.gb-dangle-item img,.gb-dangle-item svg{width:100%;height:100%;display:block;object-fit:contain}',
             '@keyframes gb-swing{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}',
-            /* Deal feature */
-            '.gb-deal{position:fixed;pointer-events:none;z-index:999;opacity:0;animation:gb-dealpop .8s cubic-bezier(.34,1.56,.64,1) 2s forwards}',
-            '@keyframes gb-dealpop{to{opacity:1}}',
+            /* Hero seasonal takeover overlay */
+            '.gb-hero-takeover{position:absolute;inset:0;z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;opacity:0;animation:gb-takeover-in 1.2s cubic-bezier(.16,1,.3,1) forwards;overflow:hidden}',
+            '.gb-hero-takeover-bg{position:absolute;inset:0;animation:gb-takeover-pulse 4s ease-in-out infinite}',
+            '.gb-hero-takeover-title{font-family:"Outfit",sans-serif;font-size:clamp(36px,8vw,80px);font-weight:900;letter-spacing:6px;text-transform:uppercase;text-align:center;position:relative;z-index:2;line-height:1.1;padding:0 20px;background:linear-gradient(90deg,var(--ht-c1) 0%,var(--ht-c2) 40%,#fff 50%,var(--ht-c2) 60%,var(--ht-c1) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gb-shimmer-text 3s linear infinite;filter:drop-shadow(0 0 30px var(--ht-glow))}',
+            '.gb-hero-takeover-sub{font-family:"Inter",sans-serif;font-size:clamp(12px,2.5vw,20px);font-weight:400;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.7);text-align:center;margin-top:12px;position:relative;z-index:2}',
+            '.gb-hero-takeover-ring{position:absolute;border-radius:50%;border:2px solid;opacity:.4;animation:gb-ring-pulse 3s ease-in-out infinite;pointer-events:none}',
+            '@keyframes gb-takeover-in{0%{opacity:0;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}',
+            '@keyframes gb-takeover-out{0%{opacity:1}100%{opacity:0;transform:scale(.95)}}',
+            '@keyframes gb-takeover-pulse{0%,100%{opacity:.82}50%{opacity:.92}}',
+            '@keyframes gb-shimmer-text{0%{background-position:-200% center}100%{background-position:200% center}}',
+            '@keyframes gb-ring-pulse{0%,100%{transform:scale(1);opacity:.3}50%{transform:scale(1.05);opacity:.5}}',
             /* Bottom silhouette */
             '.gb-bottom{position:fixed;bottom:0;left:0;width:100%;pointer-events:none;z-index:1;opacity:0;animation:gb-fin 3s ease 1s forwards}',
             '.gb-bottom svg{width:100%;height:100%;display:block}',
@@ -456,15 +484,10 @@
             '.gb-nav-line{position:absolute;bottom:-1px;left:0;width:100%;height:2px;border-radius:2px;pointer-events:none;opacity:0;animation:gb-fin 1s ease .8s forwards;overflow:hidden}',
             '.gb-nav-line::after{content:"";position:absolute;top:0;left:-60%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:gb-shsweep 4s ease-in-out 2s infinite}',
             '@keyframes gb-shsweep{0%{left:-60%}40%{left:100%}100%{left:100%}}',
-            /* Sticky notification bar */
-            '.gb-sticky-bar{position:fixed;top:0;left:0;width:100%;z-index:10002;font-family:"Inter",sans-serif;pointer-events:auto;transform:translateY(-100%);animation:gb-stickyin .5s cubic-bezier(.34,1.56,.64,1) .5s forwards}',
-            '.gb-sticky-bar-inner{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 48px 10px 20px;font-size:13px;font-weight:600;letter-spacing:.5px;text-align:center;position:relative}',
-            '.gb-sticky-bar-icon{flex-shrink:0;display:flex;align-items:center;font-size:16px}',
-            '.gb-sticky-bar-text{flex:1;text-align:center}',
-            '.gb-sticky-bar-close{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.6);width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s}',
-            '.gb-sticky-bar-close:hover{background:rgba(255,255,255,.2);color:#fff}',
-            '@keyframes gb-stickyin{to{transform:translateY(0)}}',
-            '@keyframes gb-stickyout{to{transform:translateY(-100%)}}',
+            /* Atmospheric page film overlay */
+            '.gb-atmosphere{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;animation:gb-fin 3s ease 1s forwards}',
+            '.gb-atmo-layer{position:absolute;inset:-10%;border-radius:50%;animation:gb-atmo-drift var(--ad) ease-in-out infinite}',
+            '@keyframes gb-atmo-drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(3%,-2%) scale(1.03)}66%{transform:translate(-2%,3%) scale(.97)}}',
             /* Flash sale popup modal */
             '.gb-popup-overlay{position:fixed;inset:0;z-index:10003;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.65);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:0;animation:gb-popfade .4s ease 3.5s forwards;pointer-events:auto}',
             '.gb-popup-modal{max-width:440px;width:calc(100% - 40px);border-radius:20px;overflow:hidden;transform:scale(.9) translateY(20px);opacity:0;animation:gb-popscale .5s cubic-bezier(.34,1.56,.64,1) 3.5s forwards;position:relative}',
@@ -488,8 +511,8 @@
             '.gb-themed-btn{transition:all .3s cubic-bezier(.34,1.56,.64,1)!important}',
             '.gb-themed-btn:hover{transform:translateY(-3px)!important}',
             /* Responsive */
-            '@media(max-width:600px){.gb-banner{bottom:12px;width:calc(100% - 24px)}.gb-banner-inner{padding:14px 42px 14px 14px}.gb-lights,.gb-hanging{display:none}.gb-frost-tl,.gb-frost-tr{width:140px;height:140px}.gb-dangle{top:60px}.gb-sticky-bar-inner{font-size:11px;padding:8px 40px 8px 14px}.gb-popup-modal{max-width:360px}.gb-countdown-unit{min-width:44px;padding:8px 4px}.gb-countdown-num{font-size:20px}}',
-            '@media(prefers-reduced-motion:reduce){.gb-canvas,.gb-bokeh,.gb-fog,.gb-sparkle,.gb-nflash,.gb-dangle-item,.gb-nav-line::after{animation:none!important}}'
+            '@media(max-width:600px){.gb-promo-inner{padding:12px 48px 12px 16px;min-height:52px;gap:12px}.gb-promo-icon{width:36px;height:36px;border-radius:10px}.gb-lights,.gb-hanging{display:none}.gb-frost-tl,.gb-frost-tr{width:140px;height:140px}.gb-dangle{top:60px}.gb-popup-modal{max-width:360px}.gb-countdown-unit{min-width:44px;padding:8px 4px}.gb-countdown-num{font-size:20px}.gb-hero-takeover-title{letter-spacing:3px}.gb-hero-takeover-sub{letter-spacing:1.5px}}',
+            '@media(prefers-reduced-motion:reduce){.gb-canvas,.gb-bokeh,.gb-fog,.gb-sparkle,.gb-nflash,.gb-dangle-item,.gb-nav-line::after,.gb-hero-takeover,.gb-hero-takeover-bg,.gb-hero-takeover-title,.gb-atmo-layer,.gb-promo-banner{animation:none!important}}'
         ].join('\n');
         document.head.appendChild(state.style);
     }
@@ -518,7 +541,7 @@
             var sm = layer === 0 ? .5 : layer === 1 ? 1 : 1.8;
             var spm = layer === 0 ? .3 : layer === 1 ? .6 : 1;
             var om = layer === 0 ? .35 : layer === 1 ? .6 : 1;
-            var bs = type === 'snow' ? rand(2, 6) : type === 'hearts' ? rand(8, 18) : type === 'embers' ? rand(1, 3.5) : type === 'petals' ? rand(3, 7) : type === 'stars' ? rand(3, 8) : type === 'tags' ? rand(8, 16) : type === 'confetti' ? rand(3, 8) : type === 'leaves' ? rand(5, 12) : rand(2, 5);
+            var bs = type === 'snow' ? rand(3.5, 10) : type === 'hearts' ? rand(14, 30) : type === 'embers' ? rand(2, 6) : type === 'petals' ? rand(5, 12) : type === 'stars' ? rand(5, 14) : type === 'tags' ? rand(14, 28) : type === 'confetti' ? rand(5, 12) : type === 'leaves' ? rand(8, 20) : rand(3.5, 9);
             state.particles.push({
                 x: rand(0, W), y: rand(-H * .2, H), baseSize: bs, size: bs * sm,
                 speed: (type === 'embers' ? rand(.3, .8) : type === 'confetti' ? rand(.8, 2.5) : rand(.4, 1.2)) * spm,
@@ -538,7 +561,7 @@
             else { p.y += p.speed; if (p.y > H + 20) { p.y = -20; p.x = rand(0, W); } }
             p.x += p.drift + Math.sin(p.y * p.wobbleSpeed + p.wobbleOff) * .4;
             if (p.x < -30) p.x = W + 30; if (p.x > W + 30) p.x = -30;
-            p.rotation += p.rotSpeed; c.globalAlpha = p.opacity;
+            p.rotation += p.rotSpeed; c.globalAlpha = p.opacity; c.shadowBlur = p.size * 1.5; c.shadowColor = p.color || 'rgba(255,255,255,.4)';
             if (p.type === 'snow') snowflake(p.x, p.y, p.size);
             else if (p.type === 'hearts') heart(p.x, p.y, p.size, p.color);
             else if (p.type === 'embers') ember(p.x, p.y, p.size, p.color);
@@ -563,58 +586,38 @@
         });
     }
 
-    /* ═══ BANNER – BOTTOM SLIDE-UP ═══ */
-    function createBanner(theme, themeId) {
+    /* ═══ PROMO BANNER – FULL-WIDTH BOTTOM BAR ═══ */
+    function createPromoBanner(theme, themeId) {
         if (!theme.banner) return;
-        try { if (localStorage.getItem('gb-ban-dismissed') === state.id) return; } catch (e) { }
+        try { if (localStorage.getItem('gb-promo-dismissed') === state.id) return; } catch (e) { }
         var b = theme.banner;
         var icon = BI[themeId] || BI[themeId.replace(/-/g, '')] || '';
-        var el = document.createElement('div'); el.className = 'gb-banner';
+        var el = document.createElement('div'); el.className = 'gb-promo-banner';
 
-        var isBF = b.isBF || themeId === 'black-friday' || themeId === 'blackfriday';
-        var innerStyle, html;
-
-        if (isBF) {
-            /* Black Friday: brush paint stroke style */
-            innerStyle = 'background:#000;box-shadow:0 8px 32px rgba(0,0,0,.8),0 0 30px rgba(255,23,68,.15);border-radius:4px;border:none;position:relative;overflow:hidden';
-            html = '<div class="gb-banner-inner" style="' + innerStyle + '">';
-            html += '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.2" viewBox="0 0 500 80" preserveAspectRatio="none"><path d="M0 40C50 10,100 70,200 35C300 0,350 60,500 40V80H0Z" fill="#FF1744"/><path d="M0 50C80 30,150 65,250 40C350 15,420 55,500 45V80H0Z" fill="#FF1744" opacity=".5"/></svg>';
-            html += '<div style="flex-shrink:0;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,23,68,.25);position:relative">' + icon + '</div>';
-            html += '<div style="flex:1;position:relative">';
-            html += '<div style="font-size:13px;font-weight:900;letter-spacing:4px;color:#fff">BLACK FRIDAY</div>';
-            html += '<div style="font-size:18px;font-weight:900;color:#FF1744;letter-spacing:2px;margin-top:2px">MEGA SALE</div>';
-            html += '<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Biggest deals of the year!</div>';
-            html += '</div>';
-        } else {
-            /* Standard themed banner – premium glass */
-            innerStyle = 'background:' + b.bg + ';box-shadow:' + b.shadow + ',inset 0 1px 0 rgba(255,255,255,.06);border-radius:16px;border:1px solid ' + b.accent + '25';
-            html = '<div class="gb-banner-inner" style="' + innerStyle + '">';
-            html += '<div style="flex-shrink:0;width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:' + b.iconBg + ';border:1px solid ' + b.accent + '15;box-shadow:0 0 20px ' + b.accent + '15">' + icon + '</div>';
-            html += '<div style="flex:1">';
-            html += '<div style="font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:2px">Limited Time</div>';
-            html += '<div style="font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:' + b.titleColor + '">' + b.title + '</div>';
-            html += '<div style="font-size:12px;font-weight:400;margin-top:3px;color:rgba(255,255,255,.55);line-height:1.3">' + b.sub + '</div>';
-            html += '</div>';
-        }
-
-        html += '<button onclick="this.closest(\'.gb-banner\').dispatchEvent(new Event(\'dismiss\'))" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.5);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center">&times;</button>';
+        var html = '<div class="gb-promo-inner" style="background:' + b.bg + ';box-shadow:' + b.shadow + '">';
+        html += '<div class="gb-promo-icon" style="background:' + b.iconBg + ';border:1px solid ' + b.accent + '20;box-shadow:0 0 20px ' + b.accent + '15">' + icon + '</div>';
+        html += '<div style="flex:1">';
+        html += '<div style="font-size:14px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:' + b.titleColor + ';text-shadow:0 0 20px ' + b.accent + '40">' + b.title + '</div>';
+        html += '<div style="font-size:12px;font-weight:400;margin-top:3px;color:rgba(255,255,255,.55);line-height:1.3">' + b.sub + '</div>';
         html += '</div>';
-        html += '<div style="height:2px;background:rgba(255,255,255,.06);border-radius:0 0 16px 16px;overflow:hidden;margin-top:-1px"><div style="height:100%;width:100%;background:' + (b.timer || b.accent) + ';transform-origin:left;animation:gb-barfill 10s linear forwards"></div></div>';
+        html += '<button class="gb-promo-close" onclick="this.closest(\'.gb-promo-banner\').dispatchEvent(new Event(\'dismiss\'))">&times;</button>';
+        html += '<div class="gb-promo-progress"><div class="gb-promo-progress-bar" style="background:' + (b.timer || b.accent) + '"></div></div>';
+        html += '</div>';
 
         el.innerHTML = html;
         document.body.appendChild(el);
-        state.banner = el;
-        el.addEventListener('dismiss', dismissBanner);
-        state.bannerTimer = setTimeout(function () { if (state.banner) dismissBanner(); }, 10000);
+        state.promoBanner = el;
+        el.addEventListener('dismiss', dismissPromoBanner);
+        state.promoBannerTimer = setTimeout(function () { if (state.promoBanner) dismissPromoBanner(); }, 12000);
     }
-    function dismissBanner() {
-        if (!state.banner) return;
-        if (state.bannerTimer) { clearTimeout(state.bannerTimer); state.bannerTimer = null; }
-        state.banner.style.animation = 'gb-slidedown .4s ease forwards';
-        var r = state.banner;
-        setTimeout(function () { if (r && r.parentNode) r.remove(); }, 400);
-        state.banner = null;
-        try { localStorage.setItem('gb-ban-dismissed', state.id); } catch (e) { }
+    function dismissPromoBanner() {
+        if (!state.promoBanner) return;
+        if (state.promoBannerTimer) { clearTimeout(state.promoBannerTimer); state.promoBannerTimer = null; }
+        state.promoBanner.style.animation = 'gb-promo-out .4s ease forwards';
+        var ref = state.promoBanner;
+        setTimeout(function () { if (ref && ref.parentNode) ref.remove(); }, 400);
+        state.promoBanner = null;
+        try { localStorage.setItem('gb-promo-dismissed', state.id); } catch (e) { }
     }
 
     /* ═══ STRING LIGHTS ═══ */
@@ -794,34 +797,61 @@
         });
     }
 
-    /* ═══ DEAL FEATURES – Creative discount elements ═══ */
-    function createDealFeature(theme, themeId) {
-        if (!theme.deal) return;
-        var d = theme.deal;
-        var el = document.createElement('div'); el.className = 'gb-deal';
+    /* ═══ HERO SEASONAL TAKEOVER ═══ */
+    function createHeroTakeover(theme) {
+        if (!theme.heroTitle) return;
+        var hero = document.querySelector('.hero') || document.querySelector('section.hero');
+        if (!hero) return;
+        var heroPos = window.getComputedStyle(hero).position;
+        if (heroPos === 'static') hero.style.position = 'relative';
 
-        if (d.style === 'brush') {
-            /* Black Friday: Brush paint stroke SALE badge */
-            var bw = isMobile ? 110 : 160;
-            el.style.cssText = 'right:' + (isMobile ? 8 : 20) + 'px;top:' + (isMobile ? 'auto' : '45%') + ';' + (isMobile ? 'bottom:80px' : 'transform:translateY(-50%) rotate(-5deg)');
-            el.innerHTML = '<div style="position:relative;width:' + bw + 'px;text-align:center">' +
-                '<svg viewBox="0 0 200 90" style="position:absolute;inset:0;width:100%;height:100%"><path d="M10 45C30 15,70 5,100 20C130 35,170 10,190 45C170 80,130 70,100 75C70 80,30 70,10 45Z" fill="#FF1744" opacity=".9"/><path d="M15 48C35 22,75 12,100 25C125 38,165 18,185 48C165 75,125 68,100 72C75 76,35 68,15 48Z" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/></svg>' +
-                '<div style="position:relative;padding:' + (isMobile ? '15px 8px' : '20px 12px') + ';font-family:Outfit,sans-serif">' +
-                '<div style="font-size:' + (isMobile ? 10 : 14) + 'px;font-weight:900;color:#fff;letter-spacing:3px">SALE</div>' +
-                '<div style="font-size:' + (isMobile ? 15 : 22) + 'px;font-weight:900;color:#FFD600;letter-spacing:1px;margin-top:2px">UP TO 50%</div>' +
-                '</div></div>';
-        } else if (d.style === 'ribbon') {
-            /* Ribbon/tag style for most themes */
-            var rw = isMobile ? 85 : 120;
-            el.style.cssText = 'right:' + (isMobile ? 5 : 15) + 'px;top:' + (isMobile ? 'auto' : '42%') + ';' + (isMobile ? 'bottom:80px' : 'transform:translateY(-50%) rotate(3deg)');
-            el.innerHTML = '<div style="width:' + rw + 'px;padding:' + (isMobile ? '10px 6px' : '14px 10px') + ';background:' + d.color + ';border-radius:4px 4px 0 0;text-align:center;font-family:Outfit,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.4);position:relative">' +
-                '<div style="font-size:' + (isMobile ? 9 : 11) + 'px;font-weight:800;color:' + d.accent + ';letter-spacing:1.5px">' + d.text + '</div>' +
-                '<div style="position:absolute;bottom:-10px;left:0;width:0;height:0;border-left:' + (rw / 2) + 'px solid ' + d.color + ';border-right:' + (rw / 2) + 'px solid ' + d.color + ';border-bottom:10px solid transparent"></div>' +
-                '</div>';
+        var accent = theme.navAccent || theme.frontendAccent || '#FFD700';
+        var titleColor = (theme.banner && theme.banner.titleColor) || '#fff';
+        var el = document.createElement('div'); el.className = 'gb-hero-takeover';
+        el.style.setProperty('--ht-c1', titleColor);
+        el.style.setProperty('--ht-c2', accent);
+        el.style.setProperty('--ht-glow', accent);
+
+        var html = '<div class="gb-hero-takeover-bg" style="background:' + theme.heroGradient + '"></div>';
+        html += '<div class="gb-hero-takeover-title">' + theme.heroTitle + '</div>';
+        if (theme.heroSub) html += '<div class="gb-hero-takeover-sub">' + theme.heroSub + '</div>';
+        el.innerHTML = html;
+        hero.appendChild(el);
+        state.heroTakeover = el;
+
+        /* Glow ring around showcase circle */
+        var circle = document.querySelector('.showcase-neon-circle');
+        if (circle) {
+            var ring = document.createElement('div'); ring.className = 'gb-hero-takeover-ring';
+            var cW = circle.offsetWidth || 320, ringSize = cW + 40;
+            ring.style.cssText = 'width:' + ringSize + 'px;height:' + ringSize + 'px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:' + accent + ';box-shadow:0 0 30px ' + accent + '40,inset 0 0 30px ' + accent + '20';
+            circle.style.position = 'relative';
+            circle.appendChild(ring);
+            state.extraEls.push(ring);
         }
-        if (el.innerHTML) {
-            document.body.appendChild(el); state.dealEls.push(el);
-        }
+
+        /* Auto-dismiss after 6s */
+        state.heroTimeout = setTimeout(function () {
+            if (!state.heroTakeover) return;
+            state.heroTakeover.style.animation = 'gb-takeover-out .8s ease forwards';
+            var ref = state.heroTakeover;
+            setTimeout(function () { if (ref && ref.parentNode) ref.remove(); }, 800);
+            state.heroTakeover = null;
+        }, 6000);
+
+        /* Dismiss on scroll */
+        state.heroScrollHandler = function () {
+            if (window.scrollY > 100 && state.heroTakeover) {
+                if (state.heroTimeout) { clearTimeout(state.heroTimeout); state.heroTimeout = null; }
+                state.heroTakeover.style.animation = 'gb-takeover-out .5s ease forwards';
+                var ref = state.heroTakeover;
+                setTimeout(function () { if (ref && ref.parentNode) ref.remove(); }, 500);
+                state.heroTakeover = null;
+                window.removeEventListener('scroll', state.heroScrollHandler);
+                state.heroScrollHandler = null;
+            }
+        };
+        window.addEventListener('scroll', state.heroScrollHandler);
     }
 
     /* ═══ PULSING GLOW ═══ */
@@ -886,31 +916,48 @@
         document.body.appendChild(el); state.extraEls.push(el);
     }
 
-    /* ═══ STICKY NOTIFICATION BAR ═══ */
-    function createStickyBar(theme, themeId, data) {
-        if (!theme.stickyBar) return;
-        /* Check session storage - only show once per session per theme */
-        try { if (sessionStorage.getItem('gb-sticky-' + themeId)) return; } catch (e) { }
-        var sb = theme.stickyBar;
-        var customText = (data && data.stickyText) ? data.stickyText : sb.text;
-        var el = document.createElement('div'); el.className = 'gb-sticky-bar';
-        var bg = sb.gradient || ('linear-gradient(135deg,' + sb.bg + ',' + (sb.bgEnd || sb.bg) + ')');
-        el.innerHTML = '<div class="gb-sticky-bar-inner" style="background:' + bg + ';color:' + sb.color + '">' +
-            '<span class="gb-sticky-bar-icon">' + (sb.icon || '') + '</span>' +
-            '<span class="gb-sticky-bar-text">' + customText + '</span>' +
-            '<button class="gb-sticky-bar-close" onclick="this.closest(\'.gb-sticky-bar\').dispatchEvent(new Event(\'dismiss\'))">&times;</button>' +
-            '</div>';
-        document.body.appendChild(el);
-        state.stickyBar = el;
-        el.addEventListener('dismiss', function () {
-            el.style.animation = 'gb-stickyout .3s ease forwards';
-            setTimeout(function () { if (el.parentNode) el.remove(); }, 300);
-            state.stickyBar = null;
-            try { sessionStorage.setItem('gb-sticky-' + themeId, '1'); } catch (e) { }
+    /* ═══ ATMOSPHERIC PAGE FILM ═══ */
+    function createAtmosphere(theme) {
+        if (!theme.atmosphere || !theme.atmosphere.length) return;
+        var el = document.createElement('div'); el.className = 'gb-atmosphere';
+        var colors = theme.atmosphere;
+        var layers = [
+            { color: colors[0], x: '20%', y: '30%', size: '60vmax', delay: '0s', dur: '25s' },
+            { color: colors[1] || colors[0], x: '70%', y: '60%', size: '50vmax', delay: '-8s', dur: '32s' },
+            { color: colors[0], x: '50%', y: '15%', size: '45vmax', delay: '-16s', dur: '28s' }
+        ];
+        layers.forEach(function (l) {
+            var layer = document.createElement('div'); layer.className = 'gb-atmo-layer';
+            layer.style.cssText = 'background:radial-gradient(circle at ' + l.x + ' ' + l.y + ',' + l.color + ' 0%,transparent 70%);width:' + l.size + ';height:' + l.size + ';top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:' + l.delay;
+            layer.style.setProperty('--ad', l.dur);
+            el.appendChild(layer);
         });
-        /* Push body down to accommodate bar */
-        document.body.style.paddingTop = '40px';
-        document.body.style.transition = 'padding-top .5s ease';
+        document.body.appendChild(el);
+        state.atmosphere = el;
+    }
+
+    /* ═══ NAVIGATION TRANSFORMATION ═══ */
+    function themeNavigation(theme) {
+        var nav = document.querySelector('.nav') || document.querySelector('nav');
+        if (!nav) return;
+        var accent = theme.navAccent || theme.frontendAccent || '#d4af37';
+        var accentRgba = theme.frontendAccentRgba || 'rgba(212,175,55,';
+        state.savedNavBg = nav.style.background || '';
+        nav.style.transition = 'all .8s ease';
+        nav.style.borderColor = accent + '40';
+        nav.style.boxShadow = '0 0 20px ' + accentRgba + '.12),0 8px 32px rgba(0,0,0,.3)';
+        state.navThemeEls.push(nav);
+
+        /* Theme the CTA button */
+        var ctaLink = nav.querySelector('.nav-cta a') || nav.querySelector('.nav-cta');
+        if (ctaLink) {
+            ctaLink.dataset.gbOrigBg = ctaLink.style.background || '';
+            ctaLink.dataset.gbOrigShadow = ctaLink.style.boxShadow || '';
+            ctaLink.style.transition = 'all .5s ease';
+            ctaLink.style.background = accent;
+            ctaLink.style.boxShadow = '0 0 20px ' + accentRgba + '.3)';
+            state.navThemeEls.push(ctaLink);
+        }
     }
 
     /* ═══ FLASH SALE POPUP MODAL ═══ */
@@ -1020,6 +1067,33 @@
             el.style.boxShadow = '0 4px 20px ' + accentRgba + '.3)';
             state.themeStyleEls.push(el);
         });
+
+        /* Theme section tags */
+        document.querySelectorAll('.section-tag').forEach(function (el) {
+            el.dataset.gbOrigColor = el.style.color || '';
+            el.style.color = accent;
+            el.style.borderColor = accentRgba + '.3)';
+            el.style.transition = 'color .8s ease, border-color .8s ease';
+            state.themeStyleEls.push(el);
+        });
+
+        /* Theme gold accent text */
+        document.querySelectorAll('.section-title .gold, .hero-title .gold, .gold').forEach(function (el) {
+            el.dataset.gbOrigColor = el.style.color || '';
+            el.style.color = accent;
+            el.style.textShadow = '0 0 15px ' + accentRgba + '.25)';
+            el.style.transition = 'color .8s ease, text-shadow .8s ease';
+            state.themeStyleEls.push(el);
+        });
+
+        /* Theme service card borders */
+        document.querySelectorAll('.service-card, .barber-card').forEach(function (el) {
+            el.dataset.gbOrigBorder = el.style.borderColor || '';
+            el.style.borderColor = accentRgba + '.15)';
+            el.style.boxShadow = '0 0 15px ' + accentRgba + '.06)';
+            el.style.transition = 'border-color .8s ease, box-shadow .8s ease';
+            state.themeStyleEls.push(el);
+        });
     }
     function unthemeFrontend() {
         state.themeStyleEls.forEach(function (el) {
@@ -1033,6 +1107,10 @@
                 el.style.background = el.dataset.gbOrigBg || '';
                 el.style.boxShadow = el.dataset.gbOrigShadow || '';
                 el.classList.remove('gb-themed-btn');
+            } else {
+                /* Generic cleanup for section-tag, gold, card themed elements */
+                if (el.dataset.gbOrigColor !== undefined) { el.style.color = el.dataset.gbOrigColor; el.style.textShadow = ''; el.style.transition = ''; delete el.dataset.gbOrigColor; }
+                if (el.dataset.gbOrigBorder !== undefined) { el.style.borderColor = el.dataset.gbOrigBorder; el.style.boxShadow = ''; el.style.transition = ''; delete el.dataset.gbOrigBorder; }
             }
         });
         state.themeStyleEls = [];
@@ -1067,11 +1145,12 @@
         var themeKey = data.themeId.toLowerCase().replace(/[\s_']/g, '-');
         injectCSS();
 
-        /* ALL PAGES: glow, border, nav line, sticky bar */
+        /* ALL PAGES: glow, border, nav line, nav theme, atmosphere */
         applyGlow(theme);
         createBorder(theme);
         createNavLine(theme);
-        createStickyBar(theme, themeKey, data);
+        themeNavigation(theme);
+        createAtmosphere(theme);
 
         /* MAIN PAGES ONLY: full effects */
         if (isMainPage) {
@@ -1087,9 +1166,9 @@
             if (theme.vignette) createVignette(theme.vignette);
             if (theme.lights) createLights();
             if (theme.heroHat) addAccessory(theme.heroHat);
-            if (theme.deal) createDealFeature(theme, themeKey);
+            createHeroTakeover(theme);
             themeFrontend(theme, themeKey);
-            createBanner(theme, themeKey);
+            createPromoBanner(theme, themeKey);
             /* Popup shows after banner (delayed) */
             if (data.showPopup !== false) createFlashPopup(theme, themeKey, data);
         }
@@ -1101,16 +1180,31 @@
         state.particles = [];
         state.bokehEls.forEach(function (e) { e.remove(); }); state.bokehEls = [];
         state.decorEls.forEach(function (e) { e.remove(); }); state.decorEls = [];
-        state.extraEls.forEach(function (e) { e.remove(); }); state.extraEls = [];
-        if (state.bannerTimer) { clearTimeout(state.bannerTimer); state.bannerTimer = null; }
-        if (state.banner) { state.banner.remove(); state.banner = null; }
+        state.extraEls.forEach(function (e) { if (e.parentNode) e.remove(); }); state.extraEls = [];
         if (state.border) { state.border.remove(); state.border = null; }
         if (state.navLine) { state.navLine.remove(); state.navLine = null; }
         state.hatEls.forEach(function (e) { if (e.parentNode) e.remove(); }); state.hatEls = [];
-        state.dealEls.forEach(function (e) { if (e.parentNode) e.remove(); }); state.dealEls = [];
-        /* Sticky bar cleanup */
-        if (state.stickyBar) { state.stickyBar.remove(); state.stickyBar = null; }
-        document.body.style.paddingTop = ''; document.body.style.transition = '';
+        /* Hero takeover cleanup */
+        if (state.heroTimeout) { clearTimeout(state.heroTimeout); state.heroTimeout = null; }
+        if (state.heroScrollHandler) { window.removeEventListener('scroll', state.heroScrollHandler); state.heroScrollHandler = null; }
+        if (state.heroTakeover) { state.heroTakeover.remove(); state.heroTakeover = null; }
+        /* Promo banner cleanup */
+        if (state.promoBannerTimer) { clearTimeout(state.promoBannerTimer); state.promoBannerTimer = null; }
+        if (state.promoBanner) { state.promoBanner.remove(); state.promoBanner = null; }
+        /* Atmosphere cleanup */
+        if (state.atmosphere) { state.atmosphere.remove(); state.atmosphere = null; }
+        /* Nav theme cleanup */
+        state.navThemeEls.forEach(function (el) {
+            el.style.transition = ''; el.style.borderColor = ''; el.style.boxShadow = '';
+            if (el.dataset.gbOrigBg !== undefined) { el.style.background = el.dataset.gbOrigBg; delete el.dataset.gbOrigBg; }
+            if (el.dataset.gbOrigShadow !== undefined) { el.style.boxShadow = el.dataset.gbOrigShadow; delete el.dataset.gbOrigShadow; }
+        });
+        state.navThemeEls = [];
+        if (state.savedNavBg !== null) {
+            var nav = document.querySelector('.nav') || document.querySelector('nav');
+            if (nav) nav.style.background = state.savedNavBg;
+            state.savedNavBg = null;
+        }
         /* Popup cleanup */
         if (state.popup) { state.popup.remove(); state.popup = null; }
         if (state.popupTimer) { clearTimeout(state.popupTimer); state.popupTimer = null; }
