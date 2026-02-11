@@ -449,8 +449,16 @@
             '@keyframes gb-shimr{0%,100%{opacity:.5}50%{opacity:1}}',
             '@keyframes gb-nbar{0%,100%{box-shadow:0 0 6px var(--nc),0 0 14px var(--nc)}50%{box-shadow:0 0 3px var(--nc),0 0 6px var(--nc);opacity:.7}}',
             '@keyframes gb-fin{to{opacity:1}}',
-            '@keyframes gb-hero-ov{to{opacity:.3}}',
+            '@keyframes gb-hero-ov{to{opacity:.15}}',
             '@keyframes gb-section-ov{to{opacity:.18}}',
+            /* Glassmorphism seasonal panel */
+            '.gb-glass-panel{position:fixed;z-index:999;pointer-events:auto;background:rgba(15,15,15,.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;opacity:0;animation:gb-glass-in 1s cubic-bezier(.34,1.56,.64,1) 1.5s forwards}',
+            '.gb-glass-panel-accent{position:absolute;top:0;left:0;width:100%;height:3px}',
+            '.gb-glass-panel-content{padding:16px 20px;position:relative}',
+            '.gb-glass-panel-dismiss{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.3);color:rgba(255,255,255,.5);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}',
+            '.gb-glass-panel-dismiss:hover{background:rgba(255,255,255,.1);color:#fff}',
+            '@keyframes gb-glass-in{0%{opacity:0;transform:translateY(10px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}',
+            '@keyframes gb-glass-out{to{opacity:0;transform:translateY(10px) scale(.95)}}',
             /* Nav line shimmer highlight sweep */
             '.gb-nav-line{position:absolute;bottom:-1px;left:0;width:100%;height:2px;border-radius:2px;pointer-events:none;opacity:0;animation:gb-fin 1s ease .8s forwards;overflow:hidden}',
             '.gb-nav-line::after{content:"";position:absolute;top:0;left:-60%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:gb-shsweep 4s ease-in-out 2s infinite}',
@@ -558,15 +566,8 @@
         state.raf = requestAnimationFrame(animateParticles);
     }
 
-    /* ═══ BOKEH ═══ */
-    function createBokeh(theme) {
-        if (!theme.bokeh) return;
-        theme.bokeh.forEach(function (b, i) {
-            var el = document.createElement('div'); el.className = 'gb-bokeh';
-            el.style.cssText = 'width:' + b.size + 'px;height:' + b.size + 'px;left:' + b.x + '%;top:' + b.y + '%;background:radial-gradient(circle,' + b.color + ' 0%,transparent 70%);filter:blur(' + b.blur + 'px);animation-delay:' + (i * 4) + 's;animation-duration:' + rand(25, 40).toFixed(0) + 's';
-            document.body.appendChild(el); state.bokehEls.push(el);
-        });
-    }
+    /* ═══ BOKEH – disabled (looked cheap) ═══ */
+    function createBokeh() { }
 
     /* ═══ PROMO BANNER – FULL-WIDTH BOTTOM BAR ═══ */
     function createPromoBanner(theme, themeId) {
@@ -919,24 +920,15 @@
     function createAtmosphere(theme) {
         if (!theme.atmosphere || !theme.atmosphere.length) return;
         var el = document.createElement('div'); el.className = 'gb-atmosphere';
-        /* Boost alpha 3x for visible colour wash across the page */
+        /* Boost alpha for visible colour wash */
         var colors = theme.atmosphere.map(function(c) {
             var idx = c.lastIndexOf(',');
             if (idx < 0) return c;
             var alpha = parseFloat(c.substring(idx + 1));
-            return c.substring(0, idx + 1) + Math.min(alpha * 3, 0.3).toFixed(2) + ')';
+            return c.substring(0, idx + 1) + Math.min(alpha * 2.5, 0.22).toFixed(2) + ')';
         });
-        var layers = [
-            { color: colors[0], x: '20%', y: '30%', size: '60vmax', delay: '0s', dur: '25s' },
-            { color: colors[1] || colors[0], x: '70%', y: '60%', size: '50vmax', delay: '-8s', dur: '32s' },
-            { color: colors[0], x: '50%', y: '15%', size: '45vmax', delay: '-16s', dur: '28s' }
-        ];
-        layers.forEach(function (l) {
-            var layer = document.createElement('div'); layer.className = 'gb-atmo-layer';
-            layer.style.cssText = 'background:radial-gradient(circle at ' + l.x + ' ' + l.y + ',' + l.color + ' 0%,transparent 70%);width:' + l.size + ';height:' + l.size + ';top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:' + l.delay;
-            layer.style.setProperty('--ad', l.dur);
-            el.appendChild(layer);
-        });
+        /* Full-screen smooth gradient wash - no visible circles */
+        el.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;animation:gb-fin 3s ease 1s forwards;background:linear-gradient(135deg,' + colors[0] + ' 0%,transparent 40%,' + (colors[1] || colors[0]) + ' 60%,transparent 100%)';
         document.body.appendChild(el);
         state.atmosphere = el;
     }
@@ -1036,6 +1028,39 @@
             updateCountdown();
             state.countdownInterval = setInterval(updateCountdown, 1000);
         }
+    }
+
+    /* ═══ GLASSMORPHISM SEASONAL PANEL – frosted glass card with seasonal message ═══ */
+    function createGlassPanel(theme, themeKey) {
+        if (!theme.banner) return;
+        var accent = theme.frontendAccent || '#d4af37';
+        var accentRgba = theme.frontendAccentRgba || 'rgba(212,175,55,';
+        var b = theme.banner;
+        var icon = BI[themeKey] || BI[themeKey.replace(/-/g, '')] || '';
+
+        var el = document.createElement('div');
+        el.className = 'gb-glass-panel';
+        /* Position: bottom-right corner, above the fold */
+        el.style.cssText = 'right:20px;bottom:' + (isMobile ? '80px' : '100px') + ';width:' + (isMobile ? '220px' : '280px');
+
+        var html = '<div class="gb-glass-panel-accent" style="background:linear-gradient(90deg,' + accent + ',' + accentRgba + '0.3),transparent)"></div>';
+        html += '<button class="gb-glass-panel-dismiss" onclick="this.closest(\'.gb-glass-panel\').style.animation=\'gb-glass-out .3s ease forwards\';setTimeout(function(){var p=document.querySelector(\'.gb-glass-panel\');if(p)p.remove()},300)">&times;</button>';
+        html += '<div class="gb-glass-panel-content">';
+        html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">';
+        html += '<div style="width:32px;height:32px;border-radius:10px;background:' + accentRgba + '0.12);border:1px solid ' + accentRgba + '0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">' + icon + '</div>';
+        html += '<div style="font-size:' + (isMobile ? '11px' : '13px') + ';font-weight:800;letter-spacing:2px;text-transform:uppercase;color:' + (b.titleColor || '#fff') + ';text-shadow:0 0 15px ' + accentRgba + '0.3)">' + b.title + '</div>';
+        html += '</div>';
+        html += '<div style="font-size:' + (isMobile ? '10px' : '12px') + ';color:rgba(255,255,255,.5);line-height:1.4">' + b.sub + '</div>';
+        if (theme.popup && theme.popup.code) {
+            html += '<div style="margin-top:10px;padding:6px 12px;background:rgba(0,0,0,.3);border:1px dashed ' + accentRgba + '0.3);border-radius:8px;display:inline-block">';
+            html += '<span style="font-size:9px;color:rgba(255,255,255,.35)">CODE: </span><span style="font-size:12px;font-weight:800;color:' + accent + ';letter-spacing:2px">' + theme.popup.code + '</span>';
+            html += '</div>';
+        }
+        html += '</div>';
+
+        el.innerHTML = html;
+        document.body.appendChild(el);
+        state.extraEls.push(el);
     }
 
     /* ═══ FRONTEND THEMING – Section dividers, trust blocks, CTAs ═══ */
@@ -1360,6 +1385,7 @@
             if (theme.lights) createLights();
             if (theme.heroHat) addAccessory(theme.heroHat);
             themeFrontend(theme, themeKey);
+            createGlassPanel(theme, themeKey);
             createPromoBanner(theme, themeKey);
             /* Popup shows after banner (delayed) */
             if (data.showPopup !== false) createFlashPopup(theme, themeKey, data);
