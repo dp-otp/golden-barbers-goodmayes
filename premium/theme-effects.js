@@ -1,5 +1,5 @@
 /**
- * Golden Barbers – Premium Seasonal Theme Effects v23
+ * Golden Barbers – Premium Seasonal Theme Effects v24
  *
  * Clean rewrite: premium quality, subtle execution.
  * Colour palette + atmospheric decorations + connotation elements + banner.
@@ -601,12 +601,12 @@
         if (!logo) return;
         logo.style.position = 'relative';
         logo.style.overflow = 'visible';
-        var size = isMobile ? 20 : 26;
+        var size = isMobile ? 26 : 34;
         var el = createIcon(cfg.icon, size);
         var oX = cfg.oX || 0;
         el.style.cssText = 'position:absolute;top:' + (cfg.oY || -10) + 'px;left:50%;'
             + 'transform:translateX(-50%) translateX(' + oX + 'px) rotate(' + (cfg.tilt || 0) + 'deg);'
-            + 'z-index:10;opacity:0.9;animation:gbFadeIn 1s ease;pointer-events:none';
+            + 'z-index:10;opacity:0.95;animation:gbFadeIn 1s ease;pointer-events:none';
         logo.appendChild(trackEl(el));
     }
 
@@ -616,10 +616,10 @@
         if (!logo) return;
         logo.style.position = 'relative';
         logo.style.overflow = 'visible';
-        var size = isMobile ? 12 : 16;
+        var size = isMobile ? 16 : 22;
         var el = createIcon(cfg.icon, size);
         el.style.cssText = 'position:absolute;top:' + (cfg.oY || 0) + 'px;'
-            + 'right:-' + (cfg.oX || 12) + 'px;z-index:10;opacity:0.75;'
+            + 'right:-' + (cfg.oX || 12) + 'px;z-index:10;opacity:0.85;'
             + 'animation:gbFadeIn 1s ease;pointer-events:none';
         logo.appendChild(trackEl(el));
     }
@@ -630,10 +630,10 @@
         if (!logo) return;
         logo.style.position = 'relative';
         logo.style.overflow = 'visible';
-        var size = isMobile ? 22 : 28;
+        var size = isMobile ? 28 : 36;
         var el = createIcon(cfg.icon, size);
         el.style.cssText = 'position:absolute;left:50%;bottom:-4px;'
-            + 'transform:translateX(-50%);opacity:0.8;z-index:10;'
+            + 'transform:translateX(-50%);opacity:0.85;z-index:10;'
             + 'pointer-events:none;animation:gbFadeIn 1s ease';
         logo.appendChild(trackEl(el));
     }
@@ -664,14 +664,14 @@
             var wrap = document.createElement('div');
             wrap.className = 'gb-con';
             var pct = 20 + (i / Math.max(count - 1, 1)) * 60;
-            var stringH = 8 + Math.random() * 12;
-            var size = isMobile ? 14 : 18;
+            var stringH = 10 + Math.random() * 14;
+            var size = isMobile ? 20 : 28;
             wrap.style.cssText = 'position:absolute;bottom:-' + (stringH + size + 4) + 'px;left:' + pct + '%;'
                 + 'display:flex;flex-direction:column;align-items:center;z-index:9999;pointer-events:none;'
                 + 'transform-origin:top center;'
                 + (reducedMotion ? '' : 'animation:gbSwing ' + (3 + Math.random() * 2) + 's ease-in-out infinite;');
             var thread = document.createElement('div');
-            thread.style.cssText = 'width:1px;height:' + stringH + 'px;background:' + rgba(accent, 0.15);
+            thread.style.cssText = 'width:1px;height:' + stringH + 'px;background:' + rgba(accent, 0.35);
             wrap.appendChild(thread);
             wrap.appendChild(createIcon(cfg.icon, size));
             nav.appendChild(trackEl(wrap));
@@ -686,14 +686,14 @@
             var tag = tags[t];
             tag.style.position = 'relative';
             tag.style.overflow = 'visible';
-            var size = isMobile ? 14 : 16;
+            var size = isMobile ? 18 : 22;
             var left = createIcon(cfg.icon, size);
-            left.style.cssText = 'position:absolute;left:-' + (size + 6) + 'px;top:50%;'
-                + 'transform:translateY(-50%);opacity:0.6;animation:gbFadeIn 1s ease;pointer-events:none';
+            left.style.cssText = 'position:absolute;left:-' + (size + 8) + 'px;top:50%;'
+                + 'transform:translateY(-50%);opacity:0.7;animation:gbFadeIn 1s ease;pointer-events:none';
             tag.appendChild(trackEl(left));
             var right = createIcon(cfg.icon, size);
-            right.style.cssText = 'position:absolute;right:-' + (size + 6) + 'px;top:50%;'
-                + 'transform:translateY(-50%) scaleX(-1);opacity:0.6;animation:gbFadeIn 1s ease;pointer-events:none';
+            right.style.cssText = 'position:absolute;right:-' + (size + 8) + 'px;top:50%;'
+                + 'transform:translateY(-50%) scaleX(-1);opacity:0.7;animation:gbFadeIn 1s ease;pointer-events:none';
             tag.appendChild(trackEl(right));
         }
     }
@@ -705,11 +705,11 @@
             var line = lines[i];
             line.style.position = 'relative';
             line.style.overflow = 'visible';
-            var size = isMobile ? 10 : 12;
+            var size = isMobile ? 14 : 16;
             var icon = createIcon(cfg.icon, size);
             var side = line.nextElementSibling ? 'right' : 'left';
-            icon.style.cssText = 'position:absolute;top:50%;' + side + ':-' + (size / 2 + 3) + 'px;'
-                + 'transform:translateY(-50%);opacity:0.5;animation:gbFadeIn 1s ease;pointer-events:none';
+            icon.style.cssText = 'position:absolute;top:50%;' + side + ':-' + (size / 2 + 4) + 'px;'
+                + 'transform:translateY(-50%);opacity:0.6;animation:gbFadeIn 1s ease;pointer-events:none';
             line.appendChild(trackEl(icon));
         }
     }
@@ -721,14 +721,14 @@
         for (var i = 0; i < titles.length; i++) {
             var title = titles[i];
             title.style.position = 'relative';
-            var size = isMobile ? 22 : 30;
+            var size = isMobile ? 26 : 36;
             var l = createIcon(cfg.icon, size);
             l.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-70%,-50%) rotate(-30deg);'
-                + 'opacity:0.1;z-index:-1;animation:gbFadeIn 1s ease;pointer-events:none';
+                + 'opacity:0.2;z-index:-1;animation:gbFadeIn 1s ease;pointer-events:none';
             title.appendChild(trackEl(l));
             var r = createIcon(cfg.icon, size);
             r.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-30%,-50%) rotate(30deg) scaleX(-1);'
-                + 'opacity:0.1;z-index:-1;animation:gbFadeIn 1s ease;pointer-events:none';
+                + 'opacity:0.2;z-index:-1;animation:gbFadeIn 1s ease;pointer-events:none';
             title.appendChild(trackEl(r));
         }
     }
@@ -739,10 +739,10 @@
         if (!title) return;
         title.style.position = 'relative';
         title.style.overflow = 'visible';
-        var size = isMobile ? 14 : 18;
+        var size = isMobile ? 18 : 24;
         var el = createIcon(cfg.icon, size);
-        el.style.cssText = 'position:absolute;left:2px;top:-' + Math.round(size * 0.35) + 'px;'
-            + 'opacity:0.55;z-index:10;pointer-events:none;animation:gbFadeIn 1s ease';
+        el.style.cssText = 'position:absolute;left:2px;top:-' + Math.round(size * 0.4) + 'px;'
+            + 'opacity:0.65;z-index:10;pointer-events:none;animation:gbFadeIn 1s ease';
         title.appendChild(trackEl(el));
     }
 
@@ -752,10 +752,10 @@
         if (!cta) return;
         cta.style.position = 'relative';
         cta.style.overflow = 'visible';
-        var size = isMobile ? 10 : 14;
+        var size = isMobile ? 14 : 18;
         var el = createIcon(cfg.icon, size);
-        el.style.cssText = 'position:absolute;right:-' + (size + 2) + 'px;top:50%;'
-            + 'transform:translateY(-50%);opacity:0.65;animation:gbFadeIn 1s ease;pointer-events:none';
+        el.style.cssText = 'position:absolute;right:-' + (size + 3) + 'px;top:50%;'
+            + 'transform:translateY(-50%);opacity:0.8;animation:gbFadeIn 1s ease;pointer-events:none';
         cta.appendChild(trackEl(el));
     }
 
@@ -766,12 +766,12 @@
             var card = cards[i];
             card.style.position = 'relative';
             card.style.overflow = 'visible';
-            var size = isMobile ? 12 : 16;
+            var size = isMobile ? 16 : 22;
             var icon = createIcon(cfg.icon, size);
             var pos = cfg.pos || 'top-right';
             var p = pos.split('-');
-            icon.style.cssText = 'position:absolute;' + p[0] + ':-' + Math.round(size / 4) + 'px;'
-                + p[1] + ':-' + Math.round(size / 4) + 'px;opacity:0.6;z-index:5;'
+            icon.style.cssText = 'position:absolute;' + p[0] + ':-' + Math.round(size / 3) + 'px;'
+                + p[1] + ':-' + Math.round(size / 3) + 'px;opacity:0.75;z-index:5;'
                 + 'animation:gbFadeIn 1s ease;pointer-events:none';
             card.appendChild(trackEl(icon));
         }
@@ -784,12 +784,12 @@
         footer.style.position = 'relative';
         footer.style.overflow = 'visible';
         var count = isMobile ? 2 : 3;
-        var size = isMobile ? 16 : 20;
+        var size = isMobile ? 24 : 32;
         for (var i = 0; i < count; i++) {
             var icon = createIcon(cfg.icon, size);
             var pct = 15 + (i / Math.max(count - 1, 1)) * 70;
             icon.style.cssText = 'position:absolute;top:-' + Math.round(size * 0.5) + 'px;left:' + pct + '%;'
-                + 'opacity:0.5;animation:gbFadeIn 1.5s ease;pointer-events:none';
+                + 'opacity:0.65;animation:gbFadeIn 1.5s ease;pointer-events:none';
             footer.appendChild(trackEl(icon));
         }
     }
@@ -800,10 +800,10 @@
         if (!footer) return;
         footer.style.position = 'relative';
         footer.style.overflow = 'visible';
-        var size = isMobile ? 16 : 20;
+        var size = isMobile ? 22 : 28;
         var icon = createIcon(cfg.icon, size);
         icon.style.cssText = 'position:absolute;top:-' + Math.round(size * 0.5) + 'px;right:15%;'
-            + 'opacity:0.5;animation:gbFadeIn 1.5s ease;pointer-events:none';
+            + 'opacity:0.65;animation:gbFadeIn 1.5s ease;pointer-events:none';
         footer.appendChild(trackEl(icon));
     }
 
@@ -814,14 +814,14 @@
         footer.style.position = 'relative';
         footer.style.overflow = 'visible';
         var count = isMobile ? 4 : 7;
-        var size = isMobile ? 10 : 14;
+        var size = isMobile ? 14 : 20;
         var wrap = document.createElement('div');
         wrap.className = 'gb-con';
-        wrap.style.cssText = 'position:absolute;top:-' + Math.round(size * 0.4) + 'px;left:5%;right:5%;'
+        wrap.style.cssText = 'position:absolute;top:-' + Math.round(size * 0.45) + 'px;left:5%;right:5%;'
             + 'display:flex;justify-content:space-between;pointer-events:none;animation:gbFadeIn 1.5s ease';
         for (var i = 0; i < count; i++) {
             var icon = createIcon(cfg.icon, size);
-            icon.style.opacity = '0.45';
+            icon.style.opacity = '0.6';
             wrap.appendChild(icon);
         }
         footer.appendChild(trackEl(wrap));
@@ -829,14 +829,14 @@
 
     /* --- Edge peekers (items peeking from page edges) --- */
     function placeEdgePeek(cfg, accent) {
-        var size = isMobile ? 24 : 32;
+        var size = isMobile ? 34 : 48;
         var left = createIcon(cfg.icon, size);
-        left.style.cssText = 'position:fixed;left:-' + Math.round(size * 0.4) + 'px;bottom:20%;'
-            + 'opacity:0.3;z-index:9997;pointer-events:none;animation:gbFadeIn 2s ease';
+        left.style.cssText = 'position:fixed;left:-' + Math.round(size * 0.35) + 'px;bottom:20%;'
+            + 'opacity:0.45;z-index:9997;pointer-events:none;animation:gbFadeIn 2s ease';
         document.body.appendChild(trackEl(left));
         var right = createIcon(cfg.icon, size);
-        right.style.cssText = 'position:fixed;right:-' + Math.round(size * 0.4) + 'px;bottom:30%;'
-            + 'opacity:0.3;z-index:9997;pointer-events:none;transform:scaleX(-1);animation:gbFadeIn 2s ease';
+        right.style.cssText = 'position:fixed;right:-' + Math.round(size * 0.35) + 'px;bottom:30%;'
+            + 'opacity:0.45;z-index:9997;pointer-events:none;transform:scaleX(-1);animation:gbFadeIn 2s ease';
         document.body.appendChild(trackEl(right));
     }
 
@@ -845,12 +845,12 @@
         var hero = document.querySelector('.hero-content') || document.querySelector('.hero');
         if (!hero) return;
         hero.style.position = 'relative';
-        var size = isMobile ? 24 : 32;
+        var size = isMobile ? 36 : 48;
         var icon = createIcon(cfg.icon, size);
         var pos = cfg.pos || 'top-right';
         var p = pos.split('-');
-        icon.style.cssText = 'position:absolute;' + p[0] + ':10px;' + p[1] + ':10px;'
-            + 'opacity:0.35;z-index:5;animation:gbFadeIn 2s ease;pointer-events:none';
+        icon.style.cssText = 'position:absolute;' + p[0] + ':12px;' + p[1] + ':12px;'
+            + 'opacity:0.5;z-index:5;animation:gbFadeIn 2s ease;pointer-events:none';
         hero.appendChild(trackEl(icon));
     }
 
@@ -860,13 +860,13 @@
         if (!hero) return;
         hero.style.position = 'relative';
         var count = isMobile ? Math.ceil((cfg.count || 5) * 0.6) : (cfg.count || 5);
-        var size = isMobile ? 12 : 16;
+        var size = isMobile ? 16 : 22;
         for (var i = 0; i < count; i++) {
             var icon = createIcon(cfg.icon, size);
             icon.style.cssText = 'position:absolute;left:' + (5 + Math.random() * 90) + '%;'
                 + 'top:' + (5 + Math.random() * 80) + '%;'
                 + 'transform:rotate(' + (Math.random() * 30 - 15) + 'deg);'
-                + 'opacity:' + (0.15 + Math.random() * 0.2) + ';z-index:3;pointer-events:none;'
+                + 'opacity:' + (0.2 + Math.random() * 0.25) + ';z-index:3;pointer-events:none;'
                 + 'animation:gbFadeIn 2s ease';
             hero.appendChild(trackEl(icon));
         }
@@ -878,10 +878,10 @@
         if (!title) return;
         title.style.position = 'relative';
         title.style.overflow = 'visible';
-        var size = isMobile ? 20 : 28;
+        var size = isMobile ? 26 : 36;
         var icon = createIcon(cfg.icon, size);
-        icon.style.cssText = 'position:absolute;right:-' + (size + 4) + 'px;top:50%;transform:translateY(-50%);'
-            + 'opacity:0.5;z-index:10;pointer-events:none;animation:gbFadeIn 1.5s ease';
+        icon.style.cssText = 'position:absolute;right:-' + (size + 6) + 'px;top:50%;transform:translateY(-50%);'
+            + 'opacity:0.65;z-index:10;pointer-events:none;animation:gbFadeIn 1.5s ease';
         title.appendChild(trackEl(icon));
     }
 
@@ -890,10 +890,10 @@
         var hero = document.querySelector('.hero');
         if (!hero) return;
         hero.style.position = 'relative';
-        var size = isMobile ? 55 : 80;
+        var size = isMobile ? 80 : 120;
         var icon = createIcon(cfg.icon, size);
         icon.style.cssText = 'position:absolute;bottom:10px;right:5%;'
-            + 'opacity:0.15;z-index:1;pointer-events:none;animation:gbFadeIn 3s ease';
+            + 'opacity:0.22;z-index:1;pointer-events:none;animation:gbFadeIn 3s ease';
         hero.appendChild(trackEl(icon));
     }
 
@@ -905,10 +905,10 @@
         var spots = [{x:'10%',y:'15%'},{x:'80%',y:'10%'},{x:'45%',y:'25%'},{x:'90%',y:'30%'}];
         var count = Math.min(cfg.count || 3, spots.length);
         for (var i = 0; i < count; i++) {
-            var size = isMobile ? 18 : 24;
+            var size = isMobile ? 24 : 34;
             var icon = createIcon(cfg.icon, size);
             icon.style.cssText = 'position:absolute;left:' + spots[i].x + ';top:' + spots[i].y + ';'
-                + 'opacity:' + (0.2 + Math.random() * 0.15) + ';z-index:2;pointer-events:none;'
+                + 'opacity:' + (0.25 + Math.random() * 0.2) + ';z-index:2;pointer-events:none;'
                 + 'animation:gbFadeIn 2s ' + (i * 0.5) + 's ease both'
                 + (reducedMotion ? '' : ',gbTwinkle ' + (3 + Math.random() * 2) + 's ease-in-out infinite');
             hero.appendChild(trackEl(icon));
@@ -920,10 +920,10 @@
         var hero = document.querySelector('.hero-content') || document.querySelector('.hero');
         if (!hero) return;
         hero.style.position = 'relative';
-        var size = isMobile ? 20 : 26;
+        var size = isMobile ? 28 : 36;
         var icon = createIcon(cfg.icon, size);
         icon.style.cssText = 'position:absolute;left:8%;top:20%;transform:rotate(-15deg);'
-            + 'opacity:0.35;z-index:3;pointer-events:none;animation:gbFadeIn 1.5s ease';
+            + 'opacity:0.5;z-index:3;pointer-events:none;animation:gbFadeIn 1.5s ease';
         hero.appendChild(trackEl(icon));
     }
 
@@ -932,12 +932,12 @@
         var positions = cfg.positions || ['top-left', 'top-right'];
         for (var i = 0; i < positions.length; i++) {
             var p = positions[i].split('-');
-            var size = isMobile ? 55 : 80;
+            var size = isMobile ? 70 : 110;
             var el = document.createElement('div');
             el.className = 'gb-con';
             el.innerHTML = SVG.web;
             el.style.cssText = 'position:fixed;' + p[0] + ':0;' + p[1] + ':0;'
-                + 'width:' + size + 'px;height:' + size + 'px;opacity:0.15;z-index:9997;pointer-events:none;'
+                + 'width:' + size + 'px;height:' + size + 'px;opacity:0.2;z-index:9997;pointer-events:none;'
                 + (p[1] === 'right' ? 'transform:scaleX(-1);' : '')
                 + 'animation:gbFadeIn 1.5s ease';
             var svg = el.querySelector('svg');
