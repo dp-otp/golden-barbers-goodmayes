@@ -1,5 +1,5 @@
 /**
- * Golden Barbers – Premium Seasonal Theme Effects v17
+ * Golden Barbers – Premium Seasonal Theme Effects v19
  * Hero seasonal takeovers, atmospheric page film, premium promo banners,
  * nav transformation, enhanced particles with glow, section accent theming.
  */
@@ -73,8 +73,69 @@
     ESVG.mosque = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#F4900C" d="M23 4.326c0 4.368-9.837 6.652-9.837 13.206 0 2.184 1.085 4.468 2.177 4.468h15.291c1.093 0 2.192-2.284 2.192-4.468C32.823 10.977 23 8.694 23 4.326z"/><path fill="#FFD983" d="M35 33.815C35 35.022 34.711 36 32.815 36h-19.66C11.26 36 11 35.022 11 33.815V22.894c0-1.206.26-1.894 2.156-1.894h19.66c1.895 0 2.184.688 2.184 1.894v10.921z"/><path fill="#662113" d="M26 29c0-3-1.896-5-3-5s-3 2-3 5v7h6v-7zm-8 2.333c0-2-1.264-3.333-2-3.333s-2 1.333-2 3.333V36h4v-4.667zm14 0c0-2-1.264-3.333-2-3.333s-2 1.333-2 3.333V36h4v-4.667z"/><path fill="#FFD983" d="M9 34c0 1.104-.896 2-2 2H5c-1.104 0-2-.896-2-2V8c0-1.104.896-2 2-2h2c1.104 0 2 .896 2 2v26z"/><path fill="#F4900C" d="M5.995.326c0 1.837-2.832 2.918-2.832 5.675 0 .919.312 2 .627 2h4.402c.314 0 .631-1.081.631-2 0-2.757-2.828-3.838-2.828-5.675z"/></svg>';
     ESVG.gift = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#FDD888" d="M33 31c0 2.2-1.8 4-4 4H7c-2.2 0-4-1.8-4-4V14c0-2.2 1.8-4 4-4h22c2.2 0 4 1.8 4 4v17z"/><path fill="#FDD888" d="M36 11c0 2.2-1.8 4-4 4H4c-2.2 0-4-1.8-4-4s1.8-4 4-4h28c2.2 0 4 1.8 4 4z"/><path fill="#DA2F47" d="M19 3h-2c-1.657 0-3 1.343-3 3v29h8V6c0-1.656-1.343-3-3-3z"/><path fill="#DA2F47" d="M16 7c1.1 0 1.263-.516.361-1.147L9.639 1.147c-.902-.631-2.085-.366-2.631.589L4.992 5.264C4.446 6.219 4.9 7 6 7h10zm4 0c-1.1 0-1.263-.516-.361-1.147l6.723-4.706c.901-.631 2.085-.366 2.631.589l2.016 3.527C31.554 6.219 31.1 7 30 7H20z"/></svg>';
 
-    /* ═══ Custom detailed SVGs (kept empty, all replaced by PNGs) ═══ */
-    var CSVG = {};
+    /* ═══ PREMIUM CONNOTATION SVG ICONS ═══ */
+    var CSVG = {
+        /* ── Christmas connotations: baubles, holly, candy canes, gifts, bells, stars ── */
+        bauble: '<svg viewBox="0 0 48 48"><rect x="21" y="3" width="6" height="5" rx="1.5" fill="#C9B037"/><path d="M24 3c-3-4-7-1-4 2" stroke="#A08020" fill="none" stroke-width="1.5"/><circle cx="24" cy="28" r="16" fill="#C62828" opacity=".9"/><ellipse cx="19" cy="22" rx="4" ry="7" fill="rgba(255,255,255,.15)" transform="rotate(-15 19 22)"/></svg>',
+        holly: '<svg viewBox="0 0 48 48"><path d="M10 28c0-14 14-14 14-2s-14 16-14 2z" fill="#1B5E20"/><path d="M24 26c0-14 14-14 14-2s-14 16-14 2z" fill="#2E7D32"/><circle cx="22" cy="26" r="3.5" fill="#C62828"/><circle cx="27" cy="22" r="3" fill="#D32F2F"/><circle cx="27" cy="30" r="2.5" fill="#B71C1C"/></svg>',
+        candyCane: '<svg viewBox="0 0 48 48"><path d="M20 46V18c0-8 8-14 14-8" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M20 46V18c0-8 8-14 14-8" stroke="#C62828" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="5 5"/></svg>',
+        christmasStar: '<svg viewBox="0 0 48 48"><path d="M24 2l5.5 13h14l-11.2 8.5 4.3 13.5L24 28.5 11.4 37l4.3-13.5L4.5 15h14z" fill="#FFD700"/><path d="M24 8l3 7h7.5l-6 4.6 2.3 7.2L24 22l-6.8 4.8 2.3-7.2-6-4.6H21z" fill="rgba(255,255,255,.25)"/></svg>',
+        giftBox: '<svg viewBox="0 0 48 48"><rect x="8" y="20" width="32" height="22" rx="3" fill="#C62828"/><rect x="6" y="14" width="36" height="10" rx="3" fill="#E53935"/><rect x="21" y="14" width="6" height="28" fill="#FFD700" opacity=".9"/><path d="M24 14c-6-8-14-4-8 0" stroke="#FFD700" fill="none" stroke-width="2.5" stroke-linecap="round"/><path d="M24 14c6-8 14-4 8 0" stroke="#FFD700" fill="none" stroke-width="2.5" stroke-linecap="round"/></svg>',
+        bell: '<svg viewBox="0 0 48 48"><path d="M24 6a14 18 0 00-14 18v4h28v-4A14 18 0 0024 6z" fill="#FFD700"/><rect x="10" y="28" width="28" height="4" rx="2" fill="#C9A000"/><circle cx="24" cy="36" r="4" fill="#B8860B"/><rect x="22" y="2" width="4" height="6" rx="2" fill="#C9A000"/></svg>',
+        wreath: '<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="none" stroke="#1B5E20" stroke-width="8"/><circle cx="14" cy="14" r="3" fill="#C62828"/><circle cx="34" cy="14" r="2.5" fill="#C62828"/><circle cx="12" cy="28" r="2" fill="#C62828"/><circle cx="36" cy="28" r="2.5" fill="#D32F2F"/><circle cx="24" cy="40" r="3" fill="#C62828"/><path d="M20 42l4 4 4-4" stroke="#C62828" fill="none" stroke-width="2.5"/></svg>',
+
+        /* ── Valentine connotations: roses, hearts, cupid arrows, rings ── */
+        roseBud: '<svg viewBox="0 0 48 48"><path d="M24 8c-2 4-8 6-8 14s6 12 8 14c2-2 8-6 8-14s-6-10-8-14z" fill="#E91E63"/><path d="M20 18c2-4 4-4 4-4s2 0 4 4" fill="#AD1457"/><path d="M24 36v10" stroke="#2E7D32" stroke-width="2.5"/><path d="M24 40c-4-2-6-6-4-8" stroke="#2E7D32" fill="none" stroke-width="1.5"/><path d="M18 14c3-3 6-2 6 0s-3 4-6 2z" fill="#F48FB1" opacity=".5"/></svg>',
+        heartDuo: '<svg viewBox="0 0 48 48"><path d="M24 16c4-6 12-6 14 0s0 12-14 22C10 28 8 22 10 16s10-6 14 0z" fill="#E91E63"/><ellipse cx="20" cy="18" rx="3" ry="4" fill="rgba(255,255,255,.2)"/></svg>',
+        cupidArrow: '<svg viewBox="0 0 48 48"><line x1="4" y1="44" x2="40" y2="8" stroke="#B8860B" stroke-width="2"/><path d="M40 8l-8 2 6-10z" fill="#E91E63"/><path d="M6 42l-2-6h6z" fill="#B8860B"/><path d="M20 26c3-4 8-4 10 0s0 8-10 14c-6-4-8-8-6-12" fill="#F48FB1" opacity=".6"/></svg>',
+        loveRing: '<svg viewBox="0 0 48 48"><ellipse cx="24" cy="30" rx="12" ry="10" fill="none" stroke="#B8860B" stroke-width="3"/><path d="M20 22l4-10 4 10" fill="#E91E63" stroke="#AD1457" stroke-width="1"/><circle cx="24" cy="14" r="3" fill="#E91E63"/></svg>',
+
+        /* ── Winter connotations: crystals, pines, icicles, mittens ── */
+        snowCrystal: '<svg viewBox="0 0 48 48" fill="none" stroke="#B3E5FC" stroke-width="2" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="44"/><line x1="4" y1="24" x2="44" y2="24"/><line x1="10" y1="10" x2="38" y2="38"/><line x1="38" y1="10" x2="10" y2="38"/><line x1="24" y1="10" x2="20" y2="6"/><line x1="24" y1="10" x2="28" y2="6"/><line x1="24" y1="38" x2="20" y2="42"/><line x1="24" y1="38" x2="28" y2="42"/><line x1="10" y1="24" x2="6" y2="20"/><line x1="10" y1="24" x2="6" y2="28"/><line x1="38" y1="24" x2="42" y2="20"/><line x1="38" y1="24" x2="42" y2="28"/><circle cx="24" cy="24" r="3" fill="#B3E5FC" stroke="none"/></svg>',
+        pineSnow: '<svg viewBox="0 0 48 48"><path d="M24 4l-14 20h6l-8 12h6l-6 8h32l-6-8h6l-8-12h6z" fill="#1B5E20"/><rect x="21" y="44" width="6" height="4" fill="#5D4037"/><circle cx="18" cy="22" r="2" fill="#fff" opacity=".7"/><circle cx="28" cy="30" r="2.5" fill="#fff" opacity=".6"/><circle cx="22" cy="36" r="2" fill="#fff" opacity=".5"/></svg>',
+        iceCluster: '<svg viewBox="0 0 48 48" fill="none" stroke="rgba(200,230,255,.6)" stroke-width="1.5" stroke-linecap="round"><line x1="10" y1="2" x2="10" y2="28"/><line x1="10" y1="8" x2="6" y2="4"/><line x1="10" y1="8" x2="14" y2="4"/><line x1="24" y1="2" x2="24" y2="36"/><line x1="24" y1="12" x2="18" y2="6"/><line x1="24" y1="12" x2="30" y2="6"/><line x1="24" y1="24" x2="18" y2="18"/><line x1="24" y1="24" x2="30" y2="18"/><line x1="38" y1="2" x2="38" y2="24"/><line x1="38" y1="8" x2="34" y2="4"/><line x1="38" y1="8" x2="42" y2="4"/></svg>',
+
+        /* ── Halloween connotations: pumpkins, ghosts, skulls, spiders, bats ── */
+        pumpkinFace: '<svg viewBox="0 0 48 48"><ellipse cx="24" cy="28" rx="18" ry="16" fill="#FF6F00"/><path d="M22 10c0-6 4-6 4 0" stroke="#2E7D32" fill="none" stroke-width="3" stroke-linecap="round"/><path d="M14 24l4 4-4 4" stroke="#1a0800" stroke-width="2" fill="none"/><path d="M34 24l-4 4 4 4" stroke="#1a0800" stroke-width="2" fill="none"/><path d="M18 36c3 3 9 3 12 0" stroke="#1a0800" stroke-width="2" fill="none"/></svg>',
+        ghosty: '<svg viewBox="0 0 48 48"><path d="M12 44v-20a12 12 0 0124 0v20l-4-4-4 4-4-4-4 4-4-4z" fill="rgba(255,255,255,.85)"/><circle cx="20" cy="24" r="3" fill="#333"/><circle cx="32" cy="24" r="3" fill="#333"/><ellipse cx="26" cy="32" rx="3" ry="2" fill="#333"/><circle cx="19" cy="23" r="1" fill="#fff"/><circle cx="31" cy="23" r="1" fill="#fff"/></svg>',
+        skullIcon: '<svg viewBox="0 0 48 48"><path d="M10 22c0-10 6-16 14-16s14 6 14 16c0 6-2 10-4 12h-20c-2-2-4-6-4-12z" fill="rgba(255,255,255,.9)"/><circle cx="18" cy="22" r="4" fill="#333"/><circle cx="30" cy="22" r="4" fill="#333"/><path d="M20 32v4M24 32v5M28 32v4" stroke="#333" stroke-width="2"/><path d="M20 30h8" stroke="#333" stroke-width="1.5"/></svg>',
+        cauldron: '<svg viewBox="0 0 48 48"><ellipse cx="24" cy="18" rx="16" ry="4" fill="#333"/><path d="M8 18c0 14 6 22 16 22s16-8 16-22" fill="#2D2D2D"/><circle cx="16" cy="12" r="3" fill="#4CAF50" opacity=".6"/><circle cx="28" cy="10" r="4" fill="#4CAF50" opacity=".4"/><circle cx="22" cy="6" r="2" fill="#4CAF50" opacity=".3"/><path d="M6 24c-4-2-4-8 0-8M42 24c4-2 4-8 0-8" stroke="#555" stroke-width="2" fill="none"/></svg>',
+
+        /* ── Easter connotations: eggs, bunnies, flowers, butterflies ── */
+        eggPainted: '<svg viewBox="0 0 48 48"><ellipse cx="24" cy="26" rx="14" ry="18" fill="#E8F5E9"/><path d="M10 22h28" stroke="#F48FB1" stroke-width="3"/><path d="M12 30h24" stroke="#FFF59D" stroke-width="2.5"/><path d="M14 18h20" stroke="#90CAF9" stroke-width="2"/><ellipse cx="20" cy="16" rx="2" ry="2" fill="#CE93D8"/><ellipse cx="28" cy="16" rx="2" ry="2" fill="#CE93D8"/></svg>',
+        tulip: '<svg viewBox="0 0 48 48"><path d="M24 16c-4-8-12-6-10 2s8 10 10 10z" fill="#E91E63"/><path d="M24 16c4-8 12-6 10 2s-8 10-10 10z" fill="#EC407A"/><path d="M24 28v16" stroke="#2E7D32" stroke-width="3"/><path d="M24 34c-6 0-8-4-6-8" stroke="#2E7D32" fill="none" stroke-width="2"/><path d="M24 38c6 0 8-4 6-8" stroke="#2E7D32" fill="none" stroke-width="2"/></svg>',
+        butterfly: '<svg viewBox="0 0 48 48"><ellipse cx="16" cy="18" rx="10" ry="8" fill="#CE93D8" opacity=".7"/><ellipse cx="32" cy="18" rx="10" ry="8" fill="#F48FB1" opacity=".7"/><ellipse cx="16" cy="30" rx="7" ry="6" fill="#90CAF9" opacity=".6"/><ellipse cx="32" cy="30" rx="7" ry="6" fill="#81C784" opacity=".6"/><rect x="23" y="12" width="2" height="24" rx="1" fill="#5D4037"/><path d="M24 12c-3-4-6-4-8-2M24 12c3-4 6-4 8-2" stroke="#5D4037" fill="none" stroke-width="1.5"/></svg>',
+
+        /* ── Summer connotations: sun, palms, cocktails, waves ── */
+        sunRays: '<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="10" fill="#FFB300"/><g stroke="#FFB300" stroke-width="2.5" stroke-linecap="round"><line x1="24" y1="4" x2="24" y2="10"/><line x1="24" y1="38" x2="24" y2="44"/><line x1="4" y1="24" x2="10" y2="24"/><line x1="38" y1="24" x2="44" y2="24"/><line x1="9.9" y1="9.9" x2="14" y2="14"/><line x1="34" y1="34" x2="38.1" y2="38.1"/><line x1="38.1" y1="9.9" x2="34" y2="14"/><line x1="14" y1="34" x2="9.9" y2="38.1"/></g></svg>',
+        palmIsland: '<svg viewBox="0 0 48 48"><path d="M26 20v24" stroke="#8D6E63" stroke-width="3"/><path d="M26 20c-12-2-16 4-16 8" stroke="#2E7D32" fill="none" stroke-width="2.5" stroke-linecap="round"/><path d="M26 20c12-2 16 4 16 8" stroke="#1B5E20" fill="none" stroke-width="2.5" stroke-linecap="round"/><path d="M26 18c-8-8-4-14 0-14" stroke="#2E7D32" fill="none" stroke-width="2.5" stroke-linecap="round"/><path d="M26 18c8-8 4-14 0-14" stroke="#1B5E20" fill="none" stroke-width="2.5" stroke-linecap="round"/></svg>',
+        cocktail: '<svg viewBox="0 0 48 48"><path d="M10 10h28l-12 16v10h8v4H14v-4h8V26z" fill="none" stroke="#0288D1" stroke-width="2"/><path d="M12 12l12 16 12-16z" fill="rgba(2,136,209,.2)"/><circle cx="30" cy="14" r="2" fill="#FF8F00"/><circle cx="20" cy="16" r="1.5" fill="#E91E63"/><path d="M34 10l4-6" stroke="#2E7D32" stroke-width="1.5"/></svg>',
+
+        /* ── Eid / Ramadan connotations: crescent, stars, lanterns, mosque ── */
+        crescentStar: '<svg viewBox="0 0 48 48"><path d="M20 8a16 16 0 100 32 12 12 0 010-32z" fill="#FDD835"/><path d="M36 12l2 5h5l-4 3 1.5 5-4.5-3-4.5 3 1.5-5-4-3h5z" fill="#FDD835"/></svg>',
+        lanternGold: '<svg viewBox="0 0 48 48"><line x1="24" y1="2" x2="24" y2="10" stroke="#B8860B" stroke-width="1.5"/><rect x="20" y="10" width="8" height="4" rx="1" fill="#8D6E63"/><path d="M16 14h16c2 0 3 2 3 4v16c0 2-1 4-3 4H16c-2 0-3-2-3-4V18c0-2 1-4 3-4z" fill="rgba(255,200,50,.08)" stroke="#B8860B" stroke-width="1.5"/><ellipse cx="24" cy="28" rx="3" ry="5" fill="rgba(255,200,50,.3)"/></svg>',
+        mosqueIcon: '<svg viewBox="0 0 48 48"><path d="M24 6c0 6-10 10-10 18v12h20V24c0-8-10-12-10-18z" fill="none" stroke="#B8860B" stroke-width="1.5"/><rect x="14" y="36" width="20" height="8" fill="rgba(184,134,11,.15)" stroke="#B8860B" stroke-width="1"/><circle cx="24" cy="6" r="2" fill="#FDD835"/><rect x="4" y="16" width="4" height="28" rx="1" fill="rgba(184,134,11,.2)" stroke="#B8860B" stroke-width="1"/><rect x="40" y="16" width="4" height="28" rx="1" fill="rgba(184,134,11,.2)" stroke="#B8860B" stroke-width="1"/></svg>',
+
+        /* ── Autumn connotations: leaves, acorns, mushrooms ── */
+        oakLeaf: '<svg viewBox="0 0 48 48"><path d="M24 4c-2 4-8 6-12 14-2 4 0 8 4 10 2 1 2 4 0 6s0 6 4 6c2 0 4-2 4-4v0c0 2 2 4 4 4 4 0 6-2 4-6s-2-5 0-6c4-2 6-6 4-10C28 10 26 8 24 4z" fill="#DD2C00"/><path d="M24 8v34" stroke="rgba(0,0,0,.15)" stroke-width="1"/></svg>',
+        acornNut: '<svg viewBox="0 0 48 48"><path d="M14 20h20c0-6-4-10-10-10s-10 4-10 10z" fill="#8D6E63"/><path d="M14 20h20v2c0 10-4 18-10 18s-10-8-10-18v-2z" fill="#BF360C"/><rect x="22" y="8" width="4" height="4" rx="2" fill="#5D4037"/></svg>',
+        mushroom: '<svg viewBox="0 0 48 48"><path d="M6 26c0-12 8-20 18-20s18 8 18 20z" fill="#D32F2F"/><circle cx="16" cy="16" r="3" fill="rgba(255,255,255,.7)"/><circle cx="28" cy="12" r="2.5" fill="rgba(255,255,255,.6)"/><circle cx="20" cy="22" r="2" fill="rgba(255,255,255,.5)"/><circle cx="32" cy="20" r="2.5" fill="rgba(255,255,255,.6)"/><rect x="18" y="26" width="12" height="14" rx="2" fill="#FFF8E1"/></svg>',
+
+        /* ── Black Friday / Sales connotations: price tags, bags, percentages ── */
+        priceStar: '<svg viewBox="0 0 48 48"><path d="M24 4l4 8 8-2-2 8 8 4-8 4 2 8-8-2-4 8-4-8-8 2 2-8-8-4 8-4-2-8 8 2z" fill="#FF1744"/><text x="24" y="29" text-anchor="middle" fill="#fff" font-size="16" font-weight="900" font-family="sans-serif">%</text></svg>',
+        shoppingBag: '<svg viewBox="0 0 48 48"><rect x="10" y="16" width="28" height="26" rx="3" fill="#212121"/><path d="M18 16v-4a6 6 0 0112 0v4" stroke="#FF1744" stroke-width="2.5" fill="none"/><rect x="10" y="16" width="28" height="8" fill="#FF1744" opacity=".15"/><text x="24" y="36" text-anchor="middle" fill="#FFD600" font-size="10" font-weight="900" font-family="sans-serif">SALE</text></svg>',
+        discountTag: '<svg viewBox="0 0 48 48"><path d="M6 6h18l18 18-18 18L6 24z" fill="#FFD600"/><circle cx="16" cy="16" r="4" fill="#FF1744"/><line x1="20" y1="32" x2="32" y2="20" stroke="#FF1744" stroke-width="2.5"/><circle cx="24" cy="22" r="2.5" fill="none" stroke="#FF1744" stroke-width="2"/><circle cx="30" cy="28" r="2.5" fill="none" stroke="#FF1744" stroke-width="2"/></svg>',
+
+        /* ── New Year connotations: champagne, fireworks, clocks, party ── */
+        champagneGlass: '<svg viewBox="0 0 48 48"><path d="M18 4h12l-2 18h-8z" fill="rgba(255,215,0,.2)" stroke="#FFD700" stroke-width="1.5"/><line x1="22" y1="22" x2="22" y2="34" stroke="#FFD700" stroke-width="2"/><line x1="18" y1="34" x2="30" y2="34" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="12" r="1" fill="#FFD700" opacity=".5"/><circle cx="26" cy="8" r="1.5" fill="#FFD700" opacity=".4"/></svg>',
+        fireworkBurst: '<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="3" fill="#FFD700"/><g stroke-width="2" stroke-linecap="round"><line x1="24" y1="6" x2="24" y2="14" stroke="#E91E63"/><line x1="24" y1="34" x2="24" y2="42" stroke="#4CAF50"/><line x1="6" y1="24" x2="14" y2="24" stroke="#0D47A1"/><line x1="34" y1="24" x2="42" y2="24" stroke="#FF8F00"/><line x1="11" y1="11" x2="17" y2="17" stroke="#FFD700"/><line x1="31" y1="31" x2="37" y2="37" stroke="#E91E63"/><line x1="37" y1="11" x2="31" y2="17" stroke="#4CAF50"/><line x1="11" y1="37" x2="17" y2="31" stroke="#0D47A1"/></g><circle cx="24" cy="6" r="2" fill="#E91E63"/><circle cx="42" cy="24" r="2" fill="#FF8F00"/></svg>',
+        partyPopper: '<svg viewBox="0 0 48 48"><path d="M8 44L20 20l8 8z" fill="#FFD700"/><path d="M28 28l4-2M30 24l6 2M26 20l2-6M32 22l4-4" stroke="#E91E63" stroke-width="2" stroke-linecap="round"/><circle cx="34" cy="10" r="2" fill="#0D47A1"/><circle cx="38" cy="18" r="1.5" fill="#4CAF50"/><circle cx="32" cy="14" r="1.5" fill="#FF8F00"/></svg>',
+
+        /* ── Flash Sale connotations: lightning, alarm, megaphone ── */
+        lightningBolt: '<svg viewBox="0 0 48 48"><path d="M28 2L12 26h10L18 46l18-26H26z" fill="#FF1744"/><path d="M26 6l-10 16h6l-3 14 12-18h-6z" fill="rgba(255,255,255,.2)"/></svg>',
+        megaphone: '<svg viewBox="0 0 48 48"><path d="M36 8L14 16v12l22 8z" fill="#FFD600" opacity=".9"/><rect x="8" y="16" width="8" height="12" rx="2" fill="#FF1744"/><path d="M36 8v28" stroke="#FFD600" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="22" r="4" fill="#FFD600" opacity=".3"/></svg>',
+        alarmClock: '<svg viewBox="0 0 48 48"><circle cx="24" cy="28" r="16" fill="none" stroke="#FF1744" stroke-width="2.5"/><line x1="24" y1="18" x2="24" y2="28" stroke="#FF1744" stroke-width="2.5" stroke-linecap="round"/><line x1="24" y1="28" x2="32" y2="28" stroke="#FF1744" stroke-width="2" stroke-linecap="round"/><path d="M10 14l-6-6M38 14l6-6" stroke="#FFD600" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="28" r="2" fill="#FFD600"/></svg>'
+    };
 
     /* ═══ Banner icon SVGs (22x22) ═══ */
     var BI = {
@@ -500,8 +561,14 @@
             /* Themed CTA buttons */
             '.gb-themed-btn{transition:all .3s cubic-bezier(.34,1.56,.64,1)!important}',
             '.gb-themed-btn:hover{transform:translateY(-3px)!important}',
+            /* Premium decorations – connotation icons with glow & float */
+            '.gb-pdecor{pointer-events:none;z-index:3;opacity:0;animation:gb-fin 1.8s ease var(--pdecor-delay,.8s) forwards,gb-pdecor-float var(--fd,10s) ease-in-out 2s infinite;transform:rotate(var(--pdecor-rot,0deg))}',
+            '.gb-pdecor svg{width:100%;height:100%;display:block}',
+            '.gb-pdecor-hero{position:absolute}',
+            '.gb-pdecor-side{position:fixed;transform:rotate(var(--pdecor-rot,0deg))}',
+            '@keyframes gb-pdecor-float{0%,100%{transform:rotate(var(--pdecor-rot,0deg)) translateY(0)}50%{transform:rotate(var(--pdecor-rot,0deg)) translateY(-12px)}}',
             /* Responsive */
-            '@media(max-width:600px){.gb-promo-inner{padding:12px 48px 12px 16px;min-height:52px;gap:12px}.gb-promo-icon{width:36px;height:36px;border-radius:10px}.gb-lights,.gb-hanging{display:none}.gb-frost-tl,.gb-frost-tr{width:140px;height:140px}.gb-dangle{top:60px}.gb-popup-modal{max-width:360px}.gb-countdown-unit{min-width:44px;padding:8px 4px}.gb-countdown-num{font-size:20px}.gb-hero-takeover-title{letter-spacing:3px}.gb-hero-takeover-sub{letter-spacing:1.5px}}',
+            '@media(max-width:600px){.gb-promo-inner{padding:12px 48px 12px 16px;min-height:52px;gap:12px}.gb-promo-icon{width:36px;height:36px;border-radius:10px}.gb-lights,.gb-hanging{display:none}.gb-frost-tl,.gb-frost-tr{width:140px;height:140px}.gb-dangle{top:60px}.gb-popup-modal{max-width:360px}.gb-countdown-unit{min-width:44px;padding:8px 4px}.gb-countdown-num{font-size:20px}.gb-hero-takeover-title{letter-spacing:3px}.gb-hero-takeover-sub{letter-spacing:1.5px}.gb-pdecor-side{display:none}.gb-pdecor-hero{opacity:.3 !important}}',
             '@media(prefers-reduced-motion:reduce){.gb-canvas,.gb-bokeh,.gb-fog,.gb-sparkle,.gb-nflash,.gb-dangle-item,.gb-nav-line::after,.gb-hero-takeover,.gb-hero-takeover-bg,.gb-hero-takeover-title,.gb-atmo-layer,.gb-promo-banner{animation:none!important}}'
         ].join('\n');
         document.head.appendChild(state.style);
@@ -732,6 +799,174 @@
         });
     }
 
+    /* ═══════════════════════════════════════════
+       PREMIUM DECORATIONS – CONNOTATION-BASED ICONS
+       Creative placement with glow, float, glassmorphism
+    ═══════════════════════════════════════════ */
+    var THEME_DECOR_CONFIG = {
+        christmas: [
+            { svg: 'bauble', pos: 'hero-tl', size: 90, opacity: .45, glow: '#C62828', rotate: -15 },
+            { svg: 'holly', pos: 'hero-tr', size: 75, opacity: .5, glow: '#1B5E20', rotate: 10 },
+            { svg: 'christmasStar', pos: 'hero-bl', size: 55, opacity: .35, glow: '#FFD700' },
+            { svg: 'giftBox', pos: 'side-right-30', size: 50, opacity: .25, rotate: 5 },
+            { svg: 'bell', pos: 'side-left-55', size: 42, opacity: .2, rotate: -10 },
+            { svg: 'candyCane', pos: 'side-right-70', size: 48, opacity: .25, rotate: 15 },
+            { svg: 'wreath', pos: 'side-left-85', size: 44, opacity: .2 }
+        ],
+        valentines: [
+            { svg: 'heartDuo', pos: 'hero-tl', size: 95, opacity: .4, glow: '#E91E63' },
+            { svg: 'roseBud', pos: 'hero-tr', size: 80, opacity: .45, glow: '#AD1457', rotate: 10 },
+            { svg: 'cupidArrow', pos: 'hero-bl', size: 60, opacity: .3, rotate: -20 },
+            { svg: 'loveRing', pos: 'side-right-35', size: 45, opacity: .25 },
+            { svg: 'heartDuo', pos: 'side-left-50', size: 40, opacity: .2 },
+            { svg: 'roseBud', pos: 'side-right-75', size: 42, opacity: .2, rotate: -15 }
+        ],
+        winter: [
+            { svg: 'snowCrystal', pos: 'hero-tl', size: 100, opacity: .4, glow: '#4FC3F7' },
+            { svg: 'pineSnow', pos: 'hero-tr', size: 80, opacity: .45, glow: '#1B5E20' },
+            { svg: 'iceCluster', pos: 'hero-bl', size: 60, opacity: .3 },
+            { svg: 'snowCrystal', pos: 'side-right-40', size: 50, opacity: .2, rotate: 30 },
+            { svg: 'pineSnow', pos: 'side-left-60', size: 42, opacity: .2 },
+            { svg: 'snowCrystal', pos: 'side-right-80', size: 35, opacity: .15, rotate: -45 }
+        ],
+        halloween: [
+            { svg: 'pumpkinFace', pos: 'hero-tl', size: 90, opacity: .5, glow: '#FF6F00' },
+            { svg: 'ghosty', pos: 'hero-tr', size: 80, opacity: .45, glow: 'rgba(255,255,255,.3)' },
+            { svg: 'skullIcon', pos: 'hero-bl', size: 55, opacity: .3 },
+            { svg: 'cauldron', pos: 'side-right-35', size: 50, opacity: .25 },
+            { svg: 'ghosty', pos: 'side-left-55', size: 40, opacity: .2 },
+            { svg: 'pumpkinFace', pos: 'side-right-75', size: 45, opacity: .2, rotate: 10 }
+        ],
+        easter: [
+            { svg: 'eggPainted', pos: 'hero-tl', size: 85, opacity: .45, glow: '#81C784' },
+            { svg: 'butterfly', pos: 'hero-tr', size: 75, opacity: .4, glow: '#CE93D8' },
+            { svg: 'tulip', pos: 'hero-bl', size: 55, opacity: .35 },
+            { svg: 'eggPainted', pos: 'side-right-35', size: 45, opacity: .25, rotate: 15 },
+            { svg: 'tulip', pos: 'side-left-55', size: 40, opacity: .2 },
+            { svg: 'butterfly', pos: 'side-right-80', size: 38, opacity: .2 }
+        ],
+        summer: [
+            { svg: 'sunRays', pos: 'hero-tl', size: 100, opacity: .4, glow: '#FFB300' },
+            { svg: 'palmIsland', pos: 'hero-tr', size: 85, opacity: .45, glow: '#2E7D32' },
+            { svg: 'cocktail', pos: 'hero-bl', size: 55, opacity: .35 },
+            { svg: 'sunRays', pos: 'side-right-35', size: 45, opacity: .2, rotate: 15 },
+            { svg: 'cocktail', pos: 'side-left-60', size: 38, opacity: .2, rotate: -10 },
+            { svg: 'palmIsland', pos: 'side-right-80', size: 42, opacity: .2 }
+        ],
+        eid: [
+            { svg: 'crescentStar', pos: 'hero-tl', size: 90, opacity: .45, glow: '#FDD835' },
+            { svg: 'lanternGold', pos: 'hero-tr', size: 80, opacity: .5, glow: '#B8860B' },
+            { svg: 'mosqueIcon', pos: 'hero-bl', size: 55, opacity: .3 },
+            { svg: 'lanternGold', pos: 'side-right-35', size: 48, opacity: .25 },
+            { svg: 'crescentStar', pos: 'side-left-55', size: 40, opacity: .2 },
+            { svg: 'lanternGold', pos: 'side-right-80', size: 38, opacity: .2 }
+        ],
+        ramadan: [
+            { svg: 'lanternGold', pos: 'hero-tl', size: 90, opacity: .5, glow: '#B8860B' },
+            { svg: 'crescentStar', pos: 'hero-tr', size: 85, opacity: .45, glow: '#FDD835' },
+            { svg: 'mosqueIcon', pos: 'hero-bl', size: 55, opacity: .3 },
+            { svg: 'lanternGold', pos: 'side-right-40', size: 45, opacity: .25 },
+            { svg: 'crescentStar', pos: 'side-left-60', size: 40, opacity: .2 },
+            { svg: 'mosqueIcon', pos: 'side-right-80', size: 42, opacity: .2 }
+        ],
+        autumn: [
+            { svg: 'oakLeaf', pos: 'hero-tl', size: 90, opacity: .45, glow: '#DD2C00', rotate: -20 },
+            { svg: 'mushroom', pos: 'hero-tr', size: 75, opacity: .4, glow: '#BF360C' },
+            { svg: 'acornNut', pos: 'hero-bl', size: 55, opacity: .35 },
+            { svg: 'oakLeaf', pos: 'side-right-35', size: 48, opacity: .25, rotate: 30 },
+            { svg: 'acornNut', pos: 'side-left-55', size: 38, opacity: .2 },
+            { svg: 'oakLeaf', pos: 'side-right-75', size: 40, opacity: .2, rotate: -45 },
+            { svg: 'mushroom', pos: 'side-left-85', size: 36, opacity: .18 }
+        ],
+        'black-friday': [
+            { svg: 'priceStar', pos: 'hero-tl', size: 95, opacity: .5, glow: '#FF1744' },
+            { svg: 'shoppingBag', pos: 'hero-tr', size: 80, opacity: .45, glow: '#FFD600' },
+            { svg: 'discountTag', pos: 'hero-bl', size: 55, opacity: .35 },
+            { svg: 'priceStar', pos: 'side-right-30', size: 50, opacity: .25 },
+            { svg: 'shoppingBag', pos: 'side-left-50', size: 42, opacity: .2 },
+            { svg: 'discountTag', pos: 'side-right-70', size: 40, opacity: .2, rotate: 10 }
+        ],
+        'new-year': [
+            { svg: 'fireworkBurst', pos: 'hero-tl', size: 95, opacity: .45, glow: '#FFD700' },
+            { svg: 'champagneGlass', pos: 'hero-tr', size: 80, opacity: .5, glow: '#FFD700' },
+            { svg: 'partyPopper', pos: 'hero-bl', size: 60, opacity: .35 },
+            { svg: 'fireworkBurst', pos: 'side-right-35', size: 50, opacity: .25, rotate: 15 },
+            { svg: 'champagneGlass', pos: 'side-left-55', size: 40, opacity: .2 },
+            { svg: 'partyPopper', pos: 'side-right-80', size: 42, opacity: .2 }
+        ],
+        'flash-sale': [
+            { svg: 'lightningBolt', pos: 'hero-tl', size: 95, opacity: .5, glow: '#FF1744' },
+            { svg: 'megaphone', pos: 'hero-tr', size: 80, opacity: .45, glow: '#FFD600' },
+            { svg: 'alarmClock', pos: 'hero-bl', size: 55, opacity: .35 },
+            { svg: 'lightningBolt', pos: 'side-right-30', size: 50, opacity: .3, rotate: 10 },
+            { svg: 'priceStar', pos: 'side-left-50', size: 42, opacity: .25 },
+            { svg: 'lightningBolt', pos: 'side-right-75', size: 38, opacity: .2, rotate: -10 }
+        ]
+    };
+    THEME_DECOR_CONFIG.blackfriday = THEME_DECOR_CONFIG['black-friday'];
+    THEME_DECOR_CONFIG.newyear = THEME_DECOR_CONFIG['new-year'];
+    THEME_DECOR_CONFIG.flashsale = THEME_DECOR_CONFIG['flash-sale'];
+
+    function createPremiumDecor(theme, themeKey) {
+        var config = THEME_DECOR_CONFIG[themeKey] || THEME_DECOR_CONFIG[themeKey.replace(/-/g, '')] || [];
+        if (!config.length) return;
+        var hero = document.querySelector('.hero');
+        var heroHasPos = hero && window.getComputedStyle(hero).position !== 'static';
+        if (hero && !heroHasPos) hero.style.position = 'relative';
+
+        config.forEach(function (item, idx) {
+            var svgContent = CSVG[item.svg];
+            if (!svgContent) return;
+            if (isMobile && item.size > 60) return; /* Skip large hero decorations on mobile */
+
+            var el = document.createElement('div');
+            el.className = 'gb-pdecor';
+            el.innerHTML = svgContent;
+
+            var sz = isMobile ? Math.round(item.size * 0.6) : item.size;
+            el.style.width = sz + 'px';
+            el.style.height = sz + 'px';
+
+            /* Glow halo */
+            if (item.glow) {
+                el.style.filter = 'drop-shadow(0 0 ' + Math.round(sz * 0.2) + 'px ' + item.glow + ')';
+            }
+            if (item.rotate) {
+                el.style.setProperty('--pdecor-rot', item.rotate + 'deg');
+            }
+
+            /* Float animation delay for variety */
+            el.style.animationDelay = (0.5 + idx * 0.3) + 's,' + (1 + idx * 0.4) + 's';
+            el.style.setProperty('--fd', (8 + (idx % 3) * 3) + 's');
+
+            var pos = item.pos;
+
+            /* HERO CORNER positions – inside the hero section */
+            if (pos.indexOf('hero-') === 0) {
+                if (!hero) return;
+                el.classList.add('gb-pdecor-hero');
+                if (pos === 'hero-tl') { el.style.top = '15%'; el.style.left = '3%'; }
+                else if (pos === 'hero-tr') { el.style.top = '12%'; el.style.right = '3%'; }
+                else if (pos === 'hero-bl') { el.style.bottom = '18%'; el.style.left = '4%'; }
+                else if (pos === 'hero-br') { el.style.bottom = '15%'; el.style.right = '4%'; }
+                hero.appendChild(el);
+            }
+            /* SIDE positions – fixed to viewport edges */
+            else if (pos.indexOf('side-') === 0) {
+                var parts = pos.split('-');
+                var side = parts[1];
+                var yPct = parseInt(parts[2]) || 50;
+                el.classList.add('gb-pdecor-side');
+                el.style.top = yPct + '%';
+                if (side === 'right') el.style.right = '12px';
+                else el.style.left = '12px';
+                document.body.appendChild(el);
+            }
+
+            state.decorEls.push(el);
+        });
+    }
+
     /* ═══ BOTTOM SILHOUETTE ═══ */
     function createBottom(type) {
         var svgStr = SILHOUETTE[type]; if (!svgStr) return;
@@ -770,7 +1005,7 @@
             } else {
                 /* Default: hat sits on top-right of circle (santa hat, witch hat, top hat) */
                 var hatW = cW * 0.27, hatH = hatW * 0.88;
-                h.style.cssText = 'width:' + hatW + 'px;height:' + hatH + 'px;top:' + (cTop - hatH * 0.28) + 'px;left:' + (cLeft + cW * 0.58) + 'px;transform:rotate(18deg)';
+                h.style.cssText = 'width:' + hatW + 'px;height:' + hatH + 'px;top:' + (cTop - hatH * 0.28) + 'px;left:' + (cLeft + cW * 0.58) + 'px;transform:rotate(-18deg) scaleX(-1)';
             }
             parent.appendChild(h); state.hatEls.push(h);
         }
@@ -791,7 +1026,7 @@
                 nh.style.cssText = 'width:' + (imgW * 0.7) + 'px;height:' + (imgW * 0.6) + 'px;top:' + (-imgW * 0.4) + 'px;left:' + (imgW * 0.15) + 'px';
             } else {
                 /* Hat on top-right of the logo IMG */
-                nh.style.cssText = 'width:' + (imgW * 0.6) + 'px;height:' + (imgW * 0.52) + 'px;top:' + (-imgW * 0.32) + 'px;left:' + (imgW * 0.45) + 'px;transform:rotate(16deg)';
+                nh.style.cssText = 'width:' + (imgW * 0.6) + 'px;height:' + (imgW * 0.52) + 'px;top:' + (-imgW * 0.32) + 'px;left:' + (imgW * 0.45) + 'px;transform:rotate(-16deg) scaleX(-1)';
             }
             logo.appendChild(nh); state.hatEls.push(nh);
         });
@@ -1375,6 +1610,7 @@
             createBokeh(theme);
             initCanvas(); spawnParticles(theme); animateParticles();
             createDecorations(theme);
+            createPremiumDecor(theme, themeKey);
             if (theme.bottom) createBottom(theme.bottom);
             if (theme.hanging) createHanging(theme.hanging);
             if (theme.fog) createFog();
