@@ -566,7 +566,7 @@
     /* ═══ BANNER – BOTTOM SLIDE-UP ═══ */
     function createBanner(theme, themeId) {
         if (!theme.banner) return;
-        try { if (sessionStorage.getItem('gb-ban10') === state.id) return; } catch (e) { }
+        try { if (localStorage.getItem('gb-ban-dismissed') === state.id) return; } catch (e) { }
         var b = theme.banner;
         var icon = BI[themeId] || BI[themeId.replace(/-/g, '')] || '';
         var el = document.createElement('div'); el.className = 'gb-banner';
@@ -614,7 +614,7 @@
         var r = state.banner;
         setTimeout(function () { if (r && r.parentNode) r.remove(); }, 400);
         state.banner = null;
-        try { sessionStorage.setItem('gb-ban10', state.id); } catch (e) { }
+        try { localStorage.setItem('gb-ban-dismissed', state.id); } catch (e) { }
     }
 
     /* ═══ STRING LIGHTS ═══ */

@@ -1468,6 +1468,7 @@
                     <p id="activeThemeBannerText" style="font-size: 13px; opacity: 0.8;"></p>
                     <div style="display: flex; gap: 8px; justify-content: center; margin-top: 14px;">
                         <button onclick="removeTheme()" style="padding: 8px 20px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer; backdrop-filter: blur(4px); transition: all 0.2s;">Remove Theme</button>
+                        <button onclick="forceClearTheme()" style="padding: 8px 20px; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; color: #ef4444; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;">Force Clear All</button>
                     </div>
                 </div>
 
@@ -3180,6 +3181,31 @@
                 if (dtValue) dtValue.value = '';
                 if (dtToggle) dtToggle.classList.remove('active');
                 updateThemeDiscountPreview();
+            });
+        }
+
+        function forceClearTheme() {
+            if (!confirm('FORCE CLEAR: This will nuke ALL theme data, discount data, and reset everything. Continue?')) return;
+            Promise.all([
+                database.ref('siteTheme').remove(),
+                database.ref('siteDiscount').remove()
+            ]).then(function() {
+                activeThemeId = null;
+                renderThemeGrid();
+                updateActiveThemeBanner();
+                var dtText = document.getElementById('themeDiscountText');
+                var dtCode = document.getElementById('themeDiscountCode');
+                var dtValue = document.getElementById('themeDiscountValue');
+                var dtToggle = document.getElementById('themeDiscountToggle');
+                if (dtText) dtText.value = '';
+                if (dtCode) dtCode.value = '';
+                if (dtValue) dtValue.value = '';
+                if (dtToggle) dtToggle.classList.remove('active');
+                updateThemeDiscountPreview();
+                var s = document.getElementById('themeSuccess');
+                s.textContent = 'All theme & discount data force-cleared from Firebase.';
+                s.classList.add('show');
+                setTimeout(function() { s.classList.remove('show'); }, 4000);
             });
         }
 
