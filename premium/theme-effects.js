@@ -1,5 +1,5 @@
 /**
- * Golden Barbers – Premium Seasonal Theme Effects v24
+ * Golden Barbers – Premium Seasonal Theme Effects v25
  *
  * Clean rewrite: premium quality, subtle execution.
  * Colour palette + atmospheric decorations + connotation elements + banner.
@@ -217,109 +217,70 @@
     function trackEl(el) { state.conEls.push(el); return el; }
 
     /* ═══════════════════════════════════════════
-       CONNOTATIONS CONFIG PER THEME
+       CONNOTATION ICON SYSTEM — v25 FINAL (Luxury Micro-Accents)
+       Golden Barbers — minimal, premium, barely-noticeable
+       Vanilla JS / ES5 / drop-in replacement
     ═══════════════════════════════════════════ */
     var CONNOTATIONS = {
-        christmas: [
-            { icon: 'santaHat', place: 'logo', tilt: 15, oY: -15, oX: 5 },
-            { icon: 'ornament', place: 'navHang', count: 3 },
-            { icon: 'holly', place: 'titleDivider' },
-            { icon: 'holly', place: 'footerGarland' },
-            { icon: 'holly', place: 'cardCorner', pos: 'bottom-left' },
-            { icon: 'candyCane', place: 'titleCross' },
-            { icon: 'candyCane', place: 'ctaAccent' }
-        ],
-        valentines: [
-            { icon: 'rose', place: 'titleFlank' },
-            { icon: 'rose', place: 'logoPin', oY: 10, oX: 20 },
-            { icon: 'rose', place: 'footerGarland' },
-            { icon: 'heart', place: 'cardCorner', pos: 'top-right' },
-            { icon: 'cupidArrow', place: 'heroThrough' },
-            { icon: 'loveLetter', place: 'footerItem' }
-        ],
-        halloween: [
-            { icon: 'witchHat', place: 'logo', tilt: -15, oY: -18, oX: -5 },
-            { icon: 'web', place: 'pageCorner', positions: ['top-left', 'top-right'] },
-            { icon: 'web', place: 'cardCorner', pos: 'top-right' },
-            { icon: 'bat', place: 'heroScatter', count: 5 },
-            { icon: 'pumpkin', place: 'logoPin', oY: 10, oX: 22 },
-            { icon: 'pumpkin', place: 'titleFlank' },
-            { icon: 'pumpkin', place: 'footerScene' }
-        ],
-        easter: [
-            { icon: 'easterEgg', place: 'cardCorner', pos: 'bottom-right' },
-            { icon: 'easterEgg', place: 'titleFlank' },
-            { icon: 'easterEgg', place: 'footerScene' },
-            { icon: 'bunnyEars', place: 'logo', tilt: 0, oY: -20, oX: 0 },
-            { icon: 'springFlower', place: 'titleDivider' },
-            { icon: 'basket', place: 'footerItem' }
-        ],
-        summer: [
-            { icon: 'sunglasses', place: 'titleLetter' },
-            { icon: 'palmFrond', place: 'edgePeek' },
-            { icon: 'palmFrond', place: 'titleFlank' },
-            { icon: 'palmFrond', place: 'footerScene' },
-            { icon: 'sun', place: 'heroCorner', pos: 'top-right' },
-            { icon: 'sun', place: 'logoBehind' },
-            { place: 'css', css: 'waveFooter' },
-            { place: 'css', css: 'waveDivider' }
-        ],
-        autumn: [
-            { icon: 'acorn', place: 'cardCorner', pos: 'top-right' },
-            { icon: 'acorn', place: 'logoPin', oY: 10, oX: 22 },
-            { icon: 'acorn', place: 'ctaAccent' },
-            { icon: 'mushroom', place: 'edgePeek' },
-            { icon: 'hotDrink', place: 'ctaAccent' }
-        ],
-        winter: [
-            { icon: 'scarf', place: 'logoWrap' },
-            { place: 'css', css: 'icicleNav' },
-            { place: 'css', css: 'icicleCards' },
-            { place: 'css', css: 'snowMound' },
-            { place: 'css', css: 'frostBorder' }
-        ],
-        ramadan: [
-            { icon: 'crescentStar', place: 'heroCorner', pos: 'top-right' },
-            { icon: 'crescentStar', place: 'logoPin', oY: -15, oX: 22 },
-            { icon: 'lantern', place: 'navHang', count: 3 },
-            { icon: 'lantern', place: 'titleFlank' },
-            { icon: 'lantern', place: 'edgePeek' },
-            { icon: 'star', place: 'heroScatter', count: 7 },
-            { icon: 'star', place: 'cardCorner', pos: 'top-right' },
-            { icon: 'mosque', place: 'heroBg' }
-        ],
-        eid: [
-            { icon: 'crescentStar', place: 'logoPin', oY: -15, oX: 22 },
-            { icon: 'crescentStar', place: 'heroCorner', pos: 'top-right' },
-            { icon: 'ketupat', place: 'navHang', count: 3 },
-            { icon: 'ketupat', place: 'cardCorner', pos: 'top-right' },
-            { icon: 'ketupat', place: 'titleFlank' },
-            { place: 'css', css: 'geoBorder' },
-            { place: 'css', css: 'geoDivider' },
-            { icon: 'firework', place: 'heroBurst', count: 3 }
-        ],
-        blackfriday: [
-            { icon: 'saleTag', place: 'navHang', count: 3 },
-            { icon: 'saleTag', place: 'cardCorner', pos: 'top-right' },
-            { icon: 'saleTag', place: 'titleFlank' },
-            { icon: 'shoppingBag', place: 'footerScene' },
-            { place: 'css', css: 'heroPercent' }
-        ],
-        newyear: [
-            { icon: 'firework', place: 'heroBurst', count: 4 },
-            { icon: 'champagne', place: 'logoPin', oY: 5, oX: 22 },
-            { icon: 'champagne', place: 'titleFlank' },
-            { icon: 'champagne', place: 'footerScene' },
-            { icon: 'clock', place: 'heroCorner', pos: 'top-right' }
-        ],
-        flashsale: [
-            { icon: 'lightning', place: 'titleFlank' },
-            { icon: 'lightning', place: 'cardCorner', pos: 'top-right' },
-            { icon: 'megaphone', place: 'heroAccent' },
-            { icon: 'timer', place: 'heroCorner', pos: 'top-right' },
-            { place: 'css', css: 'bgFlash' },
-            { place: 'css', css: 'ctaSparkle' }
-        ]
+      christmas: [
+        { place: "logoPin", icon: "santaHat", sizeD: 18, sizeM: 14, opacity: 0.26, anchor: "tl", dx: -6, dy: -8, rot: -10, anim: "fade" },
+        { place: "heroMark", icon: "ornament", sizeD: 24, sizeM: 16, opacity: 0.14, anchor: "bl", dx: 26, dy: 26, rot: 10, blend: "screen", anim: "none" },
+        { place: "footerMark", icon: "holly", sizeD: 18, sizeM: 14, opacity: 0.12, anchor: "br", dx: 22, dy: 18, rot: -8, anim: "none" }
+      ],
+      valentines: [
+        { place: "logoPin", icon: "heart", sizeD: 16, sizeM: 14, opacity: 0.22, anchor: "tl", dx: -4, dy: -6, rot: -8, anim: "fade" },
+        { place: "heroMark", icon: "twLoveLetter", sizeD: 24, sizeM: 16, opacity: 0.13, anchor: "bl", dx: 26, dy: 26, rot: 8, blend: "screen", anim: "none" },
+        { place: "footerMark", icon: "twHeartArrow", sizeD: 18, sizeM: 14, opacity: 0.11, anchor: "br", dx: 22, dy: 18, rot: -10, anim: "none" }
+      ],
+      halloween: [
+        { place: "logoPin", icon: "witchHat", sizeD: 18, sizeM: 14, opacity: 0.24, anchor: "tl", dx: -6, dy: -8, rot: -12, anim: "fade" },
+        { place: "heroCornerSvg", which: "web", sizeD: 140, sizeM: 92, opacity: 0.10, anchor: "tr", dx: -2, dy: -2 },
+        { place: "footerMark", icon: "bat", sizeD: 18, sizeM: 14, opacity: 0.11, anchor: "bl", dx: 22, dy: 18, rot: 8, anim: "none" }
+      ],
+      easter: [
+        { place: "logoPin", icon: "twBunny", sizeD: 16, sizeM: 14, opacity: 0.20, anchor: "tl", dx: -4, dy: -6, rot: -6, anim: "fade" },
+        { place: "heroMark", icon: "twCherryBlossom", sizeD: 24, sizeM: 16, opacity: 0.12, anchor: "bl", dx: 26, dy: 26, rot: 10, blend: "screen", anim: "none" },
+        { place: "footerMark", icon: "easterEgg", sizeD: 18, sizeM: 14, opacity: 0.11, anchor: "br", dx: 22, dy: 18, rot: -8, anim: "none" }
+      ],
+      summer: [
+        { place: "logoPin", icon: "sunglasses", sizeD: 18, sizeM: 14, opacity: 0.20, anchor: "tl", dx: -6, dy: -6, rot: -8, anim: "fade" },
+        { place: "heroMark", icon: "twSun", sizeD: 24, sizeM: 16, opacity: 0.12, anchor: "bl", dx: 26, dy: 26, rot: 12, blend: "screen", anim: "none" },
+        { place: "footerMark", icon: "twPalm", sizeD: 18, sizeM: 14, opacity: 0.11, anchor: "br", dx: 22, dy: 18, rot: -10, anim: "none" }
+      ],
+      autumn: [
+        { place: "logoPin", icon: "twChestnut", sizeD: 16, sizeM: 14, opacity: 0.20, anchor: "tl", dx: -4, dy: -6, rot: -8, anim: "fade" },
+        { place: "heroMark", icon: "twCoffee", sizeD: 24, sizeM: 16, opacity: 0.12, anchor: "bl", dx: 26, dy: 26, rot: 10, blend: "screen", anim: "none" },
+        { place: "footerMark", icon: "twMushroom", sizeD: 18, sizeM: 14, opacity: 0.11, anchor: "br", dx: 22, dy: 18, rot: -10, anim: "none" }
+      ],
+      winter: [
+        { place: "logoPin", icon: "twScarf", sizeD: 16, sizeM: 14, opacity: 0.20, anchor: "tl", dx: -4, dy: -6, rot: -6, anim: "fade" },
+        { place: "heroMark", icon: "twScarf", sizeD: 22, sizeM: 16, opacity: 0.11, anchor: "bl", dx: 26, dy: 26, rot: 8, blend: "screen", anim: "none" }
+      ],
+      ramadan: [
+        { place: "logoPin", icon: "twCrescentStar", sizeD: 16, sizeM: 14, opacity: 0.20, anchor: "tl", dx: -4, dy: -6, rot: -8, anim: "fade" },
+        { place: "heroMark", icon: "twLantern", sizeD: 24, sizeM: 16, opacity: 0.12, anchor: "bl", dx: 26, dy: 26, rot: 8, blend: "screen", anim: "none" },
+        { place: "footerMark", icon: "twStar", sizeD: 18, sizeM: 14, opacity: 0.10, anchor: "br", dx: 22, dy: 18, rot: -8, anim: "none" }
+      ],
+      eid: [
+        { place: "logoPin", icon: "twGift", sizeD: 16, sizeM: 14, opacity: 0.18, anchor: "tl", dx: -4, dy: -6, rot: -8, anim: "fade" },
+        { place: "heroMark", icon: "twFireworks", sizeD: 24, sizeM: 16, opacity: 0.11, anchor: "bl", dx: 26, dy: 26, rot: 10, blend: "screen", anim: "none" },
+        { place: "footerMark", icon: "twCrescentStar", sizeD: 18, sizeM: 14, opacity: 0.10, anchor: "br", dx: 22, dy: 18, rot: -10, anim: "none" }
+      ],
+      blackfriday: [
+        { place: "logoPin", icon: "twTag", sizeD: 16, sizeM: 14, opacity: 0.18, anchor: "tl", dx: -4, dy: -6, rot: -10, anim: "fade" },
+        { place: "heroMark", icon: "twTag", sizeD: 22, sizeM: 16, opacity: 0.11, anchor: "bl", dx: 26, dy: 26, rot: 10, blend: "screen", anim: "none" },
+        { place: "footerMark", icon: "twShoppingBag", sizeD: 18, sizeM: 14, opacity: 0.10, anchor: "br", dx: 22, dy: 18, rot: -8, anim: "none" }
+      ],
+      newyear: [
+        { place: "logoPin", icon: "twClock", sizeD: 16, sizeM: 14, opacity: 0.18, anchor: "tl", dx: -4, dy: -6, rot: -8, anim: "fade" },
+        { place: "heroMark", icon: "twConfetti", sizeD: 24, sizeM: 16, opacity: 0.10, anchor: "bl", dx: 26, dy: 26, rot: 12, blend: "screen", anim: "none" },
+        { place: "footerMark", icon: "twChampagne", sizeD: 18, sizeM: 14, opacity: 0.10, anchor: "br", dx: 22, dy: 18, rot: -8, anim: "none" }
+      ],
+      flashsale: [
+        { place: "logoPin", icon: "twLightning", sizeD: 16, sizeM: 14, opacity: 0.18, anchor: "tl", dx: -4, dy: -6, rot: -10, anim: "fade" },
+        { place: "heroMark", icon: "twStopwatch", sizeD: 22, sizeM: 16, opacity: 0.11, anchor: "bl", dx: 26, dy: 26, rot: 10, blend: "screen", anim: "none" },
+        { place: "footerMark", icon: "twMegaphone", sizeD: 18, sizeM: 14, opacity: 0.10, anchor: "br", dx: 22, dy: 18, rot: -10, anim: "none" }
+      ]
     };
 
     /* ═══════════════════════════════════════════
@@ -591,459 +552,200 @@
     };
 
     /* ═══════════════════════════════════════════
-       CONNOTATION PLACEMENT RENDERERS
-       All sizes reduced for subtle, premium accents.
+       v25 UTILITIES (ES5 safe)
     ═══════════════════════════════════════════ */
 
-    /* --- Logo accessory (hat, ears on logo) --- */
-    function placeOnLogo(cfg, accent) {
-        var logo = document.querySelector('.nav-logo');
-        if (!logo) return;
-        logo.style.position = 'relative';
-        logo.style.overflow = 'visible';
-        var size = isMobile ? 26 : 34;
-        var el = createIcon(cfg.icon, size);
-        var oX = cfg.oX || 0;
-        el.style.cssText = 'position:absolute;top:' + (cfg.oY || -10) + 'px;left:50%;'
-            + 'transform:translateX(-50%) translateX(' + oX + 'px) rotate(' + (cfg.tilt || 0) + 'deg);'
-            + 'z-index:10;opacity:0.95;animation:gbFadeIn 1s ease;pointer-events:none';
-        logo.appendChild(trackEl(el));
+    function gbq(sel, root) { try { return (root || document).querySelector(sel); } catch (e) { return null; } }
+    function clamp(n, a, b) { if (n < a) return a; if (n > b) return b; return n; }
+    function px(n) { return (n || 0) + "px"; }
+
+    function ensureRelative(el) {
+      if (!el) return;
+      var cs = window.getComputedStyle ? window.getComputedStyle(el) : null;
+      var pos = cs ? cs.position : el.style.position;
+      if (!pos || pos === "static") el.style.position = "relative";
     }
 
-    /* --- Logo pin (small icon beside logo) --- */
+    /* --- PATCHED safeCreateIcon: alias resolver ---
+       1. Try PNG_ICONS[name] directly
+       2. Strip "tw" prefix, lowercase first char → try that
+       3. Reverse-lookup by filename: twCamelCase → tw-kebab-case.png
+       4. Not found → skip silently (return null) */
+    function safeCreateIcon(name, size) {
+      if (!name) return null;
+      // 1. Direct match
+      if (PNG_ICONS[name]) return createIcon(name, size);
+      // 2. Strip "tw" prefix
+      if (name.indexOf("tw") === 0 && name.length > 2) {
+        var stripped = name.charAt(2).toLowerCase() + name.slice(3);
+        if (PNG_ICONS[stripped]) return createIcon(stripped, size);
+      }
+      // 3. Reverse lookup by filename: convert twCamelCase → tw-kebab-case.png
+      var fname = name.replace(/([A-Z])/g, function(m) { return "-" + m.toLowerCase(); }) + ".png";
+      for (var key in PNG_ICONS) {
+        if (PNG_ICONS.hasOwnProperty(key) && PNG_ICONS[key] === fname) return createIcon(key, size);
+      }
+      // 4. Not found
+      return null;
+    }
+
+    function getSize(cfg) {
+      var s = isMobile ? (cfg.sizeM || cfg.sizeD || 16) : (cfg.sizeD || cfg.sizeM || 20);
+      if (!isMobile) s = clamp(s, 18, 26);
+      else s = clamp(s, 14, 18);
+      return s;
+    }
+
+    function getOpacity(cfg, isLogo) {
+      var o = (typeof cfg.opacity === "number") ? cfg.opacity : 0.12;
+      if (isLogo) o = clamp(o, 0.14, 0.30);
+      else o = clamp(o, 0.10, 0.18);
+      return o;
+    }
+
+    function positionAbs(el, anchor, dx, dy) {
+      el.style.position = "absolute";
+      el.style.left = "auto"; el.style.right = "auto";
+      el.style.top = "auto"; el.style.bottom = "auto";
+      el.style.transform = "none";
+      var a = anchor || "br";
+      var x = dx || 0;
+      var y = dy || 0;
+      if (a === "tl") { el.style.left = px(x);  el.style.top = px(y); }
+      if (a === "tr") { el.style.right = px(x); el.style.top = px(y); }
+      if (a === "bl") { el.style.left = px(x);  el.style.bottom = px(y); }
+      if (a === "br") { el.style.right = px(x); el.style.bottom = px(y); }
+    }
+
+    function applyLuxuryFinish(wrap, accent, opacity, cfg) {
+      wrap.style.opacity = String(opacity);
+      var filt =
+        "grayscale(0.25) " +
+        "saturate(0.85) " +
+        "contrast(1.05) " +
+        "brightness(0.98) " +
+        "drop-shadow(0 8px 22px " + rgba("#000000", 0.42) + ") " +
+        "drop-shadow(0 1px 0 " + rgba(accent || "#FFFFFF", Math.min(0.08, opacity * 0.35)) + ")";
+      wrap.style.filter = filt;
+      if (cfg && cfg.blend) wrap.style.mixBlendMode = cfg.blend;
+    }
+
+    /* --- PATCHED safeAnim: uses CSS keyframe names, respects reduced-motion --- */
+    function safeAnim(el, animName) {
+      if (reducedMotion) return;
+      if (animName === "fade") el.style.animation = "gbFadeIn 1.2s ease";
+      else if (animName === "twinkle") el.style.animation = "gbTwinkle 4s ease-in-out infinite";
+      else if (animName === "swing") el.style.animation = "gbSwing 5s ease-in-out infinite";
+    }
+
+    /* ═══════════════════════════════════════════
+       v25 PLACERS (only 4)
+    ═══════════════════════════════════════════ */
+
     function placeLogoPin(cfg, accent) {
-        var logo = document.querySelector('.nav-logo');
-        if (!logo) return;
-        logo.style.position = 'relative';
-        logo.style.overflow = 'visible';
-        var size = isMobile ? 16 : 22;
-        var el = createIcon(cfg.icon, size);
-        el.style.cssText = 'position:absolute;top:' + (cfg.oY || 0) + 'px;'
-            + 'right:-' + (cfg.oX || 12) + 'px;z-index:10;opacity:0.85;'
-            + 'animation:gbFadeIn 1s ease;pointer-events:none';
-        logo.appendChild(trackEl(el));
+      var logo = gbq(".nav-logo") || gbq(".nav .nav-logo") || gbq(".nav-inner .nav-logo");
+      if (!logo) return;
+      ensureRelative(logo);
+      var size = getSize(cfg);
+      var wrap = safeCreateIcon(cfg.icon, size);
+      if (!wrap) return;
+      wrap = trackEl(wrap);
+      wrap.style.zIndex = "3";
+      positionAbs(wrap, cfg.anchor || "tl", cfg.dx || -4, cfg.dy || -6);
+      var op = getOpacity(cfg, true);
+      applyLuxuryFinish(wrap, accent, op, cfg);
+      var rot = (typeof cfg.rot === "number") ? cfg.rot : -8;
+      wrap.style.transform = "rotate(" + rot + "deg)";
+      safeAnim(wrap, cfg.anim || "fade");
+      logo.appendChild(wrap);
     }
 
-    /* --- Logo wrap (scarf around logo) --- */
-    function placeLogoWrap(cfg, accent) {
-        var logo = document.querySelector('.nav-logo');
-        if (!logo) return;
-        logo.style.position = 'relative';
-        logo.style.overflow = 'visible';
-        var size = isMobile ? 28 : 36;
-        var el = createIcon(cfg.icon, size);
-        el.style.cssText = 'position:absolute;left:50%;bottom:-4px;'
-            + 'transform:translateX(-50%);opacity:0.85;z-index:10;'
-            + 'pointer-events:none;animation:gbFadeIn 1s ease';
-        logo.appendChild(trackEl(el));
+    function placeHeroMark(cfg, accent) {
+      var hero = gbq(".hero");
+      if (!hero) return;
+      ensureRelative(hero);
+      var size = getSize(cfg);
+      var wrap = safeCreateIcon(cfg.icon, size);
+      if (!wrap) return;
+      wrap = trackEl(wrap);
+      wrap.style.zIndex = "0";
+      positionAbs(wrap, cfg.anchor || "bl", cfg.dx || 26, cfg.dy || 26);
+      var op = getOpacity(cfg, false);
+      applyLuxuryFinish(wrap, accent, op, cfg);
+      var rot = (typeof cfg.rot === "number") ? cfg.rot : 8;
+      wrap.style.transform = "rotate(" + rot + "deg)";
+      safeAnim(wrap, cfg.anim || "none");
+      hero.appendChild(wrap);
     }
 
-    /* --- Glow behind logo --- */
-    function placeLogoBehind(cfg, accent) {
-        var logo = document.querySelector('.nav-logo');
-        if (!logo) return;
-        logo.style.position = 'relative';
-        var size = isMobile ? 40 : 50;
-        var el = document.createElement('div');
-        el.className = 'gb-con';
-        el.style.cssText = 'position:absolute;left:50%;top:50%;width:' + size + 'px;height:' + size + 'px;'
-            + 'transform:translate(-50%,-50%);border-radius:50%;z-index:-1;pointer-events:none;'
-            + 'background:radial-gradient(circle,' + rgba(accent, 0.2) + ',' + rgba(accent, 0.06) + ' 40%,transparent 70%);'
-            + 'animation:gbFadeIn 2s ease';
-        logo.appendChild(trackEl(el));
+    function placeFooterMark(cfg, accent) {
+      var footer = gbq(".footer") || gbq("footer");
+      if (!footer) return;
+      ensureRelative(footer);
+      var size = getSize(cfg);
+      var wrap = safeCreateIcon(cfg.icon, size);
+      if (!wrap) return;
+      wrap = trackEl(wrap);
+      wrap.style.zIndex = "0";
+      positionAbs(wrap, cfg.anchor || "br", cfg.dx || 22, cfg.dy || 18);
+      var op = getOpacity(cfg, false);
+      applyLuxuryFinish(wrap, accent, op, cfg);
+      var rot = (typeof cfg.rot === "number") ? cfg.rot : -8;
+      wrap.style.transform = "rotate(" + rot + "deg)";
+      safeAnim(wrap, cfg.anim || "none");
+      footer.appendChild(wrap);
     }
 
-    /* --- Hang items from nav bar --- */
-    function placeNavHang(cfg, accent) {
-        var nav = document.querySelector('.nav-inner') || document.querySelector('.nav');
-        if (!nav) return;
-        nav.style.position = 'relative';
-        nav.style.overflow = 'visible';
-        var count = isMobile ? Math.max(2, (cfg.count || 3) - 1) : (cfg.count || 3);
-        for (var i = 0; i < count; i++) {
-            var wrap = document.createElement('div');
-            wrap.className = 'gb-con';
-            var pct = 20 + (i / Math.max(count - 1, 1)) * 60;
-            var stringH = 10 + Math.random() * 14;
-            var size = isMobile ? 20 : 28;
-            wrap.style.cssText = 'position:absolute;bottom:-' + (stringH + size + 4) + 'px;left:' + pct + '%;'
-                + 'display:flex;flex-direction:column;align-items:center;z-index:9999;pointer-events:none;'
-                + 'transform-origin:top center;'
-                + (reducedMotion ? '' : 'animation:gbSwing ' + (3 + Math.random() * 2) + 's ease-in-out infinite;');
-            var thread = document.createElement('div');
-            thread.style.cssText = 'width:1px;height:' + stringH + 'px;background:' + rgba(accent, 0.35);
-            wrap.appendChild(thread);
-            wrap.appendChild(createIcon(cfg.icon, size));
-            nav.appendChild(trackEl(wrap));
-        }
-    }
-
-    /* --- Flank section titles with icons --- */
-    function placeTitleFlank(cfg, accent) {
-        var tags = document.querySelectorAll('.section-tag');
-        if (!tags.length) tags = document.querySelectorAll('.section-header h2');
-        for (var t = 0; t < tags.length; t++) {
-            var tag = tags[t];
-            tag.style.position = 'relative';
-            tag.style.overflow = 'visible';
-            var size = isMobile ? 18 : 22;
-            var left = createIcon(cfg.icon, size);
-            left.style.cssText = 'position:absolute;left:-' + (size + 8) + 'px;top:50%;'
-                + 'transform:translateY(-50%);opacity:0.7;animation:gbFadeIn 1s ease;pointer-events:none';
-            tag.appendChild(trackEl(left));
-            var right = createIcon(cfg.icon, size);
-            right.style.cssText = 'position:absolute;right:-' + (size + 8) + 'px;top:50%;'
-                + 'transform:translateY(-50%) scaleX(-1);opacity:0.7;animation:gbFadeIn 1s ease;pointer-events:none';
-            tag.appendChild(trackEl(right));
-        }
-    }
-
-    /* --- Icon beside section title divider lines --- */
-    function placeTitleDivider(cfg, accent) {
-        var lines = document.querySelectorAll('.section-tag-line');
-        for (var i = 0; i < lines.length; i++) {
-            var line = lines[i];
-            line.style.position = 'relative';
-            line.style.overflow = 'visible';
-            var size = isMobile ? 14 : 16;
-            var icon = createIcon(cfg.icon, size);
-            var side = line.nextElementSibling ? 'right' : 'left';
-            icon.style.cssText = 'position:absolute;top:50%;' + side + ':-' + (size / 2 + 4) + 'px;'
-                + 'transform:translateY(-50%);opacity:0.6;animation:gbFadeIn 1s ease;pointer-events:none';
-            line.appendChild(trackEl(icon));
-        }
-    }
-
-    /* --- Candy canes crossed behind section title text --- */
-    function placeTitleCross(cfg, accent) {
-        var titles = document.querySelectorAll('.section-tag span');
-        if (!titles.length) titles = document.querySelectorAll('.section-header h2');
-        for (var i = 0; i < titles.length; i++) {
-            var title = titles[i];
-            title.style.position = 'relative';
-            var size = isMobile ? 26 : 36;
-            var l = createIcon(cfg.icon, size);
-            l.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-70%,-50%) rotate(-30deg);'
-                + 'opacity:0.2;z-index:-1;animation:gbFadeIn 1s ease;pointer-events:none';
-            title.appendChild(trackEl(l));
-            var r = createIcon(cfg.icon, size);
-            r.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-30%,-50%) rotate(30deg) scaleX(-1);'
-                + 'opacity:0.2;z-index:-1;animation:gbFadeIn 1s ease;pointer-events:none';
-            title.appendChild(trackEl(r));
-        }
-    }
-
-    /* --- Icon perched on a title letter --- */
-    function placeTitleLetter(cfg, accent) {
-        var title = document.querySelector('.section-tag span') || document.querySelector('.section-header h2');
-        if (!title) return;
-        title.style.position = 'relative';
-        title.style.overflow = 'visible';
-        var size = isMobile ? 18 : 24;
-        var el = createIcon(cfg.icon, size);
-        el.style.cssText = 'position:absolute;left:2px;top:-' + Math.round(size * 0.4) + 'px;'
-            + 'opacity:0.65;z-index:10;pointer-events:none;animation:gbFadeIn 1s ease';
-        title.appendChild(trackEl(el));
-    }
-
-    /* --- CTA button accent (small icon beside Book Now) --- */
-    function placeCTAAccent(cfg, accent) {
-        var cta = document.querySelector('.nav-cta');
-        if (!cta) return;
-        cta.style.position = 'relative';
-        cta.style.overflow = 'visible';
-        var size = isMobile ? 14 : 18;
-        var el = createIcon(cfg.icon, size);
-        el.style.cssText = 'position:absolute;right:-' + (size + 3) + 'px;top:50%;'
-            + 'transform:translateY(-50%);opacity:0.8;animation:gbFadeIn 1s ease;pointer-events:none';
-        cta.appendChild(trackEl(el));
-    }
-
-    /* --- Card corner badge --- */
-    function placeCardCorner(cfg, accent) {
-        var cards = document.querySelectorAll('.service-card');
-        for (var i = 0; i < cards.length; i++) {
-            var card = cards[i];
-            card.style.position = 'relative';
-            card.style.overflow = 'visible';
-            var size = isMobile ? 16 : 22;
-            var icon = createIcon(cfg.icon, size);
-            var pos = cfg.pos || 'top-right';
-            var p = pos.split('-');
-            icon.style.cssText = 'position:absolute;' + p[0] + ':-' + Math.round(size / 3) + 'px;'
-                + p[1] + ':-' + Math.round(size / 3) + 'px;opacity:0.75;z-index:5;'
-                + 'animation:gbFadeIn 1s ease;pointer-events:none';
-            card.appendChild(trackEl(icon));
-        }
-    }
-
-    /* --- Footer scene (multiple items along footer top) --- */
-    function placeFooterScene(cfg, accent) {
-        var footer = document.querySelector('.footer');
-        if (!footer) return;
-        footer.style.position = 'relative';
-        footer.style.overflow = 'visible';
-        var count = isMobile ? 2 : 3;
-        var size = isMobile ? 24 : 32;
-        for (var i = 0; i < count; i++) {
-            var icon = createIcon(cfg.icon, size);
-            var pct = 15 + (i / Math.max(count - 1, 1)) * 70;
-            icon.style.cssText = 'position:absolute;top:-' + Math.round(size * 0.5) + 'px;left:' + pct + '%;'
-                + 'opacity:0.65;animation:gbFadeIn 1.5s ease;pointer-events:none';
-            footer.appendChild(trackEl(icon));
-        }
-    }
-
-    /* --- Footer single item --- */
-    function placeFooterItem(cfg, accent) {
-        var footer = document.querySelector('.footer');
-        if (!footer) return;
-        footer.style.position = 'relative';
-        footer.style.overflow = 'visible';
-        var size = isMobile ? 22 : 28;
-        var icon = createIcon(cfg.icon, size);
-        icon.style.cssText = 'position:absolute;top:-' + Math.round(size * 0.5) + 'px;right:15%;'
-            + 'opacity:0.65;animation:gbFadeIn 1.5s ease;pointer-events:none';
-        footer.appendChild(trackEl(icon));
-    }
-
-    /* --- Footer garland (repeating icons across footer top) --- */
-    function placeFooterGarland(cfg, accent) {
-        var footer = document.querySelector('.footer');
-        if (!footer) return;
-        footer.style.position = 'relative';
-        footer.style.overflow = 'visible';
-        var count = isMobile ? 4 : 7;
-        var size = isMobile ? 14 : 20;
-        var wrap = document.createElement('div');
-        wrap.className = 'gb-con';
-        wrap.style.cssText = 'position:absolute;top:-' + Math.round(size * 0.45) + 'px;left:5%;right:5%;'
-            + 'display:flex;justify-content:space-between;pointer-events:none;animation:gbFadeIn 1.5s ease';
-        for (var i = 0; i < count; i++) {
-            var icon = createIcon(cfg.icon, size);
-            icon.style.opacity = '0.6';
-            wrap.appendChild(icon);
-        }
-        footer.appendChild(trackEl(wrap));
-    }
-
-    /* --- Edge peekers (items peeking from page edges) --- */
-    function placeEdgePeek(cfg, accent) {
-        var size = isMobile ? 34 : 48;
-        var left = createIcon(cfg.icon, size);
-        left.style.cssText = 'position:fixed;left:-' + Math.round(size * 0.35) + 'px;bottom:20%;'
-            + 'opacity:0.45;z-index:9997;pointer-events:none;animation:gbFadeIn 2s ease';
-        document.body.appendChild(trackEl(left));
-        var right = createIcon(cfg.icon, size);
-        right.style.cssText = 'position:fixed;right:-' + Math.round(size * 0.35) + 'px;bottom:30%;'
-            + 'opacity:0.45;z-index:9997;pointer-events:none;transform:scaleX(-1);animation:gbFadeIn 2s ease';
-        document.body.appendChild(trackEl(right));
-    }
-
-    /* --- Hero corner element --- */
-    function placeHeroCorner(cfg, accent) {
-        var hero = document.querySelector('.hero-content') || document.querySelector('.hero');
-        if (!hero) return;
-        hero.style.position = 'relative';
-        var size = isMobile ? 36 : 48;
-        var icon = createIcon(cfg.icon, size);
-        var pos = cfg.pos || 'top-right';
-        var p = pos.split('-');
-        icon.style.cssText = 'position:absolute;' + p[0] + ':12px;' + p[1] + ':12px;'
-            + 'opacity:0.5;z-index:5;animation:gbFadeIn 2s ease;pointer-events:none';
-        hero.appendChild(trackEl(icon));
-    }
-
-    /* --- Hero scattered elements (bats, stars) --- */
-    function placeHeroScatter(cfg, accent) {
-        var hero = document.querySelector('.hero');
-        if (!hero) return;
-        hero.style.position = 'relative';
-        var count = isMobile ? Math.ceil((cfg.count || 5) * 0.6) : (cfg.count || 5);
-        var size = isMobile ? 16 : 22;
-        for (var i = 0; i < count; i++) {
-            var icon = createIcon(cfg.icon, size);
-            icon.style.cssText = 'position:absolute;left:' + (5 + Math.random() * 90) + '%;'
-                + 'top:' + (5 + Math.random() * 80) + '%;'
-                + 'transform:rotate(' + (Math.random() * 30 - 15) + 'deg);'
-                + 'opacity:' + (0.2 + Math.random() * 0.25) + ';z-index:3;pointer-events:none;'
-                + 'animation:gbFadeIn 2s ease';
-            hero.appendChild(trackEl(icon));
-        }
-    }
-
-    /* --- Accent beside hero title --- */
-    function placeHeroThrough(cfg, accent) {
-        var title = document.querySelector('.hero-title') || document.querySelector('.hero h1');
-        if (!title) return;
-        title.style.position = 'relative';
-        title.style.overflow = 'visible';
-        var size = isMobile ? 26 : 36;
-        var icon = createIcon(cfg.icon, size);
-        icon.style.cssText = 'position:absolute;right:-' + (size + 6) + 'px;top:50%;transform:translateY(-50%);'
-            + 'opacity:0.65;z-index:10;pointer-events:none;animation:gbFadeIn 1.5s ease';
-        title.appendChild(trackEl(icon));
-    }
-
-    /* --- Hero background accent --- */
-    function placeHeroBg(cfg, accent) {
-        var hero = document.querySelector('.hero');
-        if (!hero) return;
-        hero.style.position = 'relative';
-        var size = isMobile ? 80 : 120;
-        var icon = createIcon(cfg.icon, size);
-        icon.style.cssText = 'position:absolute;bottom:10px;right:5%;'
-            + 'opacity:0.22;z-index:1;pointer-events:none;animation:gbFadeIn 3s ease';
-        hero.appendChild(trackEl(icon));
-    }
-
-    /* --- Hero firework bursts --- */
-    function placeHeroBurst(cfg, accent) {
-        var hero = document.querySelector('.hero');
-        if (!hero) return;
-        hero.style.position = 'relative';
-        var spots = [{x:'10%',y:'15%'},{x:'80%',y:'10%'},{x:'45%',y:'25%'},{x:'90%',y:'30%'}];
-        var count = Math.min(cfg.count || 3, spots.length);
-        for (var i = 0; i < count; i++) {
-            var size = isMobile ? 24 : 34;
-            var icon = createIcon(cfg.icon, size);
-            icon.style.cssText = 'position:absolute;left:' + spots[i].x + ';top:' + spots[i].y + ';'
-                + 'opacity:' + (0.25 + Math.random() * 0.2) + ';z-index:2;pointer-events:none;'
-                + 'animation:gbFadeIn 2s ' + (i * 0.5) + 's ease both'
-                + (reducedMotion ? '' : ',gbTwinkle ' + (3 + Math.random() * 2) + 's ease-in-out infinite');
-            hero.appendChild(trackEl(icon));
-        }
-    }
-
-    /* --- Hero accent element --- */
-    function placeHeroAccent(cfg, accent) {
-        var hero = document.querySelector('.hero-content') || document.querySelector('.hero');
-        if (!hero) return;
-        hero.style.position = 'relative';
-        var size = isMobile ? 28 : 36;
-        var icon = createIcon(cfg.icon, size);
-        icon.style.cssText = 'position:absolute;left:8%;top:20%;transform:rotate(-15deg);'
-            + 'opacity:0.5;z-index:3;pointer-events:none;animation:gbFadeIn 1.5s ease';
-        hero.appendChild(trackEl(icon));
-    }
-
-    /* --- Page corner webs --- */
-    function placePageCorner(cfg, accent) {
-        var positions = cfg.positions || ['top-left', 'top-right'];
-        for (var i = 0; i < positions.length; i++) {
-            var p = positions[i].split('-');
-            var size = isMobile ? 70 : 110;
-            var el = document.createElement('div');
-            el.className = 'gb-con';
-            el.innerHTML = SVG.web;
-            el.style.cssText = 'position:fixed;' + p[0] + ':0;' + p[1] + ':0;'
-                + 'width:' + size + 'px;height:' + size + 'px;opacity:0.2;z-index:9997;pointer-events:none;'
-                + (p[1] === 'right' ? 'transform:scaleX(-1);' : '')
-                + 'animation:gbFadeIn 1.5s ease';
-            var svg = el.querySelector('svg');
-            if (svg) svg.style.cssText = 'width:100%;height:100%';
-            document.body.appendChild(trackEl(el));
-        }
+    function placeHeroCornerSvg(cfg, accent) {
+      if (!cfg || cfg.which !== "web") return;
+      var hero = gbq(".hero");
+      if (!hero) return;
+      ensureRelative(hero);
+      var size = isMobile ? clamp((cfg.sizeM || 92), 72, 110) : clamp((cfg.sizeD || 140), 110, 170);
+      var op = clamp((typeof cfg.opacity === "number" ? cfg.opacity : 0.10), 0.06, 0.12);
+      var el = document.createElement("div");
+      el.className = "gb-con";
+      el.style.cssText =
+        "width:" + size + "px;height:" + size + "px;pointer-events:none;position:absolute;z-index:0;opacity:" + op + ";" +
+        "filter:drop-shadow(0 10px 26px " + rgba("#000000", 0.45) + ");";
+      el.innerHTML =
+        '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+          '<g fill="none" stroke="' + rgba(accent || "#FFFFFF", 0.55) + '" stroke-width="0.85" stroke-linecap="round" opacity="0.9">' +
+            '<path d="M0,0 L100,0 L0,100 Z" />' +
+            '<path d="M0,0 L100,100" />' +
+            '<path d="M0,24 Q24,24 24,0" />' +
+            '<path d="M0,44 Q44,44 44,0" />' +
+            '<path d="M0,64 Q64,64 64,0" />' +
+            '<path d="M0,84 Q84,84 84,0" />' +
+          '</g>' +
+        "</svg>";
+      el = trackEl(el);
+      positionAbs(el, cfg.anchor || "tr", cfg.dx || -2, cfg.dy || -2);
+      var a = cfg.anchor || "tr";
+      if (a === "tl") el.style.transform = "scaleX(-1)";
+      if (a === "br") el.style.transform = "scaleY(-1)";
+      if (a === "bl") el.style.transform = "scale(-1,-1)";
+      hero.appendChild(el);
     }
 
     /* ═══════════════════════════════════════════
-       CONNOTATION CSS EFFECTS
-       Icicles, frost, waves, geo patterns, etc.
-    ═══════════════════════════════════════════ */
-    function injectConnotationCSS(themeId, accent) {
-        var css = [];
-
-        if (themeId === 'winter') {
-            var icicleSvg = encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 12"><polygon points="5,0 7,12 3,12" fill="rgba(200,225,255,0.4)"/><polygon points="20,0 23,10 17,10" fill="rgba(200,225,255,0.3)"/><polygon points="38,0 41,11 35,11" fill="rgba(200,225,255,0.35)"/><polygon points="55,0 58,9 52,9" fill="rgba(200,225,255,0.3)"/><polygon points="72,0 75,12 69,12" fill="rgba(200,225,255,0.4)"/><polygon points="90,0 93,10 87,10" fill="rgba(200,225,255,0.35)"/></svg>');
-            css.push('.nav{position:relative;overflow:visible !important}');
-            css.push('.nav::after{content:"";position:absolute;bottom:-12px;left:0;right:0;height:12px;pointer-events:none;z-index:9999;background:url("data:image/svg+xml,' + icicleSvg + '");background-size:100px 12px;background-repeat:repeat-x}');
-            var icicleSmall = encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 8"><polygon points="8,0 10,8 6,8" fill="rgba(200,225,255,0.3)"/><polygon points="25,0 27,6 23,6" fill="rgba(200,225,255,0.25)"/><polygon points="42,0 44,7 40,7" fill="rgba(200,225,255,0.3)"/><polygon points="58,0 60,6 56,6" fill="rgba(200,225,255,0.25)"/><polygon points="73,0 75,8 71,8" fill="rgba(200,225,255,0.3)"/></svg>');
-            css.push('.service-card{position:relative;overflow:visible !important}');
-            css.push('.service-card::before{content:"";position:absolute;top:-1px;left:0;right:0;height:8px;pointer-events:none;z-index:5;background:url("data:image/svg+xml,' + icicleSmall + '");background-size:80px 8px;background-repeat:repeat-x}');
-            var snowSvg = encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 25" preserveAspectRatio="none"><path d="M0,25 C50,5 100,15 150,8 C200,0 250,12 300,5 C350,0 380,10 400,8 L400,25Z" fill="rgba(230,240,255,0.12)"/></svg>');
-            css.push('.footer{position:relative;overflow:visible !important}');
-            css.push('.footer::before{content:"";position:absolute;top:-20px;left:0;right:0;height:25px;pointer-events:none;z-index:5;background:url("data:image/svg+xml,' + snowSvg + '");background-size:100% 25px}');
-            css.push('section{position:relative}');
-            css.push('section::after{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;pointer-events:none;background:linear-gradient(90deg,transparent,' + rgba(accent, 0.15) + ' 20%,' + rgba(accent, 0.25) + ' 50%,' + rgba(accent, 0.15) + ' 80%,transparent);animation:gbFadeIn 2s ease}');
-        }
-
-        if (themeId === 'summer') {
-            var waveSvg = encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 16" preserveAspectRatio="none"><path d="M0,8 Q150,0 300,8 Q450,16 600,8 Q750,0 900,8 Q1050,16 1200,8" fill="none" stroke="' + accent + '" stroke-width="1.5" opacity="0.3"/></svg>');
-            css.push('.footer{position:relative;overflow:visible !important}');
-            css.push('.footer::before{content:"";position:absolute;top:-16px;left:0;right:0;height:16px;pointer-events:none;background:url("data:image/svg+xml,' + waveSvg + '");background-size:100% 16px}');
-            var waveSmall = encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 8" preserveAspectRatio="none"><path d="M0,4 Q75,0 150,4 Q225,8 300,4 Q375,0 450,4 Q525,8 600,4" fill="none" stroke="' + accent + '" stroke-width="1" opacity="0.2"/></svg>');
-            css.push('section{position:relative}');
-            css.push('section + section::before{content:"";position:absolute;top:-8px;left:0;right:0;height:8px;pointer-events:none;background:url("data:image/svg+xml,' + waveSmall + '");background-size:100% 8px}');
-        }
-
-        if (themeId === 'eid') {
-            css.push('.service-card{border:1px solid ' + rgba(accent, 0.2) + ' !important}');
-            var geoSvg = encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 4"><path d="M0,2L5,0L10,2L15,0L20,2" fill="none" stroke="' + accent + '" stroke-width="0.8" opacity="0.3"/></svg>');
-            css.push('section{position:relative}');
-            css.push('section + section::before{content:"";position:absolute;top:-2px;left:10%;right:10%;height:4px;pointer-events:none;background:url("data:image/svg+xml,' + geoSvg + '");background-size:20px 4px;background-repeat:repeat-x}');
-        }
-
-        if (themeId === 'blackfriday') {
-            css.push('.hero{position:relative}');
-            css.push('.hero .gb-con-pct{position:absolute;right:8%;top:15%;font-size:' + (isMobile ? '100' : '180') + 'px;font-weight:900;color:' + accent + ';opacity:0.06;z-index:1;pointer-events:none;font-family:-apple-system,sans-serif;line-height:1;animation:gbFadeIn 2s ease}');
-        }
-
-        if (themeId === 'flashsale') {
-            css.push('@keyframes gbPulse{0%,100%{opacity:0}50%{opacity:0.03}}');
-            css.push('.hero{position:relative}');
-            css.push('.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,' + accent + ',transparent 70%);animation:gbPulse 2s ease-in-out infinite;pointer-events:none;z-index:1}');
-            css.push('@keyframes gbCtaSpark{0%,100%{box-shadow:0 0 5px ' + rgba(accent, 0.3) + '}50%{box-shadow:0 0 20px ' + rgba(accent, 0.6) + ',0 0 40px ' + rgba(accent, 0.3) + '}}');
-            css.push('.nav-cta,.hero-cta-primary{animation:gbCtaSpark 1.5s ease-in-out infinite !important}');
-        }
-
-        if (css.length) {
-            state.conStyleEl = document.createElement('style');
-            state.conStyleEl.id = 'gb-con-css';
-            state.conStyleEl.textContent = css.join('');
-            document.head.appendChild(state.conStyleEl);
-        }
-    }
-
-    /* ═══════════════════════════════════════════
-       CONNOTATION DISPATCH
+       v25 DISPATCH
     ═══════════════════════════════════════════ */
     var CON_PLACERS = {
-        logo: placeOnLogo, logoPin: placeLogoPin, logoWrap: placeLogoWrap,
-        logoBehind: placeLogoBehind, navHang: placeNavHang,
-        titleFlank: placeTitleFlank, titleDivider: placeTitleDivider,
-        titleCross: placeTitleCross, titleLetter: placeTitleLetter,
-        ctaAccent: placeCTAAccent, cardCorner: placeCardCorner,
-        footerScene: placeFooterScene, footerItem: placeFooterItem,
-        footerGarland: placeFooterGarland, edgePeek: placeEdgePeek,
-        heroCorner: placeHeroCorner, heroScatter: placeHeroScatter,
-        heroThrough: placeHeroThrough, heroBg: placeHeroBg,
-        heroBurst: placeHeroBurst, heroAccent: placeHeroAccent,
-        pageCorner: placePageCorner
+      logoPin: placeLogoPin,
+      heroMark: placeHeroMark,
+      footerMark: placeFooterMark,
+      heroCornerSvg: placeHeroCornerSvg
     };
 
     function renderConnotations(themeId, accent) {
-        var items = CONNOTATIONS[themeId];
-        if (!items) return;
-
-        injectConnotationCSS(themeId, accent);
-
-        // Black Friday hero percent sign (DOM element via CSS class)
-        if (themeId === 'blackfriday') {
-            var hero = document.querySelector('.hero');
-            if (hero) {
-                var pct = document.createElement('div');
-                pct.className = 'gb-con gb-con-pct';
-                pct.textContent = '%';
-                hero.appendChild(trackEl(pct));
-            }
-        }
-
-        for (var i = 0; i < items.length; i++) {
-            var cfg = items[i];
-            if (cfg.place === 'css') continue; // handled by injectConnotationCSS
-            var placer = CON_PLACERS[cfg.place];
-            if (placer) placer(cfg, accent);
-        }
+      var items = CONNOTATIONS[themeId];
+      if (!items || !items.length) return;
+      for (var i = 0; i < items.length; i++) {
+        var cfg = items[i];
+        var fn = CON_PLACERS[cfg.place];
+        if (fn) fn(cfg, accent);
+      }
     }
 
     function removeConnotations() {
