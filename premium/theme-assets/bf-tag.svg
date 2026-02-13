@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 90">
+  <defs>
+    <linearGradient id="btg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD600"/>
+      <stop offset="100%" stop-color="#FF8F00"/>
+    </linearGradient>
+    <filter id="btedge" x="-4%" y="-3%" width="108%" height="106%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="blur"/>
+      <feOffset dy="1.5" result="shift"/>
+      <feFlood flood-color="#000" flood-opacity="0.12"/>
+      <feComposite in2="shift" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- String -->
+  <path d="M 40 4 Q 35 8 38 14" stroke="#424242" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+
+  <!-- Tag body -->
+  <path d="M 15 18 L 65 18 L 65 80 L 40 70 L 15 80 Z" fill="url(#btg)" stroke="#E65100" stroke-width="0.8" filter="url(#btedge)"/>
+
+  <!-- Hole -->
+  <circle cx="40" cy="26" r="4" fill="#1a1a1a" stroke="#E65100" stroke-width="0.6"/>
+
+  <!-- Percent symbol -->
+  <text x="40" y="56" font-family="Arial,sans-serif" font-size="22" font-weight="bold" fill="#1a1a1a" text-anchor="middle" opacity="0.8">%</text>
+
+  <!-- Highlight -->
+  <rect x="20" y="22" width="8" height="40" rx="3" fill="#fff" opacity="0.1"/>
+</svg>

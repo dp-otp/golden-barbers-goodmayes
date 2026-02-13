@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 150">
+  <defs>
+    <!-- Lantern body: deep purple to gold -->
+    <linearGradient id="rlb" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4A148C"/>
+      <stop offset="25%" stop-color="#7B1FA2"/>
+      <stop offset="50%" stop-color="#9C27B0"/>
+      <stop offset="75%" stop-color="#7B1FA2"/>
+      <stop offset="100%" stop-color="#4A148C"/>
+    </linearGradient>
+    <!-- Inner warm glow -->
+    <radialGradient id="rlg" cx="50%" cy="55%" r="35%">
+      <stop offset="0%" stop-color="#FFE082" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#FFB300" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FF6F00" stop-opacity="0.1"/>
+    </radialGradient>
+    <!-- Gold caps -->
+    <linearGradient id="rlc" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+    <filter id="rlglow" x="-25%" y="-10%" width="150%" height="120%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Ambient glow -->
+  <ellipse cx="40" cy="80" rx="30" ry="40" fill="#FFB300" opacity="0.06" filter="url(#rlglow)"/>
+
+  <!-- Hanging ring -->
+  <circle cx="40" cy="10" r="5" fill="none" stroke="url(#rlc)" stroke-width="2"/>
+  <!-- Chain links -->
+  <ellipse cx="40" cy="18" rx="2" ry="3" fill="none" stroke="#B8860B" stroke-width="1.2"/>
+  <ellipse cx="40" cy="24" rx="2" ry="3" fill="none" stroke="#B8860B" stroke-width="1.2"/>
+
+  <!-- Top cap / crown -->
+  <path d="M 28 32 L 32 28 L 40 26 L 48 28 L 52 32 Z" fill="url(#rlc)" stroke="#996515" stroke-width="0.5"/>
+
+  <!-- Dome -->
+  <path d="M 24 48 Q 24 32 40 28 Q 56 32 56 48 Z" fill="url(#rlb)" stroke="#B8860B" stroke-width="0.7"/>
+  <path d="M 27 46 Q 27 34 40 30 Q 53 34 53 46 Z" fill="url(#rlg)" opacity="0.5"/>
+
+  <!-- Main body -->
+  <path d="M 20 48 L 20 108 Q 20 125 40 128 Q 60 125 60 108 L 60 48 Z" fill="url(#rlb)" stroke="#B8860B" stroke-width="0.7"/>
+
+  <!-- Inner glow body -->
+  <rect x="24" y="50" width="32" height="70" rx="4" fill="url(#rlg)" opacity="0.45"/>
+
+  <!-- Islamic lattice pattern -->
+  <!-- Horizontal bands -->
+  <rect x="20" y="56" width="40" height="1" fill="#B8860B" opacity="0.4"/>
+  <rect x="20" y="72" width="40" height="1" fill="#B8860B" opacity="0.4"/>
+  <rect x="20" y="88" width="40" height="1" fill="#B8860B" opacity="0.4"/>
+  <rect x="20" y="104" width="40" height="1" fill="#B8860B" opacity="0.4"/>
+  <!-- Arch cutouts -->
+  <path d="M 26 58 Q 26 52 33 50 Q 40 52 40 58 L 40 70 L 26 70 Z" fill="#1A0033" opacity="0.4" stroke="#B8860B" stroke-width="0.4"/>
+  <path d="M 40 58 Q 40 52 47 50 Q 54 52 54 58 L 54 70 L 40 70 Z" fill="#1A0033" opacity="0.4" stroke="#B8860B" stroke-width="0.4"/>
+  <path d="M 26 74 Q 26 68 33 66 Q 40 68 40 74 L 40 86 L 26 86 Z" fill="#1A0033" opacity="0.4" stroke="#B8860B" stroke-width="0.4"/>
+  <path d="M 40 74 Q 40 68 47 66 Q 54 68 54 74 L 54 86 L 40 86 Z" fill="#1A0033" opacity="0.4" stroke="#B8860B" stroke-width="0.4"/>
+  <path d="M 26 90 Q 26 84 33 82 Q 40 84 40 90 L 40 102 L 26 102 Z" fill="#1A0033" opacity="0.4" stroke="#B8860B" stroke-width="0.4"/>
+  <path d="M 40 90 Q 40 84 47 82 Q 54 84 54 90 L 54 102 L 40 102 Z" fill="#1A0033" opacity="0.4" stroke="#B8860B" stroke-width="0.4"/>
+
+  <!-- Bottom cap -->
+  <path d="M 26 112 Q 26 126 40 130 Q 54 126 54 112" fill="url(#rlc)" stroke="#996515" stroke-width="0.5"/>
+  <!-- Bottom finial -->
+  <path d="M 38 130 L 40 140 L 42 130" fill="#B8860B"/>
+  <circle cx="40" cy="142" r="2" fill="#B8860B"/>
+
+  <!-- Highlight -->
+  <ellipse cx="32" cy="75" rx="3" ry="20" fill="#fff" opacity="0.08" transform="rotate(-2 32 75)"/>
+</svg>

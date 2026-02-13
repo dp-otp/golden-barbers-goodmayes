@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 90">
+  <defs>
+    <linearGradient id="bpg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF1744"/>
+      <stop offset="100%" stop-color="#D50000"/>
+    </linearGradient>
+    <linearGradient id="bpbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#0d0d0d"/>
+    </linearGradient>
+    <filter id="bpedge" x="-4%" y="-3%" width="108%" height="106%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="blur"/>
+      <feOffset dy="2" result="shift"/>
+      <feFlood flood-color="#000" flood-opacity="0.15"/>
+      <feComposite in2="shift" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Circle badge -->
+  <circle cx="35" cy="45" r="32" fill="url(#bpbg)" stroke="#FFD600" stroke-width="2" filter="url(#bpedge)"/>
+  <circle cx="35" cy="45" r="28" fill="none" stroke="#FFD600" stroke-width="0.5" opacity="0.4"/>
+
+  <!-- Percent symbol -->
+  <circle cx="24" cy="34" r="7" fill="none" stroke="url(#bpg)" stroke-width="3"/>
+  <circle cx="46" cy="56" r="7" fill="none" stroke="url(#bpg)" stroke-width="3"/>
+  <line x1="48" y1="28" x2="22" y2="62" stroke="url(#bpg)" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Highlight -->
+  <ellipse cx="28" cy="36" rx="12" ry="18" fill="#fff" opacity="0.03" transform="rotate(-15 28 36)"/>
+</svg>

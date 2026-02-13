@@ -180,6 +180,16 @@
             --white: #ffffff;
             --gray: #888888;
             --gray-dark: #444444;
+            /* Spacing scale */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+            --space-2xl: 5rem;
+            --space-3xl: 8rem;
+            --section-pad: 150px;
+            --container-pad: 20px;
         }
 
         * {
@@ -325,28 +335,29 @@
            ============================================ */
         .nav {
             position: fixed;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 0;
+            left: 0;
+            right: 0;
             z-index: 9999;
-            padding: 15px 40px;
-            background: rgba(20, 20, 20, 0.8);
+            background: rgba(10, 10, 10, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-radius: 100px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            transition: all 0.3s ease;
         }
 
-        .nav:hover {
-            border-color: rgba(212, 175, 55, 0.5);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(212, 175, 55, 0.1);
+        .nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
         .nav-inner {
             display: flex;
             align-items: center;
-            gap: 50px;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
         }
 
         .nav-logo {
@@ -2375,9 +2386,8 @@
                 cursor: auto;
             }
 
-            .nav {
-                width: calc(100% - 40px);
-                padding: 12px 20px;
+            .nav-inner {
+                padding: 0.75rem 1rem;
             }
 
             .nav-links {
@@ -2417,16 +2427,12 @@
         }
 
         @media (max-width: 600px) {
-            .nav {
-                top: 20px;
-            }
-
             .hero {
-                padding: 120px 20px 100px;
+                padding: 120px var(--container-pad) 80px;
             }
 
             .hero-content {
-                margin-top: 220px;
+                margin-top: 160px;
             }
 
             .btn {
@@ -2794,32 +2800,6 @@
                 font-size: 22px;
             }
         }
-        /* ============================================
-           FIREBASE LIVE BANNERS
-           ============================================ */
-        .gb-top-banner {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 10000;
-            padding: 10px 20px;
-            text-align: center;
-            font-family: 'Outfit', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            display: none;
-            animation: slideDown 0.5s ease;
-            cursor: pointer;
-        }
-        .gb-top-banner.show { display: block; }
-        .gb-top-banner .close-banner {
-            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-            background: none; border: none; color: inherit; font-size: 18px;
-            cursor: pointer; opacity: 0.7; padding: 4px 8px;
-        }
-        .gb-top-banner .close-banner:hover { opacity: 1; }
-
-        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
-
         .gb-shop-closed-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -2852,15 +2832,152 @@
             cursor: pointer;
         }
 
+        /* ============================================
+           MOBILE PROPORTIONS OVERHAUL
+           ============================================ */
+
+        /* --- Tablet (768px) --- */
+        @media (max-width: 768px) {
+            :root {
+                --space-lg: 1.5rem;
+                --space-xl: 2rem;
+                --space-2xl: 3rem;
+                --space-3xl: 4rem;
+                --section-pad: 80px;
+            }
+
+            /* Hero blobs - scale down from 800/600/500 */
+            .hero-blob-1 { width: 400px; height: 400px; }
+            .hero-blob-2 { width: 300px; height: 300px; }
+            .hero-blob-3 { width: 250px; height: 250px; }
+
+            /* Hero content */
+            .hero-content { margin-top: 180px; }
+            .hero-subtitle { margin-bottom: 35px; }
+
+            /* Section headers - global */
+            .section-header { margin-bottom: 60px; }
+            .section-subtitle { font-size: 15px; }
+
+            /* Services */
+            .services { padding: var(--section-pad) var(--container-pad); }
+            .service-card { padding: 35px 28px; border-radius: 24px; }
+            .service-icon { font-size: 48px; margin-bottom: 20px; }
+            .service-title { font-size: 22px; margin-bottom: 12px; }
+            .service-desc { font-size: 14px; margin-bottom: 20px; }
+            .service-price-value { font-size: 34px; }
+
+            /* Stats */
+            .stats { padding: 60px var(--container-pad); }
+            .stat-item { padding: 25px; }
+
+            /* Testimonials */
+            .testimonials { padding: 80px 0; }
+            .testimonials .section-header { margin-bottom: 50px; }
+            .testimonial-card { width: 340px; padding: 35px; border-radius: 24px; }
+            .testimonial-text { font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
+            .testimonial-quote { font-size: 50px; top: 20px; left: 25px; }
+
+            /* CTA */
+            .cta { padding: var(--section-pad) var(--container-pad); }
+            .cta-bg { width: 500px; height: 500px; }
+            .cta-subtitle { font-size: 16px; margin-bottom: 35px; }
+
+            /* Footer */
+            .footer { padding: 50px var(--container-pad) 30px; }
+            .footer-grid { gap: 35px; margin-bottom: 35px; }
+            .footer-col h4 { margin-bottom: 18px; font-size: 12px; }
+            .footer-bottom { text-align: center; font-size: 13px; }
+
+            /* Mobile menu */
+            .mobile-menu-links { gap: 35px; }
+            .mobile-menu-links a { font-size: 1.75rem; }
+        }
+
+        /* --- Small Mobile (480px) --- */
+        @media (max-width: 480px) {
+            :root {
+                --space-lg: 1.25rem;
+                --space-xl: 1.5rem;
+                --space-2xl: 2.5rem;
+                --space-3xl: 3rem;
+                --section-pad: 60px;
+                --container-pad: 16px;
+            }
+
+            /* Hero blobs - fade further */
+            .hero-blob { opacity: 0.3; }
+
+            /* Hero */
+            .hero { padding: 100px var(--container-pad) 60px; }
+            .hero-content { margin-top: 140px; }
+            .hero-title { letter-spacing: -2px; }
+            .hero-subtitle { margin-bottom: 25px; font-size: 15px; }
+            .hero-ctas {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+                max-width: 320px;
+                margin: 0 auto;
+            }
+            .hero-ctas .btn {
+                text-align: center;
+                justify-content: center;
+                width: 100%;
+            }
+
+            /* Marquee */
+            .marquee-section { padding: 20px 0; }
+            .marquee-item { font-size: 13px; letter-spacing: 1px; gap: 15px; }
+            .marquee-content { gap: 25px; padding: 0 12px; }
+
+            /* Services */
+            .service-card { padding: 28px 22px; border-radius: 20px; }
+            .service-icon { font-size: 40px; margin-bottom: 16px; }
+            .service-title { font-size: 20px; }
+            .service-price-value { font-size: 30px; }
+            .services::before { width: 350px; height: 350px; opacity: 0.7; }
+
+            /* Section headers */
+            .section-header { margin-bottom: 45px; }
+            .section-subtitle { font-size: 14px; }
+
+            /* Stats */
+            .stats { padding: 40px var(--container-pad); }
+            .stat-item { padding: 20px 15px; }
+
+            /* Testimonials */
+            .testimonials { padding: 60px 0; }
+            .testimonial-card { width: 290px; padding: 28px; border-radius: 20px; }
+            .testimonial-text { font-size: 14px; }
+            .testimonial-avatar { width: 48px; height: 48px; font-size: 16px; }
+
+            /* CTA */
+            .cta-bg { width: 350px; height: 350px; }
+            .cta-subtitle { font-size: 15px; margin-bottom: 25px; }
+
+            /* Footer */
+            .footer-brand p { font-size: 14px; }
+
+            /* Modal */
+            .booking-modal-content { border-radius: 16px; }
+            .modal-header,
+            .modal-body,
+            .modal-footer { padding-left: 18px; padding-right: 18px; }
+            .modal-service-name { font-size: 20px; }
+            .modal-service-icon { font-size: 40px; }
+
+            /* Mobile menu */
+            .mobile-menu-links a { font-size: 1.5rem; }
+            .mobile-menu-links { gap: 28px; }
+        }
+
         /* Theme color overrides */
         body.themed { transition: background-color 0.5s; }
     </style>
 </head>
 <body>
 
-    <!-- Firebase Live Banners -->
-    <div class="gb-top-banner" id="gbAnnounceBanner"><span id="gbAnnounceText"></span><button class="close-banner" onclick="this.parentElement.classList.remove('show')">&times;</button></div>
-    <div class="gb-top-banner" id="gbDiscountBanner" style="top:auto;"><span id="gbDiscountText"></span><button class="close-banner" onclick="this.parentElement.classList.remove('show')">&times;</button></div>
 
     <!-- Shop Closed Overlay -->
     <div class="gb-shop-closed-overlay" id="gbShopClosed">
@@ -3593,37 +3710,14 @@
         });
 
         // ============================================
-        // SMART NAVIGATION
+        // NAVIGATION SCROLL EFFECT
         // ============================================
-        let lastScroll = 0;
-        let ticking = false;
-
         window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const nav = document.querySelector('.nav');
-                    const currentScroll = window.pageYOffset;
-
-                    if (currentScroll > 100) {
-                        nav.style.background = 'rgba(10, 10, 10, 0.95)';
-                        nav.style.backdropFilter = 'blur(30px)';
-                        nav.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.5)';
-
-                        if (currentScroll > lastScroll && currentScroll > 200) {
-                            nav.style.transform = 'translateX(-50%) translateY(-150%)';
-                        } else {
-                            nav.style.transform = 'translateX(-50%) translateY(0)';
-                        }
-                    } else {
-                        nav.style.background = 'rgba(20, 20, 20, 0.8)';
-                        nav.style.boxShadow = 'none';
-                        nav.style.transform = 'translateX(-50%) translateY(0)';
-                    }
-
-                    lastScroll = currentScroll;
-                    ticking = false;
-                });
-                ticking = true;
+            const nav = document.querySelector('.nav');
+            if (window.pageYOffset > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
             }
         });
 
@@ -4020,6 +4114,8 @@ You can discuss anything - sports, weather, general knowledge, advice, etc. Be h
         }
     </script>
 
+    <script src="christmas-svgs.js"></script>
+    <script src="seasonal-overlays-engine.js"></script>
     <script src="theme-effects.js?v=20"></script>
     <!-- Firebase Live Data Integration -->
     <script>
@@ -4059,32 +4155,6 @@ You can discuss anything - sports, weather, general knowledge, advice, etc. Be h
             });
 
             // ============================================
-            // ANNOUNCEMENT BANNER
-            // ============================================
-            db.ref('announcement').on('value', function(snapshot) {
-                var data = snapshot.val();
-                var banner = document.getElementById('gbAnnounceBanner');
-                if (!data || !data.active || !data.text) {
-                    banner.classList.remove('show');
-                    return;
-                }
-                var bgColors = {
-                    gold: 'linear-gradient(135deg, #d4af37, #a88a2d)',
-                    green: 'linear-gradient(135deg, #22c55e, #16a34a)',
-                    red: 'linear-gradient(135deg, #ef4444, #dc2626)',
-                    blue: 'linear-gradient(135deg, #3b82f6, #2563eb)'
-                };
-                banner.style.background = bgColors[data.style] || bgColors.gold;
-                banner.style.color = (data.style === 'gold') ? '#000' : '#fff';
-                document.getElementById('gbAnnounceText').textContent = data.text;
-                banner.classList.add('show');
-
-                // Push nav down when banner is visible
-                var nav = document.querySelector('.nav');
-                if (nav) nav.style.top = '40px';
-            });
-
-            // ============================================
             // SEASONAL THEME - immersive effects via theme-effects.js
             // ============================================
             db.ref('siteTheme').on('value', function(snapshot) {
@@ -4099,29 +4169,12 @@ You can discuss anything - sports, weather, general knowledge, advice, etc. Be h
             });
 
             // ============================================
-            // SITE DISCOUNT BANNER
+            // SITE DISCOUNT - feeds overlay engine banner
             // ============================================
             db.ref('siteDiscount').on('value', function(snapshot) {
                 var data = snapshot.val();
-                var banner = document.getElementById('gbDiscountBanner');
-                if (!data || !data.active || !data.text) {
-                    banner.classList.remove('show');
-                    return;
-                }
-                var bg = 'linear-gradient(135deg, ' + (data.colors ? data.colors.primary : '#d4af37') + ', ' + (data.colors ? data.colors.secondary : '#a88a2d') + ')';
-                banner.style.background = bg;
-                banner.style.color = data.textColor || '#fff';
-                var html = data.text;
-                if (data.code) html += ' \u2014 Code: <strong>' + data.code + '</strong>';
-                document.getElementById('gbDiscountText').innerHTML = html;
-                banner.classList.add('show');
-
-                // Position below announcement banner if both visible
-                var announceBanner = document.getElementById('gbAnnounceBanner');
-                if (announceBanner.classList.contains('show')) {
-                    banner.style.top = '40px';
-                } else {
-                    banner.style.top = '0';
+                if (typeof GBSeasonalOverlays !== 'undefined') {
+                    GBSeasonalOverlays.updateDiscount(data);
                 }
             });
         })();

@@ -207,118 +207,150 @@
         /* ============================================
            FLOATING PILL NAVIGATION
            ============================================ */
-        .floating-nav {
+        .nav {
             position: fixed;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            padding: 12px 20px;
-            background: rgba(20, 20, 20, 0.8);
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            background: rgba(10, 10, 10, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-radius: 100px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            transition: all 0.3s ease;
         }
 
-        .floating-nav.scrolled {
+        .nav.scrolled {
             background: rgba(10, 10, 10, 0.95);
-            border-color: rgba(212, 175, 55, 0.3);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
-        .floating-nav.hidden {
-            transform: translateX(-50%) translateY(-100px);
+        .nav.hidden {
+            transform: translateY(-100px);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
         }
 
         .nav-logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             text-decoration: none;
-            padding-right: 15px;
-            border-right: 1px solid rgba(212, 175, 55, 0.2);
-            margin-right: 8px;
+            color: var(--white);
         }
 
         .nav-logo img {
-            width: 36px;
-            height: 36px;
-            object-fit: cover;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-logo:hover img {
+            transform: rotate(360deg) scale(1.1);
         }
 
         .nav-logo span {
             font-weight: 700;
-            font-size: 1rem;
-            color: var(--white);
-            letter-spacing: -0.02em;
+            font-size: 18px;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .nav-links {
             display: flex;
-            align-items: center;
-            gap: 4px;
+            gap: 40px;
+            list-style: none;
         }
 
-        .nav-link {
-            padding: 10px 18px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--gray-400);
+        .nav-links a {
+            color: var(--gray);
             text-decoration: none;
-            border-radius: 50px;
-            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             position: relative;
+            transition: color 0.3s;
         }
 
-        .nav-link:hover {
-            color: var(--white);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .nav-link.active {
-            color: var(--black);
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 2px;
             background: var(--gold);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .nav-cta {
-            margin-left: 8px;
-            padding: 12px 24px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--black);
+            padding: 12px 30px;
             background: var(--gold);
+            color: var(--black);
             text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             border-radius: 50px;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-cta:hover::before {
+            left: 100%;
         }
 
         .nav-cta:hover {
-            background: var(--gold-light);
             transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.4);
         }
 
         /* Mobile Nav Toggle */
         .nav-toggle {
             display: none;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
+            cursor: pointer;
             padding: 10px;
-            background: none;
-            border: none;
-            cursor: none;
         }
 
         .nav-toggle span {
-            width: 24px;
+            width: 25px;
             height: 2px;
             background: var(--gold);
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         /* ============================================
@@ -1303,8 +1335,8 @@
            MOBILE RESPONSIVE
            ============================================ */
         @media (max-width: 1024px) {
-            .floating-nav {
-                padding: 10px 15px;
+            .nav-inner {
+                padding: 0.75rem 1rem;
             }
 
             .nav-links {
@@ -1529,9 +1561,7 @@
     </style>
 </head>
 <body>
-    <style>.gb-top-banner{position:fixed;top:0;left:0;right:0;z-index:10000;padding:10px 20px;text-align:center;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;display:none;animation:gbSlide .5s ease}.gb-top-banner.show{display:block}.gb-top-banner .close-banner{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:inherit;font-size:18px;cursor:pointer;opacity:.7;padding:4px 8px}.gb-shop-closed-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;font-family:'Outfit',sans-serif}.gb-shop-closed-overlay.show{display:flex}.gb-shop-closed-card{text-align:center;padding:40px 30px;background:#111;border:1px solid rgba(212,175,55,.3);border-radius:24px;max-width:400px;width:90%}.gb-shop-closed-card .emoji{font-size:48px;margin-bottom:16px}.gb-shop-closed-card h2{font-size:24px;font-weight:800;color:#fff;margin-bottom:8px}.gb-shop-closed-card p{color:#888;font-size:14px;line-height:1.6;margin-bottom:20px}.gb-shop-closed-card .dismiss-btn{padding:12px 30px;background:linear-gradient(135deg,#d4af37,#a88a2d);color:#000;border:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer}@keyframes gbSlide{from{transform:translateY(-100%)}to{transform:translateY(0)}}</style>
-    <div class="gb-top-banner" id="gbAnnounceBanner"><span id="gbAnnounceText"></span><button class="close-banner" onclick="this.parentElement.classList.remove('show')">&times;</button></div>
-    <div class="gb-top-banner" id="gbDiscountBanner"><span id="gbDiscountText"></span><button class="close-banner" onclick="this.parentElement.classList.remove('show')">&times;</button></div>
+    <style>.gb-shop-closed-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;font-family:'Outfit',sans-serif}.gb-shop-closed-overlay.show{display:flex}.gb-shop-closed-card{text-align:center;padding:40px 30px;background:#111;border:1px solid rgba(212,175,55,.3);border-radius:24px;max-width:400px;width:90%}.gb-shop-closed-card .emoji{font-size:48px;margin-bottom:16px}.gb-shop-closed-card h2{font-size:24px;font-weight:800;color:#fff;margin-bottom:8px}.gb-shop-closed-card p{color:#888;font-size:14px;line-height:1.6;margin-bottom:20px}.gb-shop-closed-card .dismiss-btn{padding:12px 30px;background:linear-gradient(135deg,#d4af37,#a88a2d);color:#000;border:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer}</style>
     <div class="gb-shop-closed-overlay" id="gbShopClosed"><div class="gb-shop-closed-card"><div class="emoji" id="gbClosedEmoji">🔒</div><h2 id="gbClosedTitle">We're Currently Closed</h2><p id="gbClosedMsg">We'll be back soon! Call 020 8598 9920.</p><button class="dismiss-btn" onclick="document.getElementById('gbShopClosed').classList.remove('show')">Continue Browsing</button></div></div>
 
     <!-- Noise Overlay -->
@@ -1562,26 +1592,28 @@
     </div>
 
     <!-- Floating Navigation -->
-    <nav class="floating-nav">
-        <a href="index.html" class="nav-logo">
-            <img src="../logo-removebg-preview.png" alt="Golden Barbers">
-            <span>Golden Barbers</span>
-        </a>
-        <div class="nav-links">
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="services.html" class="nav-link">Services</a>
-            <a href="about.html" class="nav-link active">About</a>
-            <a href="gallery.html" class="nav-link">Gallery</a>
-            <a href="knowledge.html" class="nav-link">Learn</a>
-            <a href="adam.html" class="nav-link">Adam AI</a>
-            <a href="contact.html" class="nav-link">Contact</a>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <img src="../logo.png" alt="Golden Barbers">
+                <span>Golden Barbers</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="knowledge.html">Learn</a></li>
+                <li><a href="adam.html">Adam AI</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a href="services.html" class="nav-cta">Book Now</a>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-        <a href="services.html" class="nav-cta">Book Now</a>
-        <button class="nav-toggle" aria-label="Menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
     </nav>
 
     <!-- Mobile Menu -->
@@ -2021,27 +2053,16 @@
         // ============================================
         // NAVIGATION
         // ============================================
-        const nav = document.querySelector('.floating-nav');
-        let lastScrollY = window.scrollY;
+        const nav = document.querySelector('.nav');
 
         window.addEventListener('scroll', () => {
             const currentScrollY = window.scrollY;
 
-            // Add scrolled class
             if (currentScrollY > 50) {
                 nav.classList.add('scrolled');
             } else {
                 nav.classList.remove('scrolled');
             }
-
-            // Hide/show on scroll
-            if (currentScrollY > lastScrollY && currentScrollY > 300) {
-                nav.classList.add('hidden');
-            } else {
-                nav.classList.remove('hidden');
-            }
-
-            lastScrollY = currentScrollY;
 
             // Show floating CTA after scrolling
             const floatingCta = document.querySelector('.floating-cta');
@@ -2127,14 +2148,15 @@
         });
     </script>
 
+    <script src="christmas-svgs.js"></script>
+    <script src="seasonal-overlays-engine.js"></script>
     <script src="theme-effects.js?v=20"></script>
     <!-- Firebase Live Data -->
     <script>
     (function(){var app=firebase.initializeApp({apiKey:"AIzaSyA3eVAdYntGPTsvhAZn0sezj7aYTR9qLC4",authDomain:"golden-barbers-e25db.firebaseapp.com",databaseURL:"https://golden-barbers-e25db-default-rtdb.europe-west1.firebasedatabase.app",projectId:"golden-barbers-e25db",storageBucket:"golden-barbers-e25db.firebasestorage.app",messagingSenderId:"719034478402",appId:"1:719034478402:web:d3b3042688795b34e422db"});var db=firebase.database();
     db.ref('shopStatus').on('value',function(s){var d=s.val();if(!d)return;var o=document.getElementById('gbShopClosed');if(d.status==='closed'){document.getElementById('gbClosedEmoji').textContent='🔒';document.getElementById('gbClosedTitle').textContent="We're Currently Closed";document.getElementById('gbClosedMsg').textContent="We'll be back soon! Call 020 8598 9920.";o.classList.add('show')}else if(d.status==='holiday'){document.getElementById('gbClosedEmoji').textContent='🏖️';document.getElementById('gbClosedTitle').textContent="We're On Holiday";document.getElementById('gbClosedMsg').textContent="Golden Barbers is on holiday. Call 020 8598 9920 for updates.";o.classList.add('show')}else{o.classList.remove('show')}});
-    db.ref('announcement').on('value',function(s){var d=s.val();var b=document.getElementById('gbAnnounceBanner');if(!d||!d.active||!d.text){b.classList.remove('show');return}var bg={gold:'linear-gradient(135deg,#d4af37,#a88a2d)',green:'linear-gradient(135deg,#22c55e,#16a34a)',red:'linear-gradient(135deg,#ef4444,#dc2626)',blue:'linear-gradient(135deg,#3b82f6,#2563eb)'};b.style.background=bg[d.style]||bg.gold;b.style.color=(d.style==='gold')?'#000':'#fff';document.getElementById('gbAnnounceText').textContent=d.text;b.classList.add('show');var nav=document.querySelector('.nav');if(nav)nav.style.top='40px'});
     db.ref('siteTheme').on('value',function(s){var d=s.val();if(typeof GBThemeEffects!=='undefined'){if(!d||!d.themeId){GBThemeEffects.remove()}else{GBThemeEffects.apply(d)}}});
-    db.ref('siteDiscount').on('value',function(s){var d=s.val();var b=document.getElementById('gbDiscountBanner');if(!d||!d.active||!d.text){b.classList.remove('show');return}b.style.background='linear-gradient(135deg,'+(d.colors?d.colors.primary:'#d4af37')+','+(d.colors?d.colors.secondary:'#a88a2d')+')';b.style.color=d.textColor||'#fff';var h=d.text;if(d.code)h+=' — Code: <strong>'+d.code+'</strong>';document.getElementById('gbDiscountText').innerHTML=h;b.classList.add('show')});
+    db.ref('siteDiscount').on('value',function(s){var d=s.val();if(typeof GBSeasonalOverlays!=='undefined'){GBSeasonalOverlays.updateDiscount(d)}});
     })();
     </script>
 

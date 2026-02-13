@@ -763,6 +763,10 @@ p {
         --space-2xl: 4.5rem;
     }
 
+    .nav {
+        padding: 10px 15px;
+    }
+
     /* Navigation - Mobile Optimized */
     .nav-menu {
         position: fixed;

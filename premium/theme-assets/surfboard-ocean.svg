@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 220">
+  <defs>
+    <linearGradient id="ob" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0984E3"/>
+      <stop offset="30%" stop-color="#00B894"/>
+      <stop offset="65%" stop-color="#00CEC9"/>
+      <stop offset="100%" stop-color="#81ECEC"/>
+    </linearGradient>
+    <linearGradient id="os" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.32"/>
+      <stop offset="20%" stop-color="#fff" stop-opacity="0.1"/>
+      <stop offset="65%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.08"/>
+    </linearGradient>
+    <linearGradient id="of" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1B3A4B"/>
+      <stop offset="100%" stop-color="#0D1B2A"/>
+    </linearGradient>
+    <filter id="oedge" x="-4%" y="-2%" width="108%" height="104%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+      <feOffset dy="2" result="shift"/>
+      <feFlood flood-color="#000" flood-opacity="0.12"/>
+      <feComposite in2="shift" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Drop shadow -->
+  <ellipse cx="72" cy="112" rx="40" ry="92" fill="rgba(0,0,0,0.05)"/>
+
+  <!-- Board body -->
+  <path d="M 70 4 C 96 12 106 50 106 110 C 106 164 100 190 88 206 Q 70 215 70 215 Q 70 215 52 206 C 40 190 34 164 34 110 C 34 50 44 12 70 4 Z"
+        fill="url(#ob)" filter="url(#oedge)"/>
+
+  <!-- 3D highlight -->
+  <path d="M 70 4 C 96 12 106 50 106 110 C 106 164 100 190 88 206 Q 70 215 70 215 Q 70 215 52 206 C 40 190 34 164 34 110 C 34 50 44 12 70 4 Z"
+        fill="url(#os)"/>
+
+  <!-- Rail lines -->
+  <path d="M 70 7 C 93 14 103 50 103 110 C 103 162 97 187 86 202" fill="none" stroke="#006266" stroke-width="0.6" opacity="0.25"/>
+  <path d="M 70 7 C 47 14 37 50 37 110 C 37 162 43 187 54 202" fill="none" stroke="#006266" stroke-width="0.6" opacity="0.15"/>
+
+  <!-- Stringer -->
+  <line x1="70" y1="8" x2="70" y2="212" stroke="#1B4F72" stroke-width="1.4" opacity="0.4" stroke-linecap="round"/>
+
+  <!-- Decorative wave stripes: upper -->
+  <path d="M 42 78 Q 56 66 70 78 Q 84 90 98 78" fill="none" stroke="#fff" stroke-width="2.5" opacity="0.38" stroke-linecap="round"/>
+  <path d="M 42 90 Q 56 78 70 90 Q 84 102 98 90" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.22" stroke-linecap="round"/>
+  <!-- Decorative wave stripes: lower -->
+  <path d="M 42 138 Q 56 126 70 138 Q 84 150 98 138" fill="none" stroke="#fff" stroke-width="2.5" opacity="0.38" stroke-linecap="round"/>
+  <path d="M 42 150 Q 56 138 70 150 Q 84 162 98 150" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.22" stroke-linecap="round"/>
+
+  <!-- Center fin -->
+  <path d="M 70 200 L 77 184 Q 78 180 74 180 L 70 183 L 66 180 Q 62 180 63 184 Z" fill="url(#of)" stroke="#0D1B2A" stroke-width="0.5"/>
+  <!-- Side fins -->
+  <path d="M 58 196 L 48 184 Q 46 181 50 182 L 58 188 Z" fill="url(#of)" opacity="0.85" stroke="#0D1B2A" stroke-width="0.3"/>
+  <path d="M 82 196 L 92 184 Q 94 181 90 182 L 82 188 Z" fill="url(#of)" opacity="0.85" stroke="#0D1B2A" stroke-width="0.3"/>
+
+  <!-- Nose highlight -->
+  <ellipse cx="62" cy="28" rx="8" ry="16" fill="#fff" opacity="0.1" transform="rotate(-5 62 28)"/>
+  <!-- Tail glint -->
+  <ellipse cx="64" cy="194" rx="4" ry="7" fill="#fff" opacity="0.06"/>
+</svg>

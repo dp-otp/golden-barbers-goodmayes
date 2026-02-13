@@ -68,22 +68,29 @@
         /* Navigation */
         .nav {
             position: fixed;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 0;
+            left: 0;
+            right: 0;
             z-index: 9999;
-            padding: 15px 40px;
-            background: rgba(20, 20, 20, 0.8);
+            background: rgba(10, 10, 10, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-radius: 100px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
         .nav-inner {
             display: flex;
             align-items: center;
-            gap: 50px;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
         }
 
         .nav-logo {
@@ -130,20 +137,54 @@
             color: var(--gold);
         }
 
-        .mobile-toggle {
+        .nav-cta {
+            padding: 12px 30px;
+            background: var(--gold);
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-cta:hover::before {
+            left: 100%;
+        }
+
+        .nav-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.4);
+        }
+
+        .nav-toggle {
             display: none;
-            background: none;
-            border: none;
+            flex-direction: column;
+            gap: 6px;
             cursor: pointer;
             padding: 10px;
         }
 
-        .mobile-toggle span {
-            display: block;
+        .nav-toggle span {
             width: 25px;
             height: 2px;
             background: var(--gold);
-            margin: 5px 0;
+            transition: all 0.3s;
         }
 
         /* Main Content */
@@ -160,6 +201,8 @@
             text-align: center;
             margin-bottom: 40px;
             max-width: 700px;
+            position: relative;
+            overflow: hidden;
         }
 
         .hero-badge {
@@ -554,18 +597,17 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .nav-links {
+            .nav-links, .nav-cta {
                 display: none;
             }
-            .mobile-toggle {
-                display: block;
+            .nav-toggle {
+                display: flex;
             }
         }
 
         @media (max-width: 768px) {
-            .nav {
-                top: 20px;
-                padding: 12px 25px;
+            .nav-inner {
+                padding: 0.75rem 1rem;
             }
             .main-content {
                 padding: 120px 15px 40px;
@@ -606,11 +648,12 @@
                 <li><a href="adam.html" class="active">Adam AI</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
-            <button class="mobile-toggle" id="mobileToggle">
+            <a href="services.html" class="nav-cta">Book Now</a>
+            <div class="nav-toggle">
                 <span></span>
                 <span></span>
                 <span></span>
-            </button>
+            </div>
         </div>
     </nav>
 
@@ -1078,11 +1121,11 @@
         }
 
         // Mobile Menu
-        const mobileToggle = document.getElementById('mobileToggle');
+        const navToggle = document.querySelector('.nav-toggle');
         const mobileMenu = document.getElementById('mobileMenu');
         const mobileClose = document.getElementById('mobileClose');
 
-        mobileToggle.addEventListener('click', () => {
+        navToggle.addEventListener('click', () => {
             mobileMenu.classList.add('active');
         });
 
@@ -1092,6 +1135,8 @@
     </script>
 
     <!-- Theme Effects -->
+    <script src="christmas-svgs.js"></script>
+    <script src="seasonal-overlays-engine.js"></script>
     <script src="theme-effects.js?v=20"></script>
 
     <!-- Firebase SDK -->

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 100">
+  <defs>
+    <linearGradient id="alg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E65100"/>
+      <stop offset="40%" stop-color="#FF6D00"/>
+      <stop offset="70%" stop-color="#FF8F00"/>
+      <stop offset="100%" stop-color="#FFB300"/>
+    </linearGradient>
+    <linearGradient id="als" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5D4037"/>
+      <stop offset="100%" stop-color="#3E2723"/>
+    </linearGradient>
+    <filter id="aledge" x="-3%" y="-3%" width="106%" height="106%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1" result="blur"/>
+      <feOffset dy="1" result="shift"/>
+      <feFlood flood-color="#000" flood-opacity="0.1"/>
+      <feComposite in2="shift" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Maple leaf shape -->
+  <path d="M 45 8 L 50 18 L 62 10 L 56 24 L 72 18 L 60 32 L 82 30 L 62 42 L 78 52 L 58 50 L 68 66 L 52 56 L 55 72 L 45 58 L 35 72 L 38 56 L 22 66 L 32 50 L 12 52 L 28 42 L 8 30 L 30 32 L 18 18 L 34 24 L 28 10 L 40 18 Z"
+        fill="url(#alg)" stroke="#BF360C" stroke-width="0.6" filter="url(#aledge)"/>
+
+  <!-- Veins -->
+  <line x1="45" y1="14" x2="45" y2="58" stroke="#BF360C" stroke-width="0.8" opacity="0.35"/>
+  <line x1="45" y1="30" x2="62" y2="15" stroke="#BF360C" stroke-width="0.5" opacity="0.25"/>
+  <line x1="45" y1="30" x2="28" y2="15" stroke="#BF360C" stroke-width="0.5" opacity="0.25"/>
+  <line x1="45" y1="38" x2="70" y2="32" stroke="#BF360C" stroke-width="0.5" opacity="0.25"/>
+  <line x1="45" y1="38" x2="20" y2="32" stroke="#BF360C" stroke-width="0.5" opacity="0.25"/>
+  <line x1="45" y1="48" x2="64" y2="55" stroke="#BF360C" stroke-width="0.5" opacity="0.2"/>
+  <line x1="45" y1="48" x2="26" y2="55" stroke="#BF360C" stroke-width="0.5" opacity="0.2"/>
+
+  <!-- Stem -->
+  <path d="M 45 58 Q 44 72 42 88" stroke="url(#als)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Highlight -->
+  <ellipse cx="40" cy="30" rx="6" ry="10" fill="#fff" opacity="0.08" transform="rotate(-10 40 30)"/>
+</svg>

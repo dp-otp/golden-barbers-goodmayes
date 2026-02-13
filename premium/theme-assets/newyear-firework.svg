@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 90">
+  <defs>
+    <linearGradient id="nyfg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#FF8F00"/>
+    </linearGradient>
+    <filter id="nyfglow">
+      <feGaussianBlur stdDeviation="2" result="glow"/>
+      <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="nyfedge" x="-5%" y="-5%" width="110%" height="110%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1" result="blur"/>
+      <feOffset dy="1" result="shift"/>
+      <feFlood flood-color="#000" flood-opacity="0.1"/>
+      <feComposite in2="shift" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Center burst -->
+  <circle cx="40" cy="35" r="4" fill="#FFD700" filter="url(#nyfglow)"/>
+
+  <!-- Main rays -->
+  <line x1="40" y1="35" x2="40" y2="8" stroke="url(#nyfg)" stroke-width="2" stroke-linecap="round" filter="url(#nyfglow)"/>
+  <line x1="40" y1="35" x2="40" y2="62" stroke="url(#nyfg)" stroke-width="2" stroke-linecap="round" filter="url(#nyfglow)"/>
+  <line x1="40" y1="35" x2="13" y2="35" stroke="url(#nyfg)" stroke-width="2" stroke-linecap="round" filter="url(#nyfglow)"/>
+  <line x1="40" y1="35" x2="67" y2="35" stroke="url(#nyfg)" stroke-width="2" stroke-linecap="round" filter="url(#nyfglow)"/>
+
+  <!-- Diagonal rays -->
+  <line x1="40" y1="35" x2="59" y2="16" stroke="#FFD700" stroke-width="1.5" stroke-linecap="round" opacity="0.8" filter="url(#nyfglow)"/>
+  <line x1="40" y1="35" x2="21" y2="16" stroke="#FFD700" stroke-width="1.5" stroke-linecap="round" opacity="0.8" filter="url(#nyfglow)"/>
+  <line x1="40" y1="35" x2="59" y2="54" stroke="#FFD700" stroke-width="1.5" stroke-linecap="round" opacity="0.8" filter="url(#nyfglow)"/>
+  <line x1="40" y1="35" x2="21" y2="54" stroke="#FFD700" stroke-width="1.5" stroke-linecap="round" opacity="0.8" filter="url(#nyfglow)"/>
+
+  <!-- Sparkle dots at ray tips -->
+  <circle cx="40" cy="6" r="2" fill="#FFD700" opacity="0.9"/>
+  <circle cx="40" cy="64" r="2" fill="#FF8F00" opacity="0.7"/>
+  <circle cx="11" cy="35" r="2" fill="#FFD700" opacity="0.8"/>
+  <circle cx="69" cy="35" r="2" fill="#FF8F00" opacity="0.8"/>
+  <circle cx="61" cy="14" r="1.8" fill="#FFD700" opacity="0.7"/>
+  <circle cx="19" cy="14" r="1.8" fill="#FFD700" opacity="0.7"/>
+  <circle cx="61" cy="56" r="1.8" fill="#FF8F00" opacity="0.6"/>
+  <circle cx="19" cy="56" r="1.8" fill="#FF8F00" opacity="0.6"/>
+
+  <!-- Small scattered sparkles -->
+  <circle cx="50" cy="22" r="1" fill="#fff" opacity="0.5"/>
+  <circle cx="30" cy="22" r="1" fill="#fff" opacity="0.5"/>
+  <circle cx="52" cy="48" r="1" fill="#fff" opacity="0.4"/>
+  <circle cx="28" cy="48" r="1" fill="#fff" opacity="0.4"/>
+  <circle cx="46" cy="10" r="0.8" fill="#fff" opacity="0.3"/>
+  <circle cx="34" cy="60" r="0.8" fill="#fff" opacity="0.3"/>
+
+  <!-- Trail/tail going down -->
+  <path d="M 40 62 Q 38 72 40 85" stroke="#FFD700" stroke-width="1.5" fill="none" opacity="0.4" stroke-linecap="round" stroke-dasharray="3,3"/>
+</svg>

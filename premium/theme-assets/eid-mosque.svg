@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 157">
+  <defs>
+    <linearGradient id="emb" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="40%" stop-color="#DAA520"/>
+      <stop offset="100%" stop-color="#8B6914"/>
+    </linearGradient>
+    <linearGradient id="emd" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+    <linearGradient id="emw" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1B5E20"/>
+      <stop offset="100%" stop-color="#0D3B0F"/>
+    </linearGradient>
+    <filter id="emglow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#FFD700" flood-opacity="0.15"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Base/platform -->
+  <rect x="30" y="145" width="180" height="12" rx="2" fill="url(#emb)" opacity="0.7"/>
+
+  <!-- Main building body -->
+  <rect x="50" y="80" width="140" height="68" fill="url(#emw)" stroke="#B8860B" stroke-width="0.8" rx="2"/>
+
+  <!-- Central dome -->
+  <path d="M 85 80 Q 85 40 120 32 Q 155 40 155 80 Z" fill="url(#emw)" stroke="#B8860B" stroke-width="0.8"/>
+  <!-- Dome highlight -->
+  <path d="M 95 78 Q 95 48 120 40 Q 130 44 135 55" fill="none" stroke="#FFD700" stroke-width="0.5" opacity="0.3"/>
+  <!-- Dome crescent finial -->
+  <circle cx="120" cy="28" r="4" fill="none" stroke="#FFD700" stroke-width="1.2"/>
+  <circle cx="121.5" cy="27" r="3" fill="url(#emw)"/>
+  <!-- Star on finial -->
+  <polygon points="120,21 121,23 123,23 121.5,24.5 122,26.5 120,25.5 118,26.5 118.5,24.5 117,23 119,23" fill="#FFD700" opacity="0.9"/>
+
+  <!-- Left small dome -->
+  <path d="M 50 80 Q 50 62 70 58 Q 90 62 90 80 Z" fill="url(#emw)" stroke="#B8860B" stroke-width="0.6"/>
+  <!-- Right small dome -->
+  <path d="M 150 80 Q 150 62 170 58 Q 190 62 190 80 Z" fill="url(#emw)" stroke="#B8860B" stroke-width="0.6"/>
+
+  <!-- Left minaret -->
+  <rect x="34" y="50" width="12" height="98" fill="url(#emw)" stroke="#B8860B" stroke-width="0.6"/>
+  <path d="M 33 50 Q 33 38 40 35 Q 47 38 47 50 Z" fill="url(#emd)"/>
+  <!-- Minaret balcony -->
+  <rect x="31" y="72" width="18" height="4" rx="1" fill="#B8860B" opacity="0.7"/>
+  <!-- Minaret crescent -->
+  <circle cx="40" cy="32" r="2.5" fill="none" stroke="#FFD700" stroke-width="0.8"/>
+  <circle cx="41" cy="31.5" r="1.8" fill="url(#emw)"/>
+
+  <!-- Right minaret -->
+  <rect x="194" y="50" width="12" height="98" fill="url(#emw)" stroke="#B8860B" stroke-width="0.6"/>
+  <path d="M 193 50 Q 193 38 200 35 Q 207 38 207 50 Z" fill="url(#emd)"/>
+  <rect x="191" y="72" width="18" height="4" rx="1" fill="#B8860B" opacity="0.7"/>
+  <circle cx="200" cy="32" r="2.5" fill="none" stroke="#FFD700" stroke-width="0.8"/>
+  <circle cx="201" cy="31.5" r="1.8" fill="url(#emw)"/>
+
+  <!-- Arched windows -->
+  <path d="M 62 105 Q 62 94 70 91 Q 78 94 78 105 L 78 130 L 62 130 Z" fill="#0A2E0A" stroke="#B8860B" stroke-width="0.6"/>
+  <path d="M 110 100 Q 110 86 120 82 Q 130 86 130 100 L 130 130 L 110 130 Z" fill="#0A2E0A" stroke="#B8860B" stroke-width="0.6"/>
+  <path d="M 162 105 Q 162 94 170 91 Q 178 94 178 105 L 178 130 L 162 130 Z" fill="#0A2E0A" stroke="#B8860B" stroke-width="0.6"/>
+
+  <!-- Window inner glow -->
+  <path d="M 64 106 Q 64 96 70 93 Q 76 96 76 106 L 76 128 L 64 128 Z" fill="#FFD700" opacity="0.08"/>
+  <path d="M 112 101 Q 112 88 120 84 Q 128 88 128 101 L 128 128 L 112 128 Z" fill="#FFD700" opacity="0.1"/>
+  <path d="M 164 106 Q 164 96 170 93 Q 176 96 176 106 L 176 128 L 164 128 Z" fill="#FFD700" opacity="0.08"/>
+
+  <!-- Decorative band -->
+  <rect x="50" y="78" width="140" height="3" fill="#B8860B" opacity="0.5"/>
+</svg>
