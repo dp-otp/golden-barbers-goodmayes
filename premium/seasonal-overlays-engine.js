@@ -615,7 +615,7 @@
             ],
             hero: {
                 overlays: [
-                    { src: THEME_ASSETS_PATH + 'eid-mosque.svg', size: 900, sizeMobile: 340, position: 'bottom-center', offsetY: 0, opacity: 0.85, style: 'width:90%;max-width:900px;height:auto;aspect-ratio:240/157;' }
+                    { src: THEME_ASSETS_PATH + 'eid-mosque.svg', size: 900, sizeMobile: 340, position: 'bottom-center', offsetY: 0, opacity: 0.85, style: 'width:90%;max-width:900px;height:auto;aspect-ratio:280/173;' }
                 ]
             },
             cards: { image: THEME_ASSETS_PATH + 'eid-star.svg', position: 'top-right' }
@@ -629,7 +629,7 @@
             ],
             hero: {
                 overlays: [
-                    { src: PROCESSED_PATH + 'blackfriday_sale.png', size: 380, sizeMobile: 180, position: 'bottom-left', offsetX: -10, offsetY: -30, opacity: 0.9 }
+                    { src: PROCESSED_PATH + 'blackfriday_sale.png', size: 380, sizeMobile: 180, position: 'top-left', offsetX: -10, offsetY: -10, opacity: 0.9 }
                 ]
             },
             footer: PROCESSED_PATH + 'blackfriday_sale.png',
@@ -1256,7 +1256,7 @@
             var el = document.createElement('div');
             el.style.cssText = 'position:absolute;left:' + L + 'px;top:' + T + 'px;'
                 + 'width:' + W + 'px;height:' + H + 'px;'
-                + 'pointer-events:none;z-index:14;opacity:0;transition:opacity 4s ease-out 0.3s;';
+                + 'pointer-events:none;z-index:14;opacity:0;transition:opacity 2s ease-out 0.2s;';
             el.innerHTML = svg;
             hero.appendChild(el);
             trackEl(el);
@@ -1270,11 +1270,11 @@
                 + 'border:2px solid #DAA520;z-index:16;pointer-events:none;'
                 + 'background:radial-gradient(circle at 35% 35%,rgba(255,223,100,0.5),rgba(139,105,20,0.7));'
                 + 'box-shadow:0 0 4px rgba(218,165,32,0.3),inset 0 1px 2px rgba(255,255,255,0.3);'
-                + 'opacity:0;transition:opacity 4s ease-out 0.3s;';
+                + 'opacity:0;transition:opacity 2s ease-out 0.2s;';
             hero.appendChild(ey2);
             trackEl(ey2);
 
-            // Trigger fade-in (4s ease-out, 0.5s delay — appears shortly after page load)
+            // Trigger fade-in (2s ease-out, 0.2s delay — appears shortly after page load)
             el.offsetHeight;
             el.style.opacity = '1';
             ey2.style.opacity = '1';
