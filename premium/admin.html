@@ -1179,6 +1179,17 @@
             border: 1px solid rgba(239,68,68,0.3) !important;
         }
         .payment-reject-btn:hover { background: rgba(239,68,68,0.25); }
+        .payment-bank-btn {
+            background: linear-gradient(135deg, #00aeef, #0072ce);
+            color: #fff;
+            width: 100%;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .payment-bank-btn:hover { opacity: 0.9; }
 
         @media (max-width: 768px) {
             .payment-details { grid-template-columns: 1fr; }
@@ -3324,12 +3335,19 @@
             if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
             if (!('Notification' in window)) return;
             if (Notification.permission === 'granted') {
-                new Notification('New Payment: \u00A3' + amount.toFixed(2), {
-                    body: 'A customer has submitted a bank transfer. Tap to review.',
+                var n = new Notification('New Payment: \u00A3' + amount.toFixed(2), {
+                    body: 'Tap to review payment.',
                     icon: 'images/logo.png',
                     tag: 'gb-payment',
                     renotify: true
                 });
+                n.onclick = function() {
+                    window.focus();
+                    switchSection('overview');
+                    var pendingTab = document.querySelector('.tab-btn[onclick*="pending"]');
+                    if (pendingTab) switchPaymentTab(pendingTab, 'pending');
+                    n.close();
+                };
             } else if (Notification.permission !== 'denied') {
                 Notification.requestPermission();
             }
@@ -3433,7 +3451,11 @@
                         ? '<div class="payment-actions">' +
                             '<button class="payment-confirm-btn" onclick="confirmPayment(\'' + p._key + '\')">Confirm Payment</button>' +
                             '<button class="payment-reject-btn" onclick="rejectPayment(\'' + p._key + '\')">Reject</button>' +
-                          '</div>'
+                          '</div>' +
+                          '<button class="payment-actions payment-bank-btn" onclick="openBankApp()">' +
+                            '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v2h20V7L12 2zm0 2.5L18.5 7h-13L12 4.5zM4 11v7h2v-7H4zm4 0v7h2v-7H8zm4 0v7h2v-7h-2zm4 0v7h2v-7h-2zM2 20v2h20v-2H2z"/></svg>' +
+                            'Check Barclays' +
+                          '</button>'
                         : '<p style="color: #22c55e; font-size: 12px; text-align: center; font-weight: 600;">\u2713 Confirmed' + (p.confirmedAt ? ' at ' + new Date(p.confirmedAt).toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'}) : '') + '</p>'
                     ) +
                 '</div>';
@@ -3453,6 +3475,19 @@
                 status: 'rejected',
                 rejectedAt: new Date().toISOString()
             });
+        }
+
+        function openBankApp() {
+            var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            var android = /Android/.test(navigator.userAgent);
+            if (iOS) {
+                window.location.href = 'barclays://';
+                setTimeout(function() { window.open('https://www.barclays.co.uk/ways-to-bank/mobile-banking/', '_blank'); }, 1500);
+            } else if (android) {
+                window.location.href = 'intent://#Intent;package=com.barclays.android.barclaysmobilebanking;end';
+            } else {
+                window.open('https://www.barclays.co.uk/ways-to-bank/online-banking/', '_blank');
+            }
         }
 
         // ============================================

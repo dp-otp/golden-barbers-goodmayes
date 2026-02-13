@@ -417,6 +417,63 @@
             background: var(--gray-dark);
         }
 
+        /* Custom Amount */
+        .custom-amount-section {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+        .custom-amount-section h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--gold);
+        }
+        .custom-amount-section p {
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 16px;
+        }
+        .custom-amount-row {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+        .custom-amount-input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: var(--white);
+            font-size: 20px;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .custom-amount-input:focus {
+            border-color: var(--gold);
+        }
+        .custom-amount-input::placeholder { color: var(--gray); font-weight: 400; }
+        .custom-amount-generate {
+            padding: 14px 20px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .custom-amount-generate:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212,175,55,0.3); }
+        .custom-amount-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
         /* Bank Details */
         .bank-details {
             background: rgba(20, 20, 20, 0.8);
@@ -559,6 +616,16 @@
             </svg>
             Generate Payment QR Code
         </button>
+
+        <!-- Custom Amount -->
+        <div class="custom-amount-section">
+            <h2>Custom Amount</h2>
+            <p>Generate a QR code for any amount</p>
+            <div class="custom-amount-row">
+                <input type="number" class="custom-amount-input" id="customAmountInput" placeholder="0.00" min="0.01" step="0.01">
+                <button class="custom-amount-generate" id="customAmountBtn" onclick="generateCustomQR()" disabled>Generate QR</button>
+            </div>
+        </div>
 
         <!-- QR Display -->
         <div class="qr-display" id="qrDisplay">
@@ -1349,6 +1416,60 @@
             document.getElementById('qrDisplay').classList.remove('active');
             updateUI();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================================
+        // CUSTOM AMOUNT QR
+        // ============================================
+        var customInput = document.getElementById('customAmountInput');
+        var customBtn = document.getElementById('customAmountBtn');
+
+        customInput.addEventListener('input', function() {
+            var val = parseFloat(this.value);
+            customBtn.disabled = !(val > 0);
+        });
+
+        function generateCustomQR() {
+            var val = parseFloat(customInput.value);
+            if (!(val > 0)) return;
+
+            var amount = val.toFixed(2);
+            var paymentUrl = 'https://dp-otp.github.io/golden-barbers-goodmayes/premium/pay.html#amt:' + amount;
+
+            document.getElementById('displayAmount').textContent = '\u00A3' + amount;
+            document.getElementById('displayServices').textContent = 'Custom amount';
+            document.getElementById('qrDisplay').classList.add('active');
+
+            try {
+                var qr = QRCode.encode(paymentUrl, 'M');
+                var canvas = document.getElementById('qrCanvas');
+                var ctx = canvas.getContext('2d');
+                var moduleCount = qr.getModuleCount();
+                var targetSize = 300;
+                var cellSize = Math.max(3, Math.floor(targetSize / moduleCount));
+                var size = cellSize * moduleCount;
+                var padding = 20;
+
+                canvas.width = size + padding * 2;
+                canvas.height = size + padding * 2;
+
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#000000';
+                for (var row = 0; row < moduleCount; row++) {
+                    for (var col = 0; col < moduleCount; col++) {
+                        if (qr.isDark(row, col)) {
+                            ctx.fillRect(padding + col * cellSize, padding + row * cellSize, cellSize, cellSize);
+                        }
+                    }
+                }
+
+                document.getElementById('qrDisplay').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } catch (error) {
+                console.error('QR Error:', error);
+                alert('Error generating QR code: ' + error.message);
+            }
         }
 
         // ============================================

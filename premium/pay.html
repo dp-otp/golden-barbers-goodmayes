@@ -941,15 +941,24 @@
             reference = generateReference();
             verifyCode = generateVerifyCode();
             var servicesStr = getServicesFromUrl();
-            var serviceIds = servicesStr ? servicesStr.split(',') : [];
 
-            serviceIds.forEach(function(id) {
-                var service = services[id.trim()];
-                if (service) {
-                    orderItems.push({ id:id.trim(), name:service.name, price:service.price });
-                    orderTotal += service.price;
+            // Handle custom amount format: amt:XX.XX
+            if (servicesStr.indexOf('amt:') === 0) {
+                var customAmt = parseFloat(servicesStr.substring(4));
+                if (customAmt > 0) {
+                    orderItems.push({ id: 'custom', name: 'Custom Amount', price: customAmt });
+                    orderTotal = customAmt;
                 }
-            });
+            } else {
+                var serviceIds = servicesStr ? servicesStr.split(',') : [];
+                serviceIds.forEach(function(id) {
+                    var service = services[id.trim()];
+                    if (service) {
+                        orderItems.push({ id:id.trim(), name:service.name, price:service.price });
+                        orderTotal += service.price;
+                    }
+                });
+            }
 
             if (orderItems.length === 0) {
                 document.getElementById('loadingScreen').style.display = 'none';
