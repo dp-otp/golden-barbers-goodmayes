@@ -838,6 +838,7 @@
             border: '3px solid rgba(212,175,55,0.6)', glow: 'rgba(212,175,55,0.35)',
             textColor: '#fff', accentColor: '#FFD700',
             cap: true, // gold ornament cap at top
+            threadAttach: [0.55, -0.04], // at the cap/ring above circle
             decoSvg: '<svg viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg"><circle cx="105" cy="105" r="100" fill="none" stroke="rgba(212,175,55,0.2)" stroke-width="1.5" stroke-dasharray="6 4"/><circle cx="35" cy="55" r="4" fill="#C62828" opacity="0.7"/><circle cx="175" cy="55" r="3.5" fill="#FFD700" opacity="0.6"/><circle cx="40" cy="160" r="3" fill="#FFD700" opacity="0.5"/><circle cx="170" cy="160" r="4" fill="#C62828" opacity="0.7"/></svg>'
         },
         // VALENTINE'S - Heart shape
@@ -848,6 +849,7 @@
             bg: 'radial-gradient(circle at 45% 35%, #F48FB1, #E91E63 45%, #880E4F)',
             border: 'none', glow: 'rgba(233,30,99,0.35)',
             textColor: '#fff', accentColor: '#FCE4EC',
+            threadAttach: [0.72, 0.0], // top of right heart lobe
             decoSvg: '<svg viewBox="0 0 230 210" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="70" r="2" fill="#fff" opacity="0.3"/><circle cx="170" cy="70" r="2" fill="#fff" opacity="0.3"/><circle cx="85" cy="45" r="1.5" fill="#FCE4EC" opacity="0.4"/><circle cx="145" cy="45" r="1.5" fill="#FCE4EC" opacity="0.4"/></svg>'
         },
         // HALLOWEEN - Tombstone (rounded top, flat bottom)
@@ -858,6 +860,7 @@
             bg: 'radial-gradient(ellipse at 50% 30%, #FF8F00, #E65100 50%, #4A148C)',
             border: '3px solid rgba(255,111,0,0.45)', glow: 'rgba(255,111,0,0.3)',
             textColor: '#FFE0B2', accentColor: '#FFD600',
+            threadAttach: [0.76, 0.05], // upper-right of dome
             decoSvg: '<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg"><path d="M10 230 L10 90 Q100 -10 190 90 L190 230" fill="none" stroke="rgba(255,215,0,0.12)" stroke-width="1.5"/><circle cx="30" cy="200" r="2" fill="rgba(255,255,255,0.15)"/><circle cx="170" cy="200" r="2" fill="rgba(255,255,255,0.15)"/><line x1="20" y1="220" x2="180" y2="220" stroke="rgba(255,255,255,0.08)" stroke-width="1"/></svg>'
         },
         // EASTER - Egg shape (tall oval, asymmetric)
@@ -868,6 +871,7 @@
             bg: 'radial-gradient(ellipse at 50% 35%, #C8E6C9, #81C784 35%, #66BB6A 60%, #F48FB1)',
             border: '3px solid rgba(255,255,255,0.3)', glow: 'rgba(129,199,132,0.25)',
             textColor: '#1B5E20', accentColor: '#E91E63',
+            threadAttach: [0.70, 0.10], // upper-right of egg curve
             decoSvg: '<svg viewBox="0 0 180 230" xmlns="http://www.w3.org/2000/svg"><line x1="20" y1="90" x2="160" y2="90" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="4 6"/><line x1="15" y1="140" x2="165" y2="140" stroke="rgba(244,143,177,0.2)" stroke-width="1" stroke-dasharray="4 6"/><circle cx="35" cy="75" r="3" fill="#F48FB1" opacity="0.35"/><circle cx="145" cy="75" r="3" fill="#FFF59D" opacity="0.35"/><circle cx="50" cy="175" r="2.5" fill="#CE93D8" opacity="0.3"/><circle cx="130" cy="175" r="2.5" fill="#F48FB1" opacity="0.3"/></svg>'
         },
         // SUMMER - Surfboard (tall narrow pill)
@@ -878,6 +882,7 @@
             bg: 'linear-gradient(180deg, #FFCA28 0%, #FF8F00 40%, #0277BD 80%, #01579B 100%)',
             border: '3px solid rgba(255,255,255,0.25)', glow: 'rgba(255,143,0,0.3)',
             textColor: '#fff', accentColor: '#FFD600',
+            threadAttach: [0.65, 0.08], // upper-right of narrow pill
             decoSvg: '<svg viewBox="0 0 160 260" xmlns="http://www.w3.org/2000/svg"><line x1="80" y1="20" x2="80" y2="240" stroke="rgba(255,255,255,0.08)" stroke-width="2"/><line x1="20" y1="100" x2="140" y2="100" stroke="rgba(255,255,255,0.1)" stroke-width="1"/><line x1="25" y1="160" x2="135" y2="160" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>'
         },
         // AUTUMN - Shield/crest (pointed bottom)
@@ -888,6 +893,7 @@
             bg: 'radial-gradient(ellipse at 50% 30%, #FF8A65, #DD2C00 45%, #BF360C)',
             border: 'none', glow: 'rgba(221,44,0,0.25)',
             textColor: '#FFF3E0', accentColor: '#FFAB91',
+            threadAttach: [0.85, 0.0], // top-right corner of shield
             decoSvg: '<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg"><polygon points="100,230 5,168 5,5 195,5 195,168" fill="none" stroke="rgba(255,171,145,0.18)" stroke-width="2"/><line x1="100" y1="10" x2="100" y2="225" stroke="rgba(255,171,145,0.08)" stroke-width="1"/></svg>'
         },
         // WINTER - Hexagonal snowflake
@@ -899,6 +905,7 @@
             bg: 'radial-gradient(circle at 40% 30%, #E3F2FD, #4FC3F7 35%, #01579B)',
             border: 'none', glow: 'rgba(79,195,247,0.3)',
             textColor: '#01579B', accentColor: '#E1F5FE',
+            threadAttach: [0.75, 0.06], // upper-right star point
             decoSvg: '<svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg"><line x1="160" y1="6" x2="160" y2="314" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/><line x1="27" y1="83" x2="293" y2="237" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/><line x1="27" y1="237" x2="293" y2="83" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/><line x1="112" y1="6" x2="208" y2="314" stroke="rgba(255,255,255,0.04)" stroke-width="1"/><line x1="208" y1="6" x2="112" y2="314" stroke="rgba(255,255,255,0.04)" stroke-width="1"/><line x1="27" y1="131" x2="293" y2="189" stroke="rgba(255,255,255,0.04)" stroke-width="1"/><line x1="27" y1="189" x2="293" y2="131" stroke="rgba(255,255,255,0.04)" stroke-width="1"/><circle cx="160" cy="160" r="32" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1"/></svg>'
         },
         // RAMADAN - Lantern (dome top, narrow body)
@@ -909,6 +916,7 @@
             bg: 'linear-gradient(180deg, #4A148C 0%, #311B92 30%, #1A237E 60%, #0D1042 100%)',
             border: '3px solid rgba(184,134,11,0.45)', glow: 'rgba(156,39,176,0.3)',
             textColor: '#E8EAF6', accentColor: '#B8860B',
+            threadAttach: [0.70, 0.08], // upper-right of dome
             decoSvg: '<svg viewBox="0 0 170 260" xmlns="http://www.w3.org/2000/svg"><path d="M10 250 L10 100 Q85 -5 160 100 L160 250" fill="none" stroke="rgba(184,134,11,0.2)" stroke-width="1.5"/><path d="M25 245 L25 108 Q85 8 145 108 L145 245" fill="none" stroke="rgba(156,39,176,0.12)" stroke-width="1"/><circle cx="85" cy="28" r="8" fill="none" stroke="rgba(184,134,11,0.25)" stroke-width="1.5"/><path d="M81 26 Q85 19 89 26" fill="rgba(184,134,11,0.25)"/><circle cx="40" cy="200" r="1.5" fill="rgba(184,134,11,0.2)"/><circle cx="130" cy="200" r="1.5" fill="rgba(184,134,11,0.2)"/><circle cx="85" cy="130" r="25" fill="none" stroke="rgba(156,39,176,0.06)" stroke-width="1"/></svg>'
         },
         // EID - Ornate dome arch
@@ -919,6 +927,7 @@
             bg: 'radial-gradient(ellipse at 50% 25%, #FFF9C4, #FFD700 30%, #2E7D32 70%, #1B5E20)',
             border: '3px solid rgba(255,215,0,0.4)', glow: 'rgba(255,215,0,0.25)',
             textColor: '#FFF9C4', accentColor: '#FFD700',
+            threadAttach: [0.72, 0.07], // upper-right of dome
             decoSvg: '<svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg"><path d="M 10 250 L 10 100 Q 100 -5 190 100 L 190 250" fill="none" stroke="rgba(255,215,0,0.15)" stroke-width="1.5"/><path d="M 30 245 L 30 110 Q 100 15 170 110 L 170 245" fill="none" stroke="rgba(255,215,0,0.08)" stroke-width="1"/><rect x="18" y="170" width="164" height="1" fill="rgba(255,215,0,0.1)"/><rect x="18" y="200" width="164" height="1" fill="rgba(255,215,0,0.08)"/><circle cx="100" cy="45" r="3" fill="rgba(255,215,0,0.2)"/><circle cx="100" cy="45" r="8" fill="none" stroke="rgba(255,215,0,0.1)" stroke-width="0.8"/></svg>'
         },
         // BLACK FRIDAY - Angled bold rectangle (skewed)
@@ -926,6 +935,7 @@
             emoji: '\uD83D\uDCB0', welcome: 'BLACK FRIDAY!', sub: 'Mega Deals Inside',
             w: 350, h: 200, wM: 240, hM: 140,
             radius: '6px', clip: null,
+            threadAttach: [0.82, 0.05], // upper-right of skewed rect
             bg: 'linear-gradient(135deg, #212121 0%, #111 50%, #1a0000 100%)',
             border: '3px solid rgba(255,23,68,0.6)', glow: 'rgba(255,23,68,0.4)',
             textColor: '#FFD600', accentColor: '#FF1744',
@@ -935,6 +945,7 @@
         // NEW YEAR - Starburst (12-point star)
         newyear: {
             emoji: '\uD83C\uDF89', welcome: 'Happy New Year!', sub: 'New Year, New Look',
+            threadAttach: [0.75, 0.03], // upper-right star point
             w: 320, h: 320, wM: 220, hM: 220,
             radius: '0', clip: 'polygon(50% 0%,58% 20%,75% 3%,72% 25%,97% 18%,82% 38%,100% 50%,82% 62%,97% 82%,72% 75%,75% 97%,58% 80%,50% 100%,42% 80%,25% 97%,28% 75%,3% 82%,18% 62%,0% 50%,18% 38%,3% 18%,28% 25%,25% 3%,42% 20%)',
             bg: 'radial-gradient(circle at 50% 45%, #FFFDE7, #FFD700 30%, #0D47A1)',
@@ -1128,9 +1139,11 @@
         if (isMobile) {
             var _hero = hero;
             var _w = w;
+            var _h = h;
+            var _attach = cfg.threadAttach || [0.72, 0];
             requestAnimationFrame(function() {
                 requestAnimationFrame(function() {
-                    placeGoldenThread(_hero, _w);
+                    placeGoldenThread(_hero, _w, _h, _attach);
                 });
             });
         }
@@ -1138,7 +1151,7 @@
     }
 
     // Standalone golden thread — measures actual DOM positions after render
-    function placeGoldenThread(hero, badgeW) {
+    function placeGoldenThread(hero, badgeW, badgeH, attach) {
         try {
             var neonEl = document.querySelector('.showcase-neon-circle');
             var badgeEl = document.getElementById('gb-hero-banner');
@@ -1152,15 +1165,17 @@
             var ncy = neonRect.top + neonRect.height / 2 - heroRect.top;
             var nr = neonRect.width / 2;
 
-            // Badge eyelet: top-right area, offset inward ~28% from right edge
-            // Use CSS values (badge may still be animating scale)
+            // Badge position in hero-relative coords
             var heroW = hero.offsetWidth;
             var heroH = hero.offsetHeight;
             var bLeft = heroW - heroW * 0.04 - badgeW;
             var bTop = heroH * 0.18;
-            var eyeletOff = Math.round(badgeW * 0.28);
-            var endX = bLeft + badgeW - eyeletOff;
-            var endY = bTop;
+
+            // Thread attachment point — per-shape [x%, y%] of badge dimensions
+            var ax = attach ? attach[0] : 0.72;
+            var ay = attach ? attach[1] : 0;
+            var endX = bLeft + Math.round(badgeW * ax);
+            var endY = bTop + Math.round((badgeH || badgeW) * ay);
 
             // Thread starts at neon circle edge, angled toward badge but offset upward
             var dirAng = Math.atan2(endY - ncy, endX - ncx);
