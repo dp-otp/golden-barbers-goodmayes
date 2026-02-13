@@ -3457,7 +3457,7 @@
                     '</div>' +
                     (isPending
                         ? '<div class="payment-actions">' +
-                            '<button class="payment-confirm-btn" onclick="confirmPayment(\'' + p._key + '\')">Confirm Payment</button>' +
+                            '<button class="payment-confirm-btn" onclick="confirmPayment(\'' + p._key + '\',' + (p.amount || 0) + ')">Confirm Payment</button>' +
                             '<button class="payment-reject-btn" onclick="rejectPayment(\'' + p._key + '\')">Reject</button>' +
                           '</div>' +
                           '<button class="payment-bank-btn" onclick="openBankApp()">' +
@@ -3470,10 +3470,19 @@
             }).join('');
         }
 
-        function confirmPayment(key) {
+        function confirmPayment(key, expectedAmount) {
+            var input = prompt('Enter the exact amount received in your bank (e.g. ' + expectedAmount.toFixed(2) + '):');
+            if (input === null) return;
+            var received = parseFloat(input.replace('£','').replace(',','').trim());
+            if (isNaN(received)) { alert('Please enter a valid number.'); return; }
+            if (Math.abs(received - expectedAmount) > 0.01) {
+                alert('Amount mismatch!\n\nExpected: £' + expectedAmount.toFixed(2) + '\nYou entered: £' + received.toFixed(2) + '\n\nDo NOT confirm unless the correct amount has landed in your bank.');
+                return;
+            }
             database.ref('payments/' + key).update({
                 status: 'confirmed',
-                confirmedAt: new Date().toISOString()
+                confirmedAt: new Date().toISOString(),
+                verifiedAmount: received
             });
         }
 
