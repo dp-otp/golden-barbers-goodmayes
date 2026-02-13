@@ -1087,11 +1087,11 @@
             document.head.appendChild(style);
         }
 
-        // Mobile tag design: eyelet on badge + connecting string to neon circle
+        // Mobile tag design: tilted badge with eyelet + connecting string to neon circle
         var mobileRotate = '';
         var mobileEyeletFromRight = 0;
         if (isMobile) {
-            mobileRotate = 'rotate(2deg) ';
+            mobileRotate = 'rotate(3deg) ';
             mobileEyeletFromRight = Math.round(w * 0.28);
 
             // Metal eyelet/grommet on badge edge
@@ -1134,81 +1134,70 @@
         heroBannerEl = badge;
         trackEl(badge);
 
-        // Connect badge to neon circle with a golden string (mobile only)
-        // String placed INSIDE .hero-showcase (z-index:5) so it renders BEHIND
-        // the neon circle (z-index:6) within the same stacking context.
-        // This creates the illusion the string is attached to/behind the logo.
+        // Connect badge to neon circle with a curved golden string (mobile only)
+        // String is a direct hero child at z-index:8 (above showcase z-index:1, below content z-index:10)
         if (isMobile && mobileEyeletFromRight > 0) {
             setTimeout(function() {
-                if (!badge.parentNode) return;
-                var showcase = document.querySelector('.hero-showcase');
-                if (!showcase) return;
+                try {
+                    if (!badge.parentNode) return;
 
-                var heroW = hero.offsetWidth || window.innerWidth;
-                var heroH = hero.offsetHeight || window.innerHeight;
-                var screenW = window.innerWidth;
+                    var heroW = hero.offsetWidth || window.innerWidth;
+                    var heroH = hero.offsetHeight || window.innerHeight;
+                    var screenW = window.innerWidth;
 
-                // Neon circle dimensions from CSS breakpoints
-                var neonDiam = screenW <= 480 ? 180 : 220;
-                var neonTopPct = screenW <= 480 ? 0.12 : 0.10;
-                var neonR = neonDiam / 2;
-                var neonCX = heroW / 2;
-                var neonCY = heroH * neonTopPct + neonR;
+                    // Neon circle geometry from CSS breakpoints
+                    var neonDiam = screenW <= 480 ? 180 : 220;
+                    var neonTopPct = screenW <= 480 ? 0.12 : 0.10;
+                    var neonR = neonDiam / 2;
+                    var neonCX = heroW / 2;
+                    var neonCY = heroH * neonTopPct + neonR;
 
-                // Attach string 15px INSIDE the neon circle (2 o'clock position)
-                // so it disappears behind the circle via z-index layering
-                var angle = -25 * Math.PI / 180; // 25° above 3 o'clock
-                var neonX = Math.round(neonCX + (neonR - 15) * Math.cos(angle));
-                var neonY = Math.round(neonCY + (neonR - 15) * Math.sin(angle));
+                    // String endpoint: 20px INSIDE neon circle at ~2 o'clock (visible over circle edge)
+                    var angle = -20 * Math.PI / 180;
+                    var neonX = Math.round(neonCX + (neonR - 20) * Math.cos(angle));
+                    var neonY = Math.round(neonCY + (neonR - 20) * Math.sin(angle));
 
-                // Badge eyelet position (from CSS: top:18%, right:4%)
-                var badgeTopPx = heroH * 0.18;
-                var badgeRightPx = heroW * 0.04;
-                var eyeletX = Math.round(heroW - badgeRightPx - mobileEyeletFromRight);
-                var eyeletY = Math.round(badgeTopPx - 2);
+                    // Badge eyelet position in hero coordinates (CSS: top:18%, right:4%)
+                    var eyeletX = Math.round(heroW * 0.96 - mobileEyeletFromRight);
+                    var eyeletY = Math.round(heroH * 0.18 - 2);
 
-                // SVG bounding box with padding
-                var pad = 25;
-                var minX = Math.min(neonX, eyeletX) - pad;
-                var maxX = Math.max(neonX, eyeletX) + pad;
-                var minY = Math.min(neonY, eyeletY) - pad;
-                var maxY = Math.max(neonY, eyeletY) + pad + 30;
-                var svgW = Math.round(maxX - minX);
-                var svgH = Math.round(maxY - minY);
+                    // SVG bounding box
+                    var pad = 20;
+                    var minX = Math.min(neonX, eyeletX) - pad;
+                    var maxX = Math.max(neonX, eyeletX) + pad;
+                    var minY = Math.min(neonY, eyeletY) - pad;
+                    var maxY = Math.max(neonY, eyeletY) + pad + 25;
+                    var svgW = Math.round(maxX - minX);
+                    var svgH = Math.round(maxY - minY);
 
-                // SVG local coordinates
-                var sx = Math.round(neonX - minX);
-                var sy = Math.round(neonY - minY);
-                var ex = Math.round(eyeletX - minX);
-                var ey = Math.round(eyeletY - minY);
+                    // SVG local coordinates
+                    var sx = Math.round(neonX - minX);
+                    var sy = Math.round(neonY - minY);
+                    var ex = Math.round(eyeletX - minX);
+                    var ey = Math.round(eyeletY - minY);
 
-                // Cubic bezier: natural droop below both endpoints
-                var droopY = Math.max(sy, ey) + 25;
-                var cp1x = Math.round(sx + (ex - sx) * 0.3);
-                var cp1y = Math.round(droopY);
-                var cp2x = Math.round(sx + (ex - sx) * 0.7);
-                var cp2y = Math.round(droopY - 4);
+                    // Cubic bezier with natural droop
+                    var droopY = Math.max(sy, ey) + 22;
+                    var cp1x = Math.round(sx + (ex - sx) * 0.3);
+                    var cp1y = Math.round(droopY);
+                    var cp2x = Math.round(sx + (ex - sx) * 0.7);
+                    var cp2y = Math.round(droopY - 3);
 
-                var stringDiv = document.createElement('div');
-                stringDiv.className = 'gb-tag-string';
-                stringDiv.style.cssText = 'position:absolute;left:' + Math.round(minX) + 'px;top:' + Math.round(minY) + 'px;'
-                    + 'width:' + svgW + 'px;height:' + svgH + 'px;'
-                    + 'pointer-events:none;z-index:5;opacity:0;transition:opacity 0.8s ease;';
-                stringDiv.innerHTML = '<svg width="' + svgW + '" height="' + svgH + '" xmlns="http://www.w3.org/2000/svg">'
-                    + '<path d="M ' + sx + ' ' + sy + ' C ' + cp1x + ' ' + cp1y + ' ' + cp2x + ' ' + cp2y + ' ' + ex + ' ' + ey + '" '
-                    + 'stroke="rgba(212,175,55,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
-                    + '</svg>';
+                    var stringDiv = document.createElement('div');
+                    stringDiv.className = 'gb-tag-string';
+                    stringDiv.style.cssText = 'position:absolute;left:' + Math.round(minX) + 'px;top:' + Math.round(minY) + 'px;'
+                        + 'width:' + svgW + 'px;height:' + svgH + 'px;'
+                        + 'pointer-events:none;z-index:8;';
+                    stringDiv.innerHTML = '<svg width="' + svgW + '" height="' + svgH + '" xmlns="http://www.w3.org/2000/svg">'
+                        + '<path d="M ' + sx + ' ' + sy + ' C ' + cp1x + ' ' + cp1y + ' ' + cp2x + ' ' + cp2y + ' ' + ex + ' ' + ey + '" '
+                        + 'stroke="rgba(212,175,55,0.6)" stroke-width="2" fill="none" stroke-linecap="round"/>'
+                        + '</svg>';
 
-                // Place inside hero-showcase so z-index:5 is within same context as neon circle (z-index:6)
-                showcase.appendChild(stringDiv);
-                trackEl(stringDiv);
-                heroBannerStringEl = stringDiv;
-
-                // Fade in
-                requestAnimationFrame(function() {
-                    if (stringDiv.parentNode) stringDiv.style.opacity = '1';
-                });
-            }, 1300);
+                    hero.appendChild(stringDiv);
+                    trackEl(stringDiv);
+                    heroBannerStringEl = stringDiv;
+                } catch (e) { /* silent fail */ }
+            }, 500);
         }
     }
 
