@@ -1208,7 +1208,7 @@
             var el = document.createElement('div');
             el.style.cssText = 'position:absolute;left:' + L + 'px;top:' + T + 'px;'
                 + 'width:' + W + 'px;height:' + H + 'px;'
-                + 'pointer-events:none;z-index:14;';
+                + 'pointer-events:none;z-index:14;opacity:0;transition:opacity 0.6s ease 0.4s;';
             el.innerHTML = svg;
             hero.appendChild(el);
             trackEl(el);
@@ -1221,9 +1221,15 @@
                 + 'width:10px;height:10px;border-radius:50%;'
                 + 'border:2px solid #DAA520;z-index:16;pointer-events:none;'
                 + 'background:radial-gradient(circle at 35% 35%,rgba(255,223,100,0.5),rgba(139,105,20,0.7));'
-                + 'box-shadow:0 0 4px rgba(218,165,32,0.3),inset 0 1px 2px rgba(255,255,255,0.3);';
+                + 'box-shadow:0 0 4px rgba(218,165,32,0.3),inset 0 1px 2px rgba(255,255,255,0.3);'
+                + 'opacity:0;transition:opacity 0.6s ease 0.4s;';
             hero.appendChild(ey2);
             trackEl(ey2);
+
+            // Trigger fade-in (same pace as badge: 0.6s ease, 0.4s delay)
+            el.offsetHeight;
+            el.style.opacity = '1';
+            ey2.style.opacity = '1';
         } catch (e) {
             // Silently fail — thread is decorative only
         }
