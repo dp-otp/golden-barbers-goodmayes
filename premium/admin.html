@@ -3296,17 +3296,81 @@
         // ============================================
         var livePayments = [];
         var currentPaymentTab = 'pending';
+        var _prevPendingKeys = {};
+        var _paymentsInitialised = false;
+
+        // Payment notification sound (Web Audio API — no external files)
+        function playPaymentSound() {
+            try {
+                var ctx = new (window.AudioContext || window.webkitAudioContext)();
+                // Two-tone cash register "ka-ching"
+                [800, 1200].forEach(function(freq, i) {
+                    var osc = ctx.createOscillator();
+                    var gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.3, ctx.currentTime + i * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.3);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + i * 0.12);
+                    osc.stop(ctx.currentTime + i * 0.12 + 0.3);
+                });
+            } catch (e) {}
+        }
+
+        // Browser notification (works even when tab is in background)
+        function notifyNewPayment(amount) {
+            if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+            if (!('Notification' in window)) return;
+            if (Notification.permission === 'granted') {
+                new Notification('New Payment: \u00A3' + amount.toFixed(2), {
+                    body: 'A customer has submitted a bank transfer. Tap to review.',
+                    icon: 'images/logo.png',
+                    tag: 'gb-payment',
+                    renotify: true
+                });
+            } else if (Notification.permission !== 'denied') {
+                Notification.requestPermission();
+            }
+        }
+
+        // Request notification permission on first interaction
+        document.addEventListener('click', function _reqNoti() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+            document.removeEventListener('click', _reqNoti);
+        });
 
         // Load payments from Firebase in real time
         database.ref('payments').orderByChild('createdAt').on('value', function(snapshot) {
             var data = snapshot.val();
             livePayments = data ? Object.keys(data).map(function(k) { var p = data[k]; p._key = k; return p; }) : [];
             livePayments.sort(function(a, b) { return new Date(b.createdAt) - new Date(a.createdAt); });
+
+            // Detect NEW pending payments (not on first load)
+            var currentPending = {};
+            livePayments.forEach(function(p) {
+                if (p.status === 'pending') currentPending[p._key] = p;
+            });
+            if (_paymentsInitialised) {
+                Object.keys(currentPending).forEach(function(key) {
+                    if (!_prevPendingKeys[key]) {
+                        // This is a brand new pending payment
+                        playPaymentSound();
+                        notifyNewPayment(currentPending[key].amount || 0);
+                    }
+                });
+            }
+            _prevPendingKeys = currentPending;
+            _paymentsInitialised = true;
+
             renderPayments();
             updateStats();
 
             // Update pending count badge
-            var pending = livePayments.filter(function(p) { return p.status === 'pending'; }).length;
+            var pending = Object.keys(currentPending).length;
             var badge = document.getElementById('pendingPaymentCount');
             if (pending > 0) {
                 badge.textContent = pending;
