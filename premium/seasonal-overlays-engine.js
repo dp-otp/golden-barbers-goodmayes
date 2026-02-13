@@ -1087,101 +1087,14 @@
             document.head.appendChild(style);
         }
 
-        // Mobile tag design: tilted badge with realistic golden thread to neon circle
+        // Mobile tag: tilted badge with gold eyelet (thread added separately after badge append)
         var mobileRotate = '';
         var mobileEyeletFromRight = 0;
         if (isMobile) {
             mobileRotate = 'rotate(3deg) ';
             mobileEyeletFromRight = Math.round(w * 0.28);
 
-            // Neon circle dimensions from CSS breakpoints
-            var heroW = hero.offsetWidth || window.innerWidth;
-            var heroH = hero.offsetHeight || window.innerHeight;
-            var screenW = window.innerWidth;
-            var neonDiam = screenW <= 480 ? 180 : 220;
-            var neonTopPct = screenW <= 480 ? 0.12 : 0.10;
-            var neonR = neonDiam / 2;
-            var neonCX = heroW / 2;
-            var neonCY = heroH * neonTopPct + neonR;
-
-            // Badge position in hero coords (top:18%, right:4%)
-            var badgeLeft = heroW - heroW * 0.04 - w;
-            var badgeTop = heroH * 0.18;
-
-            // Eyelet position on badge (badge-relative)
-            var eyRelX = w - mobileEyeletFromRight;
-            var eyRelY = -4;
-
-            // Eyelet in hero coords
-            var eyHeroX = badgeLeft + eyRelX;
-            var eyHeroY = badgeTop + eyRelY;
-
-            // Direction from neon center toward badge eyelet
-            var dirAng = Math.atan2(eyHeroY - neonCY, eyHeroX - neonCX);
-            // Offset 35deg upward so thread starts from upper portion of logo edge
-            var attachAng = dirAng - 35 * Math.PI / 180;
-            // Thread starts at the very edge of the neon circle
-            var neonHeroX = neonCX + neonR * Math.cos(attachAng);
-            var neonHeroY = neonCY + neonR * Math.sin(attachAng);
-
-            // Convert neon attachment to badge-relative coords
-            var nRelX = Math.round(neonHeroX - badgeLeft);
-            var nRelY = Math.round(neonHeroY - badgeTop);
-
-            // SVG bounds with generous padding for thread sag
-            var pad = 25;
-            var svgL = Math.min(nRelX, eyRelX) - pad;
-            var svgR = Math.max(nRelX, eyRelX) + pad;
-            var svgT = Math.min(nRelY, eyRelY) - pad;
-            var svgB = Math.max(nRelY, eyRelY) + pad + 40;
-            var svgW = Math.round(svgR - svgL);
-            var svgH = Math.round(svgB - svgT);
-
-            // SVG-local coordinates
-            var sx = Math.round(nRelX - svgL);
-            var sy = Math.round(nRelY - svgT);
-            var ex = Math.round(eyRelX - svgL);
-            var ey = Math.round(eyRelY - svgT);
-
-            // Asymmetric bezier for natural, imperfect thread droop
-            // Thread sags below both points, more weight near the start (gravity)
-            var sagBase = Math.max(sy, ey) + 28;
-            var c1x = Math.round(sx + (ex - sx) * 0.25 + 3);
-            var c1y = Math.round(sagBase + 5);
-            var c2x = Math.round(sx + (ex - sx) * 0.68);
-            var c2y = Math.round(sagBase - 7);
-
-            var tid = 'gbt' + Date.now();
-            var pathD = 'M ' + sx + ' ' + sy + ' C ' + c1x + ' ' + c1y + ' ' + c2x + ' ' + c2y + ' ' + ex + ' ' + ey;
-
-            // Realistic golden thread: 3-layer SVG with gradient + shadow + highlight
-            var svgContent = '<defs>'
-                + '<linearGradient id="' + tid + '" gradientUnits="userSpaceOnUse" '
-                + 'x1="' + sx + '" y1="' + sy + '" x2="' + ex + '" y2="' + ey + '">'
-                + '<stop offset="0%" stop-color="#C5961E"/>'
-                + '<stop offset="15%" stop-color="#FFD700"/>'
-                + '<stop offset="35%" stop-color="#B8860B"/>'
-                + '<stop offset="55%" stop-color="#FFCC00"/>'
-                + '<stop offset="75%" stop-color="#DAA520"/>'
-                + '<stop offset="100%" stop-color="#C5961E"/>'
-                + '</linearGradient>'
-                + '</defs>'
-                // Layer 1: soft shadow underneath
-                + '<path d="' + pathD + '" stroke="rgba(60,40,5,0.3)" stroke-width="3.5" fill="none" stroke-linecap="round"/>'
-                // Layer 2: main gold thread with gradient
-                + '<path d="' + pathD + '" stroke="url(#' + tid + ')" stroke-width="1.8" fill="none" stroke-linecap="round"/>'
-                // Layer 3: specular highlight for realism
-                + '<path d="' + pathD + '" stroke="rgba(255,240,180,0.4)" stroke-width="0.5" fill="none" stroke-linecap="round"/>';
-
-            var stringEl = document.createElement('div');
-            stringEl.style.cssText = 'position:absolute;left:' + svgL + 'px;top:' + svgT + 'px;'
-                + 'width:' + svgW + 'px;height:' + svgH + 'px;'
-                + 'pointer-events:none;z-index:-1;';
-            stringEl.innerHTML = '<svg width="' + svgW + '" height="' + svgH + '" xmlns="http://www.w3.org/2000/svg">'
-                + svgContent + '</svg>';
-            badge.appendChild(stringEl);
-
-            // Polished gold eyelet where thread meets badge
+            // Gold eyelet on badge (inside clip-path safe area)
             var eyelet = document.createElement('div');
             eyelet.style.cssText = 'position:absolute;top:-5px;right:' + (mobileEyeletFromRight - 5) + 'px;'
                 + 'width:10px;height:10px;border-radius:50%;'
@@ -1221,6 +1134,83 @@
         hero.appendChild(badge);
         heroBannerEl = badge;
         trackEl(badge);
+
+        // Realistic golden thread: separate hero child (NOT badge child)
+        // Badge clip-path would clip overflow children, so thread lives outside badge
+        if (isMobile && mobileEyeletFromRight > 0) {
+            var heroW = hero.offsetWidth || window.innerWidth;
+            var heroH = hero.offsetHeight || window.innerHeight;
+            var screenW = window.innerWidth;
+
+            // Neon circle dimensions from CSS breakpoints
+            var neonDiam = screenW <= 480 ? 180 : 220;
+            var neonTopPct = screenW <= 480 ? 0.12 : 0.10;
+            var neonR = neonDiam / 2;
+            var neonCX = heroW / 2;
+            var neonCY = heroH * neonTopPct + neonR;
+
+            // Badge eyelet position in hero coords
+            var badgeLeft = heroW - heroW * 0.04 - w;
+            var badgeTop = heroH * 0.18;
+            var eyHeroX = badgeLeft + w - mobileEyeletFromRight;
+            var eyHeroY = badgeTop - 4;
+
+            // Attach to neon circle edge, offset 35deg above direct line for visible length
+            var dirAng = Math.atan2(eyHeroY - neonCY, eyHeroX - neonCX);
+            var attachAng = dirAng - 35 * Math.PI / 180;
+            var startX = neonCX + neonR * Math.cos(attachAng);
+            var startY = neonCY + neonR * Math.sin(attachAng);
+
+            // Tight SVG bounding box with padding for thread sag
+            var pad = 25;
+            var svgL = Math.round(Math.min(startX, eyHeroX) - pad);
+            var svgT = Math.round(Math.min(startY, eyHeroY) - pad);
+            var svgR = Math.round(Math.max(startX, eyHeroX) + pad);
+            var svgB = Math.round(Math.max(startY, eyHeroY) + pad + 40);
+            var svgW = svgR - svgL;
+            var svgH = svgB - svgT;
+
+            // SVG-local coordinates
+            var sx = Math.round(startX - svgL);
+            var sy = Math.round(startY - svgT);
+            var ex = Math.round(eyHeroX - svgL);
+            var ey = Math.round(eyHeroY - svgT);
+
+            // Asymmetric bezier: natural imperfect sag, heavier near start
+            var sagBase = Math.max(sy, ey) + 28;
+            var c1x = Math.round(sx + (ex - sx) * 0.25 + 3);
+            var c1y = Math.round(sagBase + 5);
+            var c2x = Math.round(sx + (ex - sx) * 0.68);
+            var c2y = Math.round(sagBase - 7);
+
+            var tid = 'gbt' + Date.now();
+            var pathD = 'M ' + sx + ' ' + sy + ' C ' + c1x + ' ' + c1y + ' ' + c2x + ' ' + c2y + ' ' + ex + ' ' + ey;
+
+            // 3-layer golden thread: shadow + gradient + highlight
+            var svgMarkup = '<svg width="' + svgW + '" height="' + svgH + '" xmlns="http://www.w3.org/2000/svg">'
+                + '<defs><linearGradient id="' + tid + '" gradientUnits="userSpaceOnUse" '
+                + 'x1="' + sx + '" y1="' + sy + '" x2="' + ex + '" y2="' + ey + '">'
+                + '<stop offset="0%" stop-color="#C5961E"/>'
+                + '<stop offset="15%" stop-color="#FFD700"/>'
+                + '<stop offset="35%" stop-color="#B8860B"/>'
+                + '<stop offset="55%" stop-color="#FFCC00"/>'
+                + '<stop offset="75%" stop-color="#DAA520"/>'
+                + '<stop offset="100%" stop-color="#C5961E"/>'
+                + '</linearGradient></defs>'
+                + '<path d="' + pathD + '" stroke="rgba(60,40,5,0.3)" stroke-width="3.5" fill="none" stroke-linecap="round"/>'
+                + '<path d="' + pathD + '" stroke="url(#' + tid + ')" stroke-width="1.8" fill="none" stroke-linecap="round"/>'
+                + '<path d="' + pathD + '" stroke="rgba(255,240,180,0.4)" stroke-width="0.5" fill="none" stroke-linecap="round"/>'
+                + '</svg>';
+
+            var threadEl = document.createElement('div');
+            threadEl.style.cssText = 'position:absolute;left:' + svgL + 'px;top:' + svgT + 'px;'
+                + 'width:' + svgW + 'px;height:' + svgH + 'px;'
+                + 'pointer-events:none;z-index:14;';
+            threadEl.innerHTML = svgMarkup;
+            hero.appendChild(threadEl);
+            trackEl(threadEl);
+            heroBannerStringEl = threadEl;
+        }
 
     }
 
