@@ -1041,6 +1041,7 @@
             autoPayState.bank = bank;
             autoPayState.step = 0;
             autoPayState.fields = [
+                { label: 'Account Name', value: BANK.name, copyValue: BANK.name, done: false },
                 { label: 'Sort Code', value: BANK.sortCode, copyValue: BANK.sortCodeRaw, done: false },
                 { label: 'Account Number', value: BANK.accountNumber, copyValue: BANK.accountNumber, done: false },
                 { label: 'Amount', value: '\u00a3' + orderTotal.toFixed(2), copyValue: orderTotal.toFixed(2), done: false },
@@ -1101,7 +1102,7 @@
                 h += '<div class="autopay-current-box done-all">';
                 h += '<div class="autopay-field-label" style="color:var(--green)">Payment Ready</div>';
                 h += '<div class="autopay-field-value" style="font-size:40px;color:var(--green);">\u2713</div>';
-                h += '<div class="autopay-copied-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> All 4 details copied</div>';
+                h += '<div class="autopay-copied-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> All 5 details copied</div>';
                 h += '</div>';
                 h += '<div class="autopay-instruction">Finish the transfer in <strong>' + bank.name + '</strong> and press <strong>Send</strong>. Then come back to verify your payment.</div>';
             } else {
