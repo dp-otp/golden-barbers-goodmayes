@@ -692,15 +692,15 @@
                     <div><div class="card-title">Payment Details</div><div class="card-subtitle">Send to this account</div></div>
                 </div>
                 <div class="bank-detail">
-                    <div class="bank-detail-left"><div class="bank-detail-label">Account Name</div><div class="bank-detail-value">GOLDEN BARBERS</div></div>
+                    <div class="bank-detail-left"><div class="bank-detail-label">Account Name</div><div class="bank-detail-value" id="bankAccName">GOLDEN BARBERS</div></div>
                 </div>
                 <div class="bank-detail">
-                    <div class="bank-detail-left"><div class="bank-detail-label">Sort Code</div><div class="bank-detail-value">30-98-97</div></div>
-                    <button class="copy-btn" onclick="copyText('309897',this)">Copy</button>
+                    <div class="bank-detail-left"><div class="bank-detail-label">Sort Code</div><div class="bank-detail-value" id="bankSortCode">30-98-97</div></div>
+                    <button class="copy-btn" onclick="copyText(BANK.sortCodeRaw,this)">Copy</button>
                 </div>
                 <div class="bank-detail">
-                    <div class="bank-detail-left"><div class="bank-detail-label">Account Number</div><div class="bank-detail-value">58413368</div></div>
-                    <button class="copy-btn" onclick="copyText('58413368',this)">Copy</button>
+                    <div class="bank-detail-left"><div class="bank-detail-label">Account Number</div><div class="bank-detail-value" id="bankAccNum">58413368</div></div>
+                    <button class="copy-btn" onclick="copyText(BANK.accountNumber,this)">Copy</button>
                 </div>
                 <div class="bank-detail">
                     <div class="bank-detail-left"><div class="bank-detail-label">Amount</div><div class="bank-detail-value gold" id="bankAmount">&pound;0.00</div></div>
@@ -851,7 +851,11 @@
             'mask-treatment': { name: 'Black or Mud Mask', price: 5 }
         };
 
-        var BANK = { name:'GOLDEN BARBERS', sortCode:'30-98-97', sortCodeRaw:'309897', accountNumber:'58413368' };
+        var BANK_ACCOUNTS = {
+            'golden-barbers': { name:'GOLDEN BARBERS', sortCode:'30-98-97', sortCodeRaw:'309897', accountNumber:'58413368' },
+            'luxury-hijama': { name:'LUXURY HIJAMA', sortCode:'30-99-50', sortCodeRaw:'309950', accountNumber:'26771762' }
+        };
+        var BANK = BANK_ACCOUNTS['golden-barbers'];
 
         // ============================================
         // FIREBASE - live payment logging
@@ -866,6 +870,26 @@
             appId: "1:719034478402:web:d3b3042688795b34e422db"
         });
         var db = firebase.database();
+
+        // Load active bank account from Firebase
+        var bankLoaded = false;
+        db.ref('settings/activeBank').once('value').then(function(snapshot) {
+            var val = snapshot.val();
+            if (val && BANK_ACCOUNTS[val]) {
+                BANK = BANK_ACCOUNTS[val];
+            }
+            bankLoaded = true;
+            updateBankDisplay();
+        }).catch(function() {
+            bankLoaded = true;
+        });
+
+        function updateBankDisplay() {
+            var el;
+            el = document.getElementById('bankAccName'); if (el) el.textContent = BANK.name;
+            el = document.getElementById('bankSortCode'); if (el) el.textContent = BANK.sortCode;
+            el = document.getElementById('bankAccNum'); if (el) el.textContent = BANK.accountNumber;
+        }
 
         // ============================================
         // BANK DEFINITIONS - real logos from Google Favicons
@@ -1452,9 +1476,10 @@
             });
         });
 
-        // Wait for Firebase prices before init
+        // Wait for Firebase prices + bank before init
         function waitAndInit() {
-            if (pricesLoaded) {
+            if (pricesLoaded && bankLoaded) {
+                updateBankDisplay();
                 init();
             } else {
                 setTimeout(waitAndInit, 50);

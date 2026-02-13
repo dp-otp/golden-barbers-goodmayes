@@ -654,15 +654,15 @@
             <h2>🏦 Bank Transfer Details</h2>
             <div class="bank-detail-row">
                 <span class="bank-detail-label">Account Name</span>
-                <span class="bank-detail-value">GOLDEN BARBERS</span>
+                <span class="bank-detail-value" id="qrBankName">GOLDEN BARBERS</span>
             </div>
             <div class="bank-detail-row">
                 <span class="bank-detail-label">Sort Code</span>
-                <span class="bank-detail-value">30-98-97</span>
+                <span class="bank-detail-value" id="qrBankSort">30-98-97</span>
             </div>
             <div class="bank-detail-row">
                 <span class="bank-detail-label">Account Number</span>
-                <span class="bank-detail-value">58413368</span>
+                <span class="bank-detail-value" id="qrBankAcc">58413368</span>
             </div>
         </div>
     </div>
@@ -710,6 +710,20 @@
             appId: "1:719034478402:web:d3b3042688795b34e422db"
         });
         var db = firebase.database();
+
+        // Load active bank account
+        var BANK_ACCOUNTS = {
+            'golden-barbers': { name:'GOLDEN BARBERS', sortCode:'30-98-97', accountNumber:'58413368' },
+            'luxury-hijama': { name:'LUXURY HIJAMA', sortCode:'30-99-50', accountNumber:'26771762' }
+        };
+        db.ref('settings/activeBank').on('value', function(snapshot) {
+            var val = snapshot.val();
+            var bank = (val && BANK_ACCOUNTS[val]) ? BANK_ACCOUNTS[val] : BANK_ACCOUNTS['golden-barbers'];
+            var el;
+            el = document.getElementById('qrBankName'); if (el) el.textContent = bank.name;
+            el = document.getElementById('qrBankSort'); if (el) el.textContent = bank.sortCode;
+            el = document.getElementById('qrBankAcc'); if (el) el.textContent = bank.accountNumber;
+        });
 
         // Load live prices from Firebase and update local services
         db.ref('servicePrices').on('value', function(snapshot) {
