@@ -1080,7 +1080,7 @@
                 { label: 'Reference', value: reference, copyValue: reference, done: false }
             ];
 
-            // Copy first field (sort code) immediately
+            // Copy first field immediately
             safelyCopy(autoPayState.fields[0].copyValue);
             autoPayState.fields[0].done = true;
             autoPayState.step = 1;
@@ -1130,7 +1130,6 @@
             h += '</div>';
 
             if (allDone) {
-                // All 4 fields done
                 h += '<div class="autopay-current-box done-all">';
                 h += '<div class="autopay-field-label" style="color:var(--green)">Payment Ready</div>';
                 h += '<div class="autopay-field-value" style="font-size:40px;color:var(--green);">\u2713</div>';
@@ -1149,19 +1148,24 @@
                 h += '<div class="autopay-instruction">Paste <strong>' + current.label + '</strong> in ' + bank.name + ', then come back here.<br>The next detail copies <strong>automatically</strong>.</div>';
             }
 
-            // Progress tracker
+            // Progress tracker — each step tappable to copy
             h += '<div class="autopay-progress">';
             for (var i = 0; i < fields.length; i++) {
                 var isDone = fields[i].done;
                 var isNext = (i === s.step && !allDone);
                 var cls = isDone ? 'done' : (isNext ? 'next' : 'wait');
-                h += '<div class="autopay-step">';
+                h += '<div class="autopay-step" style="cursor:pointer" onclick="copyStep(' + i + ')">';
                 h += '<div class="autopay-step-icon ' + cls + '">' + (isDone ? '\u2713' : (i + 1)) + '</div>';
                 h += '<div class="autopay-step-name ' + cls + '">' + fields[i].label + '</div>';
                 h += '<div class="autopay-step-val ' + cls + '">' + fields[i].value + '</div>';
                 h += '</div>';
             }
             h += '</div>';
+
+            // Copy All button
+            h += '<button class="autopay-btn" style="background:rgba(255,255,255,0.08);color:var(--white);border:1px solid rgba(255,255,255,0.15);" onclick="copyAllAutoPay()">';
+            h += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+            h += 'Copy All Details</button>';
 
             // Action buttons
             if (allDone) {
@@ -1190,6 +1194,25 @@
                 if (navigator.vibrate) navigator.vibrate(50);
                 showToast(field.label + ' re-copied');
             }
+        }
+
+        function copyStep(index) {
+            var field = autoPayState.fields[index];
+            if (!field) return;
+            safelyCopy(field.copyValue);
+            if (navigator.vibrate) navigator.vibrate(50);
+            showToast(field.label + ' copied');
+        }
+
+        function copyAllAutoPay() {
+            var t = BANK.name + '\n' + BANK.sortCode + '\n' + BANK.accountNumber + '\n' + orderTotal.toFixed(2) + '\n' + reference;
+            safelyCopy(t).then(function() {
+                autoPayState.fields.forEach(function(f) { f.done = true; });
+                autoPayState.step = autoPayState.fields.length;
+                if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+                renderAutoPay();
+                showToast('All details copied');
+            });
         }
 
         function closeAutoPay() {
@@ -1264,6 +1287,7 @@
                 items: orderItems.map(function(i) { return i.name; }),
                 itemsDetail: orderItems.map(function(i) { return { name: i.name, price: i.price }; }),
                 discount: appliedDiscount ? { code: appliedDiscount.code, type: appliedDiscount.type, value: appliedDiscount.value, saved: (subtotal - orderTotal).toFixed(2) } : null,
+                targetBank: BANK.name,
                 status: 'pending',
                 createdAt: new Date().toISOString(),
                 date: new Date().toISOString().split('T')[0]
@@ -1329,11 +1353,7 @@
         }
 
         function copyText(text, btn) {
-            navigator.clipboard.writeText(text).then(function(){ doCopied(btn); }).catch(function(){
-                var ta=document.createElement('textarea'); ta.value=text; ta.style.cssText='position:fixed;opacity:0';
-                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-                doCopied(btn);
-            });
+            safelyCopy(text).then(function(){ doCopied(btn); });
         }
 
         function doCopied(btn) {
@@ -1346,8 +1366,8 @@
         function copyRef(btn){copyText(reference,btn);}
 
         function copyAll(btn) {
-            var t='Golden Barbers Payment\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nAccount: '+BANK.name+'\nSort Code: '+BANK.sortCode+'\nAccount No: '+BANK.accountNumber+'\nAmount: \u00a3'+orderTotal.toFixed(2)+'\nReference: '+reference+'\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500';
-            navigator.clipboard.writeText(t).then(function(){
+            var t='Payment Details\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nAccount: '+BANK.name+'\nSort Code: '+BANK.sortCode+'\nAccount No: '+BANK.accountNumber+'\nAmount: \u00a3'+orderTotal.toFixed(2)+'\nReference: '+reference;
+            safelyCopy(t).then(function(){
                 btn.classList.add('copied');
                 btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> All Details Copied!';
                 showToast('All payment details copied');
@@ -1355,7 +1375,7 @@
                     btn.classList.remove('copied');
                     btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy All Details';
                 },3000);
-            }).catch(function(){showToast('Could not copy');});
+            });
         }
 
         // ============================================
