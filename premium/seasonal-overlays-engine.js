@@ -970,6 +970,7 @@
 
     var currentDiscount = null;
     var heroBannerEl = null;
+    var heroBannerStringEl = null;
 
     function placeHeroBanner(themeId) {
         removeHeroBanner();
@@ -1110,39 +1111,16 @@
             document.head.appendChild(style);
         }
 
-        // Mobile tag design: natural hanging tag with curved SVG string
+        // Mobile tag design: eyelet on badge + connecting string to neon circle
         var mobileRotate = '';
+        var mobileEyeletFromRight = 0;
         if (isMobile) {
             mobileRotate = 'rotate(2deg) ';
-            var threadH = 45;
-            var eyeletFromRight = Math.round(w * 0.28);
-            var svgW = 20;
-            var svgH = threadH + 6;
-            var cx = Math.round(svgW / 2);
-
-            // SVG string with natural bezier curve (subtle droop)
-            var stringEl = document.createElement('div');
-            stringEl.style.cssText = 'position:absolute;top:-' + (svgH - 3) + 'px;right:' + (eyeletFromRight - cx) + 'px;'
-                + 'width:' + svgW + 'px;height:' + svgH + 'px;'
-                + 'pointer-events:none;z-index:-1;';
-            stringEl.innerHTML = '<svg width="' + svgW + '" height="' + svgH + '" xmlns="http://www.w3.org/2000/svg">'
-                + '<path d="M ' + cx + ' ' + (svgH - 1) + ' Q ' + (cx + 5) + ' ' + Math.round(svgH * 0.45) + ' ' + (cx - 1) + ' 2" '
-                + 'stroke="rgba(212,175,55,0.38)" stroke-width="1" fill="none" stroke-linecap="round"/>'
-                + '</svg>';
-            badge.appendChild(stringEl);
-
-            // Small gold pin at top of string
-            var pin = document.createElement('div');
-            pin.style.cssText = 'position:absolute;top:-' + svgH + 'px;right:' + (eyeletFromRight - 2) + 'px;'
-                + 'width:5px;height:5px;border-radius:50%;'
-                + 'background:radial-gradient(circle at 30% 30%, #FFD700, #B8860B);'
-                + 'box-shadow:0 1px 2px rgba(0,0,0,0.25);'
-                + 'pointer-events:none;';
-            badge.appendChild(pin);
+            mobileEyeletFromRight = Math.round(w * 0.28);
 
             // Metal eyelet/grommet on badge edge
             var eyelet = document.createElement('div');
-            eyelet.style.cssText = 'position:absolute;top:-3px;right:' + (eyeletFromRight - 4) + 'px;'
+            eyelet.style.cssText = 'position:absolute;top:-3px;right:' + (mobileEyeletFromRight - 4) + 'px;'
                 + 'width:8px;height:8px;border-radius:50%;'
                 + 'border:1.5px solid rgba(212,175,55,0.5);'
                 + 'background:rgba(0,0,0,0.3);z-index:3;'
@@ -1179,6 +1157,69 @@
         hero.appendChild(badge);
         heroBannerEl = badge;
         trackEl(badge);
+
+        // Connect badge to neon circle with a golden string (mobile only)
+        // String sits at z-index:5, behind neon circle (z-index:6) — creates attachment illusion
+        if (isMobile && mobileEyeletFromRight > 0) {
+            setTimeout(function() {
+                if (!badge.parentNode) return;
+                var neonCircle = document.querySelector('.showcase-neon-circle');
+                if (!neonCircle) return;
+
+                var heroRect = hero.getBoundingClientRect();
+                var neonRect = neonCircle.getBoundingClientRect();
+                var badgeRect = badge.getBoundingClientRect();
+
+                // Neon circle: right edge, ~35% from top (upper-right area of circle)
+                var neonX = neonRect.right - heroRect.left;
+                var neonY = neonRect.top - heroRect.top + neonRect.height * 0.35;
+
+                // Badge eyelet position in hero coordinates
+                var eyeletX = badgeRect.right - heroRect.left - mobileEyeletFromRight;
+                var eyeletY = badgeRect.top - heroRect.top;
+
+                // SVG bounding box with padding
+                var pad = 30;
+                var minX = Math.min(neonX, eyeletX) - pad;
+                var maxX = Math.max(neonX, eyeletX) + pad;
+                var minY = Math.min(neonY, eyeletY) - pad;
+                var maxY = Math.max(neonY, eyeletY) + pad + 35;
+                var svgW = Math.round(maxX - minX);
+                var svgH = Math.round(maxY - minY);
+
+                // Convert to SVG local coordinates
+                var sx = Math.round(neonX - minX);
+                var sy = Math.round(neonY - minY);
+                var ex = Math.round(eyeletX - minX);
+                var ey = Math.round(eyeletY - minY);
+
+                // Cubic bezier: gentle droop below both points then curve to eyelet
+                var droopY = Math.max(sy, ey) + 28;
+                var cp1x = Math.round(sx + (ex - sx) * 0.35);
+                var cp1y = Math.round(droopY);
+                var cp2x = Math.round(sx + (ex - sx) * 0.65);
+                var cp2y = Math.round(droopY - 4);
+
+                var stringDiv = document.createElement('div');
+                stringDiv.className = 'gb-tag-string';
+                stringDiv.style.cssText = 'position:absolute;left:' + Math.round(minX) + 'px;top:' + Math.round(minY) + 'px;'
+                    + 'width:' + svgW + 'px;height:' + svgH + 'px;'
+                    + 'pointer-events:none;z-index:5;opacity:0;transition:opacity 0.8s ease;';
+                stringDiv.innerHTML = '<svg width="' + svgW + '" height="' + svgH + '" xmlns="http://www.w3.org/2000/svg">'
+                    + '<path d="M ' + sx + ' ' + sy + ' C ' + cp1x + ' ' + cp1y + ' ' + cp2x + ' ' + cp2y + ' ' + ex + ' ' + ey + '" '
+                    + 'stroke="rgba(212,175,55,0.35)" stroke-width="1.2" fill="none" stroke-linecap="round"/>'
+                    + '</svg>';
+
+                hero.appendChild(stringDiv);
+                trackEl(stringDiv);
+                heroBannerStringEl = stringDiv;
+
+                // Fade in
+                requestAnimationFrame(function() {
+                    if (stringDiv.parentNode) stringDiv.style.opacity = '1';
+                });
+            }, 1000);
+        }
     }
 
     function removeHeroBanner() {
@@ -1186,6 +1227,10 @@
             heroBannerEl.parentNode.removeChild(heroBannerEl);
         }
         heroBannerEl = null;
+        if (heroBannerStringEl && heroBannerStringEl.parentNode) {
+            heroBannerStringEl.parentNode.removeChild(heroBannerStringEl);
+        }
+        heroBannerStringEl = null;
         var liveStyle = document.getElementById('gb-hb-live');
         if (liveStyle) liveStyle.remove();
     }
