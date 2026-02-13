@@ -542,8 +542,8 @@
             ],
             hero: {
                 overlays: [
-                    { src: PROCESSED_PATH + 'easter_basket.png', size: 350, sizeMobile: 140, position: 'bottom-left', opacity: 0.85 },
-                    { src: THEME_ASSETS_PATH + 'easter-egg.png', size: 500, sizeMobile: 150, position: 'bottom-right', offsetY: 0, offsetX: 0, opacity: 0.9 },
+                    { src: PROCESSED_PATH + 'easter_basket.png', size: 350, sizeMobile: 140, position: 'bottom-left', offsetY: -25, opacity: 0.85 },
+                    { src: THEME_ASSETS_PATH + 'easter-egg.png', size: 500, sizeMobile: 150, position: 'bottom-right', offsetY: -30, offsetX: 0, opacity: 0.9 },
                     { src: PROCESSED_PATH + 'floral_corner.png', size: 200, sizeMobile: 120, position: 'top-left', opacity: 0.7 }
                 ]
             },
@@ -984,16 +984,16 @@
         var isDiscount = currentDiscount && currentDiscount.active && currentDiscount.text;
 
         // Scale badge down so it doesn't overpower the original hero
-        var scale = isMobile ? 0.55 : 0.65;
+        var scale = isMobile ? 0.45 : 0.9;
         var w = Math.round((isMobile ? cfg.wM : cfg.w) * scale);
         var h = Math.round((isMobile ? cfg.hM : cfg.h) * scale);
 
         var badge = document.createElement('div');
         badge.id = 'gb-hero-banner';
 
-        // Position: right side on both desktop & mobile (tag style on mobile)
+        // Position: top-right on desktop, tag style on mobile (lower + inset for breathing room)
         var posCSS = isMobile
-            ? 'position:absolute;top:16%;right:3%;z-index:15;'
+            ? 'position:absolute;top:18%;right:4%;z-index:15;'
             : 'position:absolute;top:12%;right:4%;z-index:15;';
 
         var shapeCSS = 'border-radius:' + (cfg.radius || '0') + ';';
@@ -1110,37 +1110,43 @@
             document.head.appendChild(style);
         }
 
-        // Mobile tag design: professional hanging tag with thread + metal eyelet
+        // Mobile tag design: natural hanging tag with curved SVG string
+        var mobileRotate = '';
         if (isMobile) {
-            var threadH = 55;
-            var threadX = Math.round(w * 0.3);
+            mobileRotate = 'rotate(2deg) ';
+            var threadH = 45;
+            var eyeletFromRight = Math.round(w * 0.28);
+            var svgW = 20;
+            var svgH = threadH + 6;
+            var cx = Math.round(svgW / 2);
 
-            // Gold thread line connecting badge to nav area
-            var thread = document.createElement('div');
-            thread.style.cssText = 'position:absolute;top:-' + threadH + 'px;right:' + threadX + 'px;'
-                + 'width:0;height:' + threadH + 'px;'
-                + 'border-left:1.5px solid rgba(212,175,55,0.45);'
-                + 'pointer-events:none;z-index:-1;'
-                + 'filter:drop-shadow(0 0 1px rgba(212,175,55,0.15));';
-            badge.appendChild(thread);
+            // SVG string with natural bezier curve (subtle droop)
+            var stringEl = document.createElement('div');
+            stringEl.style.cssText = 'position:absolute;top:-' + (svgH - 3) + 'px;right:' + (eyeletFromRight - cx) + 'px;'
+                + 'width:' + svgW + 'px;height:' + svgH + 'px;'
+                + 'pointer-events:none;z-index:-1;';
+            stringEl.innerHTML = '<svg width="' + svgW + '" height="' + svgH + '" xmlns="http://www.w3.org/2000/svg">'
+                + '<path d="M ' + cx + ' ' + (svgH - 1) + ' Q ' + (cx + 5) + ' ' + Math.round(svgH * 0.45) + ' ' + (cx - 1) + ' 2" '
+                + 'stroke="rgba(212,175,55,0.38)" stroke-width="1" fill="none" stroke-linecap="round"/>'
+                + '</svg>';
+            badge.appendChild(stringEl);
 
-            // Gold pin at top of thread (where it attaches to nav)
-            var knot = document.createElement('div');
-            knot.style.cssText = 'position:absolute;top:-' + (threadH + 4) + 'px;right:' + (threadX - 3) + 'px;'
-                + 'width:7px;height:7px;border-radius:50%;'
-                + 'background:radial-gradient(circle at 35% 35%, #FFD700, #B8860B);'
-                + 'box-shadow:0 1px 3px rgba(0,0,0,0.3);'
+            // Small gold pin at top of string
+            var pin = document.createElement('div');
+            pin.style.cssText = 'position:absolute;top:-' + svgH + 'px;right:' + (eyeletFromRight - 2) + 'px;'
+                + 'width:5px;height:5px;border-radius:50%;'
+                + 'background:radial-gradient(circle at 30% 30%, #FFD700, #B8860B);'
+                + 'box-shadow:0 1px 2px rgba(0,0,0,0.25);'
                 + 'pointer-events:none;';
-            badge.appendChild(knot);
+            badge.appendChild(pin);
 
-            // Metal eyelet/grommet on badge top edge
+            // Metal eyelet/grommet on badge edge
             var eyelet = document.createElement('div');
-            eyelet.style.cssText = 'position:absolute;top:-4px;right:' + (threadX - 5) + 'px;'
-                + 'width:11px;height:11px;border-radius:50%;'
-                + 'border:2px solid rgba(212,175,55,0.65);'
-                + 'background:rgba(0,0,0,0.4);z-index:3;'
-                + 'box-shadow:inset 0 1px 2px rgba(0,0,0,0.5),0 0 3px rgba(212,175,55,0.2),'
-                + 'inset 0 -0.5px 0 rgba(255,255,255,0.15);'
+            eyelet.style.cssText = 'position:absolute;top:-3px;right:' + (eyeletFromRight - 4) + 'px;'
+                + 'width:8px;height:8px;border-radius:50%;'
+                + 'border:1.5px solid rgba(212,175,55,0.5);'
+                + 'background:rgba(0,0,0,0.3);z-index:3;'
+                + 'box-shadow:inset 0 0.5px 1.5px rgba(0,0,0,0.4);'
                 + 'pointer-events:none;';
             badge.appendChild(eyelet);
         }
@@ -1151,14 +1157,14 @@
         badge.offsetHeight; // force reflow
         badge.style.transition = 'opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s';
         badge.style.opacity = '1';
-        badge.style.transform = skewT + 'scale(1)';
+        badge.style.transform = mobileRotate + skewT + 'scale(1)';
 
         // Gentle float after entrance
         if (!reducedMotion) {
             setTimeout(function() {
                 if (badge.parentNode) {
                     badge.style.transition = 'none';
-                    var floatCSS = '@keyframes gbHBFloatLive{0%,100%{transform:' + skewT + 'translateY(0)}50%{transform:' + skewT + 'translateY(-6px)}}';
+                    var floatCSS = '@keyframes gbHBFloatLive{0%,100%{transform:' + mobileRotate + skewT + 'translateY(0)}50%{transform:' + mobileRotate + skewT + 'translateY(-5px)}}';
                     var liveStyle = document.getElementById('gb-hb-live');
                     if (liveStyle) liveStyle.remove();
                     liveStyle = document.createElement('style');
