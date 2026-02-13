@@ -657,13 +657,13 @@
             ],
             hero: {
                 overlays: [
-                    { src: THEME_ASSETS_PATH + 'flash-bolt.svg', size: 280, sizeMobile: 160, position: 'top-right', offsetX: -10, offsetY: -10, opacity: 0.85 },
+                    { src: THEME_ASSETS_PATH + 'flash-megaphone.svg', size: 220, sizeMobile: 130, position: 'top-right', offsetX: -10, offsetY: -10, opacity: 0.8 },
                     { src: THEME_ASSETS_PATH + 'flash-stopwatch.svg', size: 200, sizeMobile: 120, position: 'bottom-left', offsetY: -20, opacity: 0.8 }
                 ]
             },
             cards: [
-                { image: THEME_ASSETS_PATH + 'flash-bolt.svg', position: 'bottom-right', size: 36, sizeMobile: 24 },
-                { image: THEME_ASSETS_PATH + 'flash-stopwatch.svg', position: 'bottom-left', size: 32, sizeMobile: 20 }
+                { image: THEME_ASSETS_PATH + 'flash-stopwatch.svg', position: 'bottom-right', size: 36, sizeMobile: 24 },
+                { image: THEME_ASSETS_PATH + 'flash-megaphone.svg', position: 'bottom-left', size: 32, sizeMobile: 20 }
             ]
         }
     };
