@@ -556,8 +556,9 @@
             letter-spacing:1.5px; margin-bottom:6px; font-weight:600;
         }
         .autopay-field-value {
-            font-size:32px; font-weight:900; color:var(--white);
+            font-size:28px; font-weight:900; color:var(--white);
             margin-bottom:8px; letter-spacing:1px;
+            word-break:break-word; overflow-wrap:break-word;
         }
         .autopay-copied-badge {
             display:inline-flex; align-items:center; gap:6px;
@@ -596,7 +597,7 @@
         .autopay-step-name.done { color:var(--green); }
         .autopay-step-name.next { color:var(--white); font-weight:600; }
         .autopay-step-name.wait { color:var(--gray); }
-        .autopay-step-val { font-size:13px; font-weight:600; font-family:monospace; }
+        .autopay-step-val { font-size:12px; font-weight:600; font-family:monospace; max-width:140px; text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
         .autopay-step-val.done { color:var(--green); }
         .autopay-step-val.next { color:var(--gold); }
         .autopay-step-val.wait { color:var(--gray-dark); }
@@ -637,6 +638,8 @@
             .amount-value { font-size:42px; }
             .banks-grid { grid-template-columns: 1fr; }
             .more-banks.open { grid-template-columns: 1fr; }
+            .autopay-field-value { font-size:22px; }
+            .autopay-current-box { max-width:100%; }
         }
     </style>
 </head>
