@@ -516,6 +516,79 @@
             margin-bottom:4px;
         }
 
+        /* ===== PAYMENT HELPER PANEL ===== */
+        .pay-helper {
+            position:fixed; bottom:0; left:0; right:0;
+            background:linear-gradient(to top, #0d0d0d 70%, rgba(13,13,13,0.97));
+            border-top:1px solid rgba(212,175,55,0.3);
+            z-index:1500;
+            transform:translateY(100%);
+            transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+            padding:0 16px 16px;
+            max-height:70vh;
+            overflow-y:auto;
+        }
+        .pay-helper.show { transform:translateY(0); }
+
+        .pay-helper-handle {
+            display:flex; align-items:center; justify-content:center;
+            padding:10px 0 6px; cursor:pointer;
+        }
+        .pay-helper-handle span {
+            width:36px; height:4px; background:rgba(255,255,255,0.2);
+            border-radius:2px; display:block;
+        }
+
+        .pay-helper-title {
+            display:flex; align-items:center; justify-content:space-between;
+            margin-bottom:12px;
+        }
+        .pay-helper-title h3 { font-size:14px; font-weight:700; color:var(--gold); }
+        .pay-helper-close {
+            background:none; border:none; color:var(--gray); cursor:pointer;
+            font-size:20px; padding:4px 8px; line-height:1;
+        }
+
+        .pay-step {
+            display:flex; align-items:center; gap:10px;
+            padding:10px 12px; margin-bottom:6px;
+            background:rgba(255,255,255,0.03);
+            border:1px solid rgba(255,255,255,0.06);
+            border-radius:12px; transition:all 0.3s;
+        }
+        .pay-step.active { border-color:rgba(212,175,55,0.4); background:rgba(212,175,55,0.06); }
+        .pay-step.done { border-color:rgba(34,197,94,0.3); background:rgba(34,197,94,0.04); }
+
+        .pay-step-num {
+            width:24px; height:24px; border-radius:50%;
+            background:rgba(255,255,255,0.08);
+            display:flex; align-items:center; justify-content:center;
+            font-size:11px; font-weight:700; color:var(--gray);
+            flex-shrink:0; transition:all 0.3s;
+        }
+        .pay-step.active .pay-step-num { background:rgba(212,175,55,0.2); color:var(--gold); }
+        .pay-step.done .pay-step-num { background:rgba(34,197,94,0.2); color:var(--green); }
+
+        .pay-step-info { flex:1; min-width:0; }
+        .pay-step-label { font-size:10px; color:var(--gray); text-transform:uppercase; letter-spacing:0.5px; }
+        .pay-step-value { font-size:15px; font-weight:700; color:var(--white); margin-top:1px; }
+
+        .pay-step-copy {
+            padding:6px 14px;
+            background:rgba(212,175,55,0.12); border:1px solid rgba(212,175,55,0.25);
+            border-radius:8px; color:var(--gold);
+            font-family:'Outfit',sans-serif; font-size:12px; font-weight:600;
+            cursor:pointer; transition:all 0.2s;
+            min-width:58px; text-align:center; flex-shrink:0;
+        }
+        .pay-step-copy:active { transform:scale(0.94); }
+        .pay-step-copy.copied { background:var(--green); border-color:var(--green); color:var(--white); }
+
+        .pay-helper-hint {
+            text-align:center; font-size:11px; color:var(--gray);
+            margin-top:6px; padding:6px 0;
+        }
+
         @media (max-width: 440px) {
             .amount-value { font-size:42px; }
             .banks-grid { grid-template-columns: 1fr; }
@@ -684,6 +757,17 @@
 
             <button class="verify-cancel" onclick="cancelVerification()">Cancel</button>
         </div>
+    </div>
+
+    <!-- Payment Helper Panel -->
+    <div class="pay-helper" id="payHelper">
+        <div class="pay-helper-handle" onclick="closePayHelper()"><span></span></div>
+        <div class="pay-helper-title">
+            <h3>Paste these in your bank app</h3>
+            <button class="pay-helper-close" onclick="closePayHelper()">&times;</button>
+        </div>
+        <div id="payHelperSteps"></div>
+        <div class="pay-helper-hint">Tap each field to copy, then paste in your banking app</div>
     </div>
 
     <!-- Routing Toast -->
@@ -875,24 +959,96 @@
         }
 
         // ============================================
-        // BANK ROUTING
+        // BANK ROUTING - copy details & open app
         // ============================================
+        var payHelperSteps = [];
+        var payHelperVisible = false;
+
+        function safelyCopy(text) {
+            return navigator.clipboard.writeText(text).catch(function() {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.cssText = 'position:fixed;left:-9999px;opacity:0;';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            });
+        }
+
+        function buildPayHelperSteps() {
+            return [
+                { label: 'Sort Code', value: BANK.sortCode, copyValue: BANK.sortCodeRaw, done: false },
+                { label: 'Account Number', value: BANK.accountNumber, copyValue: BANK.accountNumber, done: false },
+                { label: 'Amount', value: '\u00a3' + orderTotal.toFixed(2), copyValue: orderTotal.toFixed(2), done: false },
+                { label: 'Reference', value: reference, copyValue: reference, done: false }
+            ];
+        }
+
+        function renderPayHelper() {
+            var container = document.getElementById('payHelperSteps');
+            container.innerHTML = payHelperSteps.map(function(step, i) {
+                var cls = step.done ? 'pay-step done' : (i === getNextStep() ? 'pay-step active' : 'pay-step');
+                return '<div class="' + cls + '" onclick="copyPayStep(' + i + ')">' +
+                    '<div class="pay-step-num">' + (step.done ? '\u2713' : (i + 1)) + '</div>' +
+                    '<div class="pay-step-info"><div class="pay-step-label">' + step.label + '</div>' +
+                    '<div class="pay-step-value">' + step.value + '</div></div>' +
+                    '<button class="pay-step-copy' + (step.done ? ' copied' : '') + '" id="payStepBtn' + i + '">' +
+                    (step.done ? 'Copied!' : 'Copy') + '</button></div>';
+            }).join('');
+        }
+
+        function getNextStep() {
+            for (var i = 0; i < payHelperSteps.length; i++) {
+                if (!payHelperSteps[i].done) return i;
+            }
+            return -1;
+        }
+
+        function copyPayStep(idx) {
+            var step = payHelperSteps[idx];
+            safelyCopy(step.copyValue).then(function() {
+                step.done = true;
+                renderPayHelper();
+                showToast(step.label + ' copied');
+            });
+        }
+
+        function showPayHelper() {
+            payHelperSteps = buildPayHelperSteps();
+            renderPayHelper();
+            document.getElementById('payHelper').classList.add('show');
+            payHelperVisible = true;
+        }
+
+        function closePayHelper() {
+            document.getElementById('payHelper').classList.remove('show');
+            payHelperVisible = false;
+        }
+
         function routeToBank(bankId) {
             var bank = BANKS_MAIN.concat(BANKS_MORE).find(function(b){return b.id===bankId;});
             if (!bank) return;
 
-            var allText = 'Sort Code: '+BANK.sortCode+'\nAccount: '+BANK.accountNumber+'\nAmount: \u00a3'+orderTotal.toFixed(2)+'\nRef: '+reference+'\nTo: '+BANK.name;
-            navigator.clipboard.writeText(allText).catch(function(){
-                var ta=document.createElement('textarea'); ta.value=allText; ta.style.cssText='position:fixed;opacity:0';
-                document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-            });
+            // Copy sort code first (first field in bank transfer forms)
+            safelyCopy(BANK.sortCodeRaw);
 
+            // Show the payment helper panel
+            showPayHelper();
+            // Mark sort code as copied (first step)
+            payHelperSteps[0].done = true;
+            renderPayHelper();
+
+            // Show routing toast
             var toast = document.getElementById('routingToast');
             var logoEl = document.getElementById('routingToastLogo');
             logoEl.style.background = '#1a1a1a';
             logoEl.innerHTML = '<img src="'+getBankLogo(bank.domain)+'" alt="'+bank.name+'" style="width:28px;height:28px;border-radius:6px">';
             document.getElementById('routingToastTitle').textContent = 'Opening ' + bank.name + '...';
             toast.classList.add('show');
+
+            showToast('Sort code copied \u2014 paste in your bank app');
 
             var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
             var isAndroid = /android/i.test(navigator.userAgent);
@@ -911,9 +1067,24 @@
                 window.open(bank.web, '_blank');
                 setTimeout(function() { toast.classList.remove('show'); }, 2000);
             }
-
-            showToast('Details copied \u2014 paste in your bank app');
         }
+
+        // When user comes back from banking app, auto-copy next field
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden && payHelperVisible) {
+                var next = getNextStep();
+                if (next >= 0) {
+                    // Small delay to let the page regain focus
+                    setTimeout(function() {
+                        safelyCopy(payHelperSteps[next].copyValue).then(function() {
+                            payHelperSteps[next].done = true;
+                            renderPayHelper();
+                            showToast(payHelperSteps[next].label + ' copied \u2014 paste it now');
+                        });
+                    }, 300);
+                }
+            }
+        });
 
         // ============================================
         // VERIFICATION FLOW
