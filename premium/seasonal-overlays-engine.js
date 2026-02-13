@@ -651,8 +651,8 @@
 
         flashsale: {
             navHangers: [
-                THEME_ASSETS_PATH + 'flash-stopwatch.svg',
-                THEME_ASSETS_PATH + 'flash-stopwatch.svg',
+                THEME_ASSETS_PATH + 'flash-bolt.svg',
+                THEME_ASSETS_PATH + 'flash-megaphone.svg',
                 THEME_ASSETS_PATH + 'flash-stopwatch.svg'
             ],
             hero: {
