@@ -484,7 +484,7 @@
             hero: {
                 overlays: [
                     // Christmas tree PNG (bg removed) - overlaps behind logo, fades at top
-                    { src: 'theme-assets/christmas-tree.png', size: 500, sizeMobile: 200, position: 'bottom-left', opacity: 0.95, offsetX: 30, offsetY: 0, style: 'z-index:1;-webkit-mask-image:linear-gradient(to top, black 50%, transparent 95%);mask-image:linear-gradient(to top, black 50%, transparent 95%);' },
+                    { src: 'theme-assets/christmas-tree.png', size: 500, sizeMobile: 280, position: 'bottom-left', opacity: 0.95, offsetX: 0, offsetY: 0, style: '-webkit-mask-image:linear-gradient(to top, black 50%, transparent 95%);mask-image:linear-gradient(to top, black 50%, transparent 95%);' },
                 ]
             },
             presents: [
@@ -547,8 +547,8 @@
             ],
             hero: {
                 overlays: [
-                    { src: PROCESSED_PATH + 'easter_basket.png', size: 350, sizeMobile: 200, position: 'bottom-left', opacity: 0.85 },
-                    { src: THEME_ASSETS_PATH + 'easter-egg.png', size: 500, sizeMobile: 180, position: 'bottom-right', offsetY: -120, offsetX: 0, opacity: 0.9 },
+                    { src: PROCESSED_PATH + 'easter_basket.png', size: 350, sizeMobile: 140, position: 'bottom-left', opacity: 0.85 },
+                    { src: THEME_ASSETS_PATH + 'easter-egg.png', size: 500, sizeMobile: 150, position: 'bottom-right', offsetY: 0, offsetX: 0, opacity: 0.9 },
                     { src: PROCESSED_PATH + 'floral_corner.png', size: 200, sizeMobile: 120, position: 'top-left', opacity: 0.7 }
                 ]
             },
@@ -634,7 +634,7 @@
             ],
             hero: {
                 overlays: [
-                    { src: PROCESSED_PATH + 'blackfriday_sale.png', size: 350, sizeMobile: 200, position: 'top-left', opacity: 0.9 }
+                    { src: PROCESSED_PATH + 'blackfriday_sale.png', size: 350, sizeMobile: 150, position: 'top-left', offsetX: -15, offsetY: -10, opacity: 0.9 }
                 ]
             },
             footer: PROCESSED_PATH + 'blackfriday_sale.png',
@@ -663,7 +663,7 @@
             hero: {
                 overlays: [
                     { src: PROCESSED_PATH + 'sale_burst.png', size: 340, sizeMobile: 200, position: 'top-left', opacity: 0.9 },
-                    { src: PROCESSED_PATH + 'flash_sale_box.png', size: 400, sizeMobile: 160, position: 'center-right', offsetX: 20, opacity: 0.9 }
+                    { src: PROCESSED_PATH + 'flash_sale_box.png', size: 400, sizeMobile: 160, position: 'bottom-center', offsetY: 30, opacity: 0.9 }
                 ]
             }
         }
@@ -775,7 +775,7 @@
         hero.style.position = 'relative';
 
         var snowContainer = createContainer('gb-snow-ground');
-        snowContainer.style.cssText += 'bottom:0;left:0;width:100%;height:80px;z-index:5;overflow:hidden;';
+        snowContainer.style.cssText += 'bottom:0;left:0;width:100%;height:80px;z-index:7;overflow:hidden;';
 
         var heroWidth = hero.offsetWidth || window.innerWidth;
         snowContainer.innerHTML = ChristmasSVGs.snowGround(heroWidth);
@@ -954,7 +954,7 @@
         var isDiscount = currentDiscount && currentDiscount.active && currentDiscount.text;
 
         // Scale badge down so it doesn't overpower the original hero
-        var scale = 0.65;
+        var scale = isMobile ? 0.55 : 0.65;
         var w = Math.round((isMobile ? cfg.wM : cfg.w) * scale);
         var h = Math.round((isMobile ? cfg.hM : cfg.h) * scale);
 
