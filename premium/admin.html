@@ -1184,10 +1184,18 @@
             color: #fff;
             width: 100%;
             margin-top: 8px;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            transition: all 0.2s;
         }
         .payment-bank-btn:hover { opacity: 0.9; }
 
@@ -3452,7 +3460,7 @@
                             '<button class="payment-confirm-btn" onclick="confirmPayment(\'' + p._key + '\')">Confirm Payment</button>' +
                             '<button class="payment-reject-btn" onclick="rejectPayment(\'' + p._key + '\')">Reject</button>' +
                           '</div>' +
-                          '<button class="payment-actions payment-bank-btn" onclick="openBankApp()">' +
+                          '<button class="payment-bank-btn" onclick="openBankApp()">' +
                             '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v2h20V7L12 2zm0 2.5L18.5 7h-13L12 4.5zM4 11v7h2v-7H4zm4 0v7h2v-7H8zm4 0v7h2v-7h-2zm4 0v7h2v-7h-2zM2 20v2h20v-2H2z"/></svg>' +
                             'Check Barclays' +
                           '</button>'
