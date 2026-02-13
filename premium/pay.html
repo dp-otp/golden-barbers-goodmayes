@@ -440,7 +440,7 @@
             background:var(--dark-card); border:1px solid rgba(34,197,94,0.3);
             color:var(--white); padding:12px 20px; border-radius:50px;
             font-size:13px; font-weight:600; font-family:'Outfit',sans-serif;
-            box-shadow:0 10px 40px rgba(0,0,0,0.6); z-index:999;
+            box-shadow:0 10px 40px rgba(0,0,0,0.6); z-index:3000;
             transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
             display:flex; align-items:center; gap:8px;
         }
@@ -516,77 +516,119 @@
             margin-bottom:4px;
         }
 
-        /* ===== PAYMENT HELPER PANEL ===== */
-        .pay-helper {
-            position:fixed; bottom:0; left:0; right:0;
-            background:linear-gradient(to top, #0d0d0d 70%, rgba(13,13,13,0.97));
-            border-top:1px solid rgba(212,175,55,0.3);
-            z-index:1500;
-            transform:translateY(100%);
-            transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
-            padding:0 16px 16px;
-            max-height:70vh;
+        /* ===== AUTO-PAY OVERLAY ===== */
+        .autopay-overlay {
+            display:none;
+            position:fixed; top:0; left:0; right:0; bottom:0;
+            background:rgba(0,0,0,0.97);
+            z-index:2000;
+            padding:20px;
             overflow-y:auto;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
         }
-        .pay-helper.show { transform:translateY(0); }
+        .autopay-overlay.show { display:flex; }
 
-        .pay-helper-handle {
-            display:flex; align-items:center; justify-content:center;
-            padding:10px 0 6px; cursor:pointer;
-        }
-        .pay-helper-handle span {
-            width:36px; height:4px; background:rgba(255,255,255,0.2);
-            border-radius:2px; display:block;
-        }
+        .autopay-bank-info { text-align:center; margin-bottom:16px; }
+        .autopay-bank-logo { width:52px; height:52px; border-radius:14px; background:#1a1a1a; object-fit:contain; padding:6px; }
+        .autopay-bank-name { font-size:16px; font-weight:700; margin-top:8px; }
 
-        .pay-helper-title {
-            display:flex; align-items:center; justify-content:space-between;
-            margin-bottom:12px;
+        .autopay-current-box {
+            width:100%; max-width:340px;
+            padding:20px;
+            background:rgba(212,175,55,0.06);
+            border:2px solid rgba(212,175,55,0.4);
+            border-radius:18px;
+            text-align:center;
+            margin-bottom:14px;
+            animation:autopayGlow 2s ease infinite;
         }
-        .pay-helper-title h3 { font-size:14px; font-weight:700; color:var(--gold); }
-        .pay-helper-close {
-            background:none; border:none; color:var(--gray); cursor:pointer;
-            font-size:20px; padding:4px 8px; line-height:1;
+        .autopay-current-box.done-all {
+            border-color:rgba(34,197,94,0.4);
+            background:rgba(34,197,94,0.06);
+            animation:none;
         }
+        .autopay-field-label {
+            font-size:11px; color:var(--gold); text-transform:uppercase;
+            letter-spacing:1.5px; margin-bottom:6px; font-weight:600;
+        }
+        .autopay-field-value {
+            font-size:32px; font-weight:900; color:var(--white);
+            margin-bottom:8px; letter-spacing:1px;
+        }
+        .autopay-copied-badge {
+            display:inline-flex; align-items:center; gap:6px;
+            padding:6px 16px; background:rgba(34,197,94,0.15);
+            border:1px solid rgba(34,197,94,0.3); border-radius:20px;
+            color:var(--green); font-size:13px; font-weight:700;
+        }
+        .autopay-copied-badge svg { width:16px; height:16px; }
 
-        .pay-step {
-            display:flex; align-items:center; gap:10px;
-            padding:10px 12px; margin-bottom:6px;
-            background:rgba(255,255,255,0.03);
+        .autopay-instruction {
+            font-size:14px; color:var(--gray); text-align:center;
+            margin-bottom:18px; line-height:1.6; max-width:340px;
+        }
+        .autopay-instruction strong { color:var(--white); }
+
+        .autopay-progress {
+            width:100%; max-width:340px; margin-bottom:18px;
+            background:rgba(255,255,255,0.02);
             border:1px solid rgba(255,255,255,0.06);
-            border-radius:12px; transition:all 0.3s;
+            border-radius:14px; padding:12px 14px;
         }
-        .pay-step.active { border-color:rgba(212,175,55,0.4); background:rgba(212,175,55,0.06); }
-        .pay-step.done { border-color:rgba(34,197,94,0.3); background:rgba(34,197,94,0.04); }
-
-        .pay-step-num {
-            width:24px; height:24px; border-radius:50%;
-            background:rgba(255,255,255,0.08);
+        .autopay-step {
+            display:flex; align-items:center; gap:10px;
+            padding:7px 0;
+        }
+        .autopay-step + .autopay-step { border-top:1px solid rgba(255,255,255,0.04); }
+        .autopay-step-icon {
+            width:22px; height:22px; border-radius:50%;
             display:flex; align-items:center; justify-content:center;
-            font-size:11px; font-weight:700; color:var(--gray);
-            flex-shrink:0; transition:all 0.3s;
+            font-size:11px; font-weight:700; flex-shrink:0;
         }
-        .pay-step.active .pay-step-num { background:rgba(212,175,55,0.2); color:var(--gold); }
-        .pay-step.done .pay-step-num { background:rgba(34,197,94,0.2); color:var(--green); }
+        .autopay-step-icon.done { background:rgba(34,197,94,0.2); color:var(--green); }
+        .autopay-step-icon.next { background:rgba(212,175,55,0.2); color:var(--gold); }
+        .autopay-step-icon.wait { background:rgba(255,255,255,0.05); color:var(--gray-dark); }
+        .autopay-step-name { flex:1; font-size:13px; }
+        .autopay-step-name.done { color:var(--green); }
+        .autopay-step-name.next { color:var(--white); font-weight:600; }
+        .autopay-step-name.wait { color:var(--gray); }
+        .autopay-step-val { font-size:13px; font-weight:600; font-family:monospace; }
+        .autopay-step-val.done { color:var(--green); }
+        .autopay-step-val.next { color:var(--gold); }
+        .autopay-step-val.wait { color:var(--gray-dark); }
 
-        .pay-step-info { flex:1; min-width:0; }
-        .pay-step-label { font-size:10px; color:var(--gray); text-transform:uppercase; letter-spacing:0.5px; }
-        .pay-step-value { font-size:15px; font-weight:700; color:var(--white); margin-top:1px; }
-
-        .pay-step-copy {
-            padding:6px 14px;
-            background:rgba(212,175,55,0.12); border:1px solid rgba(212,175,55,0.25);
-            border-radius:8px; color:var(--gold);
-            font-family:'Outfit',sans-serif; font-size:12px; font-weight:600;
+        .autopay-btn {
+            width:100%; max-width:340px; padding:16px;
+            background:linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color:var(--black); border:none; border-radius:14px;
+            font-family:'Outfit',sans-serif; font-size:15px; font-weight:700;
             cursor:pointer; transition:all 0.2s;
-            min-width:58px; text-align:center; flex-shrink:0;
+            display:flex; align-items:center; justify-content:center; gap:8px;
+            margin-bottom:8px;
         }
-        .pay-step-copy:active { transform:scale(0.94); }
-        .pay-step-copy.copied { background:var(--green); border-color:var(--green); color:var(--white); }
+        .autopay-btn:active { transform:scale(0.97); }
+        .autopay-btn.green {
+            background:linear-gradient(135deg, var(--green), var(--green-dark));
+            color:var(--white);
+        }
+        .autopay-cancel-btn {
+            background:none; border:none; color:var(--gray);
+            font-family:'Outfit',sans-serif; font-size:13px;
+            cursor:pointer; padding:10px 16px;
+        }
+        .autopay-recopy {
+            background:none; border:1px solid rgba(212,175,55,0.3);
+            border-radius:8px; color:var(--gold); padding:5px 14px;
+            font-family:'Outfit',sans-serif; font-size:12px; font-weight:600;
+            cursor:pointer; margin-top:10px;
+        }
+        .autopay-recopy:active { transform:scale(0.95); }
 
-        .pay-helper-hint {
-            text-align:center; font-size:11px; color:var(--gray);
-            margin-top:6px; padding:6px 0;
+        @keyframes autopayGlow {
+            0%, 100% { border-color:rgba(212,175,55,0.3); box-shadow:0 0 0 0 rgba(212,175,55,0); }
+            50% { border-color:rgba(212,175,55,0.6); box-shadow:0 0 20px rgba(212,175,55,0.1); }
         }
 
         @media (max-width: 440px) {
@@ -673,7 +715,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-                    <div><div class="card-title">Open Your Bank</div><div class="card-subtitle">Details auto-copied when you tap</div></div>
+                    <div><div class="card-title">Open Your Bank</div><div class="card-subtitle">Details fill automatically</div></div>
                 </div>
 
                 <div class="banks-grid" id="mainBanks"></div>
@@ -759,15 +801,9 @@
         </div>
     </div>
 
-    <!-- Payment Helper Panel -->
-    <div class="pay-helper" id="payHelper">
-        <div class="pay-helper-handle" onclick="closePayHelper()"><span></span></div>
-        <div class="pay-helper-title">
-            <h3>Paste these in your bank app</h3>
-            <button class="pay-helper-close" onclick="closePayHelper()">&times;</button>
-        </div>
-        <div id="payHelperSteps"></div>
-        <div class="pay-helper-hint">Tap each field to copy, then paste in your banking app</div>
+    <!-- Auto-Pay Overlay -->
+    <div class="autopay-overlay" id="autoPayOverlay">
+        <div id="autoPayContent"></div>
     </div>
 
     <!-- Routing Toast -->
@@ -952,103 +988,73 @@
                 '</div>' +
                 '<div class="bank-btn-text">' +
                     '<div class="bank-btn-name">'+b.name+'</div>' +
-                    '<div class="bank-btn-type">Tap to open app</div>' +
+                    '<div class="bank-btn-type">Tap \u2014 auto-fills details</div>' +
                 '</div>' +
                 '<svg class="bank-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>' +
             '</button>';
         }
 
         // ============================================
-        // BANK ROUTING - copy details & open app
+        // AUTO-PAY SYSTEM — fully automatic clipboard cycling
+        // Copies each detail (sort code → account → amount → ref)
+        // automatically every time user returns from bank app
         // ============================================
-        var payHelperSteps = [];
-        var payHelperVisible = false;
+        var autoPayState = { active: false, bank: null, step: 0, fields: [] };
 
         function safelyCopy(text) {
-            return navigator.clipboard.writeText(text).catch(function() {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.cssText = 'position:fixed;left:-9999px;opacity:0;';
-                document.body.appendChild(ta);
-                ta.focus();
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
-            });
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                return navigator.clipboard.writeText(text).catch(function() {
+                    fallbackCopy(text);
+                    return Promise.resolve();
+                });
+            }
+            fallbackCopy(text);
+            return Promise.resolve();
         }
 
-        function buildPayHelperSteps() {
-            return [
+        function fallbackCopy(text) {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.cssText = 'position:fixed;left:-9999px;opacity:0;';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            try { document.execCommand('copy'); } catch(e) {}
+            document.body.removeChild(ta);
+        }
+
+        function routeToBank(bankId) {
+            var bank = BANKS_MAIN.concat(BANKS_MORE).find(function(b){ return b.id === bankId; });
+            if (!bank) return;
+
+            // Init autopay state
+            autoPayState.active = true;
+            autoPayState.bank = bank;
+            autoPayState.step = 0;
+            autoPayState.fields = [
                 { label: 'Sort Code', value: BANK.sortCode, copyValue: BANK.sortCodeRaw, done: false },
                 { label: 'Account Number', value: BANK.accountNumber, copyValue: BANK.accountNumber, done: false },
                 { label: 'Amount', value: '\u00a3' + orderTotal.toFixed(2), copyValue: orderTotal.toFixed(2), done: false },
                 { label: 'Reference', value: reference, copyValue: reference, done: false }
             ];
+
+            // Copy first field (sort code) immediately
+            safelyCopy(autoPayState.fields[0].copyValue);
+            autoPayState.fields[0].done = true;
+            autoPayState.step = 1;
+            if (navigator.vibrate) navigator.vibrate(50);
+
+            // Show full-screen overlay
+            renderAutoPay();
+            document.getElementById('autoPayOverlay').classList.add('show');
+
+            // Open bank app after brief delay so user sees the overlay
+            setTimeout(function() { openBankApp(); }, 900);
         }
 
-        function renderPayHelper() {
-            var container = document.getElementById('payHelperSteps');
-            container.innerHTML = payHelperSteps.map(function(step, i) {
-                var cls = step.done ? 'pay-step done' : (i === getNextStep() ? 'pay-step active' : 'pay-step');
-                return '<div class="' + cls + '" onclick="copyPayStep(' + i + ')">' +
-                    '<div class="pay-step-num">' + (step.done ? '\u2713' : (i + 1)) + '</div>' +
-                    '<div class="pay-step-info"><div class="pay-step-label">' + step.label + '</div>' +
-                    '<div class="pay-step-value">' + step.value + '</div></div>' +
-                    '<button class="pay-step-copy' + (step.done ? ' copied' : '') + '" id="payStepBtn' + i + '">' +
-                    (step.done ? 'Copied!' : 'Copy') + '</button></div>';
-            }).join('');
-        }
-
-        function getNextStep() {
-            for (var i = 0; i < payHelperSteps.length; i++) {
-                if (!payHelperSteps[i].done) return i;
-            }
-            return -1;
-        }
-
-        function copyPayStep(idx) {
-            var step = payHelperSteps[idx];
-            safelyCopy(step.copyValue).then(function() {
-                step.done = true;
-                renderPayHelper();
-                showToast(step.label + ' copied');
-            });
-        }
-
-        function showPayHelper() {
-            payHelperSteps = buildPayHelperSteps();
-            renderPayHelper();
-            document.getElementById('payHelper').classList.add('show');
-            payHelperVisible = true;
-        }
-
-        function closePayHelper() {
-            document.getElementById('payHelper').classList.remove('show');
-            payHelperVisible = false;
-        }
-
-        function routeToBank(bankId) {
-            var bank = BANKS_MAIN.concat(BANKS_MORE).find(function(b){return b.id===bankId;});
+        function openBankApp() {
+            var bank = autoPayState.bank;
             if (!bank) return;
-
-            // Copy sort code first (first field in bank transfer forms)
-            safelyCopy(BANK.sortCodeRaw);
-
-            // Show the payment helper panel
-            showPayHelper();
-            // Mark sort code as copied (first step)
-            payHelperSteps[0].done = true;
-            renderPayHelper();
-
-            // Show routing toast
-            var toast = document.getElementById('routingToast');
-            var logoEl = document.getElementById('routingToastLogo');
-            logoEl.style.background = '#1a1a1a';
-            logoEl.innerHTML = '<img src="'+getBankLogo(bank.domain)+'" alt="'+bank.name+'" style="width:28px;height:28px;border-radius:6px">';
-            document.getElementById('routingToastTitle').textContent = 'Opening ' + bank.name + '...';
-            toast.classList.add('show');
-
-            showToast('Sort code copied \u2014 paste in your bank app');
 
             var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
             var isAndroid = /android/i.test(navigator.userAgent);
@@ -1057,34 +1063,125 @@
                 var start = Date.now();
                 window.location.href = bank.ios;
                 setTimeout(function() {
-                    if (Date.now() - start < 2000) window.open(bank.web,'_blank');
-                    toast.classList.remove('show');
+                    if (Date.now() - start < 2000) window.open(bank.web, '_blank');
                 }, 1500);
             } else if (isAndroid && bank.android) {
-                window.location.href = 'intent://#Intent;package='+bank.android+';end';
-                setTimeout(function() { window.open(bank.web,'_blank'); toast.classList.remove('show'); }, 1500);
+                window.location.href = 'intent://#Intent;package=' + bank.android + ';end';
+                setTimeout(function() { window.open(bank.web, '_blank'); }, 1500);
             } else {
                 window.open(bank.web, '_blank');
-                setTimeout(function() { toast.classList.remove('show'); }, 2000);
             }
         }
 
-        // When user comes back from banking app, auto-copy next field
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden && payHelperVisible) {
-                var next = getNextStep();
-                if (next >= 0) {
-                    // Small delay to let the page regain focus
-                    setTimeout(function() {
-                        safelyCopy(payHelperSteps[next].copyValue).then(function() {
-                            payHelperSteps[next].done = true;
-                            renderPayHelper();
-                            showToast(payHelperSteps[next].label + ' copied \u2014 paste it now');
-                        });
-                    }, 300);
-                }
+        function renderAutoPay() {
+            var s = autoPayState;
+            var fields = s.fields;
+            var allDone = s.step >= fields.length;
+            var bank = s.bank;
+            var logoUrl = getBankLogo(bank.domain);
+            var h = '';
+
+            // Bank logo + name
+            h += '<div class="autopay-bank-info">';
+            h += '<img src="' + logoUrl + '" class="autopay-bank-logo" onerror="this.style.display=\'none\'">';
+            h += '<div class="autopay-bank-name">' + bank.name + '</div>';
+            h += '</div>';
+
+            if (allDone) {
+                // All 4 fields done
+                h += '<div class="autopay-current-box done-all">';
+                h += '<div class="autopay-field-label" style="color:var(--green)">Payment Ready</div>';
+                h += '<div class="autopay-field-value" style="font-size:40px;color:var(--green);">\u2713</div>';
+                h += '<div class="autopay-copied-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> All 4 details copied</div>';
+                h += '</div>';
+                h += '<div class="autopay-instruction">Finish the transfer in <strong>' + bank.name + '</strong> and press <strong>Send</strong>. Then come back to verify your payment.</div>';
+            } else {
+                // Show the field that's currently in clipboard
+                var current = fields[s.step - 1];
+                h += '<div class="autopay-current-box">';
+                h += '<div class="autopay-field-label">' + current.label + '</div>';
+                h += '<div class="autopay-field-value">' + current.value + '</div>';
+                h += '<div class="autopay-copied-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Copied to clipboard</div>';
+                h += '<button class="autopay-recopy" onclick="recopyCurrent()">Tap to re-copy</button>';
+                h += '</div>';
+                h += '<div class="autopay-instruction">Paste <strong>' + current.label + '</strong> in ' + bank.name + ', then come back here.<br>The next detail copies <strong>automatically</strong>.</div>';
             }
+
+            // Progress tracker
+            h += '<div class="autopay-progress">';
+            for (var i = 0; i < fields.length; i++) {
+                var isDone = fields[i].done;
+                var isNext = (i === s.step && !allDone);
+                var cls = isDone ? 'done' : (isNext ? 'next' : 'wait');
+                h += '<div class="autopay-step">';
+                h += '<div class="autopay-step-icon ' + cls + '">' + (isDone ? '\u2713' : (i + 1)) + '</div>';
+                h += '<div class="autopay-step-name ' + cls + '">' + fields[i].label + '</div>';
+                h += '<div class="autopay-step-val ' + cls + '">' + fields[i].value + '</div>';
+                h += '</div>';
+            }
+            h += '</div>';
+
+            // Action buttons
+            if (allDone) {
+                h += '<button class="autopay-btn green" onclick="closeAutoPay();startVerification();">';
+                h += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>';
+                h += 'Verify Payment</button>';
+                h += '<button class="autopay-btn" onclick="openBankApp()">';
+                h += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+                h += 'Back to ' + bank.name + '</button>';
+            } else {
+                h += '<button class="autopay-btn" onclick="openBankApp()">';
+                h += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+                h += 'Open ' + bank.name + '</button>';
+            }
+
+            h += '<button class="autopay-cancel-btn" onclick="closeAutoPay()">' + (allDone ? 'Close' : 'Cancel') + '</button>';
+
+            document.getElementById('autoPayContent').innerHTML = h;
+        }
+
+        function recopyCurrent() {
+            var s = autoPayState;
+            if (s.step > 0 && s.step <= s.fields.length) {
+                var field = s.fields[s.step - 1];
+                safelyCopy(field.copyValue);
+                if (navigator.vibrate) navigator.vibrate(50);
+                showToast(field.label + ' re-copied');
+            }
+        }
+
+        function closeAutoPay() {
+            autoPayState.active = false;
+            document.getElementById('autoPayOverlay').classList.remove('show');
+        }
+
+        // Auto-copy next field every time user switches back from bank app
+        var _apDebounce = 0;
+        function autoCopyNext() {
+            if (!autoPayState.active || document.hidden) return;
+            var now = Date.now();
+            if (now - _apDebounce < 800) return;
+            _apDebounce = now;
+
+            var idx = autoPayState.step;
+            if (idx < autoPayState.fields.length && !autoPayState.fields[idx].done) {
+                setTimeout(function() {
+                    var i = autoPayState.step;
+                    if (i >= autoPayState.fields.length || autoPayState.fields[i].done) return;
+                    safelyCopy(autoPayState.fields[i].copyValue);
+                    autoPayState.fields[i].done = true;
+                    autoPayState.step = i + 1;
+                    if (navigator.vibrate) navigator.vibrate(50);
+                    renderAutoPay();
+                    showToast(autoPayState.fields[i].label + ' copied \u2014 paste it now');
+                }, 400);
+            }
+        }
+
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) autoCopyNext();
         });
+        window.addEventListener('focus', autoCopyNext);
 
         // ============================================
         // VERIFICATION FLOW
