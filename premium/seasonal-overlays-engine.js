@@ -1159,45 +1159,58 @@
         trackEl(badge);
 
         // Connect badge to neon circle with a golden string (mobile only)
-        // String sits at z-index:5, behind neon circle (z-index:6) — creates attachment illusion
+        // String placed INSIDE .hero-showcase (z-index:5) so it renders BEHIND
+        // the neon circle (z-index:6) within the same stacking context.
+        // This creates the illusion the string is attached to/behind the logo.
         if (isMobile && mobileEyeletFromRight > 0) {
             setTimeout(function() {
                 if (!badge.parentNode) return;
-                var neonCircle = document.querySelector('.showcase-neon-circle');
-                if (!neonCircle) return;
+                var showcase = document.querySelector('.hero-showcase');
+                if (!showcase) return;
 
-                var heroRect = hero.getBoundingClientRect();
-                var neonRect = neonCircle.getBoundingClientRect();
-                var badgeRect = badge.getBoundingClientRect();
+                var heroW = hero.offsetWidth || window.innerWidth;
+                var heroH = hero.offsetHeight || window.innerHeight;
+                var screenW = window.innerWidth;
 
-                // Neon circle: right edge, ~35% from top (upper-right area of circle)
-                var neonX = neonRect.right - heroRect.left;
-                var neonY = neonRect.top - heroRect.top + neonRect.height * 0.35;
+                // Neon circle dimensions from CSS breakpoints
+                var neonDiam = screenW <= 480 ? 180 : 220;
+                var neonTopPct = screenW <= 480 ? 0.12 : 0.10;
+                var neonR = neonDiam / 2;
+                var neonCX = heroW / 2;
+                var neonCY = heroH * neonTopPct + neonR;
 
-                // Badge eyelet position in hero coordinates
-                var eyeletX = badgeRect.right - heroRect.left - mobileEyeletFromRight;
-                var eyeletY = badgeRect.top - heroRect.top;
+                // Attach string 15px INSIDE the neon circle (2 o'clock position)
+                // so it disappears behind the circle via z-index layering
+                var angle = -25 * Math.PI / 180; // 25° above 3 o'clock
+                var neonX = Math.round(neonCX + (neonR - 15) * Math.cos(angle));
+                var neonY = Math.round(neonCY + (neonR - 15) * Math.sin(angle));
+
+                // Badge eyelet position (from CSS: top:18%, right:4%)
+                var badgeTopPx = heroH * 0.18;
+                var badgeRightPx = heroW * 0.04;
+                var eyeletX = Math.round(heroW - badgeRightPx - mobileEyeletFromRight);
+                var eyeletY = Math.round(badgeTopPx - 2);
 
                 // SVG bounding box with padding
-                var pad = 30;
+                var pad = 25;
                 var minX = Math.min(neonX, eyeletX) - pad;
                 var maxX = Math.max(neonX, eyeletX) + pad;
                 var minY = Math.min(neonY, eyeletY) - pad;
-                var maxY = Math.max(neonY, eyeletY) + pad + 35;
+                var maxY = Math.max(neonY, eyeletY) + pad + 30;
                 var svgW = Math.round(maxX - minX);
                 var svgH = Math.round(maxY - minY);
 
-                // Convert to SVG local coordinates
+                // SVG local coordinates
                 var sx = Math.round(neonX - minX);
                 var sy = Math.round(neonY - minY);
                 var ex = Math.round(eyeletX - minX);
                 var ey = Math.round(eyeletY - minY);
 
-                // Cubic bezier: gentle droop below both points then curve to eyelet
-                var droopY = Math.max(sy, ey) + 28;
-                var cp1x = Math.round(sx + (ex - sx) * 0.35);
+                // Cubic bezier: natural droop below both endpoints
+                var droopY = Math.max(sy, ey) + 25;
+                var cp1x = Math.round(sx + (ex - sx) * 0.3);
                 var cp1y = Math.round(droopY);
-                var cp2x = Math.round(sx + (ex - sx) * 0.65);
+                var cp2x = Math.round(sx + (ex - sx) * 0.7);
                 var cp2y = Math.round(droopY - 4);
 
                 var stringDiv = document.createElement('div');
@@ -1207,10 +1220,11 @@
                     + 'pointer-events:none;z-index:5;opacity:0;transition:opacity 0.8s ease;';
                 stringDiv.innerHTML = '<svg width="' + svgW + '" height="' + svgH + '" xmlns="http://www.w3.org/2000/svg">'
                     + '<path d="M ' + sx + ' ' + sy + ' C ' + cp1x + ' ' + cp1y + ' ' + cp2x + ' ' + cp2y + ' ' + ex + ' ' + ey + '" '
-                    + 'stroke="rgba(212,175,55,0.35)" stroke-width="1.2" fill="none" stroke-linecap="round"/>'
+                    + 'stroke="rgba(212,175,55,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
                     + '</svg>';
 
-                hero.appendChild(stringDiv);
+                // Place inside hero-showcase so z-index:5 is within same context as neon circle (z-index:6)
+                showcase.appendChild(stringDiv);
                 trackEl(stringDiv);
                 heroBannerStringEl = stringDiv;
 
@@ -1218,7 +1232,7 @@
                 requestAnimationFrame(function() {
                     if (stringDiv.parentNode) stringDiv.style.opacity = '1';
                 });
-            }, 1000);
+            }, 1300);
         }
     }
 
