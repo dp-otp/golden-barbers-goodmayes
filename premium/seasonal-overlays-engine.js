@@ -1019,27 +1019,31 @@
             + 'background-size:300% 100%;animation:gbHBShimmer 4s ease-in-out infinite;';
         badge.appendChild(shimmer);
 
-        // Content
+        // Content — mobile sizes are compact to fit inside small scaled badges + clip-paths
+        var mPad = isMobile ? '6px' : '16px';
+        var mGap = isMobile ? '2px' : '4px';
+        var mMaxW = isMobile ? (w - 14) + 'px' : (w - 30) + 'px';
         var content = document.createElement('div');
-        content.style.cssText = 'position:relative;z-index:2;padding:' + (isMobile ? '10px' : '16px') + ';display:flex;flex-direction:column;align-items:center;gap:4px;'
+        content.style.cssText = 'position:relative;z-index:2;padding:' + mPad + ';display:flex;flex-direction:column;align-items:center;gap:' + mGap + ';'
+            + 'overflow:hidden;text-align:center;word-break:break-word;'
             + (cfg.skew ? 'transform:skew(' + (parseFloat(cfg.skew) * -1) + 'deg);' : '');
 
         if (isDiscount) {
             var label = document.createElement('div');
-            label.style.cssText = 'font-size:' + (isMobile ? '9px' : '11px') + ';text-transform:uppercase;letter-spacing:1.5px;opacity:0.8;font-weight:600;color:' + cfg.textColor + ';';
+            label.style.cssText = 'font-size:' + (isMobile ? '7px' : '11px') + ';text-transform:uppercase;letter-spacing:' + (isMobile ? '0.5px' : '1.5px') + ';opacity:0.8;font-weight:600;color:' + cfg.textColor + ';';
             label.textContent = cfg.emoji + ' Limited Offer';
             content.appendChild(label);
 
             var mainText = document.createElement('div');
-            mainText.style.cssText = 'font-size:' + (isMobile ? '14px' : '18px') + ';font-weight:900;color:' + cfg.textColor + ';line-height:1.2;'
-                + 'text-shadow:0 2px 8px rgba(0,0,0,0.3);max-width:' + (w - 30) + 'px;';
+            mainText.style.cssText = 'font-size:' + (isMobile ? '11px' : '18px') + ';font-weight:900;color:' + cfg.textColor + ';line-height:1.2;'
+                + 'text-shadow:0 1px 4px rgba(0,0,0,0.3);max-width:' + mMaxW + ';';
             mainText.textContent = currentDiscount.text;
             content.appendChild(mainText);
 
             if (currentDiscount.code) {
                 var codeBadge = document.createElement('div');
-                codeBadge.style.cssText = 'margin-top:3px;padding:4px 12px;border-radius:20px;font-size:' + (isMobile ? '10px' : '12px') + ';'
-                    + 'font-weight:800;letter-spacing:1.5px;cursor:pointer;pointer-events:auto;'
+                codeBadge.style.cssText = 'margin-top:2px;padding:' + (isMobile ? '2px 8px' : '4px 12px') + ';border-radius:20px;font-size:' + (isMobile ? '8px' : '12px') + ';'
+                    + 'font-weight:800;letter-spacing:1px;cursor:pointer;pointer-events:auto;'
                     + 'background:rgba(0,0,0,0.25);color:' + cfg.textColor + ';border:1px solid rgba(255,255,255,0.2);'
                     + 'backdrop-filter:blur(4px);transition:all 0.2s;';
                 codeBadge.textContent = currentDiscount.code.toUpperCase();
@@ -1057,19 +1061,19 @@
         } else {
             var emojiEl = document.createElement('div');
             emojiEl.textContent = cfg.emoji;
-            emojiEl.style.cssText = 'font-size:' + (isMobile ? '24px' : '32px') + ';filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));line-height:1;';
+            emojiEl.style.cssText = 'font-size:' + (isMobile ? '16px' : '32px') + ';filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));line-height:1;';
             if (!reducedMotion) emojiEl.style.animation = 'gbHBPulse 3s ease infinite';
             content.appendChild(emojiEl);
 
             var welcomeText = document.createElement('div');
-            welcomeText.style.cssText = 'font-size:' + (isMobile ? '14px' : '18px') + ';font-weight:900;color:' + cfg.textColor + ';line-height:1.15;'
-                + 'text-shadow:0 2px 8px rgba(0,0,0,0.25);max-width:' + (w - 20) + 'px;';
+            welcomeText.style.cssText = 'font-size:' + (isMobile ? '11px' : '18px') + ';font-weight:900;color:' + cfg.textColor + ';line-height:1.15;'
+                + 'text-shadow:0 1px 4px rgba(0,0,0,0.25);max-width:' + mMaxW + ';';
             welcomeText.textContent = cfg.welcome;
             content.appendChild(welcomeText);
 
             var subText = document.createElement('div');
-            subText.style.cssText = 'font-size:' + (isMobile ? '9px' : '11px') + ';font-weight:600;color:' + cfg.accentColor + ';'
-                + 'text-transform:uppercase;letter-spacing:1px;opacity:0.85;margin-top:2px;';
+            subText.style.cssText = 'font-size:' + (isMobile ? '7px' : '11px') + ';font-weight:600;color:' + cfg.accentColor + ';'
+                + 'text-transform:uppercase;letter-spacing:' + (isMobile ? '0.5px' : '1px') + ';opacity:0.85;margin-top:1px;';
             subText.textContent = cfg.sub;
             content.appendChild(subText);
         }
