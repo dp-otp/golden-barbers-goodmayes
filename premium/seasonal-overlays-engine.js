@@ -481,12 +481,7 @@
                 PROCESSED_PATH + 'christmas_ornament.png',
                 PROCESSED_PATH + 'christmas_ornament.png'
             ],
-            hero: {
-                overlays: [
-                    // Christmas tree PNG (bg removed) - overlaps behind logo, fades at top
-                    { src: 'theme-assets/christmas-tree.png', size: 500, sizeMobile: 280, position: 'bottom-left', opacity: 0.95, offsetX: 0, offsetY: 0, style: '-webkit-mask-image:linear-gradient(to top, black 50%, transparent 95%);mask-image:linear-gradient(to top, black 50%, transparent 95%);' },
-                ]
-            },
+            tree: true,
             presents: [
                 { position: 'cta-section-left', size: 150, sizeMobile: 80 },
                 { position: 'cta-section-right', size: 150, sizeMobile: 80 }
@@ -713,6 +708,10 @@
             placeSnowGround();
         }
 
+        if (theme.tree && !isAdam) {
+            placeChristmasTree();
+        }
+
         // ALL PAGES: overlays marked for all pages (e.g. Islamic corners)
         if (theme.allPagesOverlays && theme.allPagesOverlays.length > 0) {
             var hero = document.querySelector('.hero');
@@ -775,7 +774,12 @@
         hero.style.position = 'relative';
 
         var snowContainer = createContainer('gb-snow-ground');
-        snowContainer.style.cssText += 'bottom:0;left:0;width:100%;height:80px;z-index:7;overflow:hidden;';
+        snowContainer.style.bottom = '0';
+        snowContainer.style.left = '0';
+        snowContainer.style.width = '100%';
+        snowContainer.style.height = '80px';
+        snowContainer.style.zIndex = '7';
+        snowContainer.style.overflow = 'hidden';
 
         var heroWidth = hero.offsetWidth || window.innerWidth;
         snowContainer.innerHTML = ChristmasSVGs.snowGround(heroWidth);
@@ -785,6 +789,32 @@
         }
 
         hero.appendChild(snowContainer);
+    }
+
+    // CHRISTMAS TREE - Direct placement on hero (bypasses composition container for reliable z-index)
+    function placeChristmasTree() {
+        var hero = document.querySelector('.hero');
+        if (!hero) return;
+
+        hero.style.position = 'relative';
+
+        var size = isMobile ? 280 : 500;
+        var treeEl = document.createElement('div');
+        treeEl.className = 'gb-con gb-christmas-tree';
+        treeEl.style.cssText = 'position:absolute;pointer-events:none;bottom:0;left:0;'
+            + 'width:' + size + 'px;height:' + size + 'px;z-index:4;opacity:0.95;'
+            + '-webkit-mask-image:linear-gradient(to top, black 50%, transparent 95%);'
+            + 'mask-image:linear-gradient(to top, black 50%, transparent 95%);';
+
+        var img = document.createElement('img');
+        img.src = 'theme-assets/christmas-tree.png';
+        img.alt = '';
+        img.draggable = false;
+        img.style.cssText = 'width:100%;height:100%;object-fit:contain;pointer-events:none;';
+        treeEl.appendChild(img);
+
+        hero.appendChild(treeEl);
+        trackEl(treeEl);
     }
 
     function injectCSS(themeId, accent) {
@@ -961,10 +991,9 @@
         var badge = document.createElement('div');
         badge.id = 'gb-hero-banner';
 
-        // Position: right side of hero on desktop, below neon circle on mobile
-        // Keeps the original neon logo circle visible and centered
+        // Position: right side on both desktop & mobile (tag style on mobile)
         var posCSS = isMobile
-            ? 'position:absolute;bottom:12%;left:50%;z-index:15;'
+            ? 'position:absolute;top:16%;right:3%;z-index:15;'
             : 'position:absolute;top:12%;right:4%;z-index:15;';
 
         var shapeCSS = 'border-radius:' + (cfg.radius || '0') + ';';
@@ -979,9 +1008,7 @@
             + (cfg.border !== 'none' ? 'border:' + cfg.border + ';' : '')
             + 'box-shadow:0 0 50px ' + cfg.glow + ',0 10px 40px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.12);'
             + 'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;'
-            + (isMobile
-                ? (cfg.skew ? 'transform:translateX(-50%) skew(' + cfg.skew + ');' : 'transform:translateX(-50%);')
-                : (cfg.skew ? 'transform:skew(' + cfg.skew + ');' : ''))
+            + (cfg.skew ? 'transform:skew(' + cfg.skew + ');' : '')
             + 'opacity:0;';
 
         // Ornament cap (Christmas only)
@@ -1083,21 +1110,55 @@
             document.head.appendChild(style);
         }
 
+        // Mobile tag design: professional hanging tag with thread + metal eyelet
+        if (isMobile) {
+            var threadH = 55;
+            var threadX = Math.round(w * 0.3);
+
+            // Gold thread line connecting badge to nav area
+            var thread = document.createElement('div');
+            thread.style.cssText = 'position:absolute;top:-' + threadH + 'px;right:' + threadX + 'px;'
+                + 'width:0;height:' + threadH + 'px;'
+                + 'border-left:1.5px solid rgba(212,175,55,0.45);'
+                + 'pointer-events:none;z-index:-1;'
+                + 'filter:drop-shadow(0 0 1px rgba(212,175,55,0.15));';
+            badge.appendChild(thread);
+
+            // Gold pin at top of thread (where it attaches to nav)
+            var knot = document.createElement('div');
+            knot.style.cssText = 'position:absolute;top:-' + (threadH + 4) + 'px;right:' + (threadX - 3) + 'px;'
+                + 'width:7px;height:7px;border-radius:50%;'
+                + 'background:radial-gradient(circle at 35% 35%, #FFD700, #B8860B);'
+                + 'box-shadow:0 1px 3px rgba(0,0,0,0.3);'
+                + 'pointer-events:none;';
+            badge.appendChild(knot);
+
+            // Metal eyelet/grommet on badge top edge
+            var eyelet = document.createElement('div');
+            eyelet.style.cssText = 'position:absolute;top:-4px;right:' + (threadX - 5) + 'px;'
+                + 'width:11px;height:11px;border-radius:50%;'
+                + 'border:2px solid rgba(212,175,55,0.65);'
+                + 'background:rgba(0,0,0,0.4);z-index:3;'
+                + 'box-shadow:inset 0 1px 2px rgba(0,0,0,0.5),0 0 3px rgba(212,175,55,0.2),'
+                + 'inset 0 -0.5px 0 rgba(255,255,255,0.15);'
+                + 'pointer-events:none;';
+            badge.appendChild(eyelet);
+        }
+
         // Animate in
-        var baseT = isMobile ? 'translateX(-50%) ' : '';
         var skewT = cfg.skew ? 'skew(' + cfg.skew + ') ' : '';
         badge.style.animation = 'none';
         badge.offsetHeight; // force reflow
         badge.style.transition = 'opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s';
         badge.style.opacity = '1';
-        badge.style.transform = baseT + skewT + 'scale(1)';
+        badge.style.transform = skewT + 'scale(1)';
 
         // Gentle float after entrance
         if (!reducedMotion) {
             setTimeout(function() {
                 if (badge.parentNode) {
                     badge.style.transition = 'none';
-                    var floatCSS = '@keyframes gbHBFloatLive{0%,100%{transform:' + baseT + skewT + 'translateY(0)}50%{transform:' + baseT + skewT + 'translateY(-8px)}}';
+                    var floatCSS = '@keyframes gbHBFloatLive{0%,100%{transform:' + skewT + 'translateY(0)}50%{transform:' + skewT + 'translateY(-6px)}}';
                     var liveStyle = document.getElementById('gb-hb-live');
                     if (liveStyle) liveStyle.remove();
                     liveStyle = document.createElement('style');
