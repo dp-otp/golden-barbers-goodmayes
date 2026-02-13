@@ -629,7 +629,7 @@
             ],
             hero: {
                 overlays: [
-                    { src: PROCESSED_PATH + 'blackfriday_sale.png', size: 350, sizeMobile: 150, position: 'top-left', offsetX: -15, offsetY: -10, opacity: 0.9 }
+                    { src: PROCESSED_PATH + 'blackfriday_sale.png', size: 240, sizeMobile: 110, position: 'top-left', offsetX: -20, offsetY: -15, opacity: 0.85 }
                 ]
             },
             footer: PROCESSED_PATH + 'blackfriday_sale.png',
@@ -645,20 +645,6 @@
             hero: {
                 overlays: [
                     { src: THEME_ASSETS_PATH + 'newyear-firework.svg', size: 300, sizeMobile: 180, position: 'top-right', opacity: 0.8 }
-                ]
-            }
-        },
-
-        flashsale: {
-            navHangers: [
-                THEME_ASSETS_PATH + 'flash-bolt.svg',
-                THEME_ASSETS_PATH + 'flash-megaphone.svg',
-                THEME_ASSETS_PATH + 'flash-stopwatch.svg'
-            ],
-            hero: {
-                overlays: [
-                    { src: PROCESSED_PATH + 'sale_burst.png', size: 340, sizeMobile: 200, position: 'top-left', opacity: 0.9 },
-                    { src: PROCESSED_PATH + 'flash_sale_box.png', size: 400, sizeMobile: 160, position: 'bottom-center', offsetY: 30, opacity: 0.9 }
                 ]
             }
         }
@@ -955,16 +941,6 @@
             border: 'none', glow: 'rgba(255,215,0,0.35)',
             textColor: '#0D47A1', accentColor: '#FFD700',
             decoSvg: '<svg viewBox="0 0 230 230" xmlns="http://www.w3.org/2000/svg"><circle cx="115" cy="115" r="55" fill="none" stroke="rgba(13,71,161,0.1)" stroke-width="1.5"/></svg>'
-        },
-        // FLASH SALE - Explosion/burst badge (spiky)
-        flashsale: {
-            emoji: '\u26A1', welcome: 'FLASH SALE!', sub: 'Limited Time Only',
-            w: 330, h: 330, wM: 225, hM: 225,
-            radius: '0', clip: 'polygon(50% 0%,60% 18%,78% 2%,74% 22%,95% 15%,84% 33%,100% 38%,86% 50%,100% 62%,84% 67%,95% 85%,74% 78%,78% 98%,60% 82%,50% 100%,40% 82%,22% 98%,26% 78%,5% 85%,16% 67%,0% 62%,14% 50%,0% 38%,16% 33%,5% 15%,26% 22%,22% 2%,40% 18%)',
-            bg: 'linear-gradient(135deg, #B71C1C, #FF1744 50%, #D50000)',
-            border: 'none', glow: 'rgba(255,23,68,0.4)',
-            textColor: '#FFD600', accentColor: '#FF1744',
-            decoSvg: '<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg"><polygon points="105,30 95,110 115,105 100,210 150,95 125,100 140,30" fill="rgba(255,214,0,0.06)"/></svg>'
         }
     };
 
