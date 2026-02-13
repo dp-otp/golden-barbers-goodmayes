@@ -1,73 +1,239 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 157">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180">
   <defs>
-    <linearGradient id="emb" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FFD700"/>
-      <stop offset="40%" stop-color="#DAA520"/>
+    <!-- Premium gold gradient -->
+    <linearGradient id="mg1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE082"/>
+      <stop offset="25%" stop-color="#FFD700"/>
+      <stop offset="55%" stop-color="#DAA520"/>
       <stop offset="100%" stop-color="#8B6914"/>
     </linearGradient>
-    <linearGradient id="emd" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FFD700"/>
-      <stop offset="100%" stop-color="#B8860B"/>
-    </linearGradient>
-    <linearGradient id="emw" x1="0" y1="0" x2="0" y2="1">
+    <!-- Dark emerald wall gradient -->
+    <linearGradient id="mg2" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#1B5E20"/>
+      <stop offset="40%" stop-color="#145218"/>
+      <stop offset="100%" stop-color="#0A3410"/>
+    </linearGradient>
+    <!-- Wall shadow gradient (left face of 3D) -->
+    <linearGradient id="mg3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0D3B0F"/>
+      <stop offset="100%" stop-color="#145218"/>
+    </linearGradient>
+    <!-- Dome highlight gradient -->
+    <radialGradient id="mg4" cx="0.35" cy="0.3" r="0.65">
+      <stop offset="0%" stop-color="#FFE082" stop-opacity="0.4"/>
+      <stop offset="50%" stop-color="#FFD700" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#B8860B" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Dome body gradient -->
+    <linearGradient id="mg5" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#1B5E20"/>
+      <stop offset="30%" stop-color="#176D1D"/>
+      <stop offset="70%" stop-color="#125615"/>
+      <stop offset="100%" stop-color="#0A3410"/>
+    </linearGradient>
+    <!-- Minaret gradient -->
+    <linearGradient id="mg6" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0D3B0F"/>
+      <stop offset="30%" stop-color="#1B5E20"/>
+      <stop offset="70%" stop-color="#176D1D"/>
       <stop offset="100%" stop-color="#0D3B0F"/>
     </linearGradient>
-    <filter id="emglow" x="-10%" y="-10%" width="120%" height="120%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
-      <feFlood flood-color="#FFD700" flood-opacity="0.15"/>
-      <feComposite in2="blur" operator="in"/>
+    <!-- Gold cap gradient -->
+    <linearGradient id="mg7" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#FFE082"/>
+      <stop offset="40%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+    <!-- Window warm glow -->
+    <radialGradient id="mg8" cx="0.5" cy="0.3" r="0.7">
+      <stop offset="0%" stop-color="#FFD54F" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#FF8F00" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Platform 3D gradient -->
+    <linearGradient id="mg9" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#DAA520"/>
+      <stop offset="50%" stop-color="#B8860B"/>
+      <stop offset="100%" stop-color="#8B6508"/>
+    </linearGradient>
+    <!-- Subtle glow filter -->
+    <filter id="mglow" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" result="b"/>
+      <feFlood flood-color="#FFD700" flood-opacity="0.12"/>
+      <feComposite in2="b" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Inner shadow for depth -->
+    <filter id="minner" x="-5%" y="-5%" width="110%" height="110%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.5"/>
+      <feOffset dx="0" dy="1"/>
+      <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1"/>
+      <feFlood flood-color="#000" flood-opacity="0.2"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
 
-  <!-- Base/platform -->
-  <rect x="30" y="145" width="180" height="12" rx="2" fill="url(#emb)" opacity="0.7"/>
+  <!-- ========== BASE PLATFORM (3D step effect) ========== -->
+  <rect x="25" y="165" width="230" height="8" rx="1.5" fill="url(#mg9)" opacity="0.8"/>
+  <rect x="30" y="160" width="220" height="7" rx="1" fill="url(#mg1)" opacity="0.5"/>
+  <!-- Platform highlight strip -->
+  <rect x="32" y="160" width="216" height="1.5" rx="0.5" fill="#FFE082" opacity="0.3"/>
 
-  <!-- Main building body -->
-  <rect x="50" y="80" width="140" height="68" fill="url(#emw)" stroke="#B8860B" stroke-width="0.8" rx="2"/>
+  <!-- ========== MAIN BUILDING BODY ========== -->
+  <!-- Back wall shadow (3D depth) -->
+  <rect x="58" y="88" width="6" height="74" fill="#072107" opacity="0.4"/>
+  <rect x="216" y="88" width="6" height="74" fill="#072107" opacity="0.3"/>
+  <!-- Main wall -->
+  <rect x="58" y="88" width="164" height="74" fill="url(#mg2)" stroke="#B8860B" stroke-width="0.6" rx="1"/>
+  <!-- Wall texture lines (subtle brick pattern) -->
+  <line x1="58" y1="100" x2="222" y2="100" stroke="#0D3B0F" stroke-width="0.3" opacity="0.5"/>
+  <line x1="58" y1="112" x2="222" y2="112" stroke="#0D3B0F" stroke-width="0.3" opacity="0.5"/>
+  <line x1="58" y1="124" x2="222" y2="124" stroke="#0D3B0F" stroke-width="0.3" opacity="0.5"/>
+  <line x1="58" y1="136" x2="222" y2="136" stroke="#0D3B0F" stroke-width="0.3" opacity="0.5"/>
+  <line x1="58" y1="148" x2="222" y2="148" stroke="#0D3B0F" stroke-width="0.3" opacity="0.5"/>
 
-  <!-- Central dome -->
-  <path d="M 85 80 Q 85 40 120 32 Q 155 40 155 80 Z" fill="url(#emw)" stroke="#B8860B" stroke-width="0.8"/>
-  <!-- Dome highlight -->
-  <path d="M 95 78 Q 95 48 120 40 Q 130 44 135 55" fill="none" stroke="#FFD700" stroke-width="0.5" opacity="0.3"/>
-  <!-- Dome crescent finial -->
-  <circle cx="120" cy="28" r="4" fill="none" stroke="#FFD700" stroke-width="1.2"/>
-  <circle cx="121.5" cy="27" r="3" fill="url(#emw)"/>
-  <!-- Star on finial -->
-  <polygon points="120,21 121,23 123,23 121.5,24.5 122,26.5 120,25.5 118,26.5 118.5,24.5 117,23 119,23" fill="#FFD700" opacity="0.9"/>
+  <!-- ========== GOLD DECORATIVE BANDS ========== -->
+  <!-- Top cornice band -->
+  <rect x="56" y="86" width="168" height="4" rx="0.5" fill="url(#mg1)" opacity="0.65"/>
+  <rect x="56" y="86" width="168" height="1.2" rx="0.3" fill="#FFE082" opacity="0.35"/>
+  <!-- Mid decorative band with geometric pattern -->
+  <rect x="58" y="105" width="164" height="3" fill="#B8860B" opacity="0.35"/>
+  <line x1="62" y1="106.5" x2="218" y2="106.5" stroke="#FFD700" stroke-width="0.4" opacity="0.5" stroke-dasharray="3 3"/>
 
-  <!-- Left small dome -->
-  <path d="M 50 80 Q 50 62 70 58 Q 90 62 90 80 Z" fill="url(#emw)" stroke="#B8860B" stroke-width="0.6"/>
-  <!-- Right small dome -->
-  <path d="M 150 80 Q 150 62 170 58 Q 190 62 190 80 Z" fill="url(#emw)" stroke="#B8860B" stroke-width="0.6"/>
+  <!-- ========== CENTRAL DOME (main) ========== -->
+  <!-- Dome shadow base -->
+  <ellipse cx="140" cy="88" rx="42" ry="4" fill="#072107" opacity="0.3"/>
+  <!-- Dome body -->
+  <path d="M 95 88 Q 95 48 140 36 Q 185 48 185 88 Z" fill="url(#mg5)" stroke="#B8860B" stroke-width="0.7"/>
+  <!-- Dome specular highlight -->
+  <path d="M 95 88 Q 95 48 140 36 Q 185 48 185 88 Z" fill="url(#mg4)"/>
+  <!-- Dome rim highlight -->
+  <path d="M 108 85 Q 108 55 140 44 Q 150 48 158 57" fill="none" stroke="#FFD700" stroke-width="0.6" opacity="0.25" stroke-linecap="round"/>
+  <!-- Dome gold ring at base -->
+  <ellipse cx="140" cy="88" rx="46" ry="3.5" fill="none" stroke="url(#mg1)" stroke-width="1.2" opacity="0.5"/>
 
-  <!-- Left minaret -->
-  <rect x="34" y="50" width="12" height="98" fill="url(#emw)" stroke="#B8860B" stroke-width="0.6"/>
-  <path d="M 33 50 Q 33 38 40 35 Q 47 38 47 50 Z" fill="url(#emd)"/>
+  <!-- Crescent finial (detailed) -->
+  <g filter="url(#mglow)">
+    <!-- Finial pole -->
+    <rect x="139" y="27" width="2" height="10" fill="url(#mg7)" rx="0.5"/>
+    <!-- Crescent moon -->
+    <circle cx="140" cy="23" r="5" fill="none" stroke="#FFD700" stroke-width="1.3"/>
+    <circle cx="142" cy="22" r="4" fill="url(#mg5)"/>
+    <!-- Star -->
+    <polygon points="140,15 141.2,18 144,18 141.8,20 142.5,23 140,21.2 137.5,23 138.2,20 136,18 138.8,18" fill="#FFD700" opacity="0.9"/>
+    <!-- Finial ball -->
+    <circle cx="140" cy="27" r="1.8" fill="url(#mg7)"/>
+  </g>
+
+  <!-- ========== SIDE DOMES ========== -->
+  <!-- Left dome -->
+  <path d="M 58 88 Q 58 68 80 62 Q 102 68 102 88 Z" fill="url(#mg5)" stroke="#B8860B" stroke-width="0.5"/>
+  <path d="M 58 88 Q 58 68 80 62 Q 102 68 102 88 Z" fill="url(#mg4)" opacity="0.6"/>
+  <!-- Left dome crescent -->
+  <circle cx="80" cy="58" r="3" fill="none" stroke="#FFD700" stroke-width="0.8" opacity="0.7"/>
+  <circle cx="81.2" cy="57.2" r="2.2" fill="url(#mg5)"/>
+
+  <!-- Right dome -->
+  <path d="M 178 88 Q 178 68 200 62 Q 222 68 222 88 Z" fill="url(#mg5)" stroke="#B8860B" stroke-width="0.5"/>
+  <path d="M 178 88 Q 178 68 200 62 Q 222 68 222 88 Z" fill="url(#mg4)" opacity="0.6"/>
+  <!-- Right dome crescent -->
+  <circle cx="200" cy="58" r="3" fill="none" stroke="#FFD700" stroke-width="0.8" opacity="0.7"/>
+  <circle cx="201.2" cy="57.2" r="2.2" fill="url(#mg5)"/>
+
+  <!-- ========== LEFT MINARET ========== -->
+  <!-- Minaret shadow -->
+  <rect x="42" y="52" width="3" height="110" fill="#050f05" opacity="0.3"/>
+  <!-- Minaret body (cylindrical effect) -->
+  <rect x="36" y="52" width="14" height="110" fill="url(#mg6)" stroke="#B8860B" stroke-width="0.4" rx="1"/>
+  <!-- Minaret highlight strip -->
+  <rect x="41" y="52" width="2" height="110" fill="#1B5E20" opacity="0.4"/>
+  <!-- Minaret dome cap -->
+  <path d="M 35 52 Q 35 38 43 34 Q 51 38 51 52 Z" fill="url(#mg7)" stroke="#B8860B" stroke-width="0.5"/>
+  <path d="M 38 50 Q 38 42 43 38" fill="none" stroke="#FFE082" stroke-width="0.5" opacity="0.4"/>
+  <!-- Minaret balcony (3D) -->
+  <rect x="32" y="76" width="22" height="2" rx="0.5" fill="url(#mg1)" opacity="0.7"/>
+  <rect x="33" y="78" width="20" height="3" rx="0.5" fill="#B8860B" opacity="0.4"/>
+  <!-- Minaret railing dots -->
+  <circle cx="35" cy="77" r="0.8" fill="#FFD700" opacity="0.5"/>
+  <circle cx="39" cy="77" r="0.8" fill="#FFD700" opacity="0.5"/>
+  <circle cx="43" cy="77" r="0.8" fill="#FFD700" opacity="0.5"/>
+  <circle cx="47" cy="77" r="0.8" fill="#FFD700" opacity="0.5"/>
+  <circle cx="51" cy="77" r="0.8" fill="#FFD700" opacity="0.5"/>
+  <!-- Second balcony -->
+  <rect x="33" y="102" width="20" height="2" rx="0.5" fill="url(#mg1)" opacity="0.5"/>
+  <!-- Minaret crescent finial -->
+  <circle cx="43" cy="31" r="2.8" fill="none" stroke="#FFD700" stroke-width="0.9"/>
+  <circle cx="44" cy="30.5" r="2" fill="url(#mg5)"/>
+  <polygon points="43,26 43.8,28 45.5,28 44.2,29.2 44.6,31 43,30 41.4,31 41.8,29.2 40.5,28 42.2,28" fill="#FFD700" opacity="0.8" transform="scale(0.7) translate(18.5,3)"/>
+
+  <!-- ========== RIGHT MINARET ========== -->
+  <!-- Minaret shadow -->
+  <rect x="235" y="52" width="3" height="110" fill="#050f05" opacity="0.25"/>
+  <!-- Minaret body -->
+  <rect x="230" y="52" width="14" height="110" fill="url(#mg6)" stroke="#B8860B" stroke-width="0.4" rx="1"/>
+  <!-- Minaret highlight strip -->
+  <rect x="235" y="52" width="2" height="110" fill="#1B5E20" opacity="0.4"/>
+  <!-- Minaret dome cap -->
+  <path d="M 229 52 Q 229 38 237 34 Q 245 38 245 52 Z" fill="url(#mg7)" stroke="#B8860B" stroke-width="0.5"/>
+  <path d="M 232 50 Q 232 42 237 38" fill="none" stroke="#FFE082" stroke-width="0.5" opacity="0.4"/>
   <!-- Minaret balcony -->
-  <rect x="31" y="72" width="18" height="4" rx="1" fill="#B8860B" opacity="0.7"/>
-  <!-- Minaret crescent -->
-  <circle cx="40" cy="32" r="2.5" fill="none" stroke="#FFD700" stroke-width="0.8"/>
-  <circle cx="41" cy="31.5" r="1.8" fill="url(#emw)"/>
+  <rect x="226" y="76" width="22" height="2" rx="0.5" fill="url(#mg1)" opacity="0.7"/>
+  <rect x="227" y="78" width="20" height="3" rx="0.5" fill="#B8860B" opacity="0.4"/>
+  <circle cx="229" cy="77" r="0.8" fill="#FFD700" opacity="0.5"/>
+  <circle cx="233" cy="77" r="0.8" fill="#FFD700" opacity="0.5"/>
+  <circle cx="237" cy="77" r="0.8" fill="#FFD700" opacity="0.5"/>
+  <circle cx="241" cy="77" r="0.8" fill="#FFD700" opacity="0.5"/>
+  <circle cx="245" cy="77" r="0.8" fill="#FFD700" opacity="0.5"/>
+  <!-- Second balcony -->
+  <rect x="227" y="102" width="20" height="2" rx="0.5" fill="url(#mg1)" opacity="0.5"/>
+  <!-- Minaret crescent finial -->
+  <circle cx="237" cy="31" r="2.8" fill="none" stroke="#FFD700" stroke-width="0.9"/>
+  <circle cx="238" cy="30.5" r="2" fill="url(#mg5)"/>
 
-  <!-- Right minaret -->
-  <rect x="194" y="50" width="12" height="98" fill="url(#emw)" stroke="#B8860B" stroke-width="0.6"/>
-  <path d="M 193 50 Q 193 38 200 35 Q 207 38 207 50 Z" fill="url(#emd)"/>
-  <rect x="191" y="72" width="18" height="4" rx="1" fill="#B8860B" opacity="0.7"/>
-  <circle cx="200" cy="32" r="2.5" fill="none" stroke="#FFD700" stroke-width="0.8"/>
-  <circle cx="201" cy="31.5" r="1.8" fill="url(#emw)"/>
+  <!-- ========== ARCHED WINDOWS (with warm glow) ========== -->
+  <!-- Left window -->
+  <path d="M 72 115 Q 72 102 82 98 Q 92 102 92 115 L 92 148 L 72 148 Z" fill="#061506" stroke="#B8860B" stroke-width="0.7"/>
+  <path d="M 74 116 Q 74 104 82 100 Q 90 104 90 116 L 90 146 L 74 146 Z" fill="url(#mg8)"/>
+  <!-- Window frame details -->
+  <line x1="82" y1="100" x2="82" y2="148" stroke="#B8860B" stroke-width="0.3" opacity="0.4"/>
+  <line x1="72" y1="130" x2="92" y2="130" stroke="#B8860B" stroke-width="0.3" opacity="0.4"/>
 
-  <!-- Arched windows -->
-  <path d="M 62 105 Q 62 94 70 91 Q 78 94 78 105 L 78 130 L 62 130 Z" fill="#0A2E0A" stroke="#B8860B" stroke-width="0.6"/>
-  <path d="M 110 100 Q 110 86 120 82 Q 130 86 130 100 L 130 130 L 110 130 Z" fill="#0A2E0A" stroke="#B8860B" stroke-width="0.6"/>
-  <path d="M 162 105 Q 162 94 170 91 Q 178 94 178 105 L 178 130 L 162 130 Z" fill="#0A2E0A" stroke="#B8860B" stroke-width="0.6"/>
+  <!-- Center window (larger, grander) -->
+  <path d="M 122 110 Q 122 92 140 86 Q 158 92 158 110 L 158 148 L 122 148 Z" fill="#061506" stroke="#B8860B" stroke-width="0.8"/>
+  <path d="M 125 111 Q 125 95 140 89 Q 155 95 155 111 L 155 146 L 125 146 Z" fill="url(#mg8)"/>
+  <!-- Center window ornate frame -->
+  <line x1="140" y1="89" x2="140" y2="148" stroke="#B8860B" stroke-width="0.3" opacity="0.4"/>
+  <line x1="122" y1="128" x2="158" y2="128" stroke="#B8860B" stroke-width="0.3" opacity="0.4"/>
+  <!-- Inner arch detail -->
+  <path d="M 130 111 Q 130 100 140 96 Q 150 100 150 111" fill="none" stroke="#FFD700" stroke-width="0.4" opacity="0.25"/>
 
-  <!-- Window inner glow -->
-  <path d="M 64 106 Q 64 96 70 93 Q 76 96 76 106 L 76 128 L 64 128 Z" fill="#FFD700" opacity="0.08"/>
-  <path d="M 112 101 Q 112 88 120 84 Q 128 88 128 101 L 128 128 L 112 128 Z" fill="#FFD700" opacity="0.1"/>
-  <path d="M 164 106 Q 164 96 170 93 Q 176 96 176 106 L 176 128 L 164 128 Z" fill="#FFD700" opacity="0.08"/>
+  <!-- Right window -->
+  <path d="M 188 115 Q 188 102 198 98 Q 208 102 208 115 L 208 148 L 188 148 Z" fill="#061506" stroke="#B8860B" stroke-width="0.7"/>
+  <path d="M 190 116 Q 190 104 198 100 Q 206 104 206 116 L 206 146 L 190 146 Z" fill="url(#mg8)"/>
+  <line x1="198" y1="100" x2="198" y2="148" stroke="#B8860B" stroke-width="0.3" opacity="0.4"/>
+  <line x1="188" y1="130" x2="208" y2="130" stroke="#B8860B" stroke-width="0.3" opacity="0.4"/>
 
-  <!-- Decorative band -->
-  <rect x="50" y="78" width="140" height="3" fill="#B8860B" opacity="0.5"/>
+  <!-- ========== ENTRANCE DOOR ========== -->
+  <path d="M 132 148 L 132 138 Q 132 131 140 128 Q 148 131 148 138 L 148 148 Z" fill="#0A2E0A" stroke="#DAA520" stroke-width="0.8"/>
+  <!-- Door glow -->
+  <path d="M 134 147 L 134 139 Q 134 133 140 130 Q 146 133 146 139 L 146 147 Z" fill="#FFD700" opacity="0.06"/>
+
+  <!-- ========== GEOMETRIC ORNAMENT DETAILS ========== -->
+  <!-- Small decorative circles along cornice -->
+  <circle cx="70" cy="88" r="1.5" fill="#B8860B" opacity="0.4"/>
+  <circle cx="85" cy="88" r="1.5" fill="#B8860B" opacity="0.4"/>
+  <circle cx="100" cy="88" r="1.5" fill="#B8860B" opacity="0.4"/>
+  <circle cx="115" cy="88" r="1.5" fill="#B8860B" opacity="0.4"/>
+  <circle cx="165" cy="88" r="1.5" fill="#B8860B" opacity="0.4"/>
+  <circle cx="180" cy="88" r="1.5" fill="#B8860B" opacity="0.4"/>
+  <circle cx="195" cy="88" r="1.5" fill="#B8860B" opacity="0.4"/>
+  <circle cx="210" cy="88" r="1.5" fill="#B8860B" opacity="0.4"/>
+
+  <!-- Bottom cornice band -->
+  <rect x="56" y="155" width="168" height="3" rx="0.5" fill="url(#mg1)" opacity="0.45"/>
+  <rect x="56" y="155" width="168" height="0.8" rx="0.3" fill="#FFE082" opacity="0.25"/>
+
+  <!-- Ground line shadow -->
+  <ellipse cx="140" cy="168" rx="120" ry="3" fill="#000" opacity="0.15"/>
 </svg>

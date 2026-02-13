@@ -629,7 +629,7 @@
             ],
             hero: {
                 overlays: [
-                    { src: PROCESSED_PATH + 'blackfriday_sale.png', size: 240, sizeMobile: 110, position: 'top-left', offsetX: -20, offsetY: -15, opacity: 0.85 }
+                    { src: PROCESSED_PATH + 'blackfriday_sale.png', size: 380, sizeMobile: 180, position: 'bottom-left', offsetX: -10, offsetY: -30, opacity: 0.9 }
                 ]
             },
             footer: PROCESSED_PATH + 'blackfriday_sale.png',
@@ -647,6 +647,24 @@
                     { src: THEME_ASSETS_PATH + 'newyear-firework.svg', size: 300, sizeMobile: 180, position: 'top-right', opacity: 0.8 }
                 ]
             }
+        },
+
+        flashsale: {
+            navHangers: [
+                THEME_ASSETS_PATH + 'flash-bolt.svg',
+                THEME_ASSETS_PATH + 'flash-megaphone.svg',
+                THEME_ASSETS_PATH + 'flash-stopwatch.svg'
+            ],
+            hero: {
+                overlays: [
+                    { src: THEME_ASSETS_PATH + 'flash-bolt.svg', size: 280, sizeMobile: 160, position: 'top-right', offsetX: -10, offsetY: -10, opacity: 0.85 },
+                    { src: THEME_ASSETS_PATH + 'flash-stopwatch.svg', size: 200, sizeMobile: 120, position: 'bottom-left', offsetY: -20, opacity: 0.8 }
+                ]
+            },
+            cards: [
+                { image: THEME_ASSETS_PATH + 'flash-bolt.svg', position: 'bottom-right', size: 36, sizeMobile: 24 },
+                { image: THEME_ASSETS_PATH + 'flash-stopwatch.svg', position: 'bottom-left', size: 32, sizeMobile: 20 }
+            ]
         }
     };
 
@@ -952,6 +970,17 @@
             border: 'none', glow: 'rgba(255,215,0,0.35)',
             textColor: '#0D47A1', accentColor: '#FFD700',
             decoSvg: '<svg viewBox="0 0 230 230" xmlns="http://www.w3.org/2000/svg"><circle cx="115" cy="115" r="55" fill="none" stroke="rgba(13,71,161,0.1)" stroke-width="1.5"/></svg>'
+        },
+        // FLASH SALE - Neon bolt (circle with electric glow)
+        flashsale: {
+            emoji: '\u26A1', welcome: 'FLASH SALE!', sub: 'Limited Time Only',
+            w: 300, h: 300, wM: 210, hM: 210,
+            radius: '50%', clip: null,
+            threadAttach: [0.70, 0.08],
+            bg: 'radial-gradient(circle at 40% 35%, #FF1744, #D50000 40%, #1a0008)',
+            border: '3px solid rgba(255,214,0,0.6)', glow: 'rgba(255,23,68,0.5)',
+            textColor: '#FFD600', accentColor: '#FF1744',
+            decoSvg: '<svg viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg"><circle cx="105" cy="105" r="100" fill="none" stroke="rgba(255,214,0,0.15)" stroke-width="1.5" stroke-dasharray="8 4"/><circle cx="105" cy="105" r="80" fill="none" stroke="rgba(255,23,68,0.1)" stroke-width="1"/></svg>'
         }
     };
 
