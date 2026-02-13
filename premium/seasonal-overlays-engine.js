@@ -1134,70 +1134,48 @@
         heroBannerEl = badge;
         trackEl(badge);
 
-        // Connect badge to neon circle with a curved golden string (mobile only)
-        // String is a direct hero child at z-index:8 (above showcase z-index:1, below content z-index:10)
+        // Curved golden string from badge eyelet to neon circle (mobile only)
+        // Full-hero SVG overlay — no bounding box math, no setTimeout
         if (isMobile && mobileEyeletFromRight > 0) {
-            setTimeout(function() {
-                try {
-                    if (!badge.parentNode) return;
+            var heroW = hero.offsetWidth || window.innerWidth;
+            var heroH = hero.offsetHeight || window.innerHeight;
+            var screenW = window.innerWidth;
 
-                    var heroW = hero.offsetWidth || window.innerWidth;
-                    var heroH = hero.offsetHeight || window.innerHeight;
-                    var screenW = window.innerWidth;
+            // Neon circle from CSS breakpoints
+            var neonDiam = screenW <= 480 ? 180 : 220;
+            var neonTopPct = screenW <= 480 ? 0.12 : 0.10;
+            var neonR = neonDiam / 2;
+            var neonCX = heroW / 2;
+            var neonCY = Math.round(heroH * neonTopPct + neonR);
 
-                    // Neon circle geometry from CSS breakpoints
-                    var neonDiam = screenW <= 480 ? 180 : 220;
-                    var neonTopPct = screenW <= 480 ? 0.12 : 0.10;
-                    var neonR = neonDiam / 2;
-                    var neonCX = heroW / 2;
-                    var neonCY = heroH * neonTopPct + neonR;
+            // String starts 15px inside neon circle at ~2 o'clock
+            var ang = -22 * Math.PI / 180;
+            var sX = Math.round(neonCX + (neonR - 15) * Math.cos(ang));
+            var sY = Math.round(neonCY + (neonR - 15) * Math.sin(ang));
 
-                    // String endpoint: 20px INSIDE neon circle at ~2 o'clock (visible over circle edge)
-                    var angle = -20 * Math.PI / 180;
-                    var neonX = Math.round(neonCX + (neonR - 20) * Math.cos(angle));
-                    var neonY = Math.round(neonCY + (neonR - 20) * Math.sin(angle));
+            // String ends at badge eyelet (CSS: top:18%, right:4%)
+            var eX = Math.round(heroW * 0.96 - mobileEyeletFromRight);
+            var eY = Math.round(heroH * 0.18);
 
-                    // Badge eyelet position in hero coordinates (CSS: top:18%, right:4%)
-                    var eyeletX = Math.round(heroW * 0.96 - mobileEyeletFromRight);
-                    var eyeletY = Math.round(heroH * 0.18 - 2);
+            // Control points for natural droop
+            var dY = Math.max(sY, eY) + 25;
+            var c1x = Math.round(sX + (eX - sX) * 0.3);
+            var c1y = Math.round(dY);
+            var c2x = Math.round(sX + (eX - sX) * 0.7);
+            var c2y = Math.round(dY - 5);
 
-                    // SVG bounding box
-                    var pad = 20;
-                    var minX = Math.min(neonX, eyeletX) - pad;
-                    var maxX = Math.max(neonX, eyeletX) + pad;
-                    var minY = Math.min(neonY, eyeletY) - pad;
-                    var maxY = Math.max(neonY, eyeletY) + pad + 25;
-                    var svgW = Math.round(maxX - minX);
-                    var svgH = Math.round(maxY - minY);
+            var stringEl = document.createElement('div');
+            stringEl.className = 'gb-tag-string';
+            stringEl.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:8;';
+            stringEl.innerHTML = '<svg viewBox="0 0 ' + heroW + ' ' + heroH + '" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block;" xmlns="http://www.w3.org/2000/svg">'
+                + '<path d="M ' + sX + ' ' + sY + ' C ' + c1x + ' ' + c1y + ' ' + c2x + ' ' + c2y + ' ' + eX + ' ' + eY + '" '
+                + 'stroke="rgba(212,175,55,0.55)" stroke-width="2" fill="none" stroke-linecap="round"/>'
+                + '</svg>';
 
-                    // SVG local coordinates
-                    var sx = Math.round(neonX - minX);
-                    var sy = Math.round(neonY - minY);
-                    var ex = Math.round(eyeletX - minX);
-                    var ey = Math.round(eyeletY - minY);
-
-                    // Cubic bezier with natural droop
-                    var droopY = Math.max(sy, ey) + 22;
-                    var cp1x = Math.round(sx + (ex - sx) * 0.3);
-                    var cp1y = Math.round(droopY);
-                    var cp2x = Math.round(sx + (ex - sx) * 0.7);
-                    var cp2y = Math.round(droopY - 3);
-
-                    var stringDiv = document.createElement('div');
-                    stringDiv.className = 'gb-tag-string';
-                    stringDiv.style.cssText = 'position:absolute;left:' + Math.round(minX) + 'px;top:' + Math.round(minY) + 'px;'
-                        + 'width:' + svgW + 'px;height:' + svgH + 'px;'
-                        + 'pointer-events:none;z-index:8;';
-                    stringDiv.innerHTML = '<svg width="' + svgW + '" height="' + svgH + '" xmlns="http://www.w3.org/2000/svg">'
-                        + '<path d="M ' + sx + ' ' + sy + ' C ' + cp1x + ' ' + cp1y + ' ' + cp2x + ' ' + cp2y + ' ' + ex + ' ' + ey + '" '
-                        + 'stroke="rgba(212,175,55,0.6)" stroke-width="2" fill="none" stroke-linecap="round"/>'
-                        + '</svg>';
-
-                    hero.appendChild(stringDiv);
-                    trackEl(stringDiv);
-                    heroBannerStringEl = stringDiv;
-                } catch (e) { /* silent fail */ }
-            }, 500);
+            hero.appendChild(stringEl);
+            trackEl(stringEl);
+            heroBannerStringEl = stringEl;
+            console.log('[GB] Tag string created:', sX, sY, '->', eX, eY, 'hero:', heroW, heroH);
         }
     }
 
