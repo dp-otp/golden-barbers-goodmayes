@@ -800,6 +800,39 @@
         .stat-card.stat-red .stat-value { color: #ef4444; }
         .stat-card.stat-blue .stat-value { color: #3b82f6; }
 
+        /* Dashboard */
+        .dash-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+        .dash-mini { background: rgba(20,20,20,0.9); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px; }
+        .dash-mini h3 { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+        .dash-rank-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; }
+        .dash-rank-item:last-child { border-bottom: none; }
+        .dash-rank-pos { color: #d4af37; font-weight: 700; width: 18px; }
+        .dash-rank-name { flex: 1; color: #ccc; }
+        .dash-rank-val { color: #22c55e; font-weight: 700; font-family: monospace; }
+        .dash-hour-bar { display: flex; align-items: flex-end; gap: 3px; height: 60px; margin-top: 6px; }
+        .dash-hour-col { flex: 1; background: rgba(212,175,55,0.2); border-radius: 3px 3px 0 0; min-height: 2px; transition: height 0.3s; position: relative; }
+        .dash-hour-col.peak { background: #d4af37; }
+        .dash-hour-labels { display: flex; gap: 3px; margin-top: 4px; }
+        .dash-hour-labels span { flex: 1; text-align: center; font-size: 9px; color: #555; }
+        .cash-log-btn {
+            width: 100%; padding: 14px; margin-bottom: 12px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff; border: none; border-radius: 12px;
+            font-family: 'Outfit',sans-serif; font-size: 15px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all 0.2s;
+        }
+        .cash-log-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .dash-summary {
+            background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 12px; padding: 14px; margin-bottom: 12px;
+        }
+        .dash-summary-title { font-size: 12px; color: #d4af37; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 700; }
+        .dash-summary-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; }
+        .dash-summary-row span:first-child { color: #888; }
+        .dash-summary-row span:last-child { color: #fff; font-weight: 600; }
+        @media (max-width: 768px) { .dash-row { grid-template-columns: 1fr; } }
+
         /* Quick Actions */
         .quick-actions {
             display: flex;
@@ -1843,6 +1876,42 @@
         <!-- ==================== OVERVIEW SECTION ==================== -->
         <div class="admin-section active" id="section-overview">
         <div class="admin-grid">
+
+            <!-- Quick Cash Log -->
+            <div style="grid-column: 1 / -1;">
+                <button class="cash-log-btn" onclick="quickCashLog()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Log Cash Payment
+                </button>
+            </div>
+
+            <!-- Today's Summary -->
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <div class="dash-summary" id="dashSummary">
+                    <div class="dash-summary-title">Today's Summary</div>
+                    <div class="dash-summary-row"><span>QR Payments</span><span id="dashQrCount">0</span></div>
+                    <div class="dash-summary-row"><span>Cash Payments</span><span id="dashCashCount">0</span></div>
+                    <div class="dash-summary-row"><span>Total Customers</span><span id="dashTotalCustomers">0</span></div>
+                    <div class="dash-summary-row"><span>QR Revenue</span><span id="dashQrRev">£0</span></div>
+                    <div class="dash-summary-row"><span>Cash Revenue</span><span id="dashCashRev">£0</span></div>
+                    <div class="dash-summary-row" style="border-top:1px solid rgba(212,175,55,0.2); margin-top:6px; padding-top:8px;"><span style="color:#d4af37;">Total Revenue</span><span style="color:#22c55e; font-size:18px;" id="dashTotalRev">£0</span></div>
+                    <div class="dash-summary-row"><span>Average Spend</span><span id="dashAvgSpend">£0</span></div>
+                    <div class="dash-summary-row"><span>Pending Payments</span><span style="color:#f59e0b;" id="dashPending">0</span></div>
+                </div>
+
+                <!-- Popular Services + Peak Hours -->
+                <div class="dash-row">
+                    <div class="dash-mini">
+                        <h3>Top Services</h3>
+                        <div id="dashTopServices"><span style="color:#555;font-size:12px;">No data yet</span></div>
+                    </div>
+                    <div class="dash-mini">
+                        <h3>Peak Hours (This Week)</h3>
+                        <div class="dash-hour-bar" id="dashHourBar"></div>
+                        <div class="dash-hour-labels" id="dashHourLabels"></div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Live Incoming Payments -->
             <div class="admin-card" style="grid-column: 1 / -1;">
@@ -3435,6 +3504,7 @@
 
             renderPayments();
             updateStats();
+            updateDashboard();
 
             // Update pending count badge
             var pending = Object.keys(currentPending).length;
@@ -4640,6 +4710,117 @@
         }
 
         updateStats();
+
+        // ============================================
+        // LIVE DASHBOARD (from REAL Firebase data)
+        // ============================================
+        function quickCashLog() {
+            var amount = prompt('Enter cash payment amount (£):');
+            if (amount === null) return;
+            var val = parseFloat(amount.replace('£','').trim());
+            if (isNaN(val) || val <= 0) { alert('Please enter a valid amount.'); return; }
+            var service = prompt('Service (optional — e.g. Skin Fade):') || 'Cash payment';
+            database.ref('payments').push({
+                reference: 'CASH-' + Date.now().toString(36).toUpperCase(),
+                verifyCode: '------',
+                bankReference: 'CASH',
+                amount: val,
+                subtotal: val,
+                items: [service],
+                itemsDetail: [{ name: service, price: val }],
+                discount: null,
+                targetBank: 'CASH',
+                status: 'confirmed',
+                confirmedAt: new Date().toISOString(),
+                createdAt: new Date().toISOString(),
+                date: new Date().toISOString().split('T')[0],
+                isCash: true
+            });
+        }
+
+        function updateDashboard() {
+            var now = new Date();
+            var today = now.toISOString().split('T')[0];
+
+            var todayAll = livePayments.filter(function(p) { return p.date === today; });
+            var todayConfirmed = todayAll.filter(function(p) { return p.status === 'confirmed'; });
+            var todayPending = todayAll.filter(function(p) { return p.status === 'pending'; });
+            var todayCash = todayConfirmed.filter(function(p) { return p.isCash; });
+            var todayQr = todayConfirmed.filter(function(p) { return !p.isCash; });
+
+            var qrRev = todayQr.reduce(function(s,p){ return s+(p.amount||0); }, 0);
+            var cashRev = todayCash.reduce(function(s,p){ return s+(p.amount||0); }, 0);
+            var totalRev = qrRev + cashRev;
+            var totalCustomers = todayConfirmed.length;
+            var avgSpend = totalCustomers > 0 ? totalRev / totalCustomers : 0;
+
+            var el;
+            el = document.getElementById('dashQrCount'); if (el) el.textContent = todayQr.length;
+            el = document.getElementById('dashCashCount'); if (el) el.textContent = todayCash.length;
+            el = document.getElementById('dashTotalCustomers'); if (el) el.textContent = totalCustomers;
+            el = document.getElementById('dashQrRev'); if (el) el.textContent = '\u00A3' + qrRev.toFixed(2);
+            el = document.getElementById('dashCashRev'); if (el) el.textContent = '\u00A3' + cashRev.toFixed(2);
+            el = document.getElementById('dashTotalRev'); if (el) el.textContent = '\u00A3' + totalRev.toFixed(2);
+            el = document.getElementById('dashAvgSpend'); if (el) el.textContent = '\u00A3' + avgSpend.toFixed(2);
+            el = document.getElementById('dashPending'); if (el) el.textContent = todayPending.length;
+
+            // Top services (from all confirmed payments this week)
+            var weekAgo = new Date(now); weekAgo.setDate(weekAgo.getDate() - 7);
+            var weekConfirmed = livePayments.filter(function(p) {
+                return new Date(p.createdAt) >= weekAgo && p.status === 'confirmed';
+            });
+            var serviceCounts = {};
+            weekConfirmed.forEach(function(p) {
+                if (p.items) p.items.forEach(function(name) {
+                    if (name === 'Cash payment' || name === 'Custom Amount') return;
+                    serviceCounts[name] = (serviceCounts[name] || 0) + 1;
+                });
+            });
+            var ranked = Object.keys(serviceCounts).map(function(k) { return { name: k, count: serviceCounts[k] }; });
+            ranked.sort(function(a,b) { return b.count - a.count; });
+
+            el = document.getElementById('dashTopServices');
+            if (el) {
+                if (ranked.length === 0) {
+                    el.innerHTML = '<span style="color:#555;font-size:12px;">No data yet</span>';
+                } else {
+                    el.innerHTML = ranked.slice(0, 5).map(function(s, i) {
+                        return '<div class="dash-rank-item"><span class="dash-rank-pos">' + (i+1) + '</span><span class="dash-rank-name">' + s.name + '</span><span class="dash-rank-val">' + s.count + 'x</span></div>';
+                    }).join('');
+                }
+            }
+
+            // Peak hours (this week)
+            var hours = {};
+            for (var h = 9; h <= 20; h++) hours[h] = 0;
+            weekConfirmed.forEach(function(p) {
+                var hr = new Date(p.createdAt).getHours();
+                if (hours[hr] !== undefined) hours[hr]++;
+            });
+            var maxH = Math.max.apply(null, Object.values(hours)) || 1;
+
+            var barEl = document.getElementById('dashHourBar');
+            var labelsEl = document.getElementById('dashHourLabels');
+            if (barEl) {
+                barEl.innerHTML = '';
+                labelsEl.innerHTML = '';
+                for (var h = 9; h <= 20; h++) {
+                    var pct = (hours[h] / maxH) * 100;
+                    var isPeak = hours[h] === maxH && maxH > 0;
+                    var col = document.createElement('div');
+                    col.className = 'dash-hour-col' + (isPeak ? ' peak' : '');
+                    col.style.height = Math.max(2, pct) + '%';
+                    col.title = h + ':00 — ' + hours[h] + ' customers';
+                    barEl.appendChild(col);
+
+                    var lbl = document.createElement('span');
+                    lbl.textContent = h;
+                    labelsEl.appendChild(lbl);
+                }
+            }
+        }
+
+        updateDashboard();
 
         // ============================================
         // MANAGE ALL GALLERY MEDIA (PHOTOS & VIDEOS)
