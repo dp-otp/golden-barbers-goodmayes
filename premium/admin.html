@@ -24,7 +24,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #0a0a0a;
             color: #fff;
-            padding: 16px 16px 84px 16px;
+            padding: 12px 12px 72px 12px;
             min-height: 100vh;
         }
 
@@ -768,33 +768,41 @@
         /* NEW ADMIN FEATURES STYLES                    */
         /* ============================================ */
 
-        /* Dashboard Stats */
+        /* Dashboard Stats - horizontal scroll strip on mobile */
         .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            display: flex;
             gap: 10px;
             margin-bottom: 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            padding: 2px 0;
         }
+        .stats-bar::-webkit-scrollbar { display: none; }
         .stat-card {
             background: linear-gradient(145deg, rgba(20,20,20,0.95), rgba(14,14,14,0.98));
             border: 1px solid rgba(212,175,55,0.1);
             border-radius: 14px;
-            padding: 16px 12px;
+            padding: 14px 16px;
             text-align: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            flex: 1 0 0;
+            min-width: 100px;
         }
         .stat-card .stat-value {
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 800;
             color: #d4af37;
             line-height: 1;
+            white-space: nowrap;
         }
         .stat-card .stat-label {
-            font-size: 10px;
+            font-size: 9px;
             color: #666;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-top: 6px;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+            white-space: nowrap;
         }
         .stat-card.stat-green .stat-value { color: #22c55e; }
         .stat-card.stat-red .stat-value { color: #ef4444; }
@@ -1650,24 +1658,45 @@
             .quick-actions {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 8px;
+                gap: 6px;
             }
             .action-btn {
-                padding: 10px 12px;
-                font-size: 12px;
+                padding: 10px 10px;
+                font-size: 11px;
                 white-space: nowrap;
                 justify-content: center;
             }
+            .action-btn svg { width: 16px; height: 16px; }
+            .dash-greeting-text { font-size: 18px; }
+            .weekly-chart-card { padding: 14px; }
+            .feed-card { border-radius: 14px; }
+            .bookings-card { padding: 14px; border-radius: 14px; }
+            .cash-grid { gap: 6px; }
         }
 
         @media (max-width: 480px) {
-            body { padding: 10px 10px 80px 10px; }
-            .stat-card { padding: 12px 10px; }
-            .stat-card .stat-value { font-size: 20px; }
-            .stat-card .stat-label { font-size: 10px; }
+            body { padding: 8px 8px 74px 8px; }
+            .stat-card { padding: 10px 8px; min-width: 85px; }
+            .stat-card .stat-value { font-size: 18px; }
+            .stat-card .stat-label { font-size: 8px; }
             .admin-card { padding: 14px; border-radius: 14px; }
             .admin-card h2 { font-size: 14px; }
-            .admin-header-compact { padding: 12px 14px; margin-bottom: 12px; }
+            .admin-header-compact { padding: 10px 12px; margin-bottom: 10px; }
+            .header-logo { width: 36px; height: 36px; }
+            .header-title { font-size: 14px; }
+            .revenue-hero { padding: 18px 14px; border-radius: 16px; }
+            .revenue-hero-amount { font-size: 34px; }
+            .revenue-hero-label { font-size: 9px; letter-spacing: 1.5px; }
+            .revenue-split-pill { padding: 6px 12px; min-width: 75px; }
+            .revenue-split-pill .rsp-amount { font-size: 15px; }
+            .revenue-hero-meta { gap: 10px; font-size: 11px; }
+            .daily-briefing { padding: 12px; border-radius: 14px; }
+            .briefing-item { padding: 8px 10px; }
+            .briefing-item-value { font-size: 15px; }
+            .goal-card { padding: 14px; }
+            .cash-panel-header { padding: 12px 14px; }
+            .section-card { padding: 14px; border-radius: 14px; }
+            .section-card h2 { font-size: 14px; }
             /* Undo button above bottom nav */
             .undo-btn { bottom: 80px !important; }
             .undo-toast { bottom: 140px !important; }
@@ -1684,7 +1713,9 @@
                 grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
                 gap: 20px;
             }
-            .stats-bar { grid-template-columns: repeat(5, 1fr); }
+            .stats-bar { gap: 12px; }
+            .stat-card { min-width: unset; flex: 1; padding: 16px 12px; }
+            .stat-card .stat-value { font-size: 24px; }
             .gallery-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
             #allGalleryPhotos { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
             .admin-card { padding: 24px; border-radius: 18px; }
@@ -2386,16 +2417,27 @@
            ============================================ */
 
         /* Scrollable bottom nav (mobile) */
-        .bottom-nav {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            justify-content: flex-start !important;
-            gap: 0;
-            padding: 4px 8px !important;
+        @media (max-width: 768px) {
+            .bottom-nav {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                justify-content: flex-start !important;
+                gap: 0;
+                padding: 6px 4px !important;
+                height: 58px;
+            }
+            .bottom-nav::-webkit-scrollbar { display: none; }
+            .bottom-nav-item {
+                flex-shrink: 0;
+                min-width: 56px;
+                padding: 4px 8px;
+                font-size: 9px;
+                gap: 2px;
+            }
+            .bottom-nav-item svg { width: 20px; height: 20px; }
+            .bottom-nav-item.active::before { width: 22px; height: 2px; }
         }
-        .bottom-nav::-webkit-scrollbar { display: none; }
-        .bottom-nav-item { flex-shrink: 0; }
 
         /* Nav section dividers (desktop sidebar) */
         .nav-divider {
@@ -2419,17 +2461,17 @@
             background: linear-gradient(145deg, rgba(212,175,55,0.08), rgba(20,20,20,0.95));
             border: 1.5px solid rgba(212,175,55,0.2);
             border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 16px;
+            padding: 16px;
+            margin-bottom: 14px;
         }
         .briefing-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
         .briefing-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             color: #d4af37;
         }
@@ -2440,27 +2482,27 @@
         .briefing-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            gap: 8px;
         }
         .briefing-item {
             background: rgba(0,0,0,0.3);
             border-radius: 10px;
-            padding: 12px;
+            padding: 10px 12px;
         }
         .briefing-item-label {
-            font-size: 10px;
+            font-size: 9px;
             color: #888;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
         .briefing-item-value {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
             color: #fff;
         }
         .briefing-item-sub {
-            font-size: 11px;
+            font-size: 10px;
             color: #666;
             margin-top: 2px;
         }
@@ -3245,9 +3287,18 @@
         }
 
         @media (max-width: 480px) {
-            .expense-summary { grid-template-columns: 1fr; }
-            .briefing-grid { grid-template-columns: 1fr; }
-            .add-service-grid { grid-template-columns: 1fr; }
+            .expense-summary { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+            .expense-summary-card { padding: 10px 6px; }
+            .expense-summary-value { font-size: 15px; }
+            .expense-summary-label { font-size: 8px; }
+            .add-service-grid { grid-template-columns: 1fr 1fr; }
+            .leaderboard-item { padding: 10px; gap: 10px; }
+            .lb-revenue { font-size: 15px; }
+            .perf-period-btns { gap: 4px; }
+            .perf-period-btn { padding: 6px 10px; font-size: 11px; }
+            .alert-item { padding: 10px 12px; gap: 10px; }
+            .alert-text { font-size: 12px; }
+            .promo-item { padding: 12px; }
         }
 
     </style>
