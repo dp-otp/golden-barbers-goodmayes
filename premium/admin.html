@@ -2675,74 +2675,6 @@
         .goal-preset-btn:active { background: rgba(212,175,55,0.2); color: #d4af37; }
 
         /* ---- Barber Selector (Cash Logger) ---- */
-        .barber-selector {
-            display: flex;
-            gap: 8px;
-            padding: 0 0 12px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
-        .barber-selector::-webkit-scrollbar { display: none; }
-        .barber-chip {
-            flex-shrink: 0;
-            padding: 8px 16px;
-            background: rgba(255,255,255,0.04);
-            border: 1.5px solid rgba(255,255,255,0.08);
-            border-radius: 20px;
-            color: #888;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        .barber-chip.active {
-            background: rgba(212,175,55,0.15);
-            border-color: #d4af37;
-            color: #d4af37;
-        }
-        .barber-chip:active { transform: scale(0.95); }
-
-        /* ---- Staff Performance / Leaderboard ---- */
-        .leaderboard-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.04);
-            border-radius: 12px;
-            margin-bottom: 8px;
-            transition: all 0.2s;
-        }
-        .leaderboard-item:first-child {
-            background: rgba(212,175,55,0.06);
-            border-color: rgba(212,175,55,0.15);
-        }
-        .lb-rank {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.06);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 14px;
-            color: #888;
-            flex-shrink: 0;
-        }
-        .leaderboard-item:first-child .lb-rank {
-            background: rgba(212,175,55,0.2);
-            color: #d4af37;
-        }
-        .lb-info { flex: 1; }
-        .lb-name { font-weight: 700; font-size: 14px; color: #fff; margin-bottom: 2px; }
-        .lb-meta { font-size: 11px; color: #888; }
-        .lb-stats { text-align: right; }
-        .lb-revenue { font-size: 18px; font-weight: 800; color: #d4af37; }
-        .lb-cuts { font-size: 11px; color: #888; margin-top: 2px; }
         .perf-period-btns {
             display: flex;
             gap: 6px;
@@ -2905,53 +2837,6 @@
             transition: all 0.2s;
         }
 
-        /* ---- Expense Tracker ---- */
-        .expense-summary {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-        .expense-summary-card {
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
-            padding: 14px;
-            text-align: center;
-        }
-        .expense-summary-label {
-            font-size: 10px;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-        .expense-summary-value {
-            font-size: 18px;
-            font-weight: 800;
-        }
-        .expense-summary-value.income { color: #22c55e; }
-        .expense-summary-value.expense { color: #ef4444; }
-        .expense-summary-value.profit { color: #d4af37; }
-        .expense-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 14px;
-            background: rgba(0,0,0,0.15);
-            border: 1px solid rgba(255,255,255,0.04);
-            border-radius: 10px;
-            margin-bottom: 6px;
-        }
-        .expense-info { flex: 1; }
-        .expense-name { font-size: 13px; font-weight: 600; color: #ddd; }
-        .expense-meta { font-size: 11px; color: #666; margin-top: 2px; }
-        .expense-amount { font-size: 15px; font-weight: 700; color: #ef4444; }
-        .expense-amount.recurring::after {
-            content: ' (R)';
-            font-size: 10px;
-            color: #888;
-        }
-
         /* ---- Enhanced Booking Management ---- */
         .booking-manage-item {
             background: rgba(0,0,0,0.2);
@@ -2960,10 +2845,6 @@
             padding: 14px;
             margin-bottom: 8px;
         }
-        .booking-manage-item.bm-confirmed { border-left: 3px solid #22c55e; }
-        .booking-manage-item.bm-cancelled { border-left: 3px solid #ef4444; opacity: 0.6; }
-        .booking-manage-item.bm-noshow { border-left: 3px solid #f59e0b; }
-        .booking-manage-item.bm-pending { border-left: 3px solid #3b82f6; }
         .bm-header {
             display: flex;
             justify-content: space-between;
@@ -2971,32 +2852,7 @@
             margin-bottom: 8px;
         }
         .bm-name { font-weight: 700; font-size: 14px; color: #fff; }
-        .bm-status {
-            padding: 3px 10px;
-            border-radius: 10px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
         .bm-detail { font-size: 12px; color: #888; margin-bottom: 4px; }
-        .bm-actions {
-            display: flex;
-            gap: 6px;
-            margin-top: 10px;
-        }
-        .bm-actions button {
-            flex: 1;
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-        }
-        .bm-btn-confirm { background: rgba(34,197,94,0.15); color: #22c55e; }
-        .bm-btn-cancel { background: rgba(239,68,68,0.1); color: #ef4444; }
-        .bm-btn-noshow { background: rgba(245,158,11,0.1); color: #f59e0b; }
 
         /* ---- Confirmation Modal ---- */
         .confirm-modal-overlay {
@@ -3307,13 +3163,7 @@
         }
 
         @media (max-width: 480px) {
-            .expense-summary { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-            .expense-summary-card { padding: 10px 6px; }
-            .expense-summary-value { font-size: 15px; }
-            .expense-summary-label { font-size: 8px; }
             .add-service-grid { grid-template-columns: 1fr 1fr; }
-            .leaderboard-item { padding: 10px; gap: 10px; }
-            .lb-revenue { font-size: 15px; }
             .perf-period-btns { gap: 4px; }
             .perf-period-btn { padding: 6px 10px; font-size: 11px; }
             .alert-item { padding: 10px 12px; gap: 10px; }
@@ -3542,10 +3392,6 @@
                     <svg class="cash-panel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
                 </div>
                 <div class="cash-panel-body">
-                    <!-- Barber Selector -->
-                    <div class="barber-selector" id="barberSelector">
-                        <div class="barber-chip active" data-barber="" onclick="selectBarber(this, '')">Any Barber</div>
-                    </div>
                     <div class="cash-grid" id="cashGrid">
                         <!-- Generated from servicePrices -->
                     </div>
@@ -4225,96 +4071,15 @@
             <div class="section-card">
                 <h2>
                     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    Booking Management
+                    Online Bookings
                 </h2>
-                <div class="perf-period-btns" style="margin-bottom:12px;">
-                    <button class="perf-period-btn active" onclick="filterBookings('all', this)">All</button>
-                    <button class="perf-period-btn" onclick="filterBookings('pending', this)">Pending</button>
-                    <button class="perf-period-btn" onclick="filterBookings('confirmed', this)">Confirmed</button>
-                    <button class="perf-period-btn" onclick="filterBookings('noshow', this)">No-Show</button>
-                    <button class="perf-period-btn" onclick="filterBookings('cancelled', this)">Cancelled</button>
-                </div>
                 <div id="bookingManageList">
                     <div class="loading-spinner"></div>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== STAFF PERFORMANCE SECTION ==================== -->
-        <div class="admin-section" id="section-performance">
-            <div class="section-card">
-                <h2>
-                    <svg viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
-                    Staff Performance &amp; Leaderboard
-                </h2>
-                <div class="perf-period-btns">
-                    <button class="perf-period-btn active" onclick="loadPerformance('today', this)">Today</button>
-                    <button class="perf-period-btn" onclick="loadPerformance('week', this)">This Week</button>
-                    <button class="perf-period-btn" onclick="loadPerformance('month', this)">This Month</button>
-                </div>
-                <div id="leaderboardList">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">&#127942;</div>
-                        <div class="empty-state-text">No performance data yet</div>
-                        <div class="empty-state-sub">Select a barber when logging cash to track performance</div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- ==================== EXPENSE TRACKER SECTION ==================== -->
-        <div class="admin-section" id="section-expenses">
-            <div class="section-card">
-                <h2>
-                    <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                    Expense Tracker &amp; P&amp;L
-                </h2>
-                <div class="perf-period-btns" style="margin-bottom:14px;">
-                    <button class="perf-period-btn active" onclick="loadExpenses('month', this)">This Month</button>
-                    <button class="perf-period-btn" onclick="loadExpenses('week', this)">This Week</button>
-                    <button class="perf-period-btn" onclick="loadExpenses('all', this)">All Time</button>
-                </div>
-                <div class="expense-summary" id="expenseSummary">
-                    <div class="expense-summary-card">
-                        <div class="expense-summary-label">Income</div>
-                        <div class="expense-summary-value income" id="plIncome">&pound;0</div>
-                    </div>
-                    <div class="expense-summary-card">
-                        <div class="expense-summary-label">Expenses</div>
-                        <div class="expense-summary-value expense" id="plExpenses">&pound;0</div>
-                    </div>
-                    <div class="expense-summary-card">
-                        <div class="expense-summary-label">Profit</div>
-                        <div class="expense-summary-value profit" id="plProfit">&pound;0</div>
-                    </div>
-                </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-                    <h3 style="font-size:14px;color:#fff;margin:0;">Expenses</h3>
-                    <button class="btn-outline btn-sm" onclick="toggleAddExpense()">+ Add Expense</button>
-                </div>
-                <div class="add-service-form" id="addExpenseForm">
-                    <input type="text" id="expenseName" placeholder="Expense name (e.g. Rent, Supplies)">
-                    <div class="add-service-grid">
-                        <input type="number" id="expenseAmount" placeholder="Amount (&pound;)" step="0.01" inputmode="decimal">
-                        <select id="expenseCategory" style="padding:10px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:13px;">
-                            <option value="rent">Rent</option>
-                            <option value="supplies">Supplies</option>
-                            <option value="utilities">Utilities</option>
-                            <option value="wages">Wages</option>
-                            <option value="marketing">Marketing</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <select id="expenseRecurring" style="padding:10px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:13px;">
-                            <option value="once">One-time</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="monthly">Monthly</option>
-                        </select>
-                    </div>
-                    <button class="btn-gold" style="width:100%;" onclick="saveExpense()">Save Expense</button>
-                </div>
-                <div id="expensesList"></div>
-            </div>
-        </div>
 
         <!-- ==================== WEEKLY REPORT SECTION ==================== -->
         <div class="admin-section" id="section-reports">
@@ -4460,14 +4225,6 @@
             <span>Themes</span>
         </button>
         <div class="nav-divider">BUSINESS</div>
-        <button class="bottom-nav-item" onclick="navTo('performance')" data-section="performance">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
-            <span>Performance</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('expenses')" data-section="expenses">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-            <span>Expenses</span>
-        </button>
         <button class="bottom-nav-item" onclick="navTo('reports')" data-section="reports">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             <span>Reports</span>
@@ -6233,7 +5990,7 @@
                 document.getElementById('staffSpeciality').value = '';
                 showToast('Staff member added: ' + name, 'success');
                 logActivity('staff', 'Staff added: ' + name + ' (' + role + ')');
-                buildBarberSelector();
+
             });
         }
 
@@ -6252,7 +6009,7 @@
                 database.ref('staff/' + key).remove();
                 logActivity('staff', 'Staff removed: ' + name);
                 showToast('Staff member removed', 'success');
-                buildBarberSelector();
+
             }, true);
         }
 
@@ -6299,7 +6056,6 @@
                 addBtn.textContent = 'Add Staff Member';
                 addBtn.setAttribute('onclick', 'addStaff()');
             }
-            buildBarberSelector();
         }
 
         function renderStaff() {
@@ -6739,36 +6495,7 @@
             _counterAnimations[id] = requestAnimationFrame(step);
         }
 
-        // Barber selector state
-        var selectedBarber = '';
-        function selectBarber(el, barberName) {
-            selectedBarber = barberName;
-            document.querySelectorAll('.barber-chip').forEach(function(c) { c.classList.remove('active'); });
-            el.classList.add('active');
-        }
-
-        // Build barber selector from staff list
-        function buildBarberSelector() {
-            var container = document.getElementById('barberSelector');
-            if (!container) return;
-            container.innerHTML = '<div class="barber-chip active" data-barber="" onclick="selectBarber(this, \'\')">Any Barber</div>';
-            database.ref('staff').once('value', function(snap) {
-                var data = snap.val();
-                if (!data) return;
-                Object.keys(data).forEach(function(k) {
-                    var s = data[k];
-                    if (!s.name) return;
-                    var chip = document.createElement('div');
-                    chip.className = 'barber-chip';
-                    chip.textContent = s.name;
-                    chip.dataset.barber = s.name;
-                    chip.onclick = function() { selectBarber(chip, s.name); };
-                    container.appendChild(chip);
-                });
-            });
-        }
-
-        // One-tap cash logging with barber tracking
+        // One-tap cash logging
         function logCash(name, amount) {
             var paymentData = {
                 reference: 'CASH-' + Date.now().toString(36).toUpperCase(),
@@ -6786,11 +6513,8 @@
                 date: new Date().toISOString().split('T')[0],
                 isCash: true
             };
-            if (selectedBarber) {
-                paymentData.barber = selectedBarber;
-            }
             database.ref('payments').push(paymentData);
-            logActivity('payment', 'Cash payment logged: ' + name + ' (\u00A3' + amount.toFixed(2) + ')' + (selectedBarber ? ' by ' + selectedBarber : ''));
+            logActivity('payment', 'Cash payment logged: ' + name + ' (\u00A3' + amount.toFixed(2) + ')');
             // Flash feedback on the button
             var btns = document.querySelectorAll('.cash-service-btn');
             btns.forEach(function(btn) {
@@ -7768,70 +7492,6 @@
         }
 
         // ============================================
-        // STAFF PERFORMANCE & LEADERBOARD
-        // ============================================
-        var perfPeriod = 'today';
-
-        function loadPerformance(period, btn) {
-            perfPeriod = period;
-            if (btn) {
-                btn.parentElement.querySelectorAll('.perf-period-btn').forEach(function(b) { b.classList.remove('active'); });
-                btn.classList.add('active');
-            }
-
-            var now = new Date();
-            var startDate, endDate;
-            endDate = now.toISOString().split('T')[0];
-
-            if (period === 'today') {
-                startDate = endDate;
-            } else if (period === 'week') {
-                var d = new Date(now);
-                d.setDate(d.getDate() - d.getDay() + 1);
-                startDate = d.toISOString().split('T')[0];
-            } else {
-                var d = new Date(now.getFullYear(), now.getMonth(), 1);
-                startDate = d.toISOString().split('T')[0];
-            }
-
-            database.ref('payments').orderByChild('date').startAt(startDate).endAt(endDate + '\uf8ff').once('value', function(snap) {
-                var barberStats = {};
-                snap.forEach(function(child) {
-                    var p = child.val();
-                    if (p.status !== 'confirmed') return;
-                    var barber = p.barber || 'Unassigned';
-                    if (!barberStats[barber]) barberStats[barber] = { revenue: 0, cuts: 0 };
-                    barberStats[barber].revenue += (p.amount || 0);
-                    barberStats[barber].cuts += 1;
-                });
-
-                var sorted = Object.keys(barberStats).map(function(name) {
-                    return { name: name, revenue: barberStats[name].revenue, cuts: barberStats[name].cuts };
-                }).sort(function(a, b) { return b.revenue - a.revenue; });
-
-                renderLeaderboard(sorted);
-            });
-        }
-
-        function renderLeaderboard(data) {
-            var container = document.getElementById('leaderboardList');
-            if (!container) return;
-            if (data.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#127942;</div><div class="empty-state-text">No performance data for this period</div><div class="empty-state-sub">Select a barber when logging cash to track performance</div></div>';
-                return;
-            }
-            var html = '';
-            data.forEach(function(item, i) {
-                html += '<div class="leaderboard-item">';
-                html += '<div class="lb-rank">' + (i + 1) + '</div>';
-                html += '<div class="lb-info"><div class="lb-name">' + item.name + '</div><div class="lb-meta">' + item.cuts + ' services</div></div>';
-                html += '<div class="lb-stats"><div class="lb-revenue">\u00A3' + item.revenue.toFixed(0) + '</div><div class="lb-cuts">\u00A3' + (item.revenue / item.cuts).toFixed(0) + ' avg</div></div>';
-                html += '</div>';
-            });
-            container.innerHTML = html;
-        }
-
-        // ============================================
         // WEEKLY REPORT GENERATOR
         // ============================================
         function generateReport(period, btn) {
@@ -7865,7 +7525,6 @@
             database.ref('payments').orderByChild('date').startAt(startDate).endAt(endDate + '\uf8ff').once('value', function(paySnap) {
                 var totalRev = 0, cashRev = 0, qrRev = 0, totalTx = 0, cashTx = 0, qrTx = 0;
                 var serviceCounts = {};
-                var barberRevenue = {};
                 var dailyRevenue = {};
 
                 paySnap.forEach(function(c) {
@@ -7878,8 +7537,6 @@
                     if (p.items) p.items.forEach(function(s) {
                         serviceCounts[s] = (serviceCounts[s] || 0) + 1;
                     });
-                    var barber = p.barber || 'Unassigned';
-                    barberRevenue[barber] = (barberRevenue[barber] || 0) + (p.amount || 0);
                     dailyRevenue[p.date] = (dailyRevenue[p.date] || 0) + (p.amount || 0);
                 });
 
@@ -7889,7 +7546,6 @@
                 var dailyAvg = totalRev / days;
                 var bestDay = Object.keys(dailyRevenue).sort(function(a,b) { return dailyRevenue[b] - dailyRevenue[a]; })[0] || 'N/A';
                 var bestDayRev = dailyRevenue[bestDay] || 0;
-                var topBarber = Object.keys(barberRevenue).sort(function(a,b) { return barberRevenue[b] - barberRevenue[a]; })[0] || 'N/A';
 
                 var html = '<div class="report-card"><h4>Revenue Overview - ' + title + '</h4>';
                 html += '<div class="report-highlight">\u00A3' + totalRev.toFixed(2) + '</div>';
@@ -7903,7 +7559,6 @@
                 html += '<div class="report-card"><h4>Performance</h4>';
                 html += '<div class="report-stat-row"><span class="report-stat-label">Best Day</span><span class="report-stat-value">' + bestDay + ' (\u00A3' + bestDayRev.toFixed(0) + ')</span></div>';
                 html += '<div class="report-stat-row"><span class="report-stat-label">Top Service</span><span class="report-stat-value">' + topService + '</span></div>';
-                html += '<div class="report-stat-row"><span class="report-stat-label">Top Barber</span><span class="report-stat-value">' + topBarber + '</span></div>';
                 html += '</div>';
 
                 document.getElementById('reportContent').innerHTML = html;
@@ -7922,120 +7577,6 @@
         }
 
         // ============================================
-        // EXPENSE TRACKER & P&L
-        // ============================================
-        var expenses = [];
-        var expensePeriod = 'month';
-
-        function toggleAddExpense() {
-            var form = document.getElementById('addExpenseForm');
-            if (form) form.classList.toggle('active');
-        }
-
-        function saveExpense() {
-            var name = document.getElementById('expenseName').value.trim();
-            var amount = parseFloat(document.getElementById('expenseAmount').value);
-            var category = document.getElementById('expenseCategory').value;
-            var recurring = document.getElementById('expenseRecurring').value;
-
-            if (!name) { showToast('Enter expense name', 'error'); return; }
-            if (isNaN(amount) || amount <= 0) { showToast('Enter valid amount', 'error'); return; }
-
-            database.ref('expenses').push({
-                name: name,
-                amount: amount,
-                category: category,
-                recurring: recurring,
-                date: new Date().toISOString().split('T')[0],
-                createdAt: new Date().toISOString()
-            });
-
-            logActivity('settings', 'Expense added: ' + name + ' (\u00A3' + amount.toFixed(2) + ')');
-            showToast('Expense saved', 'success');
-
-            document.getElementById('expenseName').value = '';
-            document.getElementById('expenseAmount').value = '';
-            toggleAddExpense();
-        }
-
-        function loadExpenses(period, btn) {
-            expensePeriod = period;
-            if (btn) {
-                btn.parentElement.querySelectorAll('.perf-period-btn').forEach(function(b) { b.classList.remove('active'); });
-                btn.classList.add('active');
-            }
-
-            var now = new Date();
-            var startDate;
-            if (period === 'week') {
-                var d = new Date(now);
-                d.setDate(d.getDate() - d.getDay() + 1);
-                startDate = d.toISOString().split('T')[0];
-            } else if (period === 'month') {
-                startDate = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
-            } else {
-                startDate = '2020-01-01';
-            }
-            var endDate = now.toISOString().split('T')[0];
-
-            // Load expenses
-            database.ref('expenses').orderByChild('date').startAt(startDate).endAt(endDate + '\uf8ff').once('value', function(expSnap) {
-                var totalExpenses = 0;
-                expenses = [];
-                expSnap.forEach(function(c) {
-                    var e = c.val();
-                    e._key = c.key;
-                    expenses.push(e);
-                    totalExpenses += (e.amount || 0);
-                });
-
-                // Load income for same period
-                database.ref('payments').orderByChild('date').startAt(startDate).endAt(endDate + '\uf8ff').once('value', function(paySnap) {
-                    var totalIncome = 0;
-                    paySnap.forEach(function(c) {
-                        var p = c.val();
-                        if (p.status === 'confirmed') totalIncome += (p.amount || 0);
-                    });
-
-                    document.getElementById('plIncome').textContent = '\u00A3' + totalIncome.toFixed(0);
-                    document.getElementById('plExpenses').textContent = '\u00A3' + totalExpenses.toFixed(0);
-                    var profit = totalIncome - totalExpenses;
-                    var profitEl = document.getElementById('plProfit');
-                    profitEl.textContent = (profit >= 0 ? '+' : '') + '\u00A3' + profit.toFixed(0);
-                    profitEl.style.color = profit >= 0 ? '#22c55e' : '#ef4444';
-
-                    renderExpenses();
-                });
-            });
-        }
-
-        function renderExpenses() {
-            var container = document.getElementById('expensesList');
-            if (!container) return;
-            if (expenses.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128176;</div><div class="empty-state-text">No expenses recorded</div><div class="empty-state-sub">Add expenses to track your P&amp;L</div></div>';
-                return;
-            }
-            var html = '';
-            expenses.sort(function(a,b) { return b.date.localeCompare(a.date); }).forEach(function(e) {
-                html += '<div class="expense-item">';
-                html += '<div class="expense-info"><div class="expense-name">' + e.name + '</div>';
-                html += '<div class="expense-meta">' + e.category + ' &middot; ' + e.date + (e.recurring !== 'once' ? ' &middot; ' + e.recurring : '') + '</div></div>';
-                html += '<div class="expense-amount' + (e.recurring !== 'once' ? ' recurring' : '') + '">\u00A3' + (e.amount || 0).toFixed(2) + '</div>';
-                html += '</div>';
-            });
-            container.innerHTML = html;
-        }
-
-        function deleteExpense(key) {
-            showConfirmModal('Delete Expense', 'Are you sure you want to delete this expense?', function() {
-                database.ref('expenses/' + key).remove();
-                showToast('Expense deleted', 'success');
-                logActivity('settings', 'Expense deleted');
-                loadExpenses(expensePeriod);
-            }, true);
-        }
-
         // ============================================
         // PROMOTIONS ENGINE
         // ============================================
@@ -8154,10 +7695,9 @@
         }
 
         // ============================================
-        // BOOKING MANAGEMENT
+        // BOOKING MANAGEMENT (read-only)
         // ============================================
         var managedBookings = [];
-        var bookingFilter = 'all';
 
         function loadBookingManagement() {
             database.ref('bookings').orderByChild('date').on('value', function(snap) {
@@ -8165,7 +7705,6 @@
                 snap.forEach(function(c) {
                     var b = c.val();
                     b._key = c.key;
-                    if (!b.status) b.status = 'pending';
                     managedBookings.push(b);
                 });
                 managedBookings.reverse();
@@ -8173,45 +7712,22 @@
             });
         }
 
-        function filterBookings(filter, btn) {
-            bookingFilter = filter;
-            btn.parentElement.querySelectorAll('.perf-period-btn').forEach(function(b) { b.classList.remove('active'); });
-            btn.classList.add('active');
-            renderManagedBookings();
-        }
-
         function renderManagedBookings() {
             var container = document.getElementById('bookingManageList');
             if (!container) return;
-            var filtered = bookingFilter === 'all' ? managedBookings : managedBookings.filter(function(b) { return b.status === bookingFilter; });
-            if (filtered.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128197;</div><div class="empty-state-text">No bookings found</div><div class="empty-state-sub">' + (bookingFilter !== 'all' ? 'No ' + bookingFilter + ' bookings' : 'Bookings appear when customers book') + '</div></div>';
+            if (managedBookings.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128197;</div><div class="empty-state-text">No bookings yet</div><div class="empty-state-sub">Bookings appear when customers book online</div></div>';
                 return;
             }
             var html = '';
-            filtered.slice(0, 50).forEach(function(b) {
-                var statusClass = 'bm-' + (b.status || 'pending');
-                var statusColor = b.status === 'confirmed' ? '#22c55e' : (b.status === 'cancelled' ? '#ef4444' : (b.status === 'noshow' ? '#f59e0b' : '#3b82f6'));
-                html += '<div class="booking-manage-item ' + statusClass + '">';
-                html += '<div class="bm-header"><div class="bm-name">' + (b.name || 'Guest') + '</div><span class="bm-status" style="background:' + statusColor + '22;color:' + statusColor + ';">' + (b.status || 'pending') + '</span></div>';
+            managedBookings.slice(0, 50).forEach(function(b) {
+                html += '<div class="booking-manage-item">';
+                html += '<div class="bm-header"><div class="bm-name">' + (b.name || 'Guest') + '</div></div>';
                 html += '<div class="bm-detail">' + (b.service || 'Service N/A') + ' &middot; ' + (b.date || '') + ' ' + (b.time || '') + '</div>';
                 if (b.phone) html += '<div class="bm-detail">Phone: ' + b.phone + '</div>';
-                if (b.status === 'pending' || !b.status) {
-                    html += '<div class="bm-actions">';
-                    html += '<button class="bm-btn-confirm" onclick="updateBookingStatus(\'' + b._key + '\', \'confirmed\')">Confirm</button>';
-                    html += '<button class="bm-btn-noshow" onclick="updateBookingStatus(\'' + b._key + '\', \'noshow\')">No-Show</button>';
-                    html += '<button class="bm-btn-cancel" onclick="updateBookingStatus(\'' + b._key + '\', \'cancelled\')">Cancel</button>';
-                    html += '</div>';
-                }
                 html += '</div>';
             });
             container.innerHTML = html;
-        }
-
-        function updateBookingStatus(key, status) {
-            database.ref('bookings/' + key + '/status').set(status);
-            logActivity('booking', 'Booking marked as ' + status);
-            showToast('Booking ' + status, 'success');
         }
 
         // ============================================
@@ -8228,32 +7744,154 @@
         }
 
         // ============================================
+        // AUTO SHOP OPEN/CLOSE FROM OPENING HOURS
+        // ============================================
+        function checkAutoShopStatus() {
+            // Skip if in holiday mode (manual override)
+            if (shopStatus.status === 'holiday') return;
+            // Skip if emergency closed
+            if (shopStatus.emergencyClose) return;
+
+            var hoursData = localStorage.getItem('goldenBarbers_hours');
+            if (!hoursData) return;
+
+            try {
+                var hours = JSON.parse(hoursData);
+                var now = new Date();
+                var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+                var today = days[now.getDay()];
+                var todayHours = hours[today];
+
+                if (!todayHours) return;
+
+                // If marked as closed day
+                if (todayHours.closed) {
+                    if (shopStatus.status === 'open') {
+                        shopStatus.status = 'closed';
+                        shopStatus.updatedAt = new Date().toISOString();
+                        shopStatus.autoManaged = true;
+                        saveShopStatus();
+                        logActivity('settings', 'Shop auto-closed (closed day)');
+                    }
+                    return;
+                }
+
+                var nowMinutes = now.getHours() * 60 + now.getMinutes();
+                var openParts = todayHours.open.split(':');
+                var closeParts = todayHours.close.split(':');
+                var openMinutes = parseInt(openParts[0]) * 60 + parseInt(openParts[1]);
+                var closeMinutes = parseInt(closeParts[0]) * 60 + parseInt(closeParts[1]);
+
+                var shouldBeOpen = nowMinutes >= openMinutes && nowMinutes < closeMinutes;
+
+                if (shouldBeOpen && shopStatus.status !== 'open') {
+                    shopStatus.status = 'open';
+                    shopStatus.updatedAt = new Date().toISOString();
+                    shopStatus.autoManaged = true;
+                    saveShopStatus();
+                    logActivity('settings', 'Shop auto-opened (' + todayHours.open + ')');
+                    autoSetStaffDuty(true);
+                } else if (!shouldBeOpen && shopStatus.status === 'open') {
+                    shopStatus.status = 'closed';
+                    shopStatus.updatedAt = new Date().toISOString();
+                    shopStatus.autoManaged = true;
+                    saveShopStatus();
+                    logActivity('settings', 'Shop auto-closed (' + todayHours.close + ')');
+                    autoSetStaffDuty(false);
+                }
+            } catch (e) {
+                // Invalid hours data, skip
+            }
+        }
+
+        // ============================================
+        // AUTO STAFF DUTY (tied to shop open/close)
+        // ============================================
+        function autoSetStaffDuty(onDuty) {
+            database.ref('staff').once('value', function(snap) {
+                var data = snap.val();
+                if (!data) return;
+                var updates = {};
+                Object.keys(data).forEach(function(k) {
+                    updates['staff/' + k + '/onDuty'] = onDuty;
+                });
+                database.ref().update(updates);
+                logActivity('staff', 'All staff auto-set ' + (onDuty ? 'on duty' : 'off duty'));
+            });
+        }
+
+        // ============================================
+        // AUTO DAILY GOAL FROM 30-DAY AVERAGE
+        // ============================================
+        function autoSetDailyGoal() {
+            // Only auto-set if no goal exists or goal was set on a different day
+            database.ref('goals/daily').once('value', function(snap) {
+                var goal = snap.val();
+                var today = new Date().toISOString().split('T')[0];
+
+                // If goal was already set today (manually), don't override
+                if (goal && goal.setAt && goal.setAt.split('T')[0] === today) return;
+
+                // Calculate 30-day average
+                var thirtyDaysAgo = new Date();
+                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                var startDate = thirtyDaysAgo.toISOString().split('T')[0];
+
+                database.ref('payments').orderByChild('date').startAt(startDate).endAt(today + '\uf8ff').once('value', function(paySnap) {
+                    var totalRev = 0;
+                    var daysWithRevenue = {};
+
+                    paySnap.forEach(function(c) {
+                        var p = c.val();
+                        if (p.status !== 'confirmed') return;
+                        totalRev += (p.amount || 0);
+                        daysWithRevenue[p.date] = true;
+                    });
+
+                    var numDays = Object.keys(daysWithRevenue).length;
+                    if (numDays < 3) return; // Not enough data
+
+                    var avgDaily = Math.round(totalRev / numDays);
+                    if (avgDaily <= 0) return;
+
+                    database.ref('goals/daily').set({
+                        amount: avgDaily,
+                        setAt: new Date().toISOString(),
+                        autoSet: true
+                    });
+                    dailyGoal = avgDaily;
+                    updateGoalProgress();
+                    logActivity('settings', 'Daily goal auto-set to \u00A3' + avgDaily + ' (30-day avg)');
+                });
+            });
+        }
+
+        // ============================================
         // INIT NEW FEATURES
         // ============================================
         function initNewFeatures() {
-            buildBarberSelector();
             loadActivityLog();
             loadGoal();
             loadPromotions();
             loadBookingManagement();
-            loadExpenses('month');
-            loadPerformance('today');
             generateReport('thisweek');
             updateDailyBriefing();
             setTimeout(updateSmartAlerts, 1500);
 
-            // Update goal progress whenever dashboard updates
-            var origUpdateDashboard = typeof updateDashboard === 'function' ? updateDashboard : null;
-            if (origUpdateDashboard) {
-                // Patch dashboard update to also update goal
-                var _origCalc = window.updateDashboard;
-            }
+            // Auto-set daily goal from historical average
+            setTimeout(autoSetDailyGoal, 2000);
 
-            // Periodically refresh briefing and alerts
+            // Auto shop open/close check
+            setTimeout(checkAutoShopStatus, 3000);
+
+            // Periodically refresh briefing, alerts, and auto shop status
             setInterval(function() {
                 updateGoalProgress();
                 updateSmartAlerts();
             }, 60000);
+
+            // Check shop status every 5 minutes
+            setInterval(checkAutoShopStatus, 300000);
         }
 
         // Hook into the existing init
