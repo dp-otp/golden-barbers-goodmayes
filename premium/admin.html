@@ -2381,6 +2381,875 @@
             animation: pendingPulse 1.5s ease-in-out infinite;
         }
 
+        /* ============================================
+           PREMIUM V2 - NEW FEATURE STYLES
+           ============================================ */
+
+        /* Scrollable bottom nav (mobile) */
+        .bottom-nav {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            justify-content: flex-start !important;
+            gap: 0;
+            padding: 4px 8px !important;
+        }
+        .bottom-nav::-webkit-scrollbar { display: none; }
+        .bottom-nav-item { flex-shrink: 0; }
+
+        /* Nav section dividers (desktop sidebar) */
+        .nav-divider {
+            display: none;
+            color: #555;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 16px 16px 6px;
+            width: 100%;
+        }
+        .nav-divider:first-of-type { padding-top: 0; }
+        @media (min-width: 769px) {
+            .nav-divider { display: block; }
+            .bottom-nav { overflow-x: visible; overflow-y: auto; }
+        }
+
+        /* ---- Daily Briefing Card ---- */
+        .daily-briefing {
+            background: linear-gradient(145deg, rgba(212,175,55,0.08), rgba(20,20,20,0.95));
+            border: 1.5px solid rgba(212,175,55,0.2);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+        .briefing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .briefing-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #d4af37;
+        }
+        .briefing-date {
+            font-size: 11px;
+            color: #666;
+        }
+        .briefing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .briefing-item {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 12px;
+        }
+        .briefing-item-label {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .briefing-item-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .briefing-item-sub {
+            font-size: 11px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        /* ---- Smart Alerts ---- */
+        .smart-alerts {
+            margin-bottom: 16px;
+        }
+        .alert-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            border: 1px solid;
+        }
+        .alert-item.alert-warning {
+            background: rgba(245,158,11,0.06);
+            border-color: rgba(245,158,11,0.2);
+        }
+        .alert-item.alert-danger {
+            background: rgba(239,68,68,0.06);
+            border-color: rgba(239,68,68,0.2);
+        }
+        .alert-item.alert-success {
+            background: rgba(34,197,94,0.06);
+            border-color: rgba(34,197,94,0.2);
+        }
+        .alert-item.alert-info {
+            background: rgba(59,130,246,0.06);
+            border-color: rgba(59,130,246,0.2);
+        }
+        .alert-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .alert-content { flex: 1; }
+        .alert-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ddd;
+            margin-bottom: 2px;
+        }
+        .alert-sub {
+            font-size: 11px;
+            color: #888;
+        }
+        .alert-dismiss {
+            background: none;
+            border: none;
+            color: #555;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 4px;
+            flex-shrink: 0;
+        }
+
+        /* ---- Goal Tracking ---- */
+        .goal-card {
+            background: linear-gradient(145deg, rgba(20,20,20,0.95), rgba(14,14,14,0.98));
+            border: 1px solid rgba(212,175,55,0.12);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .goal-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #d4af37;
+        }
+        .goal-edit-btn {
+            background: rgba(212,175,55,0.1);
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 8px;
+            padding: 6px 12px;
+            color: #d4af37;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .goal-progress-wrap {
+            margin-bottom: 10px;
+        }
+        .goal-progress-bar {
+            height: 12px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+        .goal-progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #d4af37, #f5d778);
+            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            min-width: 2px;
+        }
+        .goal-progress-fill.exceeded {
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+        }
+        .goal-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #888;
+            margin-top: 6px;
+        }
+        .goal-stats strong { color: #fff; }
+        .goal-set-form {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .goal-set-form.active { display: block; }
+        .goal-set-form input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .goal-set-form .goal-presets {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .goal-preset-btn {
+            padding: 8px 14px;
+            background: rgba(212,175,55,0.06);
+            border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 8px;
+            color: #bbb;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .goal-preset-btn:active { background: rgba(212,175,55,0.2); color: #d4af37; }
+
+        /* ---- Barber Selector (Cash Logger) ---- */
+        .barber-selector {
+            display: flex;
+            gap: 8px;
+            padding: 0 0 12px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .barber-selector::-webkit-scrollbar { display: none; }
+        .barber-chip {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1.5px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            color: #888;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .barber-chip.active {
+            background: rgba(212,175,55,0.15);
+            border-color: #d4af37;
+            color: #d4af37;
+        }
+        .barber-chip:active { transform: scale(0.95); }
+
+        /* ---- Staff Performance / Leaderboard ---- */
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+        }
+        .leaderboard-item:first-child {
+            background: rgba(212,175,55,0.06);
+            border-color: rgba(212,175,55,0.15);
+        }
+        .lb-rank {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            color: #888;
+            flex-shrink: 0;
+        }
+        .leaderboard-item:first-child .lb-rank {
+            background: rgba(212,175,55,0.2);
+            color: #d4af37;
+        }
+        .lb-info { flex: 1; }
+        .lb-name { font-weight: 700; font-size: 14px; color: #fff; margin-bottom: 2px; }
+        .lb-meta { font-size: 11px; color: #888; }
+        .lb-stats { text-align: right; }
+        .lb-revenue { font-size: 18px; font-weight: 800; color: #d4af37; }
+        .lb-cuts { font-size: 11px; color: #888; margin-top: 2px; }
+        .perf-period-btns {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .perf-period-btn {
+            padding: 8px 14px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #888;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .perf-period-btn.active {
+            background: rgba(212,175,55,0.12);
+            border-color: rgba(212,175,55,0.3);
+            color: #d4af37;
+        }
+
+        /* ---- Weekly Report ---- */
+        .report-card {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 12px;
+        }
+        .report-card h4 {
+            font-size: 13px;
+            color: #d4af37;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .report-stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 13px;
+        }
+        .report-stat-row:last-child { border-bottom: none; }
+        .report-stat-label { color: #888; }
+        .report-stat-value { color: #fff; font-weight: 700; }
+        .report-highlight {
+            font-size: 28px;
+            font-weight: 800;
+            color: #d4af37;
+            text-align: center;
+            padding: 16px 0;
+        }
+        .report-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        /* ---- Activity Log ---- */
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            align-items: flex-start;
+        }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+        .activity-dot.dot-gold { background: #d4af37; }
+        .activity-dot.dot-green { background: #22c55e; }
+        .activity-dot.dot-red { background: #ef4444; }
+        .activity-dot.dot-blue { background: #3b82f6; }
+        .activity-dot.dot-gray { background: #555; }
+        .activity-body { flex: 1; }
+        .activity-text { font-size: 13px; color: #ddd; }
+        .activity-time { font-size: 11px; color: #555; margin-top: 3px; }
+        .activity-filter-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 14px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: 2px;
+        }
+        .activity-filter-row::-webkit-scrollbar { display: none; }
+        .activity-filter-btn {
+            flex-shrink: 0;
+            padding: 7px 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            color: #888;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .activity-filter-btn.active {
+            background: rgba(212,175,55,0.12);
+            border-color: rgba(212,175,55,0.3);
+            color: #d4af37;
+        }
+
+        /* ---- Promotions Engine ---- */
+        .promo-item {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 10px;
+        }
+        .promo-item.promo-active {
+            border-color: rgba(34,197,94,0.3);
+            background: rgba(34,197,94,0.03);
+        }
+        .promo-item.promo-scheduled {
+            border-color: rgba(59,130,246,0.3);
+            background: rgba(59,130,246,0.03);
+        }
+        .promo-item.promo-expired {
+            opacity: 0.5;
+        }
+        .promo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .promo-name { font-weight: 700; font-size: 14px; color: #fff; }
+        .promo-badge {
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .promo-badge.badge-active { background: rgba(34,197,94,0.2); color: #22c55e; }
+        .promo-badge.badge-scheduled { background: rgba(59,130,246,0.2); color: #3b82f6; }
+        .promo-badge.badge-expired { background: rgba(255,255,255,0.1); color: #888; }
+        .promo-detail { font-size: 12px; color: #888; margin-bottom: 4px; }
+        .promo-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .promo-actions button {
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        /* ---- Expense Tracker ---- */
+        .expense-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .expense-summary-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+        }
+        .expense-summary-label {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .expense-summary-value {
+            font-size: 18px;
+            font-weight: 800;
+        }
+        .expense-summary-value.income { color: #22c55e; }
+        .expense-summary-value.expense { color: #ef4444; }
+        .expense-summary-value.profit { color: #d4af37; }
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 14px;
+            background: rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 10px;
+            margin-bottom: 6px;
+        }
+        .expense-info { flex: 1; }
+        .expense-name { font-size: 13px; font-weight: 600; color: #ddd; }
+        .expense-meta { font-size: 11px; color: #666; margin-top: 2px; }
+        .expense-amount { font-size: 15px; font-weight: 700; color: #ef4444; }
+        .expense-amount.recurring::after {
+            content: ' (R)';
+            font-size: 10px;
+            color: #888;
+        }
+
+        /* ---- Enhanced Booking Management ---- */
+        .booking-manage-item {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 8px;
+        }
+        .booking-manage-item.bm-confirmed { border-left: 3px solid #22c55e; }
+        .booking-manage-item.bm-cancelled { border-left: 3px solid #ef4444; opacity: 0.6; }
+        .booking-manage-item.bm-noshow { border-left: 3px solid #f59e0b; }
+        .booking-manage-item.bm-pending { border-left: 3px solid #3b82f6; }
+        .bm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .bm-name { font-weight: 700; font-size: 14px; color: #fff; }
+        .bm-status {
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .bm-detail { font-size: 12px; color: #888; margin-bottom: 4px; }
+        .bm-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .bm-actions button {
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        .bm-btn-confirm { background: rgba(34,197,94,0.15); color: #22c55e; }
+        .bm-btn-cancel { background: rgba(239,68,68,0.1); color: #ef4444; }
+        .bm-btn-noshow { background: rgba(245,158,11,0.1); color: #f59e0b; }
+
+        /* ---- Confirmation Modal ---- */
+        .confirm-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 9998;
+            align-items: center;
+            justify-content: center;
+        }
+        .confirm-modal-overlay.active { display: flex; }
+        .confirm-modal {
+            background: #1a1a1a;
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+        }
+        .confirm-modal h3 {
+            color: #fff;
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+        .confirm-modal p {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .confirm-modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .confirm-modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        .cm-btn-cancel {
+            background: rgba(255,255,255,0.06);
+            color: #888;
+        }
+        .cm-btn-confirm {
+            background: #d4af37;
+            color: #000;
+        }
+        .cm-btn-danger {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        /* ---- Toast Notifications ---- */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast {
+            background: #1e1e1e;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+            pointer-events: auto;
+            max-width: 320px;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.toast-success { border-left: 3px solid #22c55e; }
+        .toast.toast-error { border-left: 3px solid #ef4444; }
+        .toast.toast-warning { border-left: 3px solid #f59e0b; }
+        .toast.toast-info { border-left: 3px solid #3b82f6; }
+        @media (max-width: 480px) {
+            .toast-container { top: auto; bottom: 80px; right: 10px; left: 10px; }
+            .toast { max-width: 100%; }
+        }
+
+        /* ---- Empty States ---- */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #555;
+        }
+        .empty-state-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+        .empty-state-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .empty-state-sub {
+            font-size: 12px;
+            color: #555;
+        }
+
+        /* ---- Loading Spinner ---- */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+        }
+        .loading-spinner::after {
+            content: '';
+            width: 28px;
+            height: 28px;
+            border: 3px solid rgba(212,175,55,0.15);
+            border-top-color: #d4af37;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ---- Staff Edit Modal ---- */
+        .staff-edit-form {
+            display: grid;
+            gap: 12px;
+        }
+        .staff-edit-form label {
+            display: block;
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .staff-edit-form input, .staff-edit-form select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        /* ---- Enhanced Pricing ---- */
+        .service-item-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 10px;
+            margin-bottom: 6px;
+        }
+        .service-item-row .si-name { flex: 1; font-size: 13px; color: #ddd; font-weight: 600; }
+        .service-item-row .si-duration {
+            font-size: 11px;
+            color: #888;
+            background: rgba(255,255,255,0.04);
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+        .service-item-row .si-price { font-size: 14px; font-weight: 700; color: #d4af37; min-width: 50px; text-align: right; }
+        .service-item-row .si-actions { display: flex; gap: 6px; }
+        .service-item-row .si-actions button {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .si-edit-btn { background: rgba(59,130,246,0.1); color: #3b82f6; }
+        .si-del-btn { background: rgba(239,68,68,0.1); color: #ef4444; }
+        .add-service-form {
+            display: none;
+            padding: 14px;
+            background: rgba(212,175,55,0.03);
+            border: 1px solid rgba(212,175,55,0.1);
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+        .add-service-form.active { display: block; }
+        .add-service-form input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        .add-service-grid {
+            display: grid;
+            grid-template-columns: 1fr 80px 80px;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        /* ---- Schedule/Date Picker Improvements ---- */
+        .schedule-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .schedule-row label {
+            display: block;
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .schedule-row input[type="date"],
+        .schedule-row input[type="time"] {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            color-scheme: dark;
+        }
+
+        /* General form input improvements */
+        input[type="date"], input[type="time"], input[type="datetime-local"] {
+            color-scheme: dark;
+        }
+
+        /* ---- Section card style (for new sections) ---- */
+        .section-card {
+            background: linear-gradient(145deg, rgba(20,20,20,0.95), rgba(14,14,14,0.98));
+            border: 1px solid rgba(212,175,55,0.1);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.03);
+        }
+        .section-card h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #d4af37;
+            padding-bottom: 14px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(212,175,55,0.08);
+        }
+        .section-card h2 svg {
+            width: 20px;
+            height: 20px;
+            stroke: #d4af37;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* Btn styles for new sections */
+        .btn-gold {
+            padding: 12px 20px;
+            background: #d4af37;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-gold:active { transform: scale(0.97); opacity: 0.9; }
+        .btn-outline {
+            padding: 10px 18px;
+            background: transparent;
+            border: 1.5px solid rgba(212,175,55,0.3);
+            border-radius: 10px;
+            color: #d4af37;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-outline:active { background: rgba(212,175,55,0.1); }
+        .btn-sm {
+            padding: 7px 14px;
+            font-size: 11px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 480px) {
+            .expense-summary { grid-template-columns: 1fr; }
+            .briefing-grid { grid-template-columns: 1fr; }
+            .add-service-grid { grid-template-columns: 1fr; }
+        }
+
     </style>
 </head>
 <body>
@@ -2495,6 +3364,68 @@
         <!-- ==================== OVERVIEW SECTION ==================== -->
         <div class="admin-section active" id="section-overview">
 
+            <!-- Daily Briefing Card -->
+            <div class="daily-briefing" id="dailyBriefing">
+                <div class="briefing-header">
+                    <div class="briefing-title">Daily Briefing</div>
+                    <div class="briefing-date" id="briefingDate"></div>
+                </div>
+                <div class="briefing-grid" id="briefingGrid">
+                    <div class="briefing-item">
+                        <div class="briefing-item-label">Yesterday's Total</div>
+                        <div class="briefing-item-value" id="briefYesterday">&pound;0</div>
+                        <div class="briefing-item-sub" id="briefYesterdaySub">Loading...</div>
+                    </div>
+                    <div class="briefing-item">
+                        <div class="briefing-item-label">Bookings Today</div>
+                        <div class="briefing-item-value" id="briefBookings">0</div>
+                        <div class="briefing-item-sub" id="briefBookingsSub">--</div>
+                    </div>
+                    <div class="briefing-item">
+                        <div class="briefing-item-label">Staff On Duty</div>
+                        <div class="briefing-item-value" id="briefStaff">0</div>
+                        <div class="briefing-item-sub" id="briefStaffSub">--</div>
+                    </div>
+                    <div class="briefing-item">
+                        <div class="briefing-item-label">This Week So Far</div>
+                        <div class="briefing-item-value" id="briefWeek">&pound;0</div>
+                        <div class="briefing-item-sub" id="briefWeekSub">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smart Alerts -->
+            <div class="smart-alerts" id="smartAlerts"></div>
+
+            <!-- Goal Tracking -->
+            <div class="goal-card" id="goalCard">
+                <div class="goal-header">
+                    <div class="goal-title">Daily Goal</div>
+                    <button class="goal-edit-btn" onclick="toggleGoalForm()">Set Goal</button>
+                </div>
+                <div class="goal-progress-wrap">
+                    <div class="goal-progress-bar">
+                        <div class="goal-progress-fill" id="goalFill" style="width: 0%"></div>
+                    </div>
+                    <div class="goal-stats">
+                        <span><strong id="goalCurrent">&pound;0</strong> earned</span>
+                        <span><strong id="goalPercent">0%</strong></span>
+                        <span>Target: <strong id="goalTarget">&pound;0</strong></span>
+                    </div>
+                </div>
+                <div class="goal-set-form" id="goalSetForm">
+                    <div class="goal-presets">
+                        <button class="goal-preset-btn" onclick="setGoalAmount(200)">200</button>
+                        <button class="goal-preset-btn" onclick="setGoalAmount(300)">300</button>
+                        <button class="goal-preset-btn" onclick="setGoalAmount(500)">500</button>
+                        <button class="goal-preset-btn" onclick="setGoalAmount(750)">750</button>
+                        <button class="goal-preset-btn" onclick="setGoalAmount(1000)">1000</button>
+                    </div>
+                    <input type="number" id="goalAmountInput" placeholder="Custom goal amount (&pound;)" inputmode="decimal">
+                    <button class="btn-gold" style="width:100%;" onclick="saveGoal()">Save Goal</button>
+                </div>
+            </div>
+
             <!-- Revenue Hero Card -->
             <div class="revenue-hero" id="revenueHero">
                 <div class="revenue-hero-label">Today's Revenue</div>
@@ -2538,6 +3469,10 @@
                     <svg class="cash-panel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
                 </div>
                 <div class="cash-panel-body">
+                    <!-- Barber Selector -->
+                    <div class="barber-selector" id="barberSelector">
+                        <div class="barber-chip active" data-barber="" onclick="selectBarber(this, '')">Any Barber</div>
+                    </div>
                     <div class="cash-grid" id="cashGrid">
                         <!-- Generated from servicePrices -->
                     </div>
@@ -2909,6 +3844,18 @@
                     Preview: Your message here
                 </div>
 
+                <div class="schedule-row" style="margin-top:12px;">
+                    <div>
+                        <label>Start Date (optional)</label>
+                        <input type="date" id="announceStartDate">
+                    </div>
+                    <div>
+                        <label>End Date (optional)</label>
+                        <input type="date" id="announceEndDate">
+                    </div>
+                </div>
+                <p style="color:#666;font-size:11px;margin-top:6px;">Leave empty for immediate, permanent display. Set end date for auto-deactivation.</p>
+
                 <button class="btn" style="margin-top: 20px;" onclick="saveAnnouncement()">Save Announcement</button>
 
                 <h3 style="color: #fff; font-size: 15px; margin: 25px 0 15px;">Previous Announcements</h3>
@@ -3200,85 +4147,288 @@
         </div>
         </div>
 
+        <!-- ==================== BOOKINGS MANAGEMENT SECTION ==================== -->
+        <div class="admin-section" id="section-bookings">
+            <div class="section-card">
+                <h2>
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Booking Management
+                </h2>
+                <div class="perf-period-btns" style="margin-bottom:12px;">
+                    <button class="perf-period-btn active" onclick="filterBookings('all', this)">All</button>
+                    <button class="perf-period-btn" onclick="filterBookings('pending', this)">Pending</button>
+                    <button class="perf-period-btn" onclick="filterBookings('confirmed', this)">Confirmed</button>
+                    <button class="perf-period-btn" onclick="filterBookings('noshow', this)">No-Show</button>
+                    <button class="perf-period-btn" onclick="filterBookings('cancelled', this)">Cancelled</button>
+                </div>
+                <div id="bookingManageList">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== STAFF PERFORMANCE SECTION ==================== -->
+        <div class="admin-section" id="section-performance">
+            <div class="section-card">
+                <h2>
+                    <svg viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+                    Staff Performance &amp; Leaderboard
+                </h2>
+                <div class="perf-period-btns">
+                    <button class="perf-period-btn active" onclick="loadPerformance('today', this)">Today</button>
+                    <button class="perf-period-btn" onclick="loadPerformance('week', this)">This Week</button>
+                    <button class="perf-period-btn" onclick="loadPerformance('month', this)">This Month</button>
+                </div>
+                <div id="leaderboardList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">&#127942;</div>
+                        <div class="empty-state-text">No performance data yet</div>
+                        <div class="empty-state-sub">Select a barber when logging cash to track performance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== EXPENSE TRACKER SECTION ==================== -->
+        <div class="admin-section" id="section-expenses">
+            <div class="section-card">
+                <h2>
+                    <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                    Expense Tracker &amp; P&amp;L
+                </h2>
+                <div class="perf-period-btns" style="margin-bottom:14px;">
+                    <button class="perf-period-btn active" onclick="loadExpenses('month', this)">This Month</button>
+                    <button class="perf-period-btn" onclick="loadExpenses('week', this)">This Week</button>
+                    <button class="perf-period-btn" onclick="loadExpenses('all', this)">All Time</button>
+                </div>
+                <div class="expense-summary" id="expenseSummary">
+                    <div class="expense-summary-card">
+                        <div class="expense-summary-label">Income</div>
+                        <div class="expense-summary-value income" id="plIncome">&pound;0</div>
+                    </div>
+                    <div class="expense-summary-card">
+                        <div class="expense-summary-label">Expenses</div>
+                        <div class="expense-summary-value expense" id="plExpenses">&pound;0</div>
+                    </div>
+                    <div class="expense-summary-card">
+                        <div class="expense-summary-label">Profit</div>
+                        <div class="expense-summary-value profit" id="plProfit">&pound;0</div>
+                    </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                    <h3 style="font-size:14px;color:#fff;margin:0;">Expenses</h3>
+                    <button class="btn-outline btn-sm" onclick="toggleAddExpense()">+ Add Expense</button>
+                </div>
+                <div class="add-service-form" id="addExpenseForm">
+                    <input type="text" id="expenseName" placeholder="Expense name (e.g. Rent, Supplies)">
+                    <div class="add-service-grid">
+                        <input type="number" id="expenseAmount" placeholder="Amount (&pound;)" step="0.01" inputmode="decimal">
+                        <select id="expenseCategory" style="padding:10px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:13px;">
+                            <option value="rent">Rent</option>
+                            <option value="supplies">Supplies</option>
+                            <option value="utilities">Utilities</option>
+                            <option value="wages">Wages</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <select id="expenseRecurring" style="padding:10px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:13px;">
+                            <option value="once">One-time</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                    <button class="btn-gold" style="width:100%;" onclick="saveExpense()">Save Expense</button>
+                </div>
+                <div id="expensesList"></div>
+            </div>
+        </div>
+
+        <!-- ==================== WEEKLY REPORT SECTION ==================== -->
+        <div class="admin-section" id="section-reports">
+            <div class="section-card">
+                <h2>
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    Weekly Report
+                </h2>
+                <div class="perf-period-btns" style="margin-bottom:14px;">
+                    <button class="perf-period-btn active" onclick="generateReport('thisweek', this)">This Week</button>
+                    <button class="perf-period-btn" onclick="generateReport('lastweek', this)">Last Week</button>
+                    <button class="perf-period-btn" onclick="generateReport('thismonth', this)">This Month</button>
+                </div>
+                <div id="reportContent">
+                    <div class="loading-spinner"></div>
+                </div>
+                <div class="report-actions">
+                    <button class="btn-outline" style="flex:1;" onclick="copyReport()">Copy to Clipboard</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== PROMOTIONS ENGINE SECTION ==================== -->
+        <div class="admin-section" id="section-promotions">
+            <div class="section-card">
+                <h2>
+                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Promotions Engine
+                </h2>
+                <button class="btn-gold" style="width:100%;margin-bottom:16px;" onclick="toggleAddPromo()">+ Create Promotion</button>
+                <div class="add-service-form" id="addPromoForm">
+                    <input type="text" id="promoName" placeholder="Promotion name (e.g. Friday Special)">
+                    <input type="text" id="promoDescription" placeholder="Description shown to customers">
+                    <div class="add-service-grid">
+                        <select id="promoType" style="padding:10px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:13px;">
+                            <option value="percent">% Discount</option>
+                            <option value="fixed">Fixed &pound; Off</option>
+                            <option value="bogo">Buy 1 Get 1</option>
+                            <option value="bundle">Bundle Deal</option>
+                        </select>
+                        <input type="number" id="promoValue" placeholder="Value" step="1" inputmode="numeric">
+                        <div></div>
+                    </div>
+                    <div class="schedule-row">
+                        <div>
+                            <label>Start Date</label>
+                            <input type="date" id="promoStart">
+                        </div>
+                        <div>
+                            <label>End Date</label>
+                            <input type="date" id="promoEnd">
+                        </div>
+                    </div>
+                    <button class="btn-gold" style="width:100%;margin-top:12px;" onclick="savePromotion()">Save Promotion</button>
+                </div>
+                <div id="promosList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">&#11088;</div>
+                        <div class="empty-state-text">No promotions yet</div>
+                        <div class="empty-state-sub">Create promotions with auto-activate/deactivate schedules</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== ACTIVITY LOG SECTION ==================== -->
+        <div class="admin-section" id="section-activitylog">
+            <div class="section-card">
+                <h2>
+                    <svg viewBox="0 0 24 24"><polyline points="12 8 12 12 14 14"/><circle cx="12" cy="12" r="10"/></svg>
+                    Activity Log
+                </h2>
+                <div class="activity-filter-row">
+                    <button class="activity-filter-btn active" onclick="filterActivity('all', this)">All</button>
+                    <button class="activity-filter-btn" onclick="filterActivity('payment', this)">Payments</button>
+                    <button class="activity-filter-btn" onclick="filterActivity('booking', this)">Bookings</button>
+                    <button class="activity-filter-btn" onclick="filterActivity('staff', this)">Staff</button>
+                    <button class="activity-filter-btn" onclick="filterActivity('settings', this)">Settings</button>
+                    <button class="activity-filter-btn" onclick="filterActivity('gallery', this)">Gallery</button>
+                </div>
+                <div id="activityLogList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">&#128196;</div>
+                        <div class="empty-state-text">No activity yet</div>
+                        <div class="empty-state-sub">All admin actions are automatically recorded here</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Bottom Navigation Bar -->
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Confirmation Modal -->
+    <div class="confirm-modal-overlay" id="confirmModal">
+        <div class="confirm-modal">
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <p id="confirmMessage">Are you sure?</p>
+            <div class="confirm-modal-actions">
+                <button class="cm-btn-cancel" onclick="closeConfirmModal()">Cancel</button>
+                <button class="cm-btn-confirm" id="confirmActionBtn" onclick="confirmModalAction()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar (scrollable on mobile, sidebar on desktop) -->
     <nav class="bottom-nav" id="bottomNav" style="display:none;">
-        <button class="bottom-nav-item active" onclick="navTo('overview')" data-section="overview">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <span>Home</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('themes')" data-section="themes">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-            <span>Themes</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('gallery')" data-section="gallery">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <span>Gallery</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('revenue')" data-section="revenue">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            <span>Revenue</span>
-        </button>
-        <button class="bottom-nav-item" onclick="openMoreMenu()" data-section="more">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-            <span>More</span>
-        </button>
         <!-- Sidebar brand (visible on desktop only) -->
         <div class="sidebar-brand">
             <img src="../logo.png" alt="GB">
             <span>ADMIN</span>
         </div>
+        <div class="nav-divider">MAIN</div>
+        <button class="bottom-nav-item active" onclick="navTo('overview')" data-section="overview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Home</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('bookings')" data-section="bookings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Bookings</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('revenue')" data-section="revenue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <span>Revenue</span>
+        </button>
+        <div class="nav-divider">MANAGE</div>
+        <button class="bottom-nav-item" onclick="navTo('gallery')" data-section="gallery">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>Gallery</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('staff')" data-section="staff">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            <span>Staff</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('prices')" data-section="prices">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            <span>Prices</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('themes')" data-section="themes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            <span>Themes</span>
+        </button>
+        <div class="nav-divider">BUSINESS</div>
+        <button class="bottom-nav-item" onclick="navTo('performance')" data-section="performance">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+            <span>Performance</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('expenses')" data-section="expenses">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            <span>Expenses</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('reports')" data-section="reports">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Reports</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('promotions')" data-section="promotions">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Promos</span>
+        </button>
+        <div class="nav-divider">SYSTEM</div>
+        <button class="bottom-nav-item" onclick="navTo('discounts')" data-section="discounts">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+            <span>Discounts</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('announce')" data-section="announce">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            <span>Announce</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('activitylog')" data-section="activitylog">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="12 8 12 12 14 14"/><circle cx="12" cy="12" r="10"/></svg>
+            <span>Activity</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('contacts')" data-section="contacts">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 11.04 11.04 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 11.04 11.04 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            <span>Contacts</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('settings')" data-section="settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            <span>Settings</span>
+        </button>
+        <button class="bottom-nav-item" onclick="doLogout()" style="margin-top:auto;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Logout</span>
+        </button>
     </nav>
-
-    <!-- More Menu Overlay & Drawer -->
-    <div class="more-overlay" id="moreOverlay" onclick="closeMoreMenu()"></div>
-    <div class="more-drawer" id="moreDrawer">
-        <div class="more-drawer-handle"></div>
-        <div class="more-drawer-title">All Sections</div>
-        <div class="more-drawer-grid">
-            <button class="more-drawer-item" onclick="directSection('overview')">
-                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                <span>Overview</span>
-            </button>
-            <button class="more-drawer-item" onclick="directSection('revenue')">
-                <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                <span>Revenue</span>
-            </button>
-            <button class="more-drawer-item" onclick="directSection('prices')">
-                <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-                <span>Prices</span>
-            </button>
-            <button class="more-drawer-item" onclick="directSection('discounts')">
-                <svg viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
-                <span>Discounts</span>
-            </button>
-            <button class="more-drawer-item" onclick="directSection('staff')">
-                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/></svg>
-                <span>Staff</span>
-            </button>
-            <button class="more-drawer-item" onclick="directSection('contacts')">
-                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 11.04 11.04 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 11.04 11.04 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-                <span>Contacts</span>
-            </button>
-            <button class="more-drawer-item" onclick="directSection('gallery')">
-                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                <span>Gallery</span>
-            </button>
-            <button class="more-drawer-item" onclick="directSection('themes')">
-                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                <span>Themes</span>
-            </button>
-            <button class="more-drawer-item" onclick="directSection('announce')">
-                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-                <span>Announce</span>
-            </button>
-            <button class="more-drawer-item" onclick="directSection('settings')">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-                <span>Settings</span>
-            </button>
-        </div>
-    </div>
 
     <!-- Replace Photo Modal -->
     <div id="replacePhotoModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center;">
@@ -3459,11 +4609,8 @@
             };
 
             localStorage.setItem('goldenBarbers_business', JSON.stringify(data));
-
-            // Show success message
-            const success = document.getElementById('businessSuccess');
-            success.classList.add('show');
-            setTimeout(() => success.classList.remove('show'), 3000);
+            logActivity('settings', 'Business settings updated');
+            showToast('Business settings saved', 'success');
         });
 
         // Save hours
@@ -3482,11 +4629,8 @@
             });
 
             localStorage.setItem('goldenBarbers_hours', JSON.stringify(hours));
-
-            // Show success message
-            const success = document.getElementById('hoursSuccess');
-            success.classList.add('show');
-            setTimeout(() => success.classList.remove('show'), 3000);
+            logActivity('settings', 'Opening hours updated');
+            showToast('Opening hours updated', 'success');
         });
 
         // Load bookings from Firebase (LIVE - real-time)
@@ -4028,7 +5172,6 @@
         // SIMPLE DIRECT NAVIGATION
         // ============================================
         function navTo(section) {
-            closeMoreMenu();
             switchSection(section);
 
             // Update bottom nav active states
@@ -4043,32 +5186,17 @@
             if (statsBar) statsBar.style.display = isHome ? '' : 'none';
             if (quickActions) quickActions.style.display = isHome ? '' : 'none';
 
+            // Scroll active nav item into view on mobile
+            var activeBtn = document.querySelector('.bottom-nav-item[data-section="' + section + '"]');
+            if (activeBtn && window.innerWidth < 769) {
+                activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function directSection(section) {
-            closeMoreMenu();
             navTo(section);
-
-            // For sections not in bottom nav, highlight "More"
-            var matched = false;
-            document.querySelectorAll('.bottom-nav-item').forEach(function(b) {
-                if (b.dataset.section === section) matched = true;
-            });
-            if (!matched) {
-                document.querySelectorAll('.bottom-nav-item').forEach(function(b) {
-                    b.classList.toggle('active', b.dataset.section === 'more');
-                });
-            }
-        }
-
-        function openMoreMenu() {
-            document.getElementById('moreOverlay').classList.add('open');
-            document.getElementById('moreDrawer').classList.add('open');
-        }
-        function closeMoreMenu() {
-            document.getElementById('moreOverlay').classList.remove('open');
-            document.getElementById('moreDrawer').classList.remove('open');
         }
 
         // ============================================
@@ -4358,6 +5486,8 @@
             shopStatus.status = shopStatus.status === 'open' ? 'closed' : 'open';
             shopStatus.updatedAt = new Date().toISOString();
             saveShopStatus();
+            logActivity('settings', 'Shop marked as ' + shopStatus.status);
+            showToast('Shop is now ' + shopStatus.status, shopStatus.status === 'open' ? 'success' : 'warning');
         }
 
         function toggleHolidayMode() {
@@ -4366,6 +5496,7 @@
             saveShopStatus();
             var hmText = document.getElementById('holidayModeText');
             hmText.textContent = shopStatus.status === 'holiday' ? 'End Holiday' : 'Holiday Mode';
+            logActivity('settings', shopStatus.status === 'holiday' ? 'Holiday mode activated' : 'Holiday mode ended');
         }
 
         function emergencyClose() {
@@ -4565,10 +5696,8 @@
                 popupHours: document.getElementById('popupHours') ? parseInt(document.getElementById('popupHours').value) || 0 : 0,
                 popupEndTime: popupToggle && popupToggle.classList.contains('active') ? new Date(Date.now() + (parseInt(document.getElementById('popupHours').value) || 24) * 3600000).toISOString() : ''
             }).then(function() {
-                var s = document.getElementById('themeSuccess');
-                s.textContent = t.emoji + ' ' + t.name + ' theme is now LIVE!';
-                s.classList.add('show');
-                setTimeout(function() { s.classList.remove('show'); }, 3000);
+                showToast(t.emoji + ' ' + t.name + ' theme is now LIVE!', 'success');
+                logActivity('settings', 'Theme changed to: ' + t.name);
             });
 
             // Auto-switch discount banner colors/text to match new theme
@@ -4901,8 +6030,8 @@
             var applies = document.getElementById('discountApplies').value;
             var maxUses = parseInt(document.getElementById('discountMaxUses').value) || 0;
 
-            if (!code || !value || !start || !end) { alert('Please fill in all required fields.'); return; }
-            if (discounts.some(function(d) { return d.code === code; })) { alert('This discount code already exists!'); return; }
+            if (!code || !value || !start || !end) { showToast('Please fill in all required fields', 'error'); return; }
+            if (discounts.some(function(d) { return d.code === code; })) { showToast('This discount code already exists!', 'error'); return; }
 
             var discountData = {
                 code: code, type: type, value: value,
@@ -4917,20 +6046,43 @@
                 document.getElementById('discountStart').value = '';
                 document.getElementById('discountEnd').value = '';
                 document.getElementById('discountMaxUses').value = '0';
-                var s = document.getElementById('discountSuccess');
-                s.classList.add('show');
-                setTimeout(function() { s.classList.remove('show'); }, 3000);
+                logActivity('settings', 'Discount created: ' + code + ' (' + (type === 'percent' ? value + '%' : '\u00A3' + value) + ' off)');
+                showToast('Discount code created: ' + code, 'success');
             });
         }
 
         function toggleDiscount(key) {
             var d = discounts.find(function(d) { return d._key === key; });
-            if (d) database.ref('discounts/' + key + '/active').set(!d.active);
+            if (d) {
+                database.ref('discounts/' + key + '/active').set(!d.active);
+                logActivity('settings', 'Discount ' + d.code + ' ' + (d.active ? 'disabled' : 'enabled'));
+                showToast('Discount ' + (d.active ? 'disabled' : 'enabled'), 'success');
+            }
         }
 
         function deleteDiscount(key) {
-            if (!confirm('Delete this discount?')) return;
+            var d = discounts.find(function(d) { return d._key === key; });
+            showConfirmModal('Delete Discount', 'Delete discount code ' + (d ? d.code : '') + '?', function() {
+                database.ref('discounts/' + key).remove();
+                logActivity('settings', 'Discount deleted: ' + (d ? d.code : ''));
+                showToast('Discount deleted', 'success');
+            }, true);
+        }
+
+        function editDiscount(key) {
+            var d = discounts.find(function(d) { return d._key === key; });
+            if (!d) return;
+            document.getElementById('discountCode').value = d.code;
+            document.getElementById('discountType').value = d.type;
+            document.getElementById('discountValue').value = d.value;
+            document.getElementById('discountStart').value = d.start;
+            document.getElementById('discountEnd').value = d.end;
+            document.getElementById('discountApplies').value = d.applies || 'all';
+            document.getElementById('discountMaxUses').value = d.maxUses || 0;
+            // Delete old and re-add with edits
             database.ref('discounts/' + key).remove();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showToast('Edit the discount and save again', 'info');
         }
 
         function renderDiscounts() {
@@ -4967,6 +6119,7 @@
                     '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05);">' +
                         '<span style="color: #666; font-size: 11px;">' + formatDate(d.start) + ' - ' + formatDate(d.end) + '</span>' +
                         '<div style="display: flex; gap: 8px;">' +
+                            '<button onclick="editDiscount(\'' + d._key + '\')" style="padding: 5px 12px; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); border-radius: 6px; color: #3b82f6; font-size: 11px; cursor: pointer;">Edit</button>' +
                             '<button onclick="toggleDiscount(\'' + d._key + '\')" style="padding: 5px 12px; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #d4af37; font-size: 11px; cursor: pointer;">' + (d.active ? 'Disable' : 'Enable') + '</button>' +
                             '<button onclick="deleteDiscount(\'' + d._key + '\')" style="padding: 5px 12px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 6px; color: #ef4444; font-size: 11px; cursor: pointer;">Delete</button>' +
                         '</div>' +
@@ -4995,7 +6148,7 @@
             var phone = document.getElementById('staffPhone').value.trim();
             var speciality = document.getElementById('staffSpeciality').value.trim();
 
-            if (!name) { alert('Please enter a staff name.'); return; }
+            if (!name) { showToast('Please enter a staff name', 'error'); return; }
 
             database.ref('staff').push({
                 name: name, role: role, phone: phone,
@@ -5005,26 +6158,81 @@
                 document.getElementById('staffName').value = '';
                 document.getElementById('staffPhone').value = '';
                 document.getElementById('staffSpeciality').value = '';
-                var s = document.getElementById('staffSuccess');
-                s.classList.add('show');
-                setTimeout(function() { s.classList.remove('show'); }, 3000);
+                showToast('Staff member added: ' + name, 'success');
+                logActivity('staff', 'Staff added: ' + name + ' (' + role + ')');
+                buildBarberSelector();
             });
         }
 
         function toggleStaffDuty(key) {
             var s = staffMembers.find(function(s) { return s._key === key; });
-            if (s) database.ref('staff/' + key + '/onDuty').set(!s.onDuty);
+            if (s) {
+                database.ref('staff/' + key + '/onDuty').set(!s.onDuty);
+                logActivity('staff', s.name + ' marked ' + (s.onDuty ? 'off duty' : 'on duty'));
+            }
         }
 
         function deleteStaff(key) {
-            if (!confirm('Remove this staff member?')) return;
-            database.ref('staff/' + key).remove();
+            var s = staffMembers.find(function(s) { return s._key === key; });
+            var name = s ? s.name : 'Staff';
+            showConfirmModal('Remove Staff', 'Remove ' + name + ' from the team?', function() {
+                database.ref('staff/' + key).remove();
+                logActivity('staff', 'Staff removed: ' + name);
+                showToast('Staff member removed', 'success');
+                buildBarberSelector();
+            }, true);
+        }
+
+        // Edit staff
+        var editingStaffKey = null;
+        function editStaff(key) {
+            var s = staffMembers.find(function(s) { return s._key === key; });
+            if (!s) return;
+            editingStaffKey = key;
+            document.getElementById('staffName').value = s.name;
+            document.getElementById('staffRole').value = s.role || 'Barber';
+            document.getElementById('staffPhone').value = s.phone || '';
+            document.getElementById('staffSpeciality').value = s.speciality || '';
+            // Change add button to save
+            var addBtn = document.querySelector('#section-staff .btn[onclick="addStaff()"]');
+            if (addBtn) {
+                addBtn.textContent = 'Save Changes';
+                addBtn.setAttribute('onclick', 'saveStaffEdit()');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function saveStaffEdit() {
+            if (!editingStaffKey) return;
+            var name = document.getElementById('staffName').value.trim();
+            var role = document.getElementById('staffRole').value;
+            var phone = document.getElementById('staffPhone').value.trim();
+            var speciality = document.getElementById('staffSpeciality').value.trim();
+            if (!name) { showToast('Enter a name', 'error'); return; }
+
+            database.ref('staff/' + editingStaffKey).update({
+                name: name, role: role, phone: phone, speciality: speciality
+            });
+            logActivity('staff', 'Staff updated: ' + name);
+            showToast('Staff updated', 'success');
+
+            // Reset form
+            editingStaffKey = null;
+            document.getElementById('staffName').value = '';
+            document.getElementById('staffPhone').value = '';
+            document.getElementById('staffSpeciality').value = '';
+            var addBtn = document.querySelector('#section-staff .btn[onclick="saveStaffEdit()"]');
+            if (addBtn) {
+                addBtn.textContent = 'Add Staff Member';
+                addBtn.setAttribute('onclick', 'addStaff()');
+            }
+            buildBarberSelector();
         }
 
         function renderStaff() {
             var c = document.getElementById('staffList');
             if (staffMembers.length === 0) {
-                c.innerHTML = '<p style="color: #888; font-size: 14px;">No staff added yet.</p>';
+                c.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128100;</div><div class="empty-state-text">No staff added yet</div><div class="empty-state-sub">Add your team members above</div></div>';
                 return;
             }
             c.innerHTML = staffMembers.map(function(s) {
@@ -5035,10 +6243,11 @@
                     '<div class="staff-avatar">' + initials + '</div>' +
                     '<div class="staff-info">' +
                         '<h4>' + s.name + '</h4>' +
-                        '<p>' + s.role + (s.speciality ? ' · ' + s.speciality : '') + '</p>' +
+                        '<p>' + s.role + (s.speciality ? ' \u00B7 ' + s.speciality : '') + '</p>' +
                         '<span style="color: ' + dutyColor + '; font-size: 11px; font-weight: 700;">' + dutyText + '</span>' +
                     '</div>' +
                     '<div class="staff-actions">' +
+                        '<button onclick="editStaff(\'' + s._key + '\')" style="width: 36px; height: 36px; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); border-radius: 50%; color: #3b82f6; cursor: pointer; display: flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>' +
                         (s.phone ? '<button onclick="window.open(\'tel:' + s.phone + '\')" style="width: 36px; height: 36px; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); border-radius: 50%; color: #22c55e; cursor: pointer; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></button>' : '') +
                         '<div class="toggle-switch' + (s.onDuty ? ' active' : '') + '" onclick="toggleStaffDuty(\'' + s._key + '\')"></div>' +
                         '<button onclick="deleteStaff(\'' + s._key + '\')" style="width: 36px; height: 36px; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); border-radius: 50%; color: #ef4444; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px;">&times;</button>' +
@@ -5124,13 +6333,19 @@
             ['haircuts', 'beard', 'addons'].forEach(function(cat) {
                 var container = document.getElementById('priceList' + cat.charAt(0).toUpperCase() + cat.slice(1));
                 if (!container || !servicePrices[cat]) return;
-                container.innerHTML = servicePrices[cat].map(function(s) {
-                    return '<div class="price-row">' +
-                        '<span class="price-name">' + s.name + '</span>' +
-                        '<span style="color: #888; margin-right: 5px;">\u00A3</span>' +
-                        '<input class="price-input" type="number" id="price-' + s.id + '" value="' + s.price + '" min="0" step="0.5">' +
+                container.innerHTML = servicePrices[cat].map(function(s, idx) {
+                    return '<div class="service-item-row">' +
+                        '<span class="si-name">' + s.name + '</span>' +
+                        (s.duration ? '<span class="si-duration">' + s.duration + ' min</span>' : '') +
+                        '<span style="color: #888; margin-right: 3px;">\u00A3</span>' +
+                        '<input class="price-input" type="number" id="price-' + s.id + '" value="' + s.price + '" min="0" step="0.5" style="width:65px;">' +
+                        '<div class="si-actions">' +
+                            '<button class="si-del-btn" onclick="removeService(\'' + cat + '\',' + idx + ')" title="Remove">&times;</button>' +
+                        '</div>' +
                     '</div>';
                 }).join('');
+                // Add "Add service" button
+                container.innerHTML += '<button class="btn-outline btn-sm" style="margin-top:10px;width:100%;" onclick="showAddService(\'' + cat + '\')">+ Add ' + cat.slice(0,1).toUpperCase() + cat.slice(1).replace('s','') + '</button>';
             });
         }
 
@@ -5143,10 +6358,37 @@
                 });
             });
             database.ref('servicePrices').set(servicePrices).then(function() {
-                var s = document.getElementById('pricesSuccess');
-                s.classList.add('show');
-                setTimeout(function() { s.classList.remove('show'); }, 3000);
+                showToast('Prices saved!', 'success');
+                logActivity('settings', 'Service prices updated');
             });
+        }
+
+        function removeService(cat, idx) {
+            var svc = servicePrices[cat][idx];
+            showConfirmModal('Remove Service', 'Remove "' + svc.name + '" from the menu?', function() {
+                servicePrices[cat].splice(idx, 1);
+                database.ref('servicePrices').set(servicePrices);
+                logActivity('settings', 'Service removed: ' + svc.name);
+                showToast('Service removed', 'success');
+            }, true);
+        }
+
+        function showAddService(cat) {
+            var name = prompt('Service name:');
+            if (!name || !name.trim()) return;
+            var price = prompt('Price (\u00A3):');
+            price = parseFloat(price);
+            if (isNaN(price) || price < 0) { showToast('Invalid price', 'error'); return; }
+            var duration = prompt('Duration in minutes (optional):');
+            duration = parseInt(duration) || null;
+            var id = name.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-' + Date.now().toString(36);
+            var newService = { id: id, name: name.trim(), price: price };
+            if (duration) newService.duration = duration;
+            if (!servicePrices[cat]) servicePrices[cat] = [];
+            servicePrices[cat].push(newService);
+            database.ref('servicePrices').set(servicePrices);
+            logActivity('settings', 'Service added: ' + name + ' (\u00A3' + price + ')');
+            showToast('Service added', 'success');
         }
 
         renderPrices();
@@ -5204,19 +6446,26 @@
             var style = document.getElementById('announceStyle').value;
             var active = document.getElementById('announceToggle').classList.contains('active');
 
-            if (!text) { alert('Please enter an announcement message.'); return; }
+            if (!text) { showToast('Please enter an announcement message', 'error'); return; }
 
-            database.ref('announcement').set({
+            var announceData = {
                 text: text, style: style, active: active, updatedAt: new Date().toISOString()
-            });
+            };
+
+            // Check for scheduling fields
+            var startEl = document.getElementById('announceStartDate');
+            var endEl = document.getElementById('announceEndDate');
+            if (startEl && startEl.value) announceData.startDate = startEl.value;
+            if (endEl && endEl.value) announceData.endDate = endEl.value;
+
+            database.ref('announcement').set(announceData);
 
             database.ref('announceHistory').push({
                 text: text, style: style, date: new Date().toISOString()
             });
 
-            var s = document.getElementById('announceSuccess');
-            s.classList.add('show');
-            setTimeout(function() { s.classList.remove('show'); }, 3000);
+            logActivity('settings', 'Announcement ' + (active ? 'published' : 'saved') + ': ' + text.substring(0, 50));
+            showToast('Announcement ' + (active ? 'published' : 'saved'), 'success');
         }
 
         function renderAnnounceHistory() {
@@ -5417,9 +6666,38 @@
             _counterAnimations[id] = requestAnimationFrame(step);
         }
 
-        // One-tap cash logging (replaces quickCashLog)
+        // Barber selector state
+        var selectedBarber = '';
+        function selectBarber(el, barberName) {
+            selectedBarber = barberName;
+            document.querySelectorAll('.barber-chip').forEach(function(c) { c.classList.remove('active'); });
+            el.classList.add('active');
+        }
+
+        // Build barber selector from staff list
+        function buildBarberSelector() {
+            var container = document.getElementById('barberSelector');
+            if (!container) return;
+            container.innerHTML = '<div class="barber-chip active" data-barber="" onclick="selectBarber(this, \'\')">Any Barber</div>';
+            database.ref('staff').once('value', function(snap) {
+                var data = snap.val();
+                if (!data) return;
+                Object.keys(data).forEach(function(k) {
+                    var s = data[k];
+                    if (!s.name) return;
+                    var chip = document.createElement('div');
+                    chip.className = 'barber-chip';
+                    chip.textContent = s.name;
+                    chip.dataset.barber = s.name;
+                    chip.onclick = function() { selectBarber(chip, s.name); };
+                    container.appendChild(chip);
+                });
+            });
+        }
+
+        // One-tap cash logging with barber tracking
         function logCash(name, amount) {
-            database.ref('payments').push({
+            var paymentData = {
                 reference: 'CASH-' + Date.now().toString(36).toUpperCase(),
                 verifyCode: '------',
                 bankReference: 'CASH',
@@ -5434,7 +6712,12 @@
                 createdAt: new Date().toISOString(),
                 date: new Date().toISOString().split('T')[0],
                 isCash: true
-            });
+            };
+            if (selectedBarber) {
+                paymentData.barber = selectedBarber;
+            }
+            database.ref('payments').push(paymentData);
+            logActivity('payment', 'Cash payment logged: ' + name + ' (\u00A3' + amount.toFixed(2) + ')' + (selectedBarber ? ' by ' + selectedBarber : ''));
             // Flash feedback on the button
             var btns = document.querySelectorAll('.cash-service-btn');
             btns.forEach(function(btn) {
@@ -5774,6 +7057,9 @@
 
             // Render cash grid (in case prices updated)
             renderCashGrid();
+
+            // Update goal progress
+            if (typeof updateGoalProgress === 'function') updateGoalProgress();
         }
 
         updateDashboard();
@@ -5955,19 +7241,19 @@
 
         // Hide a gallery photo
         function hideGalleryPhoto(photoId) {
-            if (!confirm('Hide this photo from the gallery?')) return;
-
-            // Find photo title
             const photo = allGalleryPhotos.find(p => p.id === photoId);
             const title = photo ? photo.title : photoId;
 
-            database.ref('hiddenGalleryPhotos/' + photoId).set({
-                hiddenAt: new Date().toISOString()
-            }).then(() => {
-                // Push undo action
-                pushUndoAction(UNDO_ACTIONS.HIDE_PHOTO, { photoId, title }, 'Hide ' + title);
-            }).catch((error) => {
-                alert('Error hiding photo: ' + error.message);
+            showConfirmModal('Hide Photo', 'Hide "' + title + '" from the gallery?', function() {
+                database.ref('hiddenGalleryPhotos/' + photoId).set({
+                    hiddenAt: new Date().toISOString()
+                }).then(() => {
+                    pushUndoAction(UNDO_ACTIONS.HIDE_PHOTO, { photoId, title }, 'Hide ' + title);
+                    logActivity('gallery', 'Photo hidden: ' + title);
+                    showToast('Photo hidden', 'success');
+                }).catch((error) => {
+                    showToast('Error: ' + error.message, 'error');
+                });
             });
         }
 
@@ -6107,6 +7393,801 @@
             // Show modal
             document.getElementById('makeLiveModal').style.display = 'flex';
         }
+
+        // ============================================
+        // ACTIVITY LOG SYSTEM
+        // ============================================
+        var activityLog = [];
+        var activityFilter = 'all';
+
+        function logActivity(category, description) {
+            var entry = {
+                category: category,
+                description: description,
+                timestamp: new Date().toISOString()
+            };
+            database.ref('activityLog').push(entry);
+        }
+
+        function loadActivityLog() {
+            database.ref('activityLog').orderByChild('timestamp').limitToLast(100).on('value', function(snap) {
+                activityLog = [];
+                snap.forEach(function(child) {
+                    var item = child.val();
+                    item._key = child.key;
+                    activityLog.push(item);
+                });
+                activityLog.reverse();
+                renderActivityLog();
+            });
+        }
+
+        function renderActivityLog() {
+            var container = document.getElementById('activityLogList');
+            if (!container) return;
+            var filtered = activityFilter === 'all' ? activityLog : activityLog.filter(function(a) { return a.category === activityFilter; });
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128196;</div><div class="empty-state-text">No activity found</div><div class="empty-state-sub">Actions will appear here automatically</div></div>';
+                return;
+            }
+            var html = '';
+            filtered.forEach(function(item) {
+                var dotClass = 'dot-gray';
+                if (item.category === 'payment') dotClass = 'dot-green';
+                else if (item.category === 'booking') dotClass = 'dot-blue';
+                else if (item.category === 'staff') dotClass = 'dot-gold';
+                else if (item.category === 'gallery') dotClass = 'dot-red';
+                else if (item.category === 'settings') dotClass = 'dot-gray';
+                var time = new Date(item.timestamp);
+                var timeStr = time.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + ' ' + time.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                html += '<div class="activity-item"><div class="activity-dot ' + dotClass + '"></div><div class="activity-body"><div class="activity-text">' + item.description + '</div><div class="activity-time">' + timeStr + '</div></div></div>';
+            });
+            container.innerHTML = html;
+        }
+
+        function filterActivity(filter, btn) {
+            activityFilter = filter;
+            document.querySelectorAll('.activity-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            renderActivityLog();
+        }
+
+        // ============================================
+        // TOAST NOTIFICATION SYSTEM
+        // ============================================
+        function showToast(message, type) {
+            type = type || 'info';
+            var container = document.getElementById('toastContainer');
+            if (!container) return;
+            var toast = document.createElement('div');
+            toast.className = 'toast toast-' + type;
+            toast.textContent = message;
+            container.appendChild(toast);
+            requestAnimationFrame(function() {
+                toast.classList.add('show');
+            });
+            setTimeout(function() {
+                toast.classList.remove('show');
+                setTimeout(function() { toast.remove(); }, 300);
+            }, 3500);
+        }
+
+        // ============================================
+        // CONFIRMATION MODAL SYSTEM
+        // ============================================
+        var _confirmCallback = null;
+        function showConfirmModal(title, message, callback, danger) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmMessage').textContent = message;
+            var btn = document.getElementById('confirmActionBtn');
+            btn.className = danger ? 'cm-btn-danger' : 'cm-btn-confirm';
+            btn.textContent = danger ? 'Delete' : 'Confirm';
+            _confirmCallback = callback;
+            document.getElementById('confirmModal').classList.add('active');
+        }
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('active');
+            _confirmCallback = null;
+        }
+        function confirmModalAction() {
+            if (_confirmCallback) _confirmCallback();
+            closeConfirmModal();
+        }
+
+        // ============================================
+        // DAILY BRIEFING
+        // ============================================
+        function updateDailyBriefing() {
+            var now = new Date();
+            var briefDate = document.getElementById('briefingDate');
+            if (briefDate) briefDate.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+
+            var yesterday = new Date(now);
+            yesterday.setDate(yesterday.getDate() - 1);
+            var yesterdayStr = yesterday.toISOString().split('T')[0];
+
+            // Calculate yesterday's revenue
+            database.ref('payments').orderByChild('date').equalTo(yesterdayStr).once('value', function(snap) {
+                var total = 0, count = 0;
+                snap.forEach(function(c) {
+                    var p = c.val();
+                    if (p.status === 'confirmed') { total += (p.amount || 0); count++; }
+                });
+                var el = document.getElementById('briefYesterday');
+                if (el) el.textContent = '\u00A3' + total.toFixed(0);
+                var sub = document.getElementById('briefYesterdaySub');
+                if (sub) sub.textContent = count + ' transactions';
+            });
+
+            // Today's bookings
+            var todayStr = now.toISOString().split('T')[0];
+            database.ref('bookings').orderByChild('date').equalTo(todayStr).once('value', function(snap) {
+                var count = 0;
+                snap.forEach(function() { count++; });
+                var el = document.getElementById('briefBookings');
+                if (el) el.textContent = count;
+                var sub = document.getElementById('briefBookingsSub');
+                if (sub) sub.textContent = count > 0 ? 'appointments today' : 'no bookings today';
+            });
+
+            // Staff on duty
+            database.ref('staff').once('value', function(snap) {
+                var onDuty = 0, total = 0;
+                snap.forEach(function(c) {
+                    total++;
+                    if (c.val().onDuty) onDuty++;
+                });
+                var el = document.getElementById('briefStaff');
+                if (el) el.textContent = onDuty;
+                var sub = document.getElementById('briefStaffSub');
+                if (sub) sub.textContent = 'of ' + total + ' total';
+            });
+
+            // This week's revenue
+            var startOfWeek = new Date(now);
+            startOfWeek.setDate(now.getDate() - now.getDay() + 1);
+            var weekStart = startOfWeek.toISOString().split('T')[0];
+            database.ref('payments').orderByChild('date').startAt(weekStart).endAt(todayStr + '\uf8ff').once('value', function(snap) {
+                var total = 0;
+                snap.forEach(function(c) {
+                    var p = c.val();
+                    if (p.status === 'confirmed') total += (p.amount || 0);
+                });
+                var el = document.getElementById('briefWeek');
+                if (el) el.textContent = '\u00A3' + total.toFixed(0);
+                var days = now.getDay() === 0 ? 7 : now.getDay();
+                var avg = days > 0 ? (total / days) : 0;
+                var sub = document.getElementById('briefWeekSub');
+                if (sub) sub.textContent = '\u00A3' + avg.toFixed(0) + '/day avg';
+            });
+        }
+
+        // ============================================
+        // SMART ALERTS ENGINE
+        // ============================================
+        function updateSmartAlerts() {
+            var alerts = [];
+            var today = new Date().toISOString().split('T')[0];
+
+            // Check pending payments
+            var pendingCount = livePayments.filter(function(p) { return p.status === 'pending'; }).length;
+            if (pendingCount > 0) {
+                alerts.push({ type: 'warning', icon: '\u26A0\uFE0F', text: pendingCount + ' pending payment' + (pendingCount > 1 ? 's' : '') + ' awaiting confirmation', sub: 'Go to payments to confirm' });
+            }
+
+            // Check if shop is closed but should be open
+            var now = new Date();
+            var hour = now.getHours();
+            if (hour >= 9 && hour < 20) {
+                // Shop should likely be open
+                database.ref('settings/shopStatus').once('value', function(snap) {
+                    var status = snap.val();
+                    if (status === 'closed' || status === 'holiday') {
+                        alerts.push({ type: 'info', icon: '\uD83D\uDEAA', text: 'Shop is marked as ' + status + ' during business hours', sub: 'Update shop status if open' });
+                    }
+                    renderSmartAlerts(alerts);
+                });
+            }
+
+            // Check revenue compared to goal
+            database.ref('goals/daily').once('value', function(snap) {
+                var goal = snap.val();
+                if (goal && goal.amount) {
+                    var todayTotal = parseFloat((document.getElementById('dashTotalRev') || {}).textContent.replace(/[^0-9.]/g, '')) || 0;
+                    if (hour >= 16 && todayTotal < goal.amount * 0.5) {
+                        alerts.push({ type: 'danger', icon: '\uD83D\uDCC9', text: 'Revenue is below 50% of daily goal with limited hours left', sub: '\u00A3' + todayTotal.toFixed(0) + ' of \u00A3' + goal.amount + ' target' });
+                    } else if (todayTotal >= goal.amount) {
+                        alerts.push({ type: 'success', icon: '\uD83C\uDF89', text: 'Daily goal reached!', sub: '\u00A3' + todayTotal.toFixed(0) + ' earned today' });
+                    }
+                }
+                renderSmartAlerts(alerts);
+            });
+
+            // Check for no-show bookings
+            database.ref('bookings').orderByChild('date').equalTo(today).once('value', function(snap) {
+                var bookingCount = 0;
+                snap.forEach(function(c) {
+                    var b = c.val();
+                    if (b.status !== 'cancelled') bookingCount++;
+                });
+                if (bookingCount === 0 && hour >= 10) {
+                    alerts.push({ type: 'info', icon: '\uD83D\uDCC5', text: 'No bookings scheduled for today', sub: 'Walk-ins only today' });
+                }
+                renderSmartAlerts(alerts);
+            });
+
+            // Default render if no async callbacks triggered
+            setTimeout(function() { renderSmartAlerts(alerts); }, 500);
+        }
+
+        function renderSmartAlerts(alerts) {
+            var container = document.getElementById('smartAlerts');
+            if (!container) return;
+            if (!alerts || alerts.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            var html = '';
+            alerts.forEach(function(a, i) {
+                html += '<div class="alert-item alert-' + a.type + '">';
+                html += '<div class="alert-icon">' + a.icon + '</div>';
+                html += '<div class="alert-content"><div class="alert-text">' + a.text + '</div>';
+                if (a.sub) html += '<div class="alert-sub">' + a.sub + '</div>';
+                html += '</div>';
+                html += '<button class="alert-dismiss" onclick="this.parentElement.remove()">&times;</button>';
+                html += '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // GOAL TRACKING
+        // ============================================
+        var dailyGoal = 0;
+
+        function loadGoal() {
+            database.ref('goals/daily').on('value', function(snap) {
+                var data = snap.val();
+                if (data && data.amount) {
+                    dailyGoal = data.amount;
+                    updateGoalProgress();
+                }
+            });
+        }
+
+        function toggleGoalForm() {
+            var form = document.getElementById('goalSetForm');
+            if (form) form.classList.toggle('active');
+        }
+
+        function setGoalAmount(amt) {
+            var inp = document.getElementById('goalAmountInput');
+            if (inp) inp.value = amt;
+        }
+
+        function saveGoal() {
+            var inp = document.getElementById('goalAmountInput');
+            var val = parseFloat(inp ? inp.value : 0);
+            if (isNaN(val) || val <= 0) { showToast('Enter a valid goal amount', 'error'); return; }
+            database.ref('goals/daily').set({ amount: val, setAt: new Date().toISOString() });
+            dailyGoal = val;
+            updateGoalProgress();
+            toggleGoalForm();
+            logActivity('settings', 'Daily goal set to \u00A3' + val);
+            showToast('Daily goal set to \u00A3' + val, 'success');
+        }
+
+        function updateGoalProgress() {
+            if (dailyGoal <= 0) {
+                document.getElementById('goalTarget').textContent = 'Not set';
+                document.getElementById('goalPercent').textContent = '--';
+                document.getElementById('goalFill').style.width = '0%';
+                return;
+            }
+            var todayRev = parseFloat((document.getElementById('dashTotalRev') || {}).textContent.replace(/[^0-9.]/g, '')) || 0;
+            var pct = Math.min((todayRev / dailyGoal) * 100, 100);
+            var fill = document.getElementById('goalFill');
+            fill.style.width = Math.min(pct, 100) + '%';
+            fill.className = 'goal-progress-fill' + (pct >= 100 ? ' exceeded' : '');
+            document.getElementById('goalCurrent').textContent = '\u00A3' + todayRev.toFixed(0);
+            document.getElementById('goalTarget').textContent = '\u00A3' + dailyGoal;
+            document.getElementById('goalPercent').textContent = pct.toFixed(0) + '%';
+        }
+
+        // ============================================
+        // STAFF PERFORMANCE & LEADERBOARD
+        // ============================================
+        var perfPeriod = 'today';
+
+        function loadPerformance(period, btn) {
+            perfPeriod = period;
+            if (btn) {
+                btn.parentElement.querySelectorAll('.perf-period-btn').forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+            }
+
+            var now = new Date();
+            var startDate, endDate;
+            endDate = now.toISOString().split('T')[0];
+
+            if (period === 'today') {
+                startDate = endDate;
+            } else if (period === 'week') {
+                var d = new Date(now);
+                d.setDate(d.getDate() - d.getDay() + 1);
+                startDate = d.toISOString().split('T')[0];
+            } else {
+                var d = new Date(now.getFullYear(), now.getMonth(), 1);
+                startDate = d.toISOString().split('T')[0];
+            }
+
+            database.ref('payments').orderByChild('date').startAt(startDate).endAt(endDate + '\uf8ff').once('value', function(snap) {
+                var barberStats = {};
+                snap.forEach(function(child) {
+                    var p = child.val();
+                    if (p.status !== 'confirmed') return;
+                    var barber = p.barber || 'Unassigned';
+                    if (!barberStats[barber]) barberStats[barber] = { revenue: 0, cuts: 0 };
+                    barberStats[barber].revenue += (p.amount || 0);
+                    barberStats[barber].cuts += 1;
+                });
+
+                var sorted = Object.keys(barberStats).map(function(name) {
+                    return { name: name, revenue: barberStats[name].revenue, cuts: barberStats[name].cuts };
+                }).sort(function(a, b) { return b.revenue - a.revenue; });
+
+                renderLeaderboard(sorted);
+            });
+        }
+
+        function renderLeaderboard(data) {
+            var container = document.getElementById('leaderboardList');
+            if (!container) return;
+            if (data.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#127942;</div><div class="empty-state-text">No performance data for this period</div><div class="empty-state-sub">Select a barber when logging cash to track performance</div></div>';
+                return;
+            }
+            var html = '';
+            data.forEach(function(item, i) {
+                html += '<div class="leaderboard-item">';
+                html += '<div class="lb-rank">' + (i + 1) + '</div>';
+                html += '<div class="lb-info"><div class="lb-name">' + item.name + '</div><div class="lb-meta">' + item.cuts + ' services</div></div>';
+                html += '<div class="lb-stats"><div class="lb-revenue">\u00A3' + item.revenue.toFixed(0) + '</div><div class="lb-cuts">\u00A3' + (item.revenue / item.cuts).toFixed(0) + ' avg</div></div>';
+                html += '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // WEEKLY REPORT GENERATOR
+        // ============================================
+        function generateReport(period, btn) {
+            if (btn) {
+                btn.parentElement.querySelectorAll('.perf-period-btn').forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+            }
+
+            var now = new Date();
+            var startDate, endDate, title;
+
+            if (period === 'thisweek') {
+                var d = new Date(now);
+                d.setDate(d.getDate() - d.getDay() + 1);
+                startDate = d.toISOString().split('T')[0];
+                endDate = now.toISOString().split('T')[0];
+                title = 'This Week';
+            } else if (period === 'lastweek') {
+                var d = new Date(now);
+                d.setDate(d.getDate() - d.getDay() - 6);
+                startDate = d.toISOString().split('T')[0];
+                d.setDate(d.getDate() + 6);
+                endDate = d.toISOString().split('T')[0];
+                title = 'Last Week';
+            } else {
+                startDate = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+                endDate = now.toISOString().split('T')[0];
+                title = 'This Month';
+            }
+
+            database.ref('payments').orderByChild('date').startAt(startDate).endAt(endDate + '\uf8ff').once('value', function(paySnap) {
+                var totalRev = 0, cashRev = 0, qrRev = 0, totalTx = 0, cashTx = 0, qrTx = 0;
+                var serviceCounts = {};
+                var barberRevenue = {};
+                var dailyRevenue = {};
+
+                paySnap.forEach(function(c) {
+                    var p = c.val();
+                    if (p.status !== 'confirmed') return;
+                    totalRev += (p.amount || 0);
+                    totalTx++;
+                    if (p.isCash) { cashRev += (p.amount || 0); cashTx++; }
+                    else { qrRev += (p.amount || 0); qrTx++; }
+                    if (p.items) p.items.forEach(function(s) {
+                        serviceCounts[s] = (serviceCounts[s] || 0) + 1;
+                    });
+                    var barber = p.barber || 'Unassigned';
+                    barberRevenue[barber] = (barberRevenue[barber] || 0) + (p.amount || 0);
+                    dailyRevenue[p.date] = (dailyRevenue[p.date] || 0) + (p.amount || 0);
+                });
+
+                var topService = Object.keys(serviceCounts).sort(function(a,b) { return serviceCounts[b] - serviceCounts[a]; })[0] || 'N/A';
+                var avgTransaction = totalTx > 0 ? (totalRev / totalTx) : 0;
+                var days = Object.keys(dailyRevenue).length || 1;
+                var dailyAvg = totalRev / days;
+                var bestDay = Object.keys(dailyRevenue).sort(function(a,b) { return dailyRevenue[b] - dailyRevenue[a]; })[0] || 'N/A';
+                var bestDayRev = dailyRevenue[bestDay] || 0;
+                var topBarber = Object.keys(barberRevenue).sort(function(a,b) { return barberRevenue[b] - barberRevenue[a]; })[0] || 'N/A';
+
+                var html = '<div class="report-card"><h4>Revenue Overview - ' + title + '</h4>';
+                html += '<div class="report-highlight">\u00A3' + totalRev.toFixed(2) + '</div>';
+                html += '<div class="report-stat-row"><span class="report-stat-label">Cash Revenue</span><span class="report-stat-value">\u00A3' + cashRev.toFixed(2) + ' (' + cashTx + ' tx)</span></div>';
+                html += '<div class="report-stat-row"><span class="report-stat-label">QR Revenue</span><span class="report-stat-value">\u00A3' + qrRev.toFixed(2) + ' (' + qrTx + ' tx)</span></div>';
+                html += '<div class="report-stat-row"><span class="report-stat-label">Total Transactions</span><span class="report-stat-value">' + totalTx + '</span></div>';
+                html += '<div class="report-stat-row"><span class="report-stat-label">Avg Transaction</span><span class="report-stat-value">\u00A3' + avgTransaction.toFixed(2) + '</span></div>';
+                html += '<div class="report-stat-row"><span class="report-stat-label">Daily Average</span><span class="report-stat-value">\u00A3' + dailyAvg.toFixed(2) + '</span></div>';
+                html += '</div>';
+
+                html += '<div class="report-card"><h4>Performance</h4>';
+                html += '<div class="report-stat-row"><span class="report-stat-label">Best Day</span><span class="report-stat-value">' + bestDay + ' (\u00A3' + bestDayRev.toFixed(0) + ')</span></div>';
+                html += '<div class="report-stat-row"><span class="report-stat-label">Top Service</span><span class="report-stat-value">' + topService + '</span></div>';
+                html += '<div class="report-stat-row"><span class="report-stat-label">Top Barber</span><span class="report-stat-value">' + topBarber + '</span></div>';
+                html += '</div>';
+
+                document.getElementById('reportContent').innerHTML = html;
+            });
+        }
+
+        function copyReport() {
+            var el = document.getElementById('reportContent');
+            if (!el) return;
+            var text = el.innerText;
+            navigator.clipboard.writeText(text).then(function() {
+                showToast('Report copied to clipboard', 'success');
+            }).catch(function() {
+                showToast('Failed to copy', 'error');
+            });
+        }
+
+        // ============================================
+        // EXPENSE TRACKER & P&L
+        // ============================================
+        var expenses = [];
+        var expensePeriod = 'month';
+
+        function toggleAddExpense() {
+            var form = document.getElementById('addExpenseForm');
+            if (form) form.classList.toggle('active');
+        }
+
+        function saveExpense() {
+            var name = document.getElementById('expenseName').value.trim();
+            var amount = parseFloat(document.getElementById('expenseAmount').value);
+            var category = document.getElementById('expenseCategory').value;
+            var recurring = document.getElementById('expenseRecurring').value;
+
+            if (!name) { showToast('Enter expense name', 'error'); return; }
+            if (isNaN(amount) || amount <= 0) { showToast('Enter valid amount', 'error'); return; }
+
+            database.ref('expenses').push({
+                name: name,
+                amount: amount,
+                category: category,
+                recurring: recurring,
+                date: new Date().toISOString().split('T')[0],
+                createdAt: new Date().toISOString()
+            });
+
+            logActivity('settings', 'Expense added: ' + name + ' (\u00A3' + amount.toFixed(2) + ')');
+            showToast('Expense saved', 'success');
+
+            document.getElementById('expenseName').value = '';
+            document.getElementById('expenseAmount').value = '';
+            toggleAddExpense();
+        }
+
+        function loadExpenses(period, btn) {
+            expensePeriod = period;
+            if (btn) {
+                btn.parentElement.querySelectorAll('.perf-period-btn').forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+            }
+
+            var now = new Date();
+            var startDate;
+            if (period === 'week') {
+                var d = new Date(now);
+                d.setDate(d.getDate() - d.getDay() + 1);
+                startDate = d.toISOString().split('T')[0];
+            } else if (period === 'month') {
+                startDate = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+            } else {
+                startDate = '2020-01-01';
+            }
+            var endDate = now.toISOString().split('T')[0];
+
+            // Load expenses
+            database.ref('expenses').orderByChild('date').startAt(startDate).endAt(endDate + '\uf8ff').once('value', function(expSnap) {
+                var totalExpenses = 0;
+                expenses = [];
+                expSnap.forEach(function(c) {
+                    var e = c.val();
+                    e._key = c.key;
+                    expenses.push(e);
+                    totalExpenses += (e.amount || 0);
+                });
+
+                // Load income for same period
+                database.ref('payments').orderByChild('date').startAt(startDate).endAt(endDate + '\uf8ff').once('value', function(paySnap) {
+                    var totalIncome = 0;
+                    paySnap.forEach(function(c) {
+                        var p = c.val();
+                        if (p.status === 'confirmed') totalIncome += (p.amount || 0);
+                    });
+
+                    document.getElementById('plIncome').textContent = '\u00A3' + totalIncome.toFixed(0);
+                    document.getElementById('plExpenses').textContent = '\u00A3' + totalExpenses.toFixed(0);
+                    var profit = totalIncome - totalExpenses;
+                    var profitEl = document.getElementById('plProfit');
+                    profitEl.textContent = (profit >= 0 ? '+' : '') + '\u00A3' + profit.toFixed(0);
+                    profitEl.style.color = profit >= 0 ? '#22c55e' : '#ef4444';
+
+                    renderExpenses();
+                });
+            });
+        }
+
+        function renderExpenses() {
+            var container = document.getElementById('expensesList');
+            if (!container) return;
+            if (expenses.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128176;</div><div class="empty-state-text">No expenses recorded</div><div class="empty-state-sub">Add expenses to track your P&amp;L</div></div>';
+                return;
+            }
+            var html = '';
+            expenses.sort(function(a,b) { return b.date.localeCompare(a.date); }).forEach(function(e) {
+                html += '<div class="expense-item">';
+                html += '<div class="expense-info"><div class="expense-name">' + e.name + '</div>';
+                html += '<div class="expense-meta">' + e.category + ' &middot; ' + e.date + (e.recurring !== 'once' ? ' &middot; ' + e.recurring : '') + '</div></div>';
+                html += '<div class="expense-amount' + (e.recurring !== 'once' ? ' recurring' : '') + '">\u00A3' + (e.amount || 0).toFixed(2) + '</div>';
+                html += '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        function deleteExpense(key) {
+            showConfirmModal('Delete Expense', 'Are you sure you want to delete this expense?', function() {
+                database.ref('expenses/' + key).remove();
+                showToast('Expense deleted', 'success');
+                logActivity('settings', 'Expense deleted');
+                loadExpenses(expensePeriod);
+            }, true);
+        }
+
+        // ============================================
+        // PROMOTIONS ENGINE
+        // ============================================
+        var promotions = [];
+
+        function toggleAddPromo() {
+            var form = document.getElementById('addPromoForm');
+            if (form) form.classList.toggle('active');
+        }
+
+        function savePromotion() {
+            var name = document.getElementById('promoName').value.trim();
+            var desc = document.getElementById('promoDescription').value.trim();
+            var type = document.getElementById('promoType').value;
+            var value = parseFloat(document.getElementById('promoValue').value);
+            var startDate = document.getElementById('promoStart').value;
+            var endDate = document.getElementById('promoEnd').value;
+
+            if (!name) { showToast('Enter promotion name', 'error'); return; }
+            if (isNaN(value) || value <= 0) { showToast('Enter a valid value', 'error'); return; }
+
+            database.ref('promotions').push({
+                name: name,
+                description: desc,
+                type: type,
+                value: value,
+                startDate: startDate || new Date().toISOString().split('T')[0],
+                endDate: endDate || '',
+                active: true,
+                createdAt: new Date().toISOString()
+            });
+
+            logActivity('settings', 'Promotion created: ' + name);
+            showToast('Promotion created', 'success');
+
+            document.getElementById('promoName').value = '';
+            document.getElementById('promoDescription').value = '';
+            document.getElementById('promoValue').value = '';
+            toggleAddPromo();
+        }
+
+        function loadPromotions() {
+            database.ref('promotions').on('value', function(snap) {
+                promotions = [];
+                snap.forEach(function(c) {
+                    var p = c.val();
+                    p._key = c.key;
+                    promotions.push(p);
+                });
+                checkPromotionSchedules();
+                renderPromotions();
+            });
+        }
+
+        function checkPromotionSchedules() {
+            var today = new Date().toISOString().split('T')[0];
+            promotions.forEach(function(p) {
+                if (p.endDate && p.endDate < today && p.active) {
+                    database.ref('promotions/' + p._key + '/active').set(false);
+                    p.active = false;
+                }
+                if (p.startDate && p.startDate > today && p.active) {
+                    // Future promo, mark scheduled
+                    p._status = 'scheduled';
+                } else if (p.endDate && p.endDate < today) {
+                    p._status = 'expired';
+                } else if (p.active) {
+                    p._status = 'active';
+                } else {
+                    p._status = 'expired';
+                }
+            });
+        }
+
+        function renderPromotions() {
+            var container = document.getElementById('promosList');
+            if (!container) return;
+            if (promotions.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#11088;</div><div class="empty-state-text">No promotions yet</div><div class="empty-state-sub">Create promotions with auto-activate/deactivate schedules</div></div>';
+                return;
+            }
+            var html = '';
+            promotions.forEach(function(p) {
+                var statusClass = p._status === 'active' ? 'promo-active' : (p._status === 'scheduled' ? 'promo-scheduled' : 'promo-expired');
+                var badgeClass = p._status === 'active' ? 'badge-active' : (p._status === 'scheduled' ? 'badge-scheduled' : 'badge-expired');
+                var typeLabel = p.type === 'percent' ? p.value + '% off' : (p.type === 'fixed' ? '\u00A3' + p.value + ' off' : (p.type === 'bogo' ? 'Buy 1 Get 1' : 'Bundle'));
+                html += '<div class="promo-item ' + statusClass + '">';
+                html += '<div class="promo-header"><div class="promo-name">' + p.name + '</div><span class="promo-badge ' + badgeClass + '">' + p._status + '</span></div>';
+                html += '<div class="promo-detail">' + typeLabel + '</div>';
+                if (p.description) html += '<div class="promo-detail">' + p.description + '</div>';
+                html += '<div class="promo-detail">' + (p.startDate || 'Now') + ' &rarr; ' + (p.endDate || 'No end date') + '</div>';
+                html += '<div class="promo-actions">';
+                if (p._status === 'active') {
+                    html += '<button style="background:rgba(239,68,68,0.1);color:#ef4444;" onclick="togglePromoActive(\'' + p._key + '\', false)">Deactivate</button>';
+                } else if (p._status !== 'expired') {
+                    html += '<button style="background:rgba(34,197,94,0.1);color:#22c55e;" onclick="togglePromoActive(\'' + p._key + '\', true)">Activate</button>';
+                }
+                html += '<button style="background:rgba(239,68,68,0.1);color:#ef4444;" onclick="deletePromotion(\'' + p._key + '\')">Delete</button>';
+                html += '</div></div>';
+            });
+            container.innerHTML = html;
+        }
+
+        function togglePromoActive(key, active) {
+            database.ref('promotions/' + key + '/active').set(active);
+            logActivity('settings', 'Promotion ' + (active ? 'activated' : 'deactivated'));
+            showToast('Promotion ' + (active ? 'activated' : 'deactivated'), 'success');
+        }
+
+        function deletePromotion(key) {
+            showConfirmModal('Delete Promotion', 'Are you sure you want to delete this promotion?', function() {
+                database.ref('promotions/' + key).remove();
+                logActivity('settings', 'Promotion deleted');
+                showToast('Promotion deleted', 'success');
+            }, true);
+        }
+
+        // ============================================
+        // BOOKING MANAGEMENT
+        // ============================================
+        var managedBookings = [];
+        var bookingFilter = 'all';
+
+        function loadBookingManagement() {
+            database.ref('bookings').orderByChild('date').on('value', function(snap) {
+                managedBookings = [];
+                snap.forEach(function(c) {
+                    var b = c.val();
+                    b._key = c.key;
+                    if (!b.status) b.status = 'pending';
+                    managedBookings.push(b);
+                });
+                managedBookings.reverse();
+                renderManagedBookings();
+            });
+        }
+
+        function filterBookings(filter, btn) {
+            bookingFilter = filter;
+            btn.parentElement.querySelectorAll('.perf-period-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            renderManagedBookings();
+        }
+
+        function renderManagedBookings() {
+            var container = document.getElementById('bookingManageList');
+            if (!container) return;
+            var filtered = bookingFilter === 'all' ? managedBookings : managedBookings.filter(function(b) { return b.status === bookingFilter; });
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128197;</div><div class="empty-state-text">No bookings found</div><div class="empty-state-sub">' + (bookingFilter !== 'all' ? 'No ' + bookingFilter + ' bookings' : 'Bookings appear when customers book') + '</div></div>';
+                return;
+            }
+            var html = '';
+            filtered.slice(0, 50).forEach(function(b) {
+                var statusClass = 'bm-' + (b.status || 'pending');
+                var statusColor = b.status === 'confirmed' ? '#22c55e' : (b.status === 'cancelled' ? '#ef4444' : (b.status === 'noshow' ? '#f59e0b' : '#3b82f6'));
+                html += '<div class="booking-manage-item ' + statusClass + '">';
+                html += '<div class="bm-header"><div class="bm-name">' + (b.name || 'Guest') + '</div><span class="bm-status" style="background:' + statusColor + '22;color:' + statusColor + ';">' + (b.status || 'pending') + '</span></div>';
+                html += '<div class="bm-detail">' + (b.service || 'Service N/A') + ' &middot; ' + (b.date || '') + ' ' + (b.time || '') + '</div>';
+                if (b.phone) html += '<div class="bm-detail">Phone: ' + b.phone + '</div>';
+                if (b.status === 'pending' || !b.status) {
+                    html += '<div class="bm-actions">';
+                    html += '<button class="bm-btn-confirm" onclick="updateBookingStatus(\'' + b._key + '\', \'confirmed\')">Confirm</button>';
+                    html += '<button class="bm-btn-noshow" onclick="updateBookingStatus(\'' + b._key + '\', \'noshow\')">No-Show</button>';
+                    html += '<button class="bm-btn-cancel" onclick="updateBookingStatus(\'' + b._key + '\', \'cancelled\')">Cancel</button>';
+                    html += '</div>';
+                }
+                html += '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        function updateBookingStatus(key, status) {
+            database.ref('bookings/' + key + '/status').set(status);
+            logActivity('booking', 'Booking marked as ' + status);
+            showToast('Booking ' + status, 'success');
+        }
+
+        // ============================================
+        // NAVIGATION UPDATE (remove More drawer deps)
+        // ============================================
+        function openMoreMenu() { /* deprecated - no more drawer */ }
+        function closeMoreMenu() { /* deprecated - no more drawer */ }
+
+        function doLogout() {
+            showConfirmModal('Logout', 'Are you sure you want to logout?', function() {
+                sessionStorage.removeItem('gb_admin_auth');
+                location.reload();
+            });
+        }
+
+        // ============================================
+        // INIT NEW FEATURES
+        // ============================================
+        function initNewFeatures() {
+            buildBarberSelector();
+            loadActivityLog();
+            loadGoal();
+            loadPromotions();
+            loadBookingManagement();
+            loadExpenses('month');
+            loadPerformance('today');
+            generateReport('thisweek');
+            updateDailyBriefing();
+            setTimeout(updateSmartAlerts, 1500);
+
+            // Update goal progress whenever dashboard updates
+            var origUpdateDashboard = typeof updateDashboard === 'function' ? updateDashboard : null;
+            if (origUpdateDashboard) {
+                // Patch dashboard update to also update goal
+                var _origCalc = window.updateDashboard;
+            }
+
+            // Periodically refresh briefing and alerts
+            setInterval(function() {
+                updateGoalProgress();
+                updateSmartAlerts();
+            }, 60000);
+        }
+
+        // Hook into the existing init
+        var _origDOMReady = window.onload;
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initNewFeatures, 500);
+        });
 
         // ============================================
         // UNDO SYSTEM
