@@ -14,6 +14,9 @@
 
     <style>
         /* Simple Admin Panel Styles */
+        html {
+            overflow-x: hidden;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -26,6 +29,8 @@
             color: #fff;
             padding: 12px 12px 72px 12px;
             min-height: 100vh;
+            overflow-x: hidden;
+            max-width: 100vw;
         }
 
         /* Login Screen */
@@ -1451,10 +1456,24 @@
         /* Hours row — stack on small screens */
         @media (max-width: 500px) {
             .hours-row {
-                grid-template-columns: 1fr 1fr auto !important;
+                grid-template-columns: 1fr 1fr !important;
+                row-gap: 6px;
             }
             .hours-day {
                 grid-column: 1 / -1;
+            }
+            .hours-row input[type="time"] {
+                font-size: 13px;
+                padding: 8px 10px;
+            }
+            /* Move closed checkbox to its own row */
+            .hours-row .closed-wrap {
+                grid-column: 1 / -1;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 13px;
+                color: #888;
             }
         }
 
@@ -2440,23 +2459,30 @@
         @media (max-width: 768px) {
             .bottom-nav {
                 overflow-x: auto;
+                overflow-y: hidden;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
                 justify-content: flex-start !important;
                 gap: 0;
                 padding: 6px 4px !important;
                 height: 58px;
+                /* Prevent nav from causing page side-scroll */
+                width: 100%;
+                left: 0;
+                right: 0;
             }
             .bottom-nav::-webkit-scrollbar { display: none; }
             .bottom-nav-item {
                 flex-shrink: 0;
-                min-width: 56px;
-                padding: 4px 8px;
+                min-width: 52px;
+                max-width: 70px;
+                padding: 4px 6px;
                 font-size: 9px;
                 gap: 2px;
+                white-space: nowrap;
             }
-            .bottom-nav-item svg { width: 20px; height: 20px; }
-            .bottom-nav-item.active::before { width: 22px; height: 2px; }
+            .bottom-nav-item svg { width: 18px; height: 18px; }
+            .bottom-nav-item.active::before { width: 20px; height: 2px; }
         }
 
         /* Nav section dividers (desktop sidebar) */
@@ -3920,8 +3946,8 @@
                 <div id="gallerySuccess" class="success-message">Media uploaded successfully!</div>
 
                 <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="switchTab('photos')">Photos</button>
-                    <button class="tab-btn" onclick="switchTab('videos')">Videos</button>
+                    <button class="tab-btn active" onclick="switchTab('photos', this)">Photos</button>
+                    <button class="tab-btn" onclick="switchTab('videos', this)">Videos</button>
                     <button onclick="clearAllLive()" style="margin-left: auto; padding: 10px 20px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); border-radius: 8px; color: #ef4444; cursor: pointer; font-weight: 600;">Clear All Live</button>
                 </div>
 
@@ -4019,43 +4045,43 @@
                             <span class="hours-day">Monday</span>
                             <input type="time" id="monday-open" value="09:30">
                             <input type="time" id="monday-close" value="20:00">
-                            <input type="checkbox" id="monday-closed">
+                            <div class="closed-wrap"><input type="checkbox" id="monday-closed"><label for="monday-closed">Closed</label></div>
                         </div>
                         <div class="hours-row">
                             <span class="hours-day">Tuesday</span>
                             <input type="time" id="tuesday-open" value="09:30">
                             <input type="time" id="tuesday-close" value="20:00">
-                            <input type="checkbox" id="tuesday-closed">
+                            <div class="closed-wrap"><input type="checkbox" id="tuesday-closed"><label for="tuesday-closed">Closed</label></div>
                         </div>
                         <div class="hours-row">
                             <span class="hours-day">Wednesday</span>
                             <input type="time" id="wednesday-open" value="09:30">
                             <input type="time" id="wednesday-close" value="20:00">
-                            <input type="checkbox" id="wednesday-closed">
+                            <div class="closed-wrap"><input type="checkbox" id="wednesday-closed"><label for="wednesday-closed">Closed</label></div>
                         </div>
                         <div class="hours-row">
                             <span class="hours-day">Thursday</span>
                             <input type="time" id="thursday-open" value="09:30">
                             <input type="time" id="thursday-close" value="20:00">
-                            <input type="checkbox" id="thursday-closed">
+                            <div class="closed-wrap"><input type="checkbox" id="thursday-closed"><label for="thursday-closed">Closed</label></div>
                         </div>
                         <div class="hours-row">
                             <span class="hours-day">Friday</span>
                             <input type="time" id="friday-open" value="09:30">
                             <input type="time" id="friday-close" value="20:00">
-                            <input type="checkbox" id="friday-closed">
+                            <div class="closed-wrap"><input type="checkbox" id="friday-closed"><label for="friday-closed">Closed</label></div>
                         </div>
                         <div class="hours-row">
                             <span class="hours-day">Saturday</span>
                             <input type="time" id="saturday-open" value="09:30">
                             <input type="time" id="saturday-close" value="20:00">
-                            <input type="checkbox" id="saturday-closed">
+                            <div class="closed-wrap"><input type="checkbox" id="saturday-closed"><label for="saturday-closed">Closed</label></div>
                         </div>
                         <div class="hours-row">
                             <span class="hours-day">Sunday</span>
                             <input type="time" id="sunday-open" value="09:30">
                             <input type="time" id="sunday-close" value="18:00">
-                            <input type="checkbox" id="sunday-closed">
+                            <div class="closed-wrap"><input type="checkbox" id="sunday-closed"><label for="sunday-closed">Closed</label></div>
                         </div>
                     </div>
 
@@ -4371,8 +4397,8 @@
         // Password (simple client-side - for demo purposes)
         const ADMIN_PASSWORD = 'Password123';
 
-        // Check if already logged in
-        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+        // Check if already logged in (support both session keys for backwards compat)
+        if (sessionStorage.getItem('adminLoggedIn') === 'true' || sessionStorage.getItem('gb_admin_auth') === 'true') {
             showAdminPanel();
         }
 
@@ -4387,6 +4413,7 @@
             const input = document.getElementById('passwordInput').value;
             if (input === ADMIN_PASSWORD) {
                 sessionStorage.setItem('adminLoggedIn', 'true');
+                sessionStorage.setItem('gb_admin_auth', 'true');
                 showAdminPanel();
             } else {
                 document.getElementById('loginError').classList.add('show');
@@ -4402,6 +4429,7 @@
 
         function logout() {
             sessionStorage.removeItem('adminLoggedIn');
+            sessionStorage.removeItem('gb_admin_auth');
             document.getElementById('bottomNav').style.display = 'none';
             location.reload();
         }
@@ -4654,10 +4682,17 @@
         }
 
         // Switch tabs
-        function switchTab(tab) {
+        function switchTab(tab, btn) {
             currentTab = tab;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            // Remove active from all tab buttons in the same container
+            var container = btn ? btn.closest('.tab-buttons') : null;
+            if (container) {
+                container.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+            } else {
+                document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+                if (btn) btn.classList.add('active');
+            }
             loadGallery();
         }
 
@@ -7522,7 +7557,8 @@
                 title = 'This Month';
             }
 
-            database.ref('payments').orderByChild('date').startAt(startDate).endAt(endDate + '\uf8ff').once('value', function(paySnap) {
+            // Fetch all payments and filter client-side (avoids needing Firebase index on 'date')
+            database.ref('payments').once('value', function(paySnap) {
                 var totalRev = 0, cashRev = 0, qrRev = 0, totalTx = 0, cashTx = 0, qrTx = 0;
                 var serviceCounts = {};
                 var dailyRevenue = {};
@@ -7530,6 +7566,9 @@
                 paySnap.forEach(function(c) {
                     var p = c.val();
                     if (p.status !== 'confirmed') return;
+                    // Filter by date range client-side
+                    var pDate = p.date || (p.createdAt ? p.createdAt.split('T')[0] : null);
+                    if (!pDate || pDate < startDate || pDate > endDate) return;
                     totalRev += (p.amount || 0);
                     totalTx++;
                     if (p.isCash) { cashRev += (p.amount || 0); cashTx++; }
@@ -7537,7 +7576,7 @@
                     if (p.items) p.items.forEach(function(s) {
                         serviceCounts[s] = (serviceCounts[s] || 0) + 1;
                     });
-                    dailyRevenue[p.date] = (dailyRevenue[p.date] || 0) + (p.amount || 0);
+                    if (pDate) dailyRevenue[pDate] = (dailyRevenue[pDate] || 0) + (p.amount || 0);
                 });
 
                 var topService = Object.keys(serviceCounts).sort(function(a,b) { return serviceCounts[b] - serviceCounts[a]; })[0] || 'N/A';
@@ -7562,6 +7601,8 @@
                 html += '</div>';
 
                 document.getElementById('reportContent').innerHTML = html;
+            }, function(err) {
+                document.getElementById('reportContent').innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#9888;</div><div class="empty-state-text">Could not load report</div><div class="empty-state-sub">Check your connection and refresh</div></div>';
             });
         }
 
@@ -7700,7 +7741,16 @@
         var managedBookings = [];
 
         function loadBookingManagement() {
+            // Fallback: if Firebase doesn't respond in 8s, clear the spinner
+            var bookingSpinnerTimeout = setTimeout(function() {
+                var c = document.getElementById('bookingManageList');
+                if (c && c.querySelector('.loading-spinner')) {
+                    c.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128197;</div><div class="empty-state-text">No bookings yet</div><div class="empty-state-sub">Bookings appear when customers book online</div></div>';
+                }
+            }, 8000);
+
             database.ref('bookings').orderByChild('date').on('value', function(snap) {
+                clearTimeout(bookingSpinnerTimeout);
                 managedBookings = [];
                 snap.forEach(function(c) {
                     var b = c.val();
@@ -7709,6 +7759,10 @@
                 });
                 managedBookings.reverse();
                 renderManagedBookings();
+            }, function(err) {
+                clearTimeout(bookingSpinnerTimeout);
+                var c = document.getElementById('bookingManageList');
+                if (c) c.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#9888;</div><div class="empty-state-text">Could not load bookings</div><div class="empty-state-sub">Check your connection and refresh</div></div>';
             });
         }
 
@@ -7739,6 +7793,7 @@
         function doLogout() {
             showConfirmModal('Logout', 'Are you sure you want to logout?', function() {
                 sessionStorage.removeItem('gb_admin_auth');
+                sessionStorage.removeItem('adminLoggedIn');
                 location.reload();
             });
         }
