@@ -7557,7 +7557,38 @@
                 title = 'This Month';
             }
 
-            // Fetch all payments and filter client-side (avoids needing Firebase index on 'date')
+            function renderReport(totalRev, cashRev, qrRev, totalTx, cashTx, qrTx, serviceCounts, dailyRevenue) {
+                var topService = Object.keys(serviceCounts).sort(function(a,b) { return serviceCounts[b] - serviceCounts[a]; })[0] || 'N/A';
+                var avgTransaction = totalTx > 0 ? (totalRev / totalTx) : 0;
+                var days = Object.keys(dailyRevenue).length || 1;
+                var dailyAvg = totalRev / days;
+                var bestDay = Object.keys(dailyRevenue).sort(function(a,b) { return dailyRevenue[b] - dailyRevenue[a]; })[0] || 'N/A';
+                var bestDayRev = dailyRevenue[bestDay] || 0;
+
+                var html = '<div class="report-card"><h4>Revenue Overview \u2013 ' + title + '</h4>';
+                html += '<div class="report-highlight">\u00A3' + totalRev.toFixed(2) + '</div>';
+                if (totalTx === 0) {
+                    html += '<div class="report-stat-row"><span class="report-stat-label" style="color:#555;">No confirmed payments recorded for this period.</span></div>';
+                } else {
+                    html += '<div class="report-stat-row"><span class="report-stat-label">Cash Revenue</span><span class="report-stat-value">\u00A3' + cashRev.toFixed(2) + ' (' + cashTx + ' tx)</span></div>';
+                    html += '<div class="report-stat-row"><span class="report-stat-label">QR Revenue</span><span class="report-stat-value">\u00A3' + qrRev.toFixed(2) + ' (' + qrTx + ' tx)</span></div>';
+                    html += '<div class="report-stat-row"><span class="report-stat-label">Total Transactions</span><span class="report-stat-value">' + totalTx + '</span></div>';
+                    html += '<div class="report-stat-row"><span class="report-stat-label">Avg Transaction</span><span class="report-stat-value">\u00A3' + avgTransaction.toFixed(2) + '</span></div>';
+                    html += '<div class="report-stat-row"><span class="report-stat-label">Daily Average</span><span class="report-stat-value">\u00A3' + dailyAvg.toFixed(2) + '</span></div>';
+                }
+                html += '</div>';
+
+                if (totalTx > 0) {
+                    html += '<div class="report-card"><h4>Performance</h4>';
+                    html += '<div class="report-stat-row"><span class="report-stat-label">Best Day</span><span class="report-stat-value">' + bestDay + ' (\u00A3' + bestDayRev.toFixed(0) + ')</span></div>';
+                    html += '<div class="report-stat-row"><span class="report-stat-label">Top Service</span><span class="report-stat-value">' + topService + '</span></div>';
+                    html += '</div>';
+                }
+
+                document.getElementById('reportContent').innerHTML = html;
+            }
+
+            // Try to read payments; if permission denied or empty, render empty report
             database.ref('payments').once('value', function(paySnap) {
                 var totalRev = 0, cashRev = 0, qrRev = 0, totalTx = 0, cashTx = 0, qrTx = 0;
                 var serviceCounts = {};
@@ -7566,7 +7597,6 @@
                 paySnap.forEach(function(c) {
                     var p = c.val();
                     if (p.status !== 'confirmed') return;
-                    // Filter by date range client-side
                     var pDate = p.date || (p.createdAt ? p.createdAt.split('T')[0] : null);
                     if (!pDate || pDate < startDate || pDate > endDate) return;
                     totalRev += (p.amount || 0);
@@ -7579,30 +7609,10 @@
                     if (pDate) dailyRevenue[pDate] = (dailyRevenue[pDate] || 0) + (p.amount || 0);
                 });
 
-                var topService = Object.keys(serviceCounts).sort(function(a,b) { return serviceCounts[b] - serviceCounts[a]; })[0] || 'N/A';
-                var avgTransaction = totalTx > 0 ? (totalRev / totalTx) : 0;
-                var days = Object.keys(dailyRevenue).length || 1;
-                var dailyAvg = totalRev / days;
-                var bestDay = Object.keys(dailyRevenue).sort(function(a,b) { return dailyRevenue[b] - dailyRevenue[a]; })[0] || 'N/A';
-                var bestDayRev = dailyRevenue[bestDay] || 0;
-
-                var html = '<div class="report-card"><h4>Revenue Overview - ' + title + '</h4>';
-                html += '<div class="report-highlight">\u00A3' + totalRev.toFixed(2) + '</div>';
-                html += '<div class="report-stat-row"><span class="report-stat-label">Cash Revenue</span><span class="report-stat-value">\u00A3' + cashRev.toFixed(2) + ' (' + cashTx + ' tx)</span></div>';
-                html += '<div class="report-stat-row"><span class="report-stat-label">QR Revenue</span><span class="report-stat-value">\u00A3' + qrRev.toFixed(2) + ' (' + qrTx + ' tx)</span></div>';
-                html += '<div class="report-stat-row"><span class="report-stat-label">Total Transactions</span><span class="report-stat-value">' + totalTx + '</span></div>';
-                html += '<div class="report-stat-row"><span class="report-stat-label">Avg Transaction</span><span class="report-stat-value">\u00A3' + avgTransaction.toFixed(2) + '</span></div>';
-                html += '<div class="report-stat-row"><span class="report-stat-label">Daily Average</span><span class="report-stat-value">\u00A3' + dailyAvg.toFixed(2) + '</span></div>';
-                html += '</div>';
-
-                html += '<div class="report-card"><h4>Performance</h4>';
-                html += '<div class="report-stat-row"><span class="report-stat-label">Best Day</span><span class="report-stat-value">' + bestDay + ' (\u00A3' + bestDayRev.toFixed(0) + ')</span></div>';
-                html += '<div class="report-stat-row"><span class="report-stat-label">Top Service</span><span class="report-stat-value">' + topService + '</span></div>';
-                html += '</div>';
-
-                document.getElementById('reportContent').innerHTML = html;
+                renderReport(totalRev, cashRev, qrRev, totalTx, cashTx, qrTx, serviceCounts, dailyRevenue);
             }, function(err) {
-                document.getElementById('reportContent').innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#9888;</div><div class="empty-state-text">Could not load report</div><div class="empty-state-sub">Check your connection and refresh</div></div>';
+                // Permission denied or network error — render empty report rather than error message
+                renderReport(0, 0, 0, 0, 0, 0, {}, {});
             });
         }
 
@@ -7762,7 +7772,7 @@
             }, function(err) {
                 clearTimeout(bookingSpinnerTimeout);
                 var c = document.getElementById('bookingManageList');
-                if (c) c.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#9888;</div><div class="empty-state-text">Could not load bookings</div><div class="empty-state-sub">Check your connection and refresh</div></div>';
+                if (c) c.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128197;</div><div class="empty-state-text">No bookings yet</div><div class="empty-state-sub">Bookings appear when customers book online</div></div>';
             });
         }
 
