@@ -2474,30 +2474,31 @@
 
                     <div class="payment-form-header">
                         <div class="payment-secure">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/>
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" style="color:#25D366;">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.122 1.523 5.854L0 24l6.338-1.499A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.006-1.369l-.36-.213-3.728.882.946-3.618-.235-.372A9.779 9.779 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/>
                             </svg>
-                            Bank Transfer
+                            WhatsApp Booking
                         </div>
-                        <div style="font-size: 11px; color: var(--gray);">Instant &amp; Secure</div>
+                        <div style="font-size: 11px; color: var(--gray);">Confirm &amp; Pay In-Shop</div>
                     </div>
 
-                    <!-- Bank transfer info -->
-                    <div style="background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.15); border-radius: 14px; padding: 18px; margin-bottom: 20px;">
+                    <!-- WhatsApp booking info -->
+                    <div style="background: rgba(37,211,102,0.06); border: 1px solid rgba(37,211,102,0.2); border-radius: 14px; padding: 18px; margin-bottom: 20px;">
                         <p style="font-size: 13px; color: #aaa; line-height: 1.6; margin-bottom: 12px;">
-                            You'll be taken to our secure payment page. Your banking app will auto-fill the account details — just confirm the transfer.
+                            Tap below to send your order directly to us on WhatsApp. We'll confirm your slot and you pay on the day.
                         </p>
-                        <div style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); border-radius: 10px;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                            <span style="font-size: 12px; color: #22c55e; font-weight: 600;">Total: <span id="payAmount">£0</span></span>
+                        <div style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.2); border-radius: 10px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span style="font-size: 12px; color: #25D366; font-weight: 600;">Total: <span id="payAmount">£0</span></span>
                         </div>
                     </div>
 
-                    <button class="pay-now-btn" id="payNowBtn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/>
+                    <button class="pay-now-btn" id="payNowBtn" style="background: #25D366;">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.122 1.523 5.854L0 24l6.338-1.499A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.006-1.369l-.36-.213-3.728.882.946-3.618-.235-.372A9.779 9.779 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/>
                         </svg>
-                        Pay <span id="payAmountBtn">£0</span> via Bank Transfer
+                        Book via WhatsApp &nbsp;<span id="payAmountBtn">£0</span>
                     </button>
 
                     <div class="payment-footer">
@@ -3002,26 +3003,33 @@
             document.getElementById('bookingSummarySection').style.display = 'block';
         });
 
-        // Pay via Bank Transfer — redirect to pay.html with service IDs or total amount
+        // Book via WhatsApp — pre-filled message with cart summary
         document.getElementById('payNowBtn').addEventListener('click', () => {
             const totals = CartManager.getTotals();
             if (totals.count === 0) return;
 
-            // Build total including any selected extras
             let extrasTotal = 0;
             selectedExtras.forEach(e => { extrasTotal += e.price; });
             const grandTotal = totals.price + extrasTotal;
 
-            // Use service IDs when no extras, else use custom amount
-            let url;
-            if (selectedExtras.length === 0 && CartManager.services.length > 0) {
-                const ids = CartManager.services.map(s => s.id).join(',');
-                url = 'pay.html#' + ids;
-            } else {
-                url = 'pay.html#amt:' + grandTotal.toFixed(2);
+            // Build message
+            let lines = ['Hi Golden Barbers, I\'d like to book the following:'];
+            lines.push('');
+            CartManager.services.forEach(s => {
+                lines.push('• ' + s.name + ' — £' + s.price.toFixed(2));
+            });
+            if (selectedExtras.length > 0) {
+                selectedExtras.forEach(e => {
+                    lines.push('• Extra: ' + e.name + ' — £' + e.price.toFixed(2));
+                });
             }
+            lines.push('');
+            lines.push('Total: £' + grandTotal.toFixed(2));
+            lines.push('');
+            lines.push('Please let me know your next available slot. Thanks!');
 
-            window.location.href = url;
+            const msg = encodeURIComponent(lines.join('\n'));
+            window.open('https://wa.me/447858232531?text=' + msg, '_blank');
         });
 
         // Attach click handlers to all service card buttons - Toggle Cart

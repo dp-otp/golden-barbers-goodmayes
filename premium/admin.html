@@ -3491,7 +3491,7 @@
                 </h2>
                 <div id="themeSuccess" class="success-message">Theme applied!</div>
                 <p style="color: #666; font-size: 13px; margin-bottom: 8px;">Transform your website with seasonal themes. Each theme includes particles, banners, decorations, notification bar, and optional flash sale popup.</p>
-                <p style="color: #555; font-size: 12px; margin-bottom: 20px;">Saved to Firebase \u2013 goes live instantly across all pages.</p>
+                <p style="color: #555; font-size: 12px; margin-bottom: 20px;">Saved to Firebase &#8211; goes live instantly across all pages.</p>
 
                 <!-- Currently Active Theme -->
                 <div id="activeThemeBanner" style="display: none; border-radius: 16px; padding: 24px; margin-bottom: 25px; text-align: center; position: relative; overflow: hidden;">
@@ -5479,6 +5479,10 @@
 
         // Load active theme from Firebase
         function loadActiveTheme() {
+            // Render immediately with no active theme so grid is never blank
+            renderThemeGrid();
+            updateActiveThemeBanner();
+
             database.ref('siteTheme').on('value', function(snapshot) {
                 var data = snapshot.val();
                 if (data && data.themeId && SEASONAL_THEMES[data.themeId]) {
@@ -5490,6 +5494,11 @@
                 updateActiveThemeBanner();
                 renderDiscountRecommendations();
                 loadThemeComponentConfig(data);
+            }, function(error) {
+                // Firebase permission denied — still render themes grid with no active theme
+                activeThemeId = null;
+                renderThemeGrid();
+                updateActiveThemeBanner();
             });
         }
 
