@@ -131,6 +131,7 @@ class ServiceModal {
 
     extractServiceData(card) {
         return {
+            id: card.dataset.serviceId || card.dataset.id || '',
             name: card.querySelector('.service-card-title')?.textContent || '',
             price: card.querySelector('.service-card-price')?.textContent || '',
             duration: card.dataset.duration || '30 min',
@@ -166,7 +167,7 @@ class ServiceModal {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary btn-large" onclick="bookingFlow.startBooking('${serviceData.name}', '${serviceData.price}')">
+                    <button class="btn btn-primary btn-large" onclick="bookingFlow.startBooking('${serviceData.name}', '${serviceData.price}', '${serviceData.id || ''}')">
                         <span>Book & Pay</span>
                     </button>
                 </div>
@@ -308,169 +309,34 @@ class UpsellModal {
 }
 
 // ============================================
-// 5. PAYMENT CHECKOUT
+// 5. PAYMENT CHECKOUT — Bank Transfer via pay.html
 // ============================================
 class PaymentCheckout {
-    constructor() {
-        this.modal = null;
-    }
+    constructor() {}
 
-    show(mainService, mainPrice, addOns = []) {
-        const subtotal = this.calculateSubtotal(mainPrice, addOns);
-        const tax = (subtotal * 0.2).toFixed(2);
-        const total = (parseFloat(subtotal) + parseFloat(tax)).toFixed(2);
-
-        const itemsHTML = `
-            <div class="checkout-item">
-                <span>${mainService}</span>
-                <span>${mainPrice}</span>
-            </div>
-            ${addOns.map(addOn => `
-                <div class="checkout-item addon">
-                    <span>${addOn.name}</span>
-                    <span>${addOn.price}</span>
-                </div>
-            `).join('')}
-        `;
-
-        this.modal = document.createElement('div');
-        this.modal.className = 'modal-overlay checkout-modal';
-        this.modal.innerHTML = `
-            <div class="modal-content checkout-modal-content">
-                <button class="modal-close">&times;</button>
-                <div class="checkout-header">
-                    <h2>Complete Your Booking</h2>
-                    <p>Secure payment powered by Stripe</p>
-                </div>
-
-                <div class="checkout-body">
-                    <div class="checkout-section">
-                        <h3>Order Summary</h3>
-                        <div class="checkout-items">
-                            ${itemsHTML}
-                            <div class="checkout-divider"></div>
-                            <div class="checkout-item">
-                                <span>Subtotal</span>
-                                <span>£${subtotal}</span>
-                            </div>
-                            <div class="checkout-item">
-                                <span>VAT (20%)</span>
-                                <span>£${tax}</span>
-                            </div>
-                            <div class="checkout-total">
-                                <span>Total</span>
-                                <span>£${total}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="checkout-section">
-                        <h3>Contact Information</h3>
-                        <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" placeholder="John Smith" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" placeholder="john@example.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Phone</label>
-                            <input type="tel" placeholder="07XXX XXXXXX" required>
-                        </div>
-                    </div>
-
-                    <div class="checkout-section">
-                        <h3>Payment Details</h3>
-                        <div class="form-group">
-                            <label>Card Number</label>
-                            <input type="text" placeholder="4242 4242 4242 4242" maxlength="19">
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Expiry Date</label>
-                                <input type="text" placeholder="MM/YY" maxlength="5">
-                            </div>
-                            <div class="form-group">
-                                <label>CVC</label>
-                                <input type="text" placeholder="123" maxlength="3">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="checkout-footer">
-                    <button class="btn btn-primary btn-large" onclick="paymentCheckout.processPayment()">
-                        <span>Pay £${total}</span>
-                    </button>
-                    <p class="checkout-secure">
-                        <svg width="12" height="14" fill="currentColor"><path d="M6 0L0 3v4c0 3.5 2.5 6.5 6 8 3.5-1.5 6-4.5 6-8V3L6 0z"/></svg>
-                        Secure payment
-                    </p>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(this.modal);
-        document.body.style.overflow = 'hidden';
-
-        // Close button
-        this.modal.querySelector('.modal-close').addEventListener('click', () => this.close());
-
-        requestAnimationFrame(() => {
-            this.modal.classList.add('active');
-        });
-    }
-
-    calculateSubtotal(mainPrice, addOns) {
-        let total = parseFloat(mainPrice.replace('£', ''));
+    show(mainService, mainPrice, addOns = [], serviceId = '') {
+        const mainTotal = parseFloat(String(mainPrice).replace('£', '')) || 0;
+        let addOnsTotal = 0;
         addOns.forEach(addOn => {
-            total += parseFloat(addOn.price.replace('£', ''));
+            addOnsTotal += parseFloat(String(addOn.price).replace('£', '')) || 0;
         });
-        return total.toFixed(2);
+        const total = mainTotal + addOnsTotal;
+
+        let url;
+        if (serviceId && addOns.length === 0) {
+            // Clean URL with service ID — pay.html will look up the live price
+            url = 'pay.html#' + serviceId;
+        } else {
+            // Custom amount covers service + any add-ons
+            url = 'pay.html#amt:' + total.toFixed(2);
+        }
+        window.location.href = url;
     }
 
-    processPayment() {
-        // Simulate payment processing
-        const btn = this.modal.querySelector('.checkout-footer .btn');
-        const originalHTML = btn.innerHTML;
-
-        btn.disabled = true;
-        btn.innerHTML = '<span>Processing...</span>';
-
-        setTimeout(() => {
-            this.close();
-            this.showSuccess();
-        }, 2000);
-    }
-
-    showSuccess() {
-        const successModal = document.createElement('div');
-        successModal.className = 'modal-overlay success-modal active';
-        successModal.innerHTML = `
-            <div class="modal-content success-modal-content">
-                <div class="success-icon">✓</div>
-                <h2>Booking Confirmed!</h2>
-                <p>We've sent confirmation details to your email.</p>
-                <p class="success-subtext">See you soon at Golden Barbers!</p>
-                <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove(); document.body.style.overflow = '';">
-                    <span>Close</span>
-                </button>
-            </div>
-        `;
-        document.body.appendChild(successModal);
-    }
-
-    close() {
-        if (!this.modal) return;
-
-        this.modal.classList.remove('active');
-        setTimeout(() => {
-            this.modal.remove();
-            this.modal = null;
-            document.body.style.overflow = '';
-        }, 300);
-    }
+    // No-op stubs kept so any legacy calls don't throw
+    processPayment() {}
+    showSuccess() {}
+    close() {}
 }
 
 // ============================================
@@ -480,11 +346,13 @@ class BookingFlow {
     constructor() {
         this.currentService = null;
         this.currentPrice = null;
+        this.currentServiceId = null;
     }
 
-    startBooking(serviceName, servicePrice) {
+    startBooking(serviceName, servicePrice, serviceId) {
         this.currentService = serviceName;
         this.currentPrice = servicePrice;
+        this.currentServiceId = serviceId || '';
 
         // Close service modal
         if (window.serviceModal && window.serviceModal.modal) {
@@ -551,7 +419,7 @@ class BookingFlow {
     }
 
     proceedToPayment(addOns) {
-        window.paymentCheckout.show(this.currentService, this.currentPrice, addOns);
+        window.paymentCheckout.show(this.currentService, this.currentPrice, addOns, this.currentServiceId);
     }
 }
 
