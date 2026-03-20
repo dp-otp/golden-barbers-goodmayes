@@ -19,580 +19,173 @@
             --dark-light: #141414;
             --white: #ffffff;
             --gray: #888888;
-            --gray-dark: #444444;
         }
-
         *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
         html { overflow-x: hidden; }
+        body { font-family:'Outfit',sans-serif; background:var(--black); color:var(--white); overflow-x:hidden; max-width:100vw; }
+        body.course-mode { overflow:hidden; height:100vh; }
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--black);
-            color: var(--white);
-            overflow-x: hidden;
-            max-width: 100vw;
-        }
+        /* NAV */
+        .nav { position:fixed; top:0; left:0; right:0; z-index:9999; padding:0 40px; height:70px; display:flex; align-items:center; background:rgba(0,0,0,0.65); backdrop-filter:blur(20px); border-bottom:1px solid rgba(212,175,55,0.1); }
+        .nav-inner { width:100%; display:flex; align-items:center; justify-content:space-between; }
+        .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--white); font-weight:700; font-size:1.1rem; }
+        .nav-logo img { height:36px; width:auto; }
+        .nav-links { list-style:none; display:flex; gap:32px; }
+        .nav-links a { color:rgba(255,255,255,0.7); text-decoration:none; font-size:0.9rem; font-weight:500; transition:color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+        .nav-cta { background:var(--gold); color:var(--black); padding:10px 22px; border-radius:50px; text-decoration:none; font-weight:700; font-size:0.85rem; transition:background 0.2s,transform 0.2s; }
+        .nav-cta:hover { background:var(--gold-light); transform:scale(1.03); }
+        .nav-toggle { display:none; cursor:pointer; flex-direction:column; gap:5px; }
+        .nav-toggle span { display:block; width:24px; height:2px; background:var(--white); border-radius:2px; }
+        .mobile-nav { display:none; position:fixed; top:70px; left:0; right:0; background:rgba(0,0,0,0.97); z-index:9998; padding:20px; flex-direction:column; }
+        .mobile-nav.open { display:flex; }
+        .mobile-nav a { color:var(--white); text-decoration:none; font-size:1rem; font-weight:500; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.08); }
+        .mobile-nav a.active { color:var(--gold); }
+        @media(max-width:900px){ .nav-links,.nav-cta{display:none;} .nav-toggle{display:flex;} }
 
-        body.course-mode { overflow: hidden; height: 100vh; }
+        /* CHROME */
+        #course-chrome { position:fixed; top:70px; left:0; right:0; z-index:1000; padding:12px 40px 8px; background:rgba(0,0,0,0.55); backdrop-filter:blur(10px); }
+        #progress-bar { width:100%; height:10px; border-radius:999px; background:rgba(255,255,255,0.1); overflow:hidden; }
+        #progress-fill { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--gold-dark),var(--gold)); transition:width 0.55s cubic-bezier(0.4,0,0.2,1); box-shadow:0 0 10px var(--gold-glow); width:0%; }
+        #progress-meta { display:flex; justify-content:space-between; align-items:center; margin-top:6px; }
+        #progress-label { font-size:0.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); transition:opacity 0.2s; }
+        #progress-label.fade { opacity:0; }
+        #progress-counter { font-size:0.72rem; color:var(--gray); font-weight:500; }
+        #mode-toggle { position:fixed; bottom:28px; right:28px; z-index:1001; background:rgba(20,20,20,0.9); border:1px solid rgba(212,175,55,0.3); color:var(--gold); padding:9px 18px; border-radius:50px; font-family:'Outfit',sans-serif; font-size:0.78rem; font-weight:600; cursor:pointer; backdrop-filter:blur(10px); transition:background 0.2s,border-color 0.2s; letter-spacing:0.04em; }
+        #mode-toggle:hover { background:rgba(212,175,55,0.15); border-color:var(--gold); }
 
-        /* ===== NAV ===== */
-        .nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 9999;
-            padding: 0 40px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(212,175,55,0.1);
-        }
-        .nav-inner {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: var(--white);
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-        .nav-logo img { height: 36px; width: auto; }
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 32px;
-        }
-        .nav-links a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-        .nav-cta {
-            background: var(--gold);
-            color: var(--black);
-            padding: 10px 22px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.85rem;
-            transition: background 0.2s, transform 0.2s;
-        }
-        .nav-cta:hover { background: var(--gold-light); transform: scale(1.03); }
-        .nav-toggle { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
-        .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: 0.3s; }
-        .mobile-nav {
-            display: none;
-            position: fixed;
-            top: 70px; left: 0; right: 0;
-            background: rgba(0,0,0,0.97);
-            z-index: 9998;
-            padding: 20px;
-            flex-direction: column;
-            gap: 0;
-        }
-        .mobile-nav.open { display: flex; }
-        .mobile-nav a {
-            color: var(--white);
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 500;
-            padding: 14px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
-        .mobile-nav a.active { color: var(--gold); }
+        /* SLIDE ENGINE */
+        #course-wrapper { position:fixed; top:0; left:0; width:100vw; height:100vh; overflow:hidden; z-index:100; }
+        #slides-track { display:flex; width:calc(11*100vw); height:100%; transition:transform 0.65s cubic-bezier(0.77,0,0.175,1); will-change:transform; }
+        .slide { width:100vw; height:100vh; flex-shrink:0; position:relative; overflow:hidden; display:flex; }
+        .slide-bg { position:absolute; inset:0; overflow:hidden; }
+        .slide-bg img, .slide-bg video { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+        .slide-overlay { position:absolute; inset:0; pointer-events:none; }
+        .slide-content { position:relative; z-index:10; width:100%; height:100%; display:flex; flex-direction:column; padding:130px 60px 90px; }
+        .slide-split { position:relative; z-index:10; width:100%; height:100%; display:grid; grid-template-columns:1fr 1fr; }
 
-        @media (max-width: 900px) {
-            .nav-links, .nav-cta { display: none; }
-            .nav-toggle { display: flex; }
-        }
+        /* NAV ARROWS */
+        .slide-nav { position:fixed; bottom:28px; left:50%; transform:translateX(-50%); z-index:1001; display:flex; align-items:center; gap:16px; }
+        .slide-btn { width:52px; height:52px; border-radius:50%; border:2px solid rgba(212,175,55,0.4); background:rgba(0,0,0,0.7); color:var(--gold); font-size:1.3rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:border-color 0.2s,background 0.2s,transform 0.15s; backdrop-filter:blur(8px); }
+        .slide-btn:hover { border-color:var(--gold); background:rgba(212,175,55,0.15); transform:scale(1.08); }
+        .slide-btn:disabled { opacity:0.2; pointer-events:none; }
+        #slide-indicator { font-size:0.8rem; color:var(--gray); font-weight:500; min-width:50px; text-align:center; }
 
-        /* ===== COURSE CHROME ===== */
-        #course-chrome {
-            position: fixed;
-            top: 70px; left: 0; right: 0;
-            z-index: 1000;
-            padding: 12px 40px 8px;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-        }
-        #progress-bar {
-            width: 100%;
-            height: 10px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.1);
-            overflow: hidden;
-        }
-        #progress-fill {
-            height: 100%;
-            border-radius: 999px;
-            background: linear-gradient(90deg, var(--gold-dark), var(--gold));
-            transition: width 0.55s cubic-bezier(0.4,0,0.2,1);
-            box-shadow: 0 0 10px var(--gold-glow);
-            width: 0%;
-        }
-        #progress-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 6px;
-        }
-        #progress-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--gold);
-            opacity: 1;
-            transition: opacity 0.2s;
-        }
-        #progress-label.fade { opacity: 0; }
-        #progress-counter {
-            font-size: 0.72rem;
-            color: var(--gray);
-            font-weight: 500;
-        }
-        #mode-toggle {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            z-index: 1001;
-            background: rgba(20,20,20,0.9);
-            border: 1px solid rgba(212,175,55,0.3);
-            color: var(--gold);
-            padding: 9px 18px;
-            border-radius: 50px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: background 0.2s, border-color 0.2s;
-            letter-spacing: 0.04em;
-        }
-        #mode-toggle:hover { background: rgba(212,175,55,0.15); border-color: var(--gold); }
+        /* TYPOGRAPHY */
+        .slide-tag { font-size:0.7rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+        .slide-title { font-size:clamp(1.9rem,4.5vw,3.6rem); font-weight:900; line-height:1.05; margin-bottom:16px; }
+        .slide-title em { font-style:normal; background:linear-gradient(135deg,var(--gold),var(--gold-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .slide-body { font-size:clamp(0.85rem,1.3vw,0.98rem); line-height:1.75; color:rgba(255,255,255,0.75); }
+        .slide-body strong { color:var(--white); font-weight:600; }
+        .slide-body p { margin-bottom:10px; }
+        .slide-body p:last-child { margin-bottom:0; }
 
-        /* ===== COURSE WRAPPER ===== */
-        #course-wrapper {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            z-index: 100;
-        }
-        #slides-track {
-            display: flex;
-            width: calc(11 * 100vw);
-            height: 100%;
-            transition: transform 0.65s cubic-bezier(0.77,0,0.175,1);
-            will-change: transform;
-        }
-        .slide {
-            width: 100vw;
-            height: 100vh;
-            flex-shrink: 0;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-        }
+        /* PHOTO CELLS */
+        .photo-cell { position:relative; overflow:hidden; border-radius:6px; }
+        .photo-cell img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block; transition:transform 0.4s ease; }
+        .photo-cell:hover img { transform:scale(1.04); }
+        .photo-label { position:absolute; bottom:0; left:0; right:0; padding:7px 10px; background:linear-gradient(to top,rgba(0,0,0,0.88),transparent); font-size:0.68rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--gold-light); z-index:2; }
 
-        /* ===== SAFE IMAGE CONTAINERS ===== */
-        .slide-bg {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-        }
-        .slide-bg img,
-        .slide-bg video {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-        }
-        .slide-overlay {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
+        /* CHIPS */
+        .chip-row { display:flex; flex-wrap:wrap; gap:7px; margin-top:14px; }
+        .chip { padding:4px 13px; border-radius:50px; border:1px solid rgba(212,175,55,0.35); font-size:0.72rem; font-weight:600; color:var(--gold); background:rgba(212,175,55,0.07); }
 
-        /* ===== SLIDE CONTENT ===== */
-        .slide-content {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 130px 60px 40px;
-        }
-        .slide-split {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            height: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
+        /* BUTTONS */
+        .slide-cta { display:inline-flex; align-items:center; gap:8px; margin-top:20px; padding:12px 26px; background:var(--gold); color:var(--black); border-radius:50px; font-weight:800; font-size:0.88rem; text-decoration:none; border:none; cursor:pointer; font-family:'Outfit',sans-serif; transition:background 0.2s,transform 0.2s; width:fit-content; }
+        .slide-cta:hover { background:var(--gold-light); transform:scale(1.03); }
+        .slide-cta-ghost { display:inline-flex; align-items:center; gap:8px; margin-top:12px; padding:12px 26px; background:transparent; color:var(--gold); border-radius:50px; font-weight:700; font-size:0.88rem; text-decoration:none; border:2px solid rgba(212,175,55,0.4); cursor:pointer; font-family:'Outfit',sans-serif; transition:border-color 0.2s,background 0.2s; width:fit-content; }
+        .slide-cta-ghost:hover { border-color:var(--gold); background:rgba(212,175,55,0.1); }
 
-        /* ===== SLIDE NAV ARROWS ===== */
-        .slide-nav {
-            position: fixed;
-            bottom: 28px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1001;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .slide-btn {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            border: 2px solid rgba(212,175,55,0.4);
-            background: rgba(0,0,0,0.7);
-            color: var(--gold);
-            font-size: 1.3rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: border-color 0.2s, background 0.2s, transform 0.15s;
-            backdrop-filter: blur(8px);
-        }
-        .slide-btn:hover { border-color: var(--gold); background: rgba(212,175,55,0.15); transform: scale(1.08); }
-        .slide-btn:disabled { opacity: 0.2; pointer-events: none; }
-        #slide-indicator {
-            font-size: 0.8rem;
-            color: var(--gray);
-            font-weight: 500;
-            min-width: 50px;
-            text-align: center;
-        }
+        /* INFO CARDS */
+        .info-cards { display:flex; flex-direction:column; gap:8px; }
+        .info-card { background:rgba(255,255,255,0.04); border:1px solid rgba(212,175,55,0.13); border-radius:10px; padding:11px 14px; }
+        .info-card-title { font-size:0.8rem; font-weight:700; color:var(--gold); margin-bottom:3px; }
+        .info-card-body { font-size:0.77rem; color:rgba(255,255,255,0.65); line-height:1.5; }
 
-        /* ===== TYPOGRAPHY ===== */
-        .slide-tag {
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 12px;
-        }
-        .slide-title {
-            font-size: clamp(2rem, 5vw, 4rem);
-            font-weight: 900;
-            line-height: 1.05;
-            margin-bottom: 20px;
-        }
-        .slide-title em {
-            font-style: normal;
-            background: linear-gradient(135deg, var(--gold), var(--gold-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .slide-body {
-            font-size: clamp(0.9rem, 1.5vw, 1.05rem);
-            line-height: 1.75;
-            color: rgba(255,255,255,0.75);
-            max-width: 540px;
-        }
-        .slide-body strong { color: var(--white); font-weight: 600; }
+        /* PRODUCT CARD */
+        .product-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px; }
+        .product-card { background:rgba(255,255,255,0.04); border:1px solid rgba(212,175,55,0.12); border-radius:12px; overflow:hidden; }
+        .product-img { height:110px; position:relative; overflow:hidden; background:rgba(255,255,255,0.06); }
+        .product-img img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+        .product-info { padding:10px 12px; }
+        .product-name { font-size:0.78rem; font-weight:700; color:var(--white); margin-bottom:3px; }
+        .product-desc { font-size:0.72rem; color:rgba(255,255,255,0.55); line-height:1.45; }
+        .product-tag { display:inline-block; margin-top:5px; padding:2px 9px; border-radius:50px; background:rgba(212,175,55,0.12); border:1px solid rgba(212,175,55,0.25); font-size:0.65rem; font-weight:700; color:var(--gold); letter-spacing:0.05em; }
 
-        /* ===== PHOTO CELLS ===== */
-        .photo-cell {
-            position: relative;
-            overflow: hidden;
-            border-radius: 6px;
-        }
-        .photo-cell img {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-            transition: transform 0.4s ease;
-        }
-        .photo-cell:hover img { transform: scale(1.04); }
-        .photo-label {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            padding: 8px 10px;
-            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            color: var(--gold-light);
-            z-index: 2;
-        }
+        /* TICK */
+        #tick-wrap { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; width:100%; }
+        #tick-svg { width:130px; height:130px; }
+        .tick-circle { fill:none; stroke:var(--gold); stroke-width:4; stroke-linecap:round; stroke-dasharray:283; stroke-dashoffset:283; }
+        .tick-check { fill:none; stroke:var(--gold); stroke-width:5; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:70; stroke-dashoffset:70; }
+        #tick-svg.animate .tick-circle { animation:drawCircle 0.8s ease forwards; }
+        #tick-svg.animate .tick-check { animation:drawTick 0.4s ease forwards 0.85s; }
+        #tick-glow { filter:drop-shadow(0 0 14px var(--gold-glow)) drop-shadow(0 0 28px rgba(212,175,55,0.25)); }
+        @keyframes drawCircle { to { stroke-dashoffset:0; } }
+        @keyframes drawTick   { to { stroke-dashoffset:0; } }
+        .completion-title { font-size:clamp(1.8rem,4vw,3rem); font-weight:900; text-align:center; }
+        .completion-title em { font-style:normal; background:linear-gradient(135deg,var(--gold),var(--gold-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .completion-sub { font-size:0.97rem; color:rgba(255,255,255,0.6); text-align:center; max-width:440px; line-height:1.7; }
+        .cert-badge { padding:6px 18px; border:1px solid rgba(212,175,55,0.4); border-radius:50px; font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); }
+        /* completion bg design */
+        .completion-bg { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 40%, rgba(212,175,55,0.12) 0%, rgba(0,0,0,0) 70%), var(--dark); }
+        .completion-bg::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:600px; height:600px; border-radius:50%; border:1px solid rgba(212,175,55,0.06); }
+        .completion-bg::after  { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:400px; height:400px; border-radius:50%; border:1px solid rgba(212,175,55,0.09); }
 
-        /* ===== CHIPS ===== */
-        .chip-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 20px;
-        }
-        .chip {
-            padding: 5px 14px;
-            border-radius: 50px;
-            border: 1px solid rgba(212,175,55,0.35);
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--gold);
-            background: rgba(212,175,55,0.07);
-        }
-
-        /* ===== BUTTONS ===== */
-        .slide-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 28px;
-            padding: 13px 28px;
-            background: var(--gold);
-            color: var(--black);
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 0.9rem;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            font-family: 'Outfit', sans-serif;
-            transition: background 0.2s, transform 0.2s;
-            width: fit-content;
-        }
-        .slide-cta:hover { background: var(--gold-light); transform: scale(1.03); }
-        .slide-cta-ghost {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 14px;
-            padding: 13px 28px;
-            background: transparent;
-            color: var(--gold);
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-decoration: none;
-            border: 2px solid rgba(212,175,55,0.4);
-            cursor: pointer;
-            font-family: 'Outfit', sans-serif;
-            transition: border-color 0.2s, background 0.2s;
-            width: fit-content;
-        }
-        .slide-cta-ghost:hover { border-color: var(--gold); background: rgba(212,175,55,0.1); }
-
-        /* ===== INFO CARDS ===== */
-        .info-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .info-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(212,175,55,0.12);
-            border-radius: 10px;
-            padding: 12px 14px;
-        }
-        .info-card-title {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 3px;
-        }
-        .info-card-body {
-            font-size: 0.78rem;
-            color: rgba(255,255,255,0.65);
-            line-height: 1.5;
-        }
-
-        /* ===== TICK ANIMATION ===== */
-        #tick-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-            width: 100%;
-        }
-        #tick-svg {
-            width: 130px;
-            height: 130px;
-        }
-        .tick-circle {
-            fill: none;
-            stroke: var(--gold);
-            stroke-width: 4;
-            stroke-linecap: round;
-            stroke-dasharray: 283;
-            stroke-dashoffset: 283;
-        }
-        .tick-check {
-            fill: none;
-            stroke: var(--gold);
-            stroke-width: 5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 70;
-            stroke-dashoffset: 70;
-        }
-        #tick-svg.animate .tick-circle {
-            animation: drawCircle 0.8s ease forwards;
-        }
-        #tick-svg.animate .tick-check {
-            animation: drawTick 0.4s ease forwards 0.85s;
-        }
-        #tick-glow {
-            filter: drop-shadow(0 0 12px var(--gold-glow)) drop-shadow(0 0 24px rgba(212,175,55,0.3));
-        }
-        @keyframes drawCircle { to { stroke-dashoffset: 0; } }
-        @keyframes drawTick   { to { stroke-dashoffset: 0; } }
-
-        .completion-title {
-            font-size: clamp(1.8rem, 4vw, 3rem);
-            font-weight: 900;
-            text-align: center;
-        }
-        .completion-title em {
-            font-style: normal;
-            background: linear-gradient(135deg, var(--gold), var(--gold-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .completion-sub {
-            font-size: 1rem;
-            color: rgba(255,255,255,0.6);
-            text-align: center;
-            max-width: 420px;
-            line-height: 1.7;
-        }
-        .cert-badge {
-            padding: 6px 18px;
-            border: 1px solid rgba(212,175,55,0.4);
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--gold);
-        }
-
-        /* ===== MAGAZINE MODE ===== */
+        /* MAGAZINE MODE */
         body.magazine-mode #course-wrapper,
         body.magazine-mode #course-chrome,
-        body.magazine-mode .slide-nav { display: none; }
-        body.magazine-mode #magazine-view { display: block; }
-        #magazine-view { display: none; padding-top: 70px; }
-        .mag-section {
-            padding: 80px 60px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .mag-section-tag {
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 10px;
-        }
-        .mag-section-title {
-            font-size: clamp(1.8rem, 4vw, 3rem);
-            font-weight: 900;
-            margin-bottom: 20px;
-        }
-        .mag-section-title em {
-            font-style: normal;
-            background: linear-gradient(135deg, var(--gold), var(--gold-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .mag-body {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.75);
-            max-width: 680px;
-            margin-bottom: 32px;
-        }
-        .mag-body strong { color: var(--white); font-weight: 600; }
-        .mag-photo-grid {
-            display: grid;
-            gap: 10px;
-            margin-top: 28px;
-        }
-        .mag-photo-grid.cols-2 { grid-template-columns: 1fr 1fr; }
-        .mag-photo-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
-        .mag-photo-cell {
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            aspect-ratio: 4/3;
-        }
-        .mag-photo-cell img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .mag-hero-photo {
-            width: 100%;
-            aspect-ratio: 21/9;
-            overflow: hidden;
-            border-radius: 10px;
-            margin-bottom: 28px;
-        }
-        .mag-hero-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+        body.magazine-mode .slide-nav { display:none; }
+        body.magazine-mode #magazine-view { display:block; }
+        #magazine-view { display:none; padding-top:70px; }
+        .mag-section { padding:80px 60px; border-bottom:1px solid rgba(255,255,255,0.06); max-width:1200px; margin:0 auto; }
+        .mag-tag { font-size:0.7rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+        .mag-title { font-size:clamp(1.8rem,4vw,3rem); font-weight:900; margin-bottom:20px; }
+        .mag-title em { font-style:normal; background:linear-gradient(135deg,var(--gold),var(--gold-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .mag-body { font-size:1rem; line-height:1.85; color:rgba(255,255,255,0.75); max-width:780px; margin-bottom:28px; }
+        .mag-body strong { color:var(--white); font-weight:600; }
+        .mag-body h3 { font-size:1.05rem; font-weight:700; color:var(--gold); margin:22px 0 8px; }
+        .mag-body p { margin-bottom:14px; }
+        .mag-body ul { padding-left:18px; margin-bottom:14px; }
+        .mag-body li { margin-bottom:6px; color:rgba(255,255,255,0.72); }
+        .mag-photo-grid { display:grid; gap:10px; margin-top:28px; }
+        .mag-photo-grid.cols-2 { grid-template-columns:1fr 1fr; }
+        .mag-photo-grid.cols-3 { grid-template-columns:1fr 1fr 1fr; }
+        .mag-photo-cell { position:relative; overflow:hidden; border-radius:8px; aspect-ratio:4/3; }
+        .mag-photo-cell img { width:100%; height:100%; object-fit:cover; display:block; }
+        .mag-hero-photo { width:100%; aspect-ratio:21/9; overflow:hidden; border-radius:10px; margin-bottom:28px; }
+        .mag-hero-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+        .mag-product-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:28px; }
+        .mag-product-card { background:rgba(255,255,255,0.04); border:1px solid rgba(212,175,55,0.13); border-radius:14px; overflow:hidden; }
+        .mag-product-img { height:160px; overflow:hidden; background:rgba(255,255,255,0.05); }
+        .mag-product-img img { width:100%; height:100%; object-fit:cover; display:block; }
+        .mag-product-body { padding:14px 16px; }
+        .mag-product-name { font-size:0.9rem; font-weight:700; color:var(--white); margin-bottom:5px; }
+        .mag-product-desc { font-size:0.82rem; color:rgba(255,255,255,0.6); line-height:1.5; }
+        .mag-product-tag { display:inline-block; margin-top:8px; padding:3px 10px; border-radius:50px; background:rgba(212,175,55,0.12); border:1px solid rgba(212,175,55,0.25); font-size:0.68rem; font-weight:700; color:var(--gold); }
 
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: var(--dark); }
-        ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+        ::-webkit-scrollbar { width:4px; }
+        ::-webkit-scrollbar-track { background:var(--dark); }
+        ::-webkit-scrollbar-thumb { background:var(--gold-dark); border-radius:2px; }
 
-        @media (max-width: 768px) {
-            .slide-content { padding: 120px 24px 100px; }
-            .slide-split { grid-template-columns: 1fr; }
-            .slide-title { font-size: 1.9rem; }
-            .nav { padding: 0 20px; }
-            #course-chrome { padding: 10px 20px 6px; }
-            .mag-section { padding: 50px 24px; }
-            .mag-photo-grid.cols-3 { grid-template-columns: 1fr 1fr; }
+        @media(max-width:768px){
+            .slide-content { padding:120px 22px 90px; }
+            .slide-split { grid-template-columns:1fr; }
+            .slide-split > *:first-child { display:none; }
+            .slide-title { font-size:1.8rem; }
+            .nav { padding:0 20px; }
+            #course-chrome { padding:10px 20px 6px; }
+            .mag-section { padding:50px 22px; }
+            .mag-photo-grid.cols-3 { grid-template-columns:1fr 1fr; }
+            .product-grid { grid-template-columns:1fr 1fr; }
+            .mag-product-grid { grid-template-columns:1fr 1fr; }
         }
     </style>
 </head>
 <body class="course-mode">
 
-<!-- NAV -->
 <nav class="nav">
     <div class="nav-inner">
-        <a href="index.html" class="nav-logo">
-            <img src="../logo.png" alt="Golden Barbers">
-            <span>Golden Barbers</span>
-        </a>
+        <a href="index.html" class="nav-logo"><img src="../logo.png" alt="Golden Barbers"><span>Golden Barbers</span></a>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="services.html">Services</a></li>
@@ -603,9 +196,7 @@
             <li><a href="contact.html">Contact</a></li>
         </ul>
         <a href="services.html" class="nav-cta">Book Now</a>
-        <div class="nav-toggle" onclick="toggleMobileNav()">
-            <span></span><span></span><span></span>
-        </div>
+        <div class="nav-toggle" onclick="toggleMobileNav()"><span></span><span></span><span></span></div>
     </div>
 </nav>
 <div class="mobile-nav" id="mobileNav">
@@ -619,7 +210,6 @@
     <a href="services.html" style="color:var(--gold);font-weight:700;margin-top:8px;">Book Now &rarr;</a>
 </div>
 
-<!-- COURSE CHROME -->
 <div id="course-chrome">
     <div id="progress-bar"><div id="progress-fill"></div></div>
     <div id="progress-meta">
@@ -628,370 +218,298 @@
     </div>
 </div>
 
-<!-- MODE TOGGLE -->
 <button id="mode-toggle" onclick="toggleMagazine()">&#9776; Read as Article</button>
 
-<!-- SLIDE NAV -->
 <div class="slide-nav">
     <button class="slide-btn" id="btn-prev" onclick="prevSlide()" disabled>&#8592;</button>
     <span id="slide-indicator">1 / 11</span>
     <button class="slide-btn" id="btn-next" onclick="nextSlide()">&#8594;</button>
 </div>
 
-<!-- ============================================================
-     COURSE — 11 SLIDES
-     ============================================================ -->
-<div id="course-wrapper">
-<div id="slides-track">
+<!-- ================================================================
+     SLIDES
+     ================================================================ -->
+<div id="course-wrapper"><div id="slides-track">
 
-<!-- SLIDE 1: WELCOME -->
-<section class="slide" id="slide-0">
+<!-- 1. WELCOME -->
+<section class="slide">
     <div class="slide-bg">
         <video autoplay muted loop playsinline poster="download (17).jpg">
             <source src="SnapInsta.to_AQPGe6NeSzxsBsWUbAVB5TpDvzujkBSx3TvtDa7ubYDj0gzj_5kT1IfkJx4qXcwZbpig_aQ92mCtFrW6lC-1kz1IN7rGxufewkpMPJw.mp4" type="video/mp4">
         </video>
-        <div class="slide-overlay" style="background:linear-gradient(135deg,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.5) 50%,rgba(0,0,0,0.3) 100%)"></div>
+        <div class="slide-overlay" style="background:linear-gradient(135deg,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.5) 50%,rgba(0,0,0,0.28) 100%)"></div>
     </div>
     <div class="slide-content" style="justify-content:center;">
         <div class="slide-tag">Golden Barbers Goodmayes</div>
         <h1 class="slide-title">The <em>Complete</em><br>Grooming Guide</h1>
-        <p class="slide-body">11 chapters covering everything from haircuts and fades to ear flaming, hot towel shaves, products and hair health. <strong>Tap the arrows</strong> to move at your own pace &mdash; or hit &ldquo;Read as Article&rdquo; to see everything at once.</p>
+        <div class="slide-body" style="max-width:560px;">
+            <p>11 chapters of real, practical grooming knowledge &mdash; written by barbers, for customers. Whether you&rsquo;re trying to describe your haircut better, understand what a fade actually is, or figure out which product belongs in your hair, this guide has you covered.</p>
+            <p><strong>Use the arrows to go chapter by chapter</strong>, or hit &ldquo;Read as Article&rdquo; to scroll everything at once.</p>
+        </div>
         <div class="chip-row">
-            <span class="chip">Haircuts</span>
-            <span class="chip">Fades</span>
-            <span class="chip">Beard</span>
-            <span class="chip">Ear Flaming</span>
-            <span class="chip">Hot Towel</span>
-            <span class="chip">Colour</span>
-            <span class="chip">Products</span>
+            <span class="chip">Haircuts</span><span class="chip">Fades</span><span class="chip">Beard</span><span class="chip">Ear Flaming</span><span class="chip">Hot Towel</span><span class="chip">Colour</span><span class="chip">Products</span><span class="chip">Hair Health</span>
         </div>
         <button class="slide-cta" onclick="nextSlide()">Start Learning &rarr;</button>
     </div>
 </section>
 
-<!-- SLIDE 2: HAIRCUTS & STYLES -->
-<section class="slide" id="slide-1">
+<!-- 2. HAIRCUTS -->
+<section class="slide">
     <div class="slide-split">
         <div style="position:relative;overflow:hidden;">
-            <img src="SnapInsta.to_84958218_597425240989592_6331447961297910555_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;" alt="Barber at work">
-            <div class="slide-overlay" style="background:linear-gradient(to right,transparent 55%,rgba(0,0,0,0.95) 100%)"></div>
+            <img src="SnapInsta.to_84958218_597425240989592_6331447961297910555_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="Barber at work">
+            <div class="slide-overlay" style="background:linear-gradient(to right,transparent 55%,rgba(0,0,0,0.97) 100%)"></div>
         </div>
-        <div style="background:var(--dark);display:flex;flex-direction:column;justify-content:center;padding:50px 44px 110px;overflow-y:auto;">
+        <div style="background:var(--dark);display:flex;flex-direction:column;justify-content:center;padding:44px 44px 90px;overflow-y:auto;">
             <div class="slide-tag">Chapter 2</div>
             <h2 class="slide-title">Haircuts<br>&amp; <em>Styles</em></h2>
-            <p class="slide-body">Whether you want a classic crop, textured quiff, or something unique &mdash; knowing your style before you sit down saves time and gets you the perfect result. <strong>Tell your barber the name and show a reference photo.</strong></p>
-            <div class="chip-row" style="margin-bottom:18px;">
-                <span class="chip">Crop</span>
-                <span class="chip">Quiff</span>
-                <span class="chip">Comb Over</span>
-                <span class="chip">Buzz Cut</span>
-                <span class="chip">Textured</span>
-                <span class="chip">Locs</span>
+            <div class="slide-body">
+                <p>The single most useful thing you can do before your appointment is <strong>bring a reference photo</strong>. Barbers work visually &mdash; a photo communicates in seconds what a verbal description takes minutes to get right and often still doesn&rsquo;t.</p>
+                <p>Know the name of what you want. A <strong>crop</strong> keeps it short and textured on top. A <strong>comb over</strong> sweeps the hair to one side with a sharp part. A <strong>quiff</strong> pushes volume forward and up. A <strong>buzz cut</strong> is uniform all over with a guard. <strong>Locs</strong> and <strong>waves</strong> are their own craft requiring specialist experience &mdash; which Golden Barbers has.</p>
+                <p>Face shape matters too. Round faces suit height on top. Square faces suit textured crops. Oval faces suit almost anything.</p>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;height:100px;">
-                <div class="photo-cell" style="border-radius:6px;">
-                    <img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Comb over fade">
-                    <div class="photo-label">Comb Over</div>
-                </div>
-                <div class="photo-cell" style="border-radius:6px;">
-                    <img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Hard part fade">
-                    <div class="photo-label">Hard Part</div>
-                </div>
-                <div class="photo-cell" style="border-radius:6px;">
-                    <img src="download (4).jpg" alt="Boy's cut">
-                    <div class="photo-label">Junior</div>
-                </div>
-                <div class="photo-cell" style="border-radius:6px;">
-                    <img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French crop">
-                    <div class="photo-label">Crop</div>
-                </div>
-                <div class="photo-cell" style="border-radius:6px;">
-                    <img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs fade">
-                    <div class="photo-label">Locs</div>
-                </div>
+            <div class="chip-row" style="margin-bottom:16px;">
+                <span class="chip">Crop</span><span class="chip">Quiff</span><span class="chip">Comb Over</span><span class="chip">Buzz Cut</span><span class="chip">Textured</span><span class="chip">Locs</span><span class="chip">Waves</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;height:92px;">
+                <div class="photo-cell"><img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Comb over fade"><div class="photo-label">Comb Over</div></div>
+                <div class="photo-cell"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Hard part"><div class="photo-label">Hard Part</div></div>
+                <div class="photo-cell"><img src="download (4).jpg" alt="Junior cut"><div class="photo-label">Junior</div></div>
+                <div class="photo-cell"><img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French crop"><div class="photo-label">Crop</div></div>
+                <div class="photo-cell"><img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs"><div class="photo-label">Locs</div></div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- SLIDE 3: FADES -->
-<section class="slide" id="slide-2">
+<!-- 3. FADES -->
+<section class="slide">
     <div class="slide-bg">
-        <img src="SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg" alt="Skin fade profile">
-        <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.93) 0%,rgba(0,0,0,0.6) 50%,rgba(0,0,0,0.15) 100%)"></div>
+        <img src="SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg" alt="Skin fade">
+        <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.94) 0%,rgba(0,0,0,0.62) 50%,rgba(0,0,0,0.12) 100%)"></div>
     </div>
     <div class="slide-content" style="flex-direction:row;align-items:stretch;padding:110px 0 80px;">
-        <div style="flex:0 0 400px;padding:20px 44px;display:flex;flex-direction:column;justify-content:center;overflow-y:auto;">
+        <div style="flex:0 0 420px;padding:20px 44px;display:flex;flex-direction:column;justify-content:center;overflow-y:auto;">
             <div class="slide-tag">Chapter 3</div>
             <h2 class="slide-title">The Art<br>of <em>Fades</em></h2>
-            <p class="slide-body">A fade blends hair from short to shorter seamlessly. The <strong>starting point</strong> defines the style: low fades keep length, high fades go skin-tight near the crown.</p>
-            <div class="info-cards" style="margin-top:18px;">
-                <div class="info-card"><div class="info-card-title">Low Fade</div><div class="info-card-body">Starts just above the ear. Classic, versatile, suits most face shapes.</div></div>
-                <div class="info-card"><div class="info-card-title">Mid Fade</div><div class="info-card-body">Starts midway up the side. Bold contrast while keeping some length.</div></div>
-                <div class="info-card"><div class="info-card-title">High / Skin Fade</div><div class="info-card-body">Tight, dramatic, starts near the temple. Maximum contrast and definition.</div></div>
+            <div class="slide-body">
+                <p>A fade is a gradient blend &mdash; hair goes from longer on top to progressively shorter down the sides until it disappears into the skin. The <strong>starting point</strong> of the fade defines the whole look.</p>
+                <p>The <strong>blend zone</strong> is where a barber&rsquo;s skill truly shows. It takes multiple clipper guards, freehand scissor work, and a trained eye to make the transition seamless. A patchy or visible &ldquo;line&rdquo; is the mark of a rushed job.</p>
+            </div>
+            <div class="info-cards" style="margin-top:14px;">
+                <div class="info-card"><div class="info-card-title">Low Fade</div><div class="info-card-body">Starts just above the ear and neckline. Classic, clean, suits every face shape. The safest choice if you're unsure.</div></div>
+                <div class="info-card"><div class="info-card-title">Mid Fade</div><div class="info-card-body">Starts midway up the side of the head. Creates stronger contrast while keeping length. Very popular with crops and quiffs.</div></div>
+                <div class="info-card"><div class="info-card-title">High / Skin Fade</div><div class="info-card-body">Starts near the temples, goes to bare skin. Maximum contrast and definition. Requires more upkeep &mdash; book every 2&ndash;3 weeks.</div></div>
+                <div class="info-card"><div class="info-card-title">Drop Fade</div><div class="info-card-body">The fade line curves down behind the ear for a sleeker, more stylised silhouette. Popular with waves and afros.</div></div>
             </div>
         </div>
         <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:6px;padding:0 30px 0 10px;">
-            <div class="photo-cell" style="border-radius:8px;">
-                <img src="SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg" alt="Waves skin fade">
-                <div class="photo-label">Waves + Skin Fade</div>
-            </div>
-            <div class="photo-cell" style="border-radius:8px;">
-                <img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="Waves low fade">
-                <div class="photo-label">Waves + Low Fade</div>
-            </div>
-            <div class="photo-cell" style="border-radius:8px;">
-                <img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="High fade curly">
-                <div class="photo-label">High Fade</div>
-            </div>
-            <div class="photo-cell" style="border-radius:8px;">
-                <img src="download (7).jpg" alt="Clipper technique">
-                <div class="photo-label">Clipper Technique</div>
-            </div>
+            <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg" alt="Waves skin fade"><div class="photo-label">Waves + Skin Fade</div></div>
+            <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="Waves low fade"><div class="photo-label">Waves + Low Fade</div></div>
+            <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="High fade curly"><div class="photo-label">High Fade</div></div>
+            <div class="photo-cell" style="border-radius:8px;"><img src="download (7).jpg" alt="Clipper technique"><div class="photo-label">The Blend Zone</div></div>
         </div>
     </div>
 </section>
 
-<!-- SLIDE 4: BEARD -->
-<section class="slide" id="slide-3">
+<!-- 4. BEARD -->
+<section class="slide">
     <div class="slide-split">
-        <div style="background:var(--dark);display:flex;flex-direction:column;justify-content:center;padding:50px 44px 110px;overflow-y:auto;">
+        <div style="background:var(--dark);display:flex;flex-direction:column;justify-content:center;padding:44px 44px 90px;overflow-y:auto;">
             <div class="slide-tag">Chapter 4</div>
             <h2 class="slide-title">Beard<br><em>Grooming</em></h2>
-            <p class="slide-body">A well-kept beard isn't just trimmed &mdash; it's shaped to your face. <strong>Neckline, cheek line and mustache</strong> each need individual attention. A barber uses trimmers, a straight razor for definition, and often hot oil.</p>
-            <div class="info-cards" style="margin-top:18px;">
-                <div class="info-card"><div class="info-card-title">The Neckline</div><div class="info-card-body">Two fingers above the Adam's apple. Clean razor edge makes all the difference.</div></div>
-                <div class="info-card"><div class="info-card-title">Cheek Line</div><div class="info-card-body">Follow your natural line or ask for a tidy-up. Avoid going too low &mdash; it narrows the face.</div></div>
-                <div class="info-card"><div class="info-card-title">Beard Oil</div><div class="info-card-body">Applied daily to moisturise the skin underneath and keep hair soft and shaped.</div></div>
+            <div class="slide-body">
+                <p>A beard needs three separate lines to look intentional: the <strong>neckline</strong>, the <strong>cheek line</strong>, and the <strong>mustache edge</strong>. Miss any one of them and the whole beard looks unkempt regardless of how long or full it is.</p>
+                <p><strong>Neckline:</strong> Place two fingers above your Adam&rsquo;s apple &mdash; that&rsquo;s where it should sit. Any lower and the beard looks like it&rsquo;s swallowing your neck. Your barber will razor-clean this line on every visit.</p>
+                <p><strong>Cheek line:</strong> Follow your natural hair growth pattern. Don&rsquo;t shave too high &mdash; removing bulk from the cheeks narrows and shortens the face. A barber will tidy stray hairs without compromising shape.</p>
+                <p>Daily <strong>beard oil</strong> softens the hair and moisturises the skin underneath to prevent itchiness and flaking. Apply 2&ndash;4 drops to damp skin after washing, massage in, then brush through with a boar bristle brush.</p>
             </div>
-            <a href="services.html" class="slide-cta" style="margin-top:22px;">Book a Beard Trim</a>
+            <div class="chip-row"><span class="chip">Neckline</span><span class="chip">Cheek Line</span><span class="chip">Beard Oil</span><span class="chip">Line-Up</span><span class="chip">Boar Brush</span></div>
+            <a href="services.html" class="slide-cta">Book a Beard Trim</a>
         </div>
-        <div style="display:grid;grid-template-rows:1fr 1fr;gap:6px;overflow:hidden;">
-            <div class="photo-cell" style="border-radius:0;">
-                <img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" alt="Beard and fade in shop">
-            </div>
-            <div class="photo-cell" style="border-radius:0;">
-                <img src="download (11).jpg" alt="Beard trim with trimmer">
-            </div>
+        <div style="display:grid;grid-template-rows:1fr 1fr;gap:5px;overflow:hidden;">
+            <div class="photo-cell" style="border-radius:0;"><img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" alt="Beard and fade in shop"></div>
+            <div class="photo-cell" style="border-radius:0;"><img src="download (11).jpg" alt="Beard trim with trimmer"></div>
         </div>
     </div>
 </section>
 
-<!-- SLIDE 5: EAR FLAMING -->
-<section class="slide" id="slide-4">
+<!-- 5. EAR FLAMING -->
+<section class="slide">
     <div class="slide-bg">
         <img src="download (12).jpg" alt="Ear flaming fire">
-        <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.55) 60%,rgba(0,0,0,0.12) 100%)"></div>
+        <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.93) 0%,rgba(0,0,0,0.58) 60%,rgba(0,0,0,0.1) 100%)"></div>
     </div>
     <div class="slide-content" style="flex-direction:row;align-items:center;gap:50px;">
-        <div style="flex:0 0 420px;">
+        <div style="flex:0 0 430px;">
             <div class="slide-tag">Chapter 5</div>
             <h2 class="slide-title">Ear<br><em>Flaming</em></h2>
-            <p class="slide-body">Ear flaming uses a lit wick held near the ear canal to remove unwanted hair safely and painlessly. <strong>The heat seals the follicle</strong>, reducing regrowth. It takes under 5 minutes and leaves your ears looking sharp and clean.<br><br>Golden Barbers are experienced specialists and offer this as a dedicated service.</p>
-            <div class="chip-row">
-                <span class="chip">Painless</span>
-                <span class="chip">Quick</span>
-                <span class="chip">No Chemicals</span>
-                <span class="chip">Safe</span>
+            <div class="slide-body">
+                <p>Ear flaming &mdash; also called <strong>ear singeing</strong> or <strong>ear candling</strong> &mdash; is a traditional grooming technique where a lit cotton wick is passed rapidly near the outer ear and ear canal entrance to burn away unwanted hair. The flame is extinguished almost immediately and never touches the skin.</p>
+                <p>The <strong>heat cauterises the hair follicle</strong>, which slows regrowth significantly compared to plucking or waxing. It&rsquo;s completely painless &mdash; clients often describe feeling a gentle warmth and hearing a faint crackling sound.</p>
+                <p>The entire process takes <strong>under 5 minutes</strong>. No chemicals, no irritation, no downtime. It&rsquo;s one of Golden Barbers&rsquo; most requested add-on services and can be booked alongside any haircut or beard trim.</p>
             </div>
-            <a href="services.html" class="slide-cta" style="margin-top:24px;">Book Ear Flaming</a>
+            <div class="chip-row"><span class="chip">Painless</span><span class="chip">Under 5 Mins</span><span class="chip">No Chemicals</span><span class="chip">Slows Regrowth</span></div>
+            <a href="services.html" class="slide-cta">Book Ear Flaming</a>
         </div>
-        <div style="flex:0 0 260px;height:360px;position:relative;overflow:hidden;border-radius:12px;">
+        <div style="flex:0 0 250px;height:350px;position:relative;overflow:hidden;border-radius:12px;">
             <img src="pic.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="Ear flaming close up">
         </div>
     </div>
 </section>
 
-<!-- SLIDE 6: HOT TOWEL SHAVE -->
-<section class="slide" id="slide-5">
+<!-- 6. HOT TOWEL SHAVE -->
+<section class="slide">
     <div class="slide-bg">
         <img src="download (23).jpg" alt="Hot towel wrap">
-        <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.5) 60%,rgba(0,0,0,0.1) 100%)"></div>
+        <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.52) 60%,rgba(0,0,0,0.08) 100%)"></div>
     </div>
     <div class="slide-content" style="flex-direction:row;align-items:center;gap:44px;">
-        <div style="flex:0 0 400px;">
+        <div style="flex:0 0 410px;">
             <div class="slide-tag">Chapter 6</div>
             <h2 class="slide-title">Hot Towel<br><em>Shave</em></h2>
-            <p class="slide-body">A hot towel shave is the definitive barbershop ritual. <strong>The hot towel opens pores</strong>, softening hair and skin. Pre-shave oil is applied, then rich lather, then the straight razor glides with precision. A cold towel closes pores. The result: the closest, smoothest shave possible.</p>
-            <div class="chip-row">
-                <span class="chip">Closest Shave</span>
-                <span class="chip">Pore-Opening</span>
-                <span class="chip">Straight Razor</span>
-                <span class="chip">Aftercare</span>
+            <div class="slide-body">
+                <p>A hot towel shave is the closest shave you will ever get. The process follows a precise sequence: a <strong>hot towel</strong> is applied to the face for 2&ndash;3 minutes to open pores and soften the beard. Then a pre-shave oil is massaged in to create slip and protect the skin.</p>
+                <p>A rich lather is worked in with a badger hair brush &mdash; this lifts every hair away from the skin. The <strong>straight razor</strong> is then drawn across the skin in short, controlled strokes, always with the grain first then across. The result is a shave so close you feel it for days.</p>
+                <p>A <strong>cold towel</strong> closes the pores back down and reduces redness. Aftershave balm (not alcohol-based &mdash; that dries the skin) is applied last. The whole ritual takes 30&ndash;45 minutes and is deeply relaxing.</p>
             </div>
-            <a href="services.html" class="slide-cta" style="margin-top:24px;">Book Hot Towel Shave</a>
+            <div class="chip-row"><span class="chip">Opens Pores</span><span class="chip">Straight Razor</span><span class="chip">Pre-Shave Oil</span><span class="chip">Cold Towel Finish</span></div>
+            <a href="services.html" class="slide-cta">Book Hot Towel Shave</a>
         </div>
-        <div style="flex:1;max-width:320px;display:grid;grid-template-rows:1fr 1fr;gap:8px;height:360px;">
-            <div class="photo-cell" style="border-radius:10px;">
-                <img src="download (15).jpg" alt="Straight razor">
-                <div class="photo-label">Straight Razor</div>
-            </div>
-            <div class="photo-cell" style="border-radius:10px;">
-                <img src="download (27).jpg" alt="Hair wash ritual">
-                <div class="photo-label">The Ritual</div>
-            </div>
+        <div style="flex:1;max-width:300px;display:grid;grid-template-rows:1fr 1fr;gap:8px;height:340px;">
+            <div class="photo-cell" style="border-radius:10px;"><img src="download (15).jpg" alt="Straight razor"><div class="photo-label">Straight Razor</div></div>
+            <div class="photo-cell" style="border-radius:10px;"><img src="download (27).jpg" alt="Hair wash ritual"><div class="photo-label">The Ritual</div></div>
         </div>
     </div>
 </section>
 
-<!-- SLIDE 7: COLOUR & CREATIVE -->
-<section class="slide" id="slide-6">
-    <div class="slide-bg">
-        <div class="slide-overlay" style="background:var(--dark)"></div>
-    </div>
-    <div class="slide-content" style="padding-top:115px;">
+<!-- 7. COLOUR & CREATIVE -->
+<section class="slide">
+    <div class="slide-bg"><div class="slide-overlay" style="background:var(--dark)"></div></div>
+    <div class="slide-content" style="padding-top:112px;">
         <div style="display:flex;gap:44px;height:100%;align-items:flex-start;">
-            <div style="flex:0 0 280px;padding-top:8px;">
+            <div style="flex:0 0 270px;padding-top:6px;">
                 <div class="slide-tag">Chapter 7</div>
-                <h2 class="slide-title" style="font-size:clamp(1.7rem,3vw,2.8rem);">Colour &amp;<br><em>Creative</em><br>Cuts</h2>
-                <p class="slide-body" style="font-size:0.87rem;">From bold bleach to intricate carved designs, <strong>Golden Barbers specialise in creative work</strong> that makes you stand out. Bring a reference &mdash; the team will make it happen.</p>
-                <div class="chip-row">
-                    <span class="chip">Bleach</span>
-                    <span class="chip">Dye</span>
-                    <span class="chip">Carvings</span>
-                    <span class="chip">Designs</span>
+                <h2 class="slide-title" style="font-size:clamp(1.7rem,2.8vw,2.6rem);">Colour &amp;<br><em>Creative</em><br>Cuts</h2>
+                <div class="slide-body" style="font-size:0.85rem;">
+                    <p>Colour and creative carvings are a form of self-expression that Golden Barbers take seriously. <strong>Bleach and dye</strong> work requires multiple sessions for very dark hair and proper conditioning aftercare. Carvings are shaved into the fade using a razor &mdash; they last 2&ndash;3 weeks before growing out.</p>
+                    <p>Always bring a reference image. The more specific, the better the result.</p>
                 </div>
-                <a href="services.html" class="slide-cta" style="margin-top:20px;font-size:0.82rem;padding:11px 20px;">Book a Colour</a>
+                <div class="chip-row"><span class="chip">Bleach</span><span class="chip">Toner</span><span class="chip">Colour</span><span class="chip">Carvings</span><span class="chip">Designs</span></div>
+                <a href="services.html" class="slide-cta" style="font-size:0.82rem;padding:10px 20px;">Book a Colour</a>
             </div>
-            <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:7px;height:calc(100vh - 200px);">
-                <div class="photo-cell" style="border-radius:8px;">
-                    <img src="SnapInsta.to_70010652_1348701105288372_8634153704668559015_n.jpg" alt="Honey blonde curls">
-                    <div class="photo-label">Honey Blonde</div>
-                </div>
-                <div class="photo-cell" style="border-radius:8px;">
-                    <img src="SnapInsta.to_59039774_468241190612084_3168956384655946770_n.jpg" alt="Platinum waves">
-                    <div class="photo-label">Platinum Waves</div>
-                </div>
-                <div class="photo-cell" style="border-radius:8px;">
-                    <img src="download (21).jpg" alt="Platinum afro">
-                    <div class="photo-label">Platinum Afro</div>
-                </div>
-                <div class="photo-cell" style="border-radius:8px;">
-                    <img src="download (22).jpg" alt="Teal colour">
-                    <div class="photo-label">Teal Colour</div>
-                </div>
-                <div class="photo-cell" style="border-radius:8px;">
-                    <img src="SnapInsta.to_50119020_2338328669729367_6657319863597735597_n.jpg" alt="Line design">
-                    <div class="photo-label">Line Design</div>
-                </div>
-                <div class="photo-cell" style="border-radius:8px;">
-                    <img src="SnapInsta.to_83452999_639920510104267_5362544737012483305_n.jpg" alt="Carved designs">
-                    <div class="photo-label">Carvings</div>
-                </div>
+            <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:7px;height:calc(100vh - 190px);">
+                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_70010652_1348701105288372_8634153704668559015_n.jpg" alt="Honey blonde"><div class="photo-label">Honey Blonde</div></div>
+                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_59039774_468241190612084_3168956384655946770_n.jpg" alt="Platinum waves"><div class="photo-label">Platinum Waves</div></div>
+                <div class="photo-cell" style="border-radius:8px;"><img src="download (21).jpg" alt="Platinum afro"><div class="photo-label">Platinum Afro</div></div>
+                <div class="photo-cell" style="border-radius:8px;"><img src="download (22).jpg" alt="Teal dye"><div class="photo-label">Teal Colour</div></div>
+                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_50119020_2338328669729367_6657319863597735597_n.jpg" alt="Line design"><div class="photo-label">Line Design</div></div>
+                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_83452999_639920510104267_5362544737012483305_n.jpg" alt="Carvings"><div class="photo-label">Carvings</div></div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- SLIDE 8: PRODUCTS & ROUTINE -->
-<section class="slide" id="slide-7">
-    <div class="slide-split" style="grid-template-columns:55% 45%;">
-        <div style="background:var(--dark);display:flex;flex-direction:column;justify-content:center;padding:50px 40px 110px;overflow-y:auto;">
-            <div class="slide-tag">Chapter 8</div>
-            <h2 class="slide-title" style="font-size:clamp(1.7rem,3vw,2.8rem);">Products &amp;<br><em>Daily Routine</em></h2>
-            <p class="slide-body" style="font-size:0.88rem;">The right product makes or breaks a style. <strong>Clay = texture and hold. Pomade = shine and slick. Sea salt = natural and messy.</strong> Apply to damp hair for better coverage.</p>
-            <div class="info-cards" style="margin-top:16px;">
-                <div class="info-card"><div class="info-card-title">Morning</div><div class="info-card-body">Wet or wash hair, apply product, brush into shape.</div></div>
-                <div class="info-card"><div class="info-card-title">Weekly</div><div class="info-card-body">Deep condition once a week. Apply beard oil nightly.</div></div>
-                <div class="info-card"><div class="info-card-title">Every 3&ndash;4 Weeks</div><div class="info-card-body">Barber visit to maintain sharpness and beard shape.</div></div>
-            </div>
+<!-- 8. PRODUCTS -->
+<section class="slide">
+    <div class="slide-bg"><div class="slide-overlay" style="background:var(--dark)"></div></div>
+    <div class="slide-content" style="padding-top:112px;overflow-y:auto;">
+        <div class="slide-tag">Chapter 8</div>
+        <h2 class="slide-title" style="font-size:clamp(1.6rem,3vw,2.8rem);">Products &amp; <em>Daily Routine</em></h2>
+        <div class="slide-body" style="max-width:100%;margin-bottom:14px;">
+            <p>Using the wrong product is one of the most common grooming mistakes. Product choice depends on your hair type, desired finish, and how much hold you need. <strong>Apply to damp (not soaking wet) hair</strong> for better distribution and hold.</p>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:4px;overflow:hidden;">
-            <div class="photo-cell" style="border-radius:0;"><img src="download (14).jpg" alt="GB interior"></div>
-            <div class="photo-cell" style="border-radius:0;"><img src="download (16).jpg" alt="Styling hair"></div>
-            <div class="photo-cell" style="border-radius:0;"><img src="download (18).jpg" alt="Scalp treatment"></div>
-            <div class="photo-cell" style="border-radius:0;"><img src="56490494_441941899910184_1535393151337681820_n.jpg" alt="Face mask"></div>
-            <div class="photo-cell" style="border-radius:0;grid-column:span 2;"><img src="SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg" alt="Hair wash sink"></div>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-img"><img src="https://images.unsplash.com/photo-1585751119414-ef2636f8aede?w=400&q=80" alt="Hair clay"></div>
+                <div class="product-info"><div class="product-name">Hair Clay</div><div class="product-desc">High hold, matte finish. Best for textured crops, faux hawks and messy styles. Work a pea-sized amount between palms and rake through damp hair.</div><span class="product-tag">Matte &bull; High Hold</span></div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"><img src="https://images.unsplash.com/photo-1621607512214-68297480165e?w=400&q=80" alt="Pomade"></div>
+                <div class="product-info"><div class="product-name">Pomade</div><div class="product-desc">Medium hold, high shine. Classic look for comb overs, slick backs and quiffs. Water-based pomades wash out easily; oil-based last longer but need proper shampoo.</div><span class="product-tag">Shine &bull; Medium Hold</span></div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&q=80" alt="Sea salt spray"></div>
+                <div class="product-info"><div class="product-name">Sea Salt Spray</div><div class="product-desc">Lightweight, no hold, natural texture. Spray onto damp hair and scrunch for beachy waves or tousled texture. Ideal for wavy and curly hair types.</div><span class="product-tag">Natural &bull; Light Hold</span></div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80" alt="Beard oil"></div>
+                <div class="product-info"><div class="product-name">Beard Oil</div><div class="product-desc">Apply 2&ndash;4 drops to damp skin after washing. Softens coarse beard hair and moisturises the skin underneath preventing itch and flaking. Argan and jojoba oils are best.</div><span class="product-tag">Daily Use &bull; Skin + Hair</span></div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"><img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=400&q=80" alt="Clippers Wahl"></div>
+                <div class="product-info"><div class="product-name">Wahl Clippers</div><div class="product-desc">The industry standard. Used by Golden Barbers for all fades. The Magic Clip and Senior are the professional favourites for their precision blade alignment and quiet motor.</div><span class="product-tag">Professional Grade</span></div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"><img src="https://images.unsplash.com/photo-1582095133179-bfd08e2fb6b8?w=400&q=80" alt="Shampoo conditioner"></div>
+                <div class="product-info"><div class="product-name">Shampoo &amp; Conditioner</div><div class="product-desc">Wash 2&ndash;3 times per week maximum. Over-washing strips natural oils. Use a sulphate-free shampoo and always follow with conditioner applied from mid-lengths to ends.</div><span class="product-tag">Weekly Routine</span></div>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- SLIDE 9: HAIR HEALTH -->
-<section class="slide" id="slide-8">
-    <div class="slide-bg">
-        <div class="slide-overlay" style="background:var(--dark)"></div>
-    </div>
-    <div class="slide-content" style="flex-direction:row;gap:44px;align-items:flex-start;padding-top:120px;">
-        <div style="flex:0 0 360px;">
+<!-- 9. HAIR HEALTH -->
+<section class="slide">
+    <div class="slide-bg"><div class="slide-overlay" style="background:var(--dark)"></div></div>
+    <div class="slide-content" style="flex-direction:row;gap:44px;align-items:flex-start;padding-top:116px;">
+        <div style="flex:0 0 370px;overflow-y:auto;max-height:calc(100vh - 180px);">
             <div class="slide-tag">Chapter 9</div>
-            <h2 class="slide-title" style="font-size:clamp(1.7rem,3.5vw,3rem);">Hair Health<br>&amp; <em>Hair Loss</em></h2>
-            <p class="slide-body" style="font-size:0.88rem;">Hair loss is common and treatable. <strong>Early action matters</strong> &mdash; the sooner you address thinning, the more options you have. The Norwood scale classifies severity from 1&ndash;7.</p>
-            <div class="info-cards" style="margin-top:16px;">
-                <div class="info-card"><div class="info-card-title">Minoxidil</div><div class="info-card-body">Topical treatment applied to scalp. Clinically proven to slow loss and regrow hair.</div></div>
-                <div class="info-card"><div class="info-card-title">Scalp Micropigmentation</div><div class="info-card-body">Tattooing technique mimicking a buzz cut on a bald scalp. Instant visual result.</div></div>
-                <div class="info-card"><div class="info-card-title">The Right Cut</div><div class="info-card-body">Skin fades and buzz cuts make thinning hair look intentional and sharp.</div></div>
+            <h2 class="slide-title" style="font-size:clamp(1.6rem,3.2vw,2.8rem);">Hair Health<br>&amp; <em>Hair Loss</em></h2>
+            <div class="slide-body">
+                <p>Hair loss affects <strong>85% of men</strong> by the age of 50. The most common cause is androgenetic alopecia (male pattern baldness) &mdash; a genetic condition triggered by DHT hormone sensitivity in the follicles. The earlier you act, the more you can preserve.</p>
+                <p>The <strong>Norwood scale</strong> classifies hair loss severity from Stage 1 (full head) to Stage 7 (only a rim of hair remaining). Most men first notice recession at the temples &mdash; that&rsquo;s Stage 2 to 3, still very treatable.</p>
+                <p><strong>Minoxidil</strong> (brand name Regaine) is the most clinically proven over-the-counter treatment. Applied topically to the scalp twice daily, it widens blood vessels, increasing nutrient flow to follicles. Results appear after 4&ndash;6 months of consistent use.</p>
+                <p>If you&rsquo;d rather embrace it: a <strong>skin fade or buzz cut</strong> makes thinning look intentional and sharp. Some of the best-looking haircuts in the shop are on clients with thinning hair.</p>
             </div>
+            <div class="chip-row"><span class="chip">Minoxidil</span><span class="chip">Norwood Scale</span><span class="chip">Finasteride</span><span class="chip">SMP</span><span class="chip">Embrace It</span></div>
         </div>
-        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:8px;height:calc(100vh - 200px);">
-            <div class="photo-cell" style="border-radius:10px;grid-column:span 2;height:200px;">
-                <img src="download (25).jpg" alt="Hair loss before after">
-                <div class="photo-label">Before &amp; After</div>
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:8px;">
+            <div class="photo-cell" style="border-radius:10px;grid-column:span 2;height:190px;">
+                <img src="download (25).jpg" alt="Hair loss before after"><div class="photo-label">Before &amp; After</div>
             </div>
-            <div class="photo-cell" style="border-radius:10px;height:160px;">
-                <img src="download (26).jpg" alt="Minoxidil">
-                <div class="photo-label">Minoxidil</div>
+            <div class="photo-cell" style="border-radius:10px;height:150px;">
+                <img src="download (26).jpg" alt="Minoxidil product"><div class="photo-label">Minoxidil</div>
             </div>
-            <div class="photo-cell" style="border-radius:10px;height:160px;">
-                <img src="images.jpg" alt="Norwood scale">
-                <div class="photo-label">Norwood Scale</div>
+            <div class="photo-cell" style="border-radius:10px;height:150px;">
+                <img src="images.jpg" alt="Norwood scale stages"><div class="photo-label">Norwood Scale</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- SLIDE 10: ABOUT & AWARDS -->
-<section class="slide" id="slide-9">
-    <div class="slide-bg">
-        <div class="slide-overlay" style="background:var(--dark)"></div>
-    </div>
-    <div class="slide-content" style="padding-top:115px;">
+<!-- 10. ABOUT & AWARDS -->
+<section class="slide">
+    <div class="slide-bg"><div class="slide-overlay" style="background:var(--dark)"></div></div>
+    <div class="slide-content" style="padding-top:112px;">
         <div style="display:flex;gap:40px;height:100%;align-items:flex-start;">
-            <div style="flex:0 0 300px;">
+            <div style="flex:0 0 290px;overflow-y:auto;max-height:calc(100vh - 180px);">
                 <div class="slide-tag">Chapter 10</div>
-                <h2 class="slide-title" style="font-size:clamp(1.6rem,3vw,2.5rem);">About<br><em>Golden Barbers</em></h2>
-                <p class="slide-body" style="font-size:0.86rem;">Established in Goodmayes, Ilford &mdash; <strong>award-winning, community-rooted</strong>, built on genuine craft. 4.8&#9733; from over 330 reviews.</p>
-                <div class="chip-row">
-                    <span class="chip">4.8&#9733;</span>
-                    <span class="chip">330+ Reviews</span>
-                    <span class="chip">Award Winner</span>
+                <h2 class="slide-title" style="font-size:clamp(1.5rem,2.8vw,2.4rem);">About<br><em>Golden Barbers</em></h2>
+                <div class="slide-body" style="font-size:0.85rem;">
+                    <p>Golden Barbers Goodmayes has been a cornerstone of the Ilford community since it opened on Goodmayes Road. It&rsquo;s not just a barbershop &mdash; it&rsquo;s a <strong>multi-award winning, locally loved institution</strong>.</p>
+                    <p>The team has won <strong>Redbridge Business of the Year 2022</strong> and <strong>Best Local Business 2021</strong> in Goodmayes Ward, recognised by local MPs. With a 4.8&#9733; rating from over 330 genuine reviews, the quality speaks for itself.</p>
+                    <p>Every service &mdash; from a junior cut to ear flaming to a hot towel shave &mdash; is delivered with the same level of precision and care.</p>
                 </div>
-                <div style="margin-top:18px;border-radius:10px;overflow:hidden;height:120px;position:relative;">
+                <div class="chip-row"><span class="chip">4.8&#9733;</span><span class="chip">330+ Reviews</span><span class="chip">2x Award Winner</span></div>
+                <div style="margin-top:16px;border-radius:10px;overflow:hidden;height:110px;position:relative;">
                     <img src="download (10).jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="GB team">
                 </div>
             </div>
-            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:7px;height:calc(100vh - 180px);">
-                <div class="photo-cell" style="border-radius:10px;">
-                    <img src="download (5).jpg" alt="Award 2022">
-                    <div class="photo-label">2022 Winner</div>
-                </div>
-                <div class="photo-cell" style="border-radius:10px;">
-                    <img src="download (6).jpg" alt="Award 2021">
-                    <div class="photo-label">2021 Winner</div>
-                </div>
-                <div class="photo-cell" style="border-radius:10px;">
-                    <img src="download (24).jpg" alt="Shopfront">
-                    <div class="photo-label">Goodmayes Rd</div>
-                </div>
-                <div class="photo-cell" style="border-radius:10px;">
-                    <img src="download (19).jpg" alt="Opening">
-                    <div class="photo-label">Grand Opening</div>
-                </div>
-                <div class="photo-cell" style="border-radius:10px;grid-column:span 2;">
-                    <img src="download (20).jpg" alt="Shop interior">
-                    <div class="photo-label">The Shop</div>
-                </div>
+            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:7px;height:calc(100vh - 175px);">
+                <div class="photo-cell" style="border-radius:10px;"><img src="download (5).jpg" alt="Award 2022"><div class="photo-label">2022 Winner</div></div>
+                <div class="photo-cell" style="border-radius:10px;"><img src="download (6).jpg" alt="Award 2021"><div class="photo-label">2021 Winner</div></div>
+                <div class="photo-cell" style="border-radius:10px;"><img src="download (24).jpg" alt="Shopfront"><div class="photo-label">Goodmayes Rd</div></div>
+                <div class="photo-cell" style="border-radius:10px;"><img src="download (19).jpg" alt="Opening"><div class="photo-label">Grand Opening</div></div>
+                <div class="photo-cell" style="border-radius:10px;grid-column:span 2;"><img src="download (20).jpg" alt="Shop interior"><div class="photo-label">The Shop</div></div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- SLIDE 11: COMPLETION -->
-<section class="slide" id="slide-10">
-    <div class="slide-bg">
-        <img src="SnapInsta.to_187808517_1044738236053320_2458909227727331354_n.jpg" alt="Atmospheric portrait">
-        <div class="slide-overlay" style="background:rgba(0,0,0,0.84)"></div>
-    </div>
-    <div class="slide-content" style="align-items:center;justify-content:center;">
+<!-- 11. COMPLETION -->
+<section class="slide">
+    <div class="completion-bg"></div>
+    <div class="slide-content" style="align-items:center;justify-content:center;position:relative;z-index:10;">
         <div id="tick-wrap">
             <div class="cert-badge">Certificate of Completion</div>
             <svg id="tick-svg" viewBox="0 0 100 100">
@@ -1001,225 +519,268 @@
                 </g>
             </svg>
             <div class="completion-title">You&rsquo;re a<br><em>Grooming Expert</em></div>
-            <p class="completion-sub">You now know everything from fades and beard shaping to ear flaming, hot towel shaves and hair health. Time to put it to use.</p>
+            <p class="completion-sub">From fades and beard shaping to ear flaming, hot towel shaves, colour and hair health &mdash; you now know your craft. Time to experience it in person.</p>
             <a href="services.html" class="slide-cta">Book Your Next Appointment &rarr;</a>
             <a href="gallery.html" class="slide-cta-ghost">View Our Gallery</a>
         </div>
     </div>
 </section>
 
-</div><!-- /slides-track -->
-</div><!-- /course-wrapper -->
+</div></div>
 
-<!-- ============================================================
+<!-- ================================================================
      MAGAZINE VIEW
-     ============================================================ -->
+     ================================================================ -->
 <div id="magazine-view">
 
-    <div class="mag-section">
-        <div class="mag-section-tag">Chapter 1</div>
-        <h2 class="mag-section-title">Welcome to the <em>Complete Grooming Guide</em></h2>
-        <p class="mag-body">11 chapters covering everything from haircuts and fades to ear flaming, hot towel shaves, creative colour and hair health.</p>
-        <div class="mag-photo-grid cols-2">
-            <div class="mag-photo-cell"><img src="download (17).jpg" alt="Golden Barbers sign"></div>
-            <div class="mag-photo-cell"><img src="download (24).jpg" alt="Shopfront"></div>
+<div class="mag-section">
+    <div class="mag-tag">Chapter 1</div>
+    <h2 class="mag-title">Welcome to the <em>Complete Grooming Guide</em></h2>
+    <div class="mag-body">
+        <p>11 chapters of real, practical grooming knowledge written by barbers for customers. Whether you&rsquo;re trying to describe your haircut better, understand what a fade actually is, or figure out which product belongs in your hair &mdash; this guide covers it all. Take your time, read what matters to you, and book when you&rsquo;re ready.</p>
+    </div>
+    <div class="mag-photo-grid cols-2">
+        <div class="mag-photo-cell"><img src="download (17).jpg" alt="Golden Barbers sign"></div>
+        <div class="mag-photo-cell"><img src="download (24).jpg" alt="Shopfront"></div>
+    </div>
+</div>
+
+<div class="mag-section">
+    <div class="mag-tag">Chapter 2</div>
+    <h2 class="mag-title">Haircuts &amp; <em>Styles</em></h2>
+    <div class="mag-hero-photo"><img src="SnapInsta.to_84958218_597425240989592_6331447961297910555_n.jpg" alt="Barber at work"></div>
+    <div class="mag-body">
+        <p>The single most useful thing you can do before your appointment is <strong>bring a reference photo</strong>. Barbers work visually &mdash; a photo communicates in seconds what a verbal description takes minutes to get right and often still doesn&rsquo;t. &ldquo;Short back and sides&rdquo; means something different to everyone. A photo is precise.</p>
+        <h3>Know the Names</h3>
+        <p>A <strong>crop</strong> (or French crop) is short and textured on top with the fringe pushed forward, typically paired with a fade on the sides. A <strong>comb over</strong> sweeps longer hair to one side, usually with a hard part and high fade. A <strong>quiff</strong> pushes volume forward and upward from the forehead. A <strong>buzz cut</strong> is uniform length all over with a clipper guard &mdash; the number you choose determines the length (0 is skin, 1 is 3mm, up to 8 is 25mm).</p>
+        <h3>Face Shape Matters</h3>
+        <p><strong>Round faces</strong> benefit from height on top and tight sides &mdash; it lengthens the face. <strong>Square faces</strong> suit textured crops and mid fades that soften the jawline. <strong>Oval faces</strong> are the most versatile &mdash; almost every style works. <strong>Diamond faces</strong> suit styles with width at the temples. If you&rsquo;re not sure, ask your barber &mdash; it&rsquo;s literally their job to know.</p>
+        <h3>Specialist Styles</h3>
+        <p><strong>Locs</strong> (dreadlocks) and <strong>waves</strong> are their own discipline requiring specialist experience, the right products, and consistent technique. Not every barbershop can do them well. Golden Barbers has specialist experience in both.</p>
+    </div>
+    <div class="mag-photo-grid cols-3">
+        <div class="mag-photo-cell"><img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Comb over fade"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Hard part fade"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French crop"></div>
+        <div class="mag-photo-cell"><img src="download (4).jpg" alt="Junior cut"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs"></div>
+    </div>
+</div>
+
+<div class="mag-section">
+    <div class="mag-tag">Chapter 3</div>
+    <h2 class="mag-title">The Art of <em>Fades</em></h2>
+    <div class="mag-hero-photo"><img src="SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg" alt="Skin fade"></div>
+    <div class="mag-body">
+        <p>A fade is a gradient blend &mdash; hair transitions from longer on top to progressively shorter as it moves down the sides and back, eventually disappearing into bare skin. It&rsquo;s the most technically demanding aspect of a haircut and where a great barber separates themselves from an average one.</p>
+        <h3>The Four Fade Types</h3>
+        <p>A <strong>low fade</strong> starts just above the ear and neckline. It&rsquo;s the most understated version &mdash; clean, classic, and suits every face shape. A <strong>mid fade</strong> starts midway up the side of the head, creating stronger contrast between top and sides. It works brilliantly with crops and quiffs. A <strong>high fade</strong> starts at or near the temples and often goes all the way to skin &mdash; maximum contrast, very bold, requires upkeep every 2&ndash;3 weeks. A <strong>drop fade</strong> is a variation where the fade line curves downward behind the ear, creating a sleeker and more stylised silhouette &mdash; popular with waves and afros.</p>
+        <h3>What Makes a Good Fade</h3>
+        <p>The <strong>blend zone</strong> is where skill truly shows. It requires multiple clipper guards (typically 0.5, 1, 1.5, and 2) used in overlapping passes, often combined with freehand scissor-over-comb work to create a seamless transition. A patchy or visible &ldquo;step&rdquo; line in the blend zone is the mark of a rushed or unskilled cut.</p>
+        <p>The best barbers also <strong>follow the head shape</strong> rather than cutting in straight lines &mdash; everyone&rsquo;s head is different, and a fade that looks perfect on one person can look wrong on another if the technique is applied rigidly.</p>
+    </div>
+    <div class="mag-photo-grid cols-2">
+        <div class="mag-photo-cell"><img src="SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg" alt="Waves skin fade"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="Waves low fade"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="High fade curly"></div>
+        <div class="mag-photo-cell"><img src="download (7).jpg" alt="Clipper technique"></div>
+    </div>
+</div>
+
+<div class="mag-section">
+    <div class="mag-tag">Chapter 4</div>
+    <h2 class="mag-title">Beard <em>Grooming</em></h2>
+    <div class="mag-hero-photo"><img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" alt="Beard and fade in shop"></div>
+    <div class="mag-body">
+        <p>A beard needs three separate lines to look intentional: the <strong>neckline</strong>, the <strong>cheek line</strong>, and the <strong>mustache edge</strong>. Miss any one of them and the whole beard looks unkempt regardless of how long or full it is. Getting these lines right is what separates a professionally maintained beard from one you&rsquo;ve tried to manage yourself at home.</p>
+        <h3>The Neckline</h3>
+        <p>Place two fingers above your Adam&rsquo;s apple and draw an imaginary line from ear to ear &mdash; that&rsquo;s where your neckline should sit. Any lower and the beard starts to blur into your chest hair, losing all definition. Your barber will razor-clean this line on every visit, giving it the crisp edge that makes the whole beard look intentional.</p>
+        <h3>The Cheek Line</h3>
+        <p>Follow your natural hair growth pattern. The mistake most men make is shaving the cheek line too low or too straight &mdash; this removes bulk from the upper beard, narrowing and shortening the face. A barber will tidy stray individual hairs above the natural line without compromising the shape and fullness below.</p>
+        <h3>Daily Beard Care</h3>
+        <p>Apply <strong>2&ndash;4 drops of beard oil</strong> to damp skin (not dripping wet) after washing. The oil works on two levels: it softens coarse beard hair which reduces scratching for the person on the receiving end, and it moisturises the skin underneath which prevents the dreaded beard itch and flaking (beardruff). <strong>Argan oil</strong> and <strong>jojoba oil</strong> are the two best base ingredients to look for on the label. Massage in thoroughly then use a boar bristle brush to distribute evenly and train the hair to lie flat.</p>
+        <p>A <strong>beard balm</strong> serves a similar purpose but also provides light hold for shaping stray hairs on longer beards. Apply as the last step, work through the beard with a comb, and shape to preference.</p>
+    </div>
+    <div class="mag-photo-grid cols-2">
+        <div class="mag-photo-cell"><img src="SnapInsta.to_118516576_242770710236355_3326219608200829104_n.jpg" alt="Well groomed beard"></div>
+        <div class="mag-photo-cell"><img src="download (11).jpg" alt="Beard trim with trimmer"></div>
+    </div>
+</div>
+
+<div class="mag-section">
+    <div class="mag-tag">Chapter 5</div>
+    <h2 class="mag-title">Ear <em>Flaming</em></h2>
+    <div class="mag-hero-photo"><img src="download (12).jpg" alt="Ear flaming"></div>
+    <div class="mag-body">
+        <p>Ear flaming &mdash; also known as <strong>ear singeing</strong> or <strong>ear candling</strong> &mdash; is a traditional grooming technique that has been practised in Turkish barbershops for generations. A lit cotton wick soaked in a spirit solution is passed rapidly near the outer ear and ear canal entrance to burn away unwanted hair. The flame is extinguished almost immediately and never touches the skin directly.</p>
+        <h3>How It Works</h3>
+        <p>The brief heat of the flame does two things. First, it burns the visible hair cleanly without irritating the skin the way waxing or tweezing can. Second, the heat <strong>cauterises the hair follicle</strong>, which significantly slows regrowth compared to mechanical hair removal. Most clients find they need it done every 6&ndash;8 weeks rather than the 2&ndash;3 week cycle of waxing.</p>
+        <h3>What to Expect</h3>
+        <p>The process is completely painless. Clients typically describe feeling a gentle warmth near the ear and hearing a faint crackling sound as the hair ignites briefly. The entire procedure takes <strong>under 5 minutes</strong>. No chemicals are used, there is zero skin irritation, and there is no downtime whatsoever. It can be combined with any haircut or beard trim as an add-on service.</p>
+        <p>It&rsquo;s one of the most requested services at Golden Barbers and a perfect example of the kind of specialist technique that separates a proper barbershop from a walk-in chain.</p>
+    </div>
+    <div class="mag-photo-grid cols-2">
+        <div class="mag-photo-cell"><img src="pic.jpg" alt="Ear flaming close-up"></div>
+    </div>
+</div>
+
+<div class="mag-section">
+    <div class="mag-tag">Chapter 6</div>
+    <h2 class="mag-title">Hot Towel <em>Shave</em></h2>
+    <div class="mag-hero-photo"><img src="download (23).jpg" alt="Hot towel wrap"></div>
+    <div class="mag-body">
+        <p>A hot towel shave is the definitive barbershop ritual &mdash; a full sensory experience that leaves your skin feeling immaculate. Every step in the sequence serves a specific function, and skipping any one of them degrades the result.</p>
+        <h3>The Process, Step by Step</h3>
+        <p><strong>Step 1 &mdash; Hot Towel:</strong> A towel soaked in hot water is wrapped around the face for 2&ndash;3 minutes. The sustained heat opens the pores, softens the beard hair (making it easier to cut), and relaxes the facial muscles. This is what makes a barber shave so much closer than a home shave &mdash; the prep.</p>
+        <p><strong>Step 2 &mdash; Pre-Shave Oil:</strong> A light oil is massaged into the skin to create slip between the blade and the face, and to provide a protective layer over the skin barrier. Without this, even the sharpest razor causes micro-abrasions.</p>
+        <p><strong>Step 3 &mdash; Lather:</strong> A rich shaving cream or soap is worked into the beard using a badger hair brush. The brush lifts every hair away from the skin so the blade can cut it cleanly at the base rather than bending it flat.</p>
+        <p><strong>Step 4 &mdash; The Straight Razor:</strong> The blade is drawn across the skin in short, controlled strokes. First pass goes <em>with the grain</em>, second pass goes <em>across the grain</em> for a closer finish. A skilled barber reads your facial contours and adapts the blade angle continuously. The result is a shave so close you can&rsquo;t feel any stubble for 2&ndash;3 days.</p>
+        <p><strong>Step 5 &mdash; Cold Towel:</strong> A cold towel is applied to close the pores back down and reduce any surface redness. This step is critical &mdash; skipping it leaves pores open and vulnerable to ingrown hairs and irritation.</p>
+        <p><strong>Step 6 &mdash; Aftershave Balm:</strong> Not an alcohol-based splash (which strips moisture and burns) but a moisturising balm that soothes the skin and seals the finish. The entire ritual takes 30&ndash;45 minutes and is deeply relaxing.</p>
+    </div>
+    <div class="mag-photo-grid cols-2">
+        <div class="mag-photo-cell"><img src="download (15).jpg" alt="Straight razor"></div>
+        <div class="mag-photo-cell"><img src="download (27).jpg" alt="Hair wash ritual"></div>
+    </div>
+</div>
+
+<div class="mag-section">
+    <div class="mag-tag">Chapter 7</div>
+    <h2 class="mag-title">Colour &amp; <em>Creative Cuts</em></h2>
+    <div class="mag-body">
+        <p>Colour and creative carvings are a form of self-expression that Golden Barbers take seriously. They require specialist skill, the right products, and crucially &mdash; a good reference image from the client.</p>
+        <h3>Hair Colour</h3>
+        <p>Achieving bold colour like platinum blonde, teal or vivid red on dark hair is a multi-step process. The hair must be <strong>pre-lightened (bleached) first</strong> using a developer and bleach powder, then toned to neutralise unwanted yellow or orange undertones, then the colour is applied. Very dark or black hair may require 2&ndash;3 separate sessions to reach the lightness needed without damaging the hair beyond repair. Conditioning treatments between sessions are essential. Always come with clean, dry hair and no silicone-based products applied beforehand.</p>
+        <h3>Hair Carvings &amp; Designs</h3>
+        <p>Carvings are shaved into the fade using a precision razor or clipper blade at a zero guard. Lines, geometric shapes, initials and logos are all achievable. They typically last <strong>2&ndash;3 weeks</strong> before the growing hair blurs the edges. Maintenance visits keep them sharp. Always bring a reference &mdash; the more detailed your image, the closer the result.</p>
+    </div>
+    <div class="mag-photo-grid cols-3">
+        <div class="mag-photo-cell"><img src="SnapInsta.to_70010652_1348701105288372_8634153704668559015_n.jpg" alt="Honey blonde"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_59039774_468241190612084_3168956384655946770_n.jpg" alt="Platinum waves"></div>
+        <div class="mag-photo-cell"><img src="download (21).jpg" alt="Platinum afro"></div>
+        <div class="mag-photo-cell"><img src="download (22).jpg" alt="Teal colour"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_50119020_2338328669729367_6657319863597735597_n.jpg" alt="Line design"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_83452999_639920510104267_5362544737012483305_n.jpg" alt="Carvings"></div>
+        <div class="mag-photo-cell"><img src="download (13).jpg" alt="V notch design"></div>
+    </div>
+</div>
+
+<div class="mag-section">
+    <div class="mag-tag">Chapter 8</div>
+    <h2 class="mag-title">Products &amp; <em>Daily Routine</em></h2>
+    <div class="mag-hero-photo"><img src="download (14).jpg" alt="GB interior products"></div>
+    <div class="mag-body">
+        <p>Using the wrong product is one of the most common grooming mistakes men make. The right product for your hair type and desired finish makes the difference between a style that holds all day and one that collapses by lunch.</p>
+        <h3>The Golden Rule</h3>
+        <p>Apply all styling products to <strong>damp (not wet) hair</strong>. Too much water dilutes hold and causes product to run. Hair that&rsquo;s slightly towel-dried absorbs product evenly. Work the product between your palms first to emulsify it, then rake through the hair from root to tip before styling with a comb or brush.</p>
+    </div>
+    <div class="mag-product-grid">
+        <div class="mag-product-card">
+            <div class="mag-product-img"><img src="https://images.unsplash.com/photo-1585751119414-ef2636f8aede?w=600&q=80" alt="Hair clay"></div>
+            <div class="mag-product-body"><div class="mag-product-name">Hair Clay</div><div class="mag-product-desc">High hold, matte finish. Best for textured crops, faux hawks and messy natural styles. Work a pea-sized amount between palms until it warms, then rake through damp hair. Builds texture and separation without shine. Brands: Uppercut Deluxe, Layrite Cement, Reuzel Fibre.</div><span class="mag-product-tag">Matte &bull; High Hold</span></div>
+        </div>
+        <div class="mag-product-card">
+            <div class="mag-product-img"><img src="https://images.unsplash.com/photo-1621607512214-68297480165e?w=600&q=80" alt="Pomade"></div>
+            <div class="mag-product-body"><div class="mag-product-name">Pomade</div><div class="mag-product-desc">Medium hold, high shine. The classic barbershop product for comb overs, slick backs and quiffs. Water-based pomades (Suavecito, Layrite) wash out easily and are best for everyday use. Oil-based (Murray's, Dax) hold longer but need a clarifying shampoo to remove fully.</div><span class="mag-product-tag">Shine &bull; Medium Hold</span></div>
+        </div>
+        <div class="mag-product-card">
+            <div class="mag-product-img"><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600&q=80" alt="Sea salt spray"></div>
+            <div class="mag-product-body"><div class="mag-product-name">Sea Salt Spray</div><div class="mag-product-desc">No hold, natural texture. Spray onto damp hair and scrunch or diffuse for beachy waves, tousled texture, or enhanced natural curl definition. Perfect for wavy and curly hair. Leaves a matte, undone finish. Use as a base layer under light wax for texture with minimal hold.</div><span class="mag-product-tag">Natural &bull; Texture</span></div>
+        </div>
+        <div class="mag-product-card">
+            <div class="mag-product-img"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80" alt="Beard oil"></div>
+            <div class="mag-product-body"><div class="mag-product-name">Beard Oil</div><div class="mag-product-desc">Apply 2&ndash;4 drops to damp skin after washing. Softens coarse beard hair and moisturises the skin beneath, preventing itchiness, flaking (beardruff) and redness. Look for argan oil, jojoba oil or sweet almond oil as the base. Apply morning and night for best results.</div><span class="mag-product-tag">Daily &bull; Skin + Hair</span></div>
+        </div>
+        <div class="mag-product-card">
+            <div class="mag-product-img"><img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=600&q=80" alt="Professional clippers"></div>
+            <div class="mag-product-body"><div class="mag-product-name">Professional Clippers</div><div class="mag-product-desc">Golden Barbers use Wahl professional clippers &mdash; the Magic Clip and Senior models. Industry standard for precision fades. If you maintain your own taper at home, the Wahl Cordless Clipper with a full guard set is the best consumer-grade option available.</div><span class="mag-product-tag">Professional Grade</span></div>
+        </div>
+        <div class="mag-product-card">
+            <div class="mag-product-img"><img src="https://images.unsplash.com/photo-1582095133179-bfd08e2fb6b8?w=600&q=80" alt="Shampoo conditioner"></div>
+            <div class="mag-product-body"><div class="mag-product-name">Shampoo &amp; Conditioner</div><div class="mag-product-desc">Wash 2&ndash;3 times per week maximum. Daily washing strips the scalp&rsquo;s natural oils, causing dryness and overproduction of sebum. Use a sulphate-free shampoo and always follow with conditioner from mid-lengths to ends. Leave conditioner for 2&ndash;3 minutes before rinsing.</div><span class="mag-product-tag">Weekly Routine</span></div>
         </div>
     </div>
-
-    <div class="mag-section">
-        <div class="mag-section-tag">Chapter 2</div>
-        <h2 class="mag-section-title">Haircuts &amp; <em>Styles</em></h2>
-        <div class="mag-hero-photo"><img src="SnapInsta.to_84958218_597425240989592_6331447961297910555_n.jpg" alt="Barber at work"></div>
-        <p class="mag-body">Whether you want a classic crop, a textured quiff, or something unique &mdash; knowing your style before you sit down saves time. <strong>Tell your barber the name and show a reference photo.</strong></p>
-        <div class="mag-photo-grid cols-3">
-            <div class="mag-photo-cell"><img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Comb over fade"></div>
-            <div class="mag-photo-cell"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Hard part fade"></div>
-            <div class="mag-photo-cell"><img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French crop"></div>
-            <div class="mag-photo-cell"><img src="download (4).jpg" alt="Junior cut"></div>
-            <div class="mag-photo-cell"><img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs"></div>
-        </div>
+    <div class="mag-photo-grid cols-3" style="margin-top:28px;">
+        <div class="mag-photo-cell"><img src="download (16).jpg" alt="Barber styling hair"></div>
+        <div class="mag-photo-cell"><img src="download (18).jpg" alt="Scalp treatment"></div>
+        <div class="mag-photo-cell"><img src="56490494_441941899910184_1535393151337681820_n.jpg" alt="Face mask treatment"></div>
+        <div class="mag-photo-cell" style="grid-column:span 2;aspect-ratio:16/5;"><img src="SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg" alt="Hair wash sink"></div>
+        <div class="mag-photo-cell"><img src="download (28).jpg" alt="Grooming routine guide"></div>
     </div>
+</div>
 
-    <div class="mag-section">
-        <div class="mag-section-tag">Chapter 3</div>
-        <h2 class="mag-section-title">The Art of <em>Fades</em></h2>
-        <div class="mag-hero-photo"><img src="SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg" alt="Skin fade"></div>
-        <p class="mag-body">A fade blends hair seamlessly. <strong>Low fades</strong> start above the ear. <strong>Mid fades</strong> start midway up the side. <strong>High skin fades</strong> go nearly to the crown for maximum contrast.</p>
-        <div class="mag-photo-grid cols-2">
-            <div class="mag-photo-cell"><img src="SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg" alt="Waves skin fade"></div>
-            <div class="mag-photo-cell"><img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="Waves low fade"></div>
-            <div class="mag-photo-cell"><img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="High fade curly"></div>
-            <div class="mag-photo-cell"><img src="download (7).jpg" alt="Clipper technique"></div>
-        </div>
+<div class="mag-section">
+    <div class="mag-tag">Chapter 9</div>
+    <h2 class="mag-title">Hair Health &amp; <em>Hair Loss</em></h2>
+    <div class="mag-hero-photo"><img src="download (25).jpg" alt="Hair loss before after"></div>
+    <div class="mag-body">
+        <p>Hair loss affects <strong>85% of men by age 50</strong>, and the vast majority of it is caused by androgenetic alopecia &mdash; male pattern baldness. It&rsquo;s genetic, triggered by the hormone DHT (dihydrotestosterone) binding to follicles in the scalp and gradually miniaturising them until they stop producing hair entirely. It is not caused by wearing hats, shampooing too much, or anything else you might have heard.</p>
+        <h3>Recognising It Early</h3>
+        <p>The <strong>Norwood scale</strong> classifies hair loss from Stage 1 (full head of hair) to Stage 7 (only a horseshoe rim of hair remains at the sides). Most men first notice recession at the temples or thinning at the crown &mdash; that&rsquo;s Stage 2 to 3, still very treatable. The earlier you act, the more follicles you can preserve.</p>
+        <h3>Treatments That Actually Work</h3>
+        <p><strong>Minoxidil (Regaine)</strong> is the most widely used and clinically proven OTC treatment. Applied topically to the scalp twice daily, it works by widening blood vessels and increasing nutrient flow to hair follicles, re-activating miniaturised follicles and extending the growth phase of the hair cycle. Results take <strong>4&ndash;6 months</strong> of consistent use to become visible. Stopping treatment reverses the gains within 3&ndash;6 months, so it requires long-term commitment.</p>
+        <p><strong>Finasteride</strong> is a prescription oral medication that blocks the conversion of testosterone to DHT. It&rsquo;s more effective than minoxidil but requires a doctor&rsquo;s prescription and carries potential side effects. Often used in combination with minoxidil for maximum effect.</p>
+        <p><strong>Scalp Micropigmentation (SMP)</strong> is a cosmetic tattooing technique that deposits pigment into the scalp to mimic the look of a buzz cut on a shaved head. It provides instant visual results and is permanent. Not a hair loss treatment but a highly effective cosmetic solution.</p>
+        <h3>Embrace It</h3>
+        <p>If you&rsquo;d rather work with it than against it: a <strong>skin fade or buzz cut</strong> makes thinning look deliberate and sharp. Some of the best-looking haircuts in the shop are on clients with thinning hair who have committed to owning it.</p>
     </div>
-
-    <div class="mag-section">
-        <div class="mag-section-tag">Chapter 4</div>
-        <h2 class="mag-section-title">Beard <em>Grooming</em></h2>
-        <div class="mag-hero-photo"><img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" alt="Beard in shop"></div>
-        <p class="mag-body">A well-kept beard is shaped to your face. <strong>Neckline, cheek line and mustache</strong> each need individual attention. Visit your barber every 2&ndash;3 weeks for a line-up.</p>
-        <div class="mag-photo-grid cols-2">
-            <div class="mag-photo-cell"><img src="SnapInsta.to_118516576_242770710236355_3326219608200829104_n.jpg" alt="Groomed beard"></div>
-            <div class="mag-photo-cell"><img src="download (11).jpg" alt="Beard trim"></div>
-        </div>
+    <div class="mag-photo-grid cols-2">
+        <div class="mag-photo-cell"><img src="download (26).jpg" alt="Minoxidil product"></div>
+        <div class="mag-photo-cell"><img src="images.jpg" alt="Norwood scale"></div>
     </div>
+</div>
 
-    <div class="mag-section">
-        <div class="mag-section-tag">Chapter 5</div>
-        <h2 class="mag-section-title">Ear <em>Flaming</em></h2>
-        <div class="mag-hero-photo"><img src="download (12).jpg" alt="Ear flaming"></div>
-        <p class="mag-body">Ear flaming uses a lit wick to remove unwanted ear hair safely and painlessly. <strong>The heat seals the follicle</strong>, reducing regrowth. Under 5 minutes. Golden Barbers are specialist practitioners.</p>
-        <div class="mag-photo-grid cols-2">
-            <div class="mag-photo-cell"><img src="pic.jpg" alt="Ear flaming close-up"></div>
-        </div>
+<div class="mag-section">
+    <div class="mag-tag">Chapter 10</div>
+    <h2 class="mag-title">About <em>Golden Barbers</em></h2>
+    <div class="mag-hero-photo"><img src="download (10).jpg" alt="Golden Barbers team"></div>
+    <div class="mag-body">
+        <p>Golden Barbers Goodmayes has been a cornerstone of the Ilford community since it opened on Goodmayes Road. It&rsquo;s not just a barbershop &mdash; it&rsquo;s a <strong>multi-award winning, locally loved institution</strong> that takes every service seriously, from a junior haircut to a full hot towel shave.</p>
+        <p>The team won <strong>Redbridge Business of the Year 2022</strong>, recognised at the Ilford Business Awards, and <strong>Best Local Business in Goodmayes Ward 2021</strong>, presented by Sam Tarry MP. These are community awards based on real customer votes and business performance &mdash; not pay-to-win competitions. With a <strong>4.8&#9733; rating from over 330 reviews</strong>, the quality speaks for itself.</p>
+        <p>Every barber in the shop is experienced across all hair types &mdash; straight, wavy, curly, coily, locs, waves &mdash; and every service from basic cuts to specialist techniques like ear flaming, colour work and creative carvings is available. Walk-ins are welcome. Online booking is available through the website.</p>
     </div>
-
-    <div class="mag-section">
-        <div class="mag-section-tag">Chapter 6</div>
-        <h2 class="mag-section-title">Hot Towel <em>Shave</em></h2>
-        <div class="mag-hero-photo"><img src="download (23).jpg" alt="Hot towel wrap"></div>
-        <p class="mag-body">The definitive barbershop ritual. A hot towel opens pores and softens hair. Pre-shave oil, then rich lather, then a straight razor. <strong>The closest shave possible.</strong></p>
-        <div class="mag-photo-grid cols-2">
-            <div class="mag-photo-cell"><img src="download (15).jpg" alt="Straight razor"></div>
-            <div class="mag-photo-cell"><img src="download (27).jpg" alt="Hair wash ritual"></div>
-        </div>
+    <div class="mag-photo-grid cols-3">
+        <div class="mag-photo-cell"><img src="download (5).jpg" alt="Award 2022"></div>
+        <div class="mag-photo-cell"><img src="download (6).jpg" alt="Award 2021"></div>
+        <div class="mag-photo-cell"><img src="download (19).jpg" alt="Grand opening"></div>
+        <div class="mag-photo-cell" style="grid-column:span 2;"><img src="download (20).jpg" alt="Shop interior"></div>
     </div>
+</div>
 
-    <div class="mag-section">
-        <div class="mag-section-tag">Chapter 7</div>
-        <h2 class="mag-section-title">Colour &amp; <em>Creative Cuts</em></h2>
-        <p class="mag-body">From bold bleach to intricate carved designs, <strong>Golden Barbers specialise in creative work</strong> that makes you stand out. Bring a reference &mdash; the team will make it happen.</p>
-        <div class="mag-photo-grid cols-3">
-            <div class="mag-photo-cell"><img src="SnapInsta.to_70010652_1348701105288372_8634153704668559015_n.jpg" alt="Honey blonde"></div>
-            <div class="mag-photo-cell"><img src="SnapInsta.to_59039774_468241190612084_3168956384655946770_n.jpg" alt="Platinum waves"></div>
-            <div class="mag-photo-cell"><img src="download (21).jpg" alt="Platinum afro"></div>
-            <div class="mag-photo-cell"><img src="download (22).jpg" alt="Teal colour"></div>
-            <div class="mag-photo-cell"><img src="SnapInsta.to_50119020_2338328669729367_6657319863597735597_n.jpg" alt="Line design"></div>
-            <div class="mag-photo-cell"><img src="SnapInsta.to_83452999_639920510104267_5362544737012483305_n.jpg" alt="Carvings"></div>
-            <div class="mag-photo-cell"><img src="download (13).jpg" alt="V notch design"></div>
-        </div>
-    </div>
+<div class="mag-section" style="text-align:center;padding:100px 60px;">
+    <div class="cert-badge" style="display:inline-block;margin-bottom:28px;">Certificate of Completion</div>
+    <div class="completion-title">You&rsquo;re a <em>Grooming Expert</em></div>
+    <p class="completion-sub" style="margin:20px auto;">From fades to ear flaming, hot towel shaves to hair health &mdash; you now know your craft. Time to experience it in person.</p>
+    <a href="services.html" class="slide-cta" style="margin:24px auto;">Book Your Appointment &rarr;</a>
+</div>
 
-    <div class="mag-section">
-        <div class="mag-section-tag">Chapter 8</div>
-        <h2 class="mag-section-title">Products &amp; <em>Daily Routine</em></h2>
-        <div class="mag-hero-photo"><img src="download (14).jpg" alt="GB interior"></div>
-        <p class="mag-body">The right product makes or breaks a style. <strong>Clay</strong> for texture and hold. <strong>Pomade</strong> for shine and slick. <strong>Sea salt spray</strong> for natural and messy. Apply to damp hair.</p>
-        <div class="mag-photo-grid cols-3">
-            <div class="mag-photo-cell"><img src="download (16).jpg" alt="Barber styling"></div>
-            <div class="mag-photo-cell"><img src="download (18).jpg" alt="Scalp treatment"></div>
-            <div class="mag-photo-cell"><img src="56490494_441941899910184_1535393151337681820_n.jpg" alt="Face mask"></div>
-            <div class="mag-photo-cell" style="grid-column:span 2;aspect-ratio:16/5;"><img src="SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg" alt="Hair wash"></div>
-            <div class="mag-photo-cell"><img src="download (28).jpg" alt="Grooming guide"></div>
-        </div>
-    </div>
-
-    <div class="mag-section">
-        <div class="mag-section-tag">Chapter 9</div>
-        <h2 class="mag-section-title">Hair Health &amp; <em>Hair Loss</em></h2>
-        <div class="mag-hero-photo"><img src="download (25).jpg" alt="Hair loss before after"></div>
-        <p class="mag-body">Hair loss is common and treatable. <strong>Early action matters.</strong> Minoxidil is clinically proven. The Norwood scale (1&ndash;7) classifies severity to help track progress.</p>
-        <div class="mag-photo-grid cols-2">
-            <div class="mag-photo-cell"><img src="download (26).jpg" alt="Minoxidil"></div>
-            <div class="mag-photo-cell"><img src="images.jpg" alt="Norwood scale"></div>
-        </div>
-    </div>
-
-    <div class="mag-section">
-        <div class="mag-section-tag">Chapter 10</div>
-        <h2 class="mag-section-title">About <em>Golden Barbers</em></h2>
-        <div class="mag-hero-photo"><img src="download (10).jpg" alt="GB team"></div>
-        <p class="mag-body">Established in Goodmayes, Ilford &mdash; <strong>award-winning, community-rooted</strong>, built on genuine craft. 4.8&#9733; from over 330 reviews.</p>
-        <div class="mag-photo-grid cols-3">
-            <div class="mag-photo-cell"><img src="download (5).jpg" alt="2022 Award"></div>
-            <div class="mag-photo-cell"><img src="download (6).jpg" alt="2021 Award"></div>
-            <div class="mag-photo-cell"><img src="download (19).jpg" alt="Opening"></div>
-            <div class="mag-photo-cell" style="grid-column:span 2;"><img src="download (20).jpg" alt="Shop interior"></div>
-        </div>
-    </div>
-
-    <div class="mag-section" style="text-align:center;padding:100px 60px;">
-        <div class="cert-badge" style="display:inline-block;margin-bottom:28px;">Certificate of Completion</div>
-        <div class="completion-title">You&rsquo;re a <em>Grooming Expert</em></div>
-        <p class="completion-sub" style="margin:20px auto;">Time to put everything to use.</p>
-        <a href="services.html" class="slide-cta" style="margin:20px auto;">Book Your Appointment &rarr;</a>
-    </div>
-
-</div><!-- /magazine-view -->
+</div>
 
 <script>
-    const TOTAL = 11;
-    const LABELS = ['Welcome','Haircuts & Styles','The Art of Fades','Beard Grooming','Ear Flaming','Hot Towel Shave','Colour & Creative','Products & Routine','Hair Health','About & Awards','Complete!'];
-    let current = 0;
-    let isMagazine = false;
-
-    const track    = document.getElementById('slides-track');
-    const fill     = document.getElementById('progress-fill');
-    const label    = document.getElementById('progress-label');
-    const counter  = document.getElementById('progress-counter');
-    const indicator= document.getElementById('slide-indicator');
-    const btnPrev  = document.getElementById('btn-prev');
-    const btnNext  = document.getElementById('btn-next');
-
-    function goTo(index) {
-        if (index < 0 || index >= TOTAL) return;
-        current = index;
-        track.style.transform = 'translateX(-' + (current * 100) + 'vw)';
-        var pct = current === 0 ? 0 : (current / (TOTAL - 1)) * 100;
-        fill.style.width = pct + '%';
-        label.classList.add('fade');
-        setTimeout(function() {
-            label.textContent = LABELS[current];
-            counter.textContent = (current + 1) + ' / ' + TOTAL;
-            indicator.textContent = (current + 1) + ' / ' + TOTAL;
-            label.classList.remove('fade');
-        }, 200);
-        btnPrev.disabled = current === 0;
-        btnNext.disabled = current === TOTAL - 1;
-        if (current === TOTAL - 1) {
-            setTimeout(function() {
-                document.getElementById('tick-svg').classList.add('animate');
-            }, 500);
-        }
+    var TOTAL=11, LABELS=['Welcome','Haircuts & Styles','The Art of Fades','Beard Grooming','Ear Flaming','Hot Towel Shave','Colour & Creative','Products & Routine','Hair Health','About & Awards','Complete!'];
+    var current=0, isMag=false;
+    var track=document.getElementById('slides-track'), fill=document.getElementById('progress-fill'), lbl=document.getElementById('progress-label'), ctr=document.getElementById('progress-counter'), ind=document.getElementById('slide-indicator'), bP=document.getElementById('btn-prev'), bN=document.getElementById('btn-next');
+    function goTo(i){
+        if(i<0||i>=TOTAL)return; current=i;
+        track.style.transform='translateX(-'+(current*100)+'vw)';
+        fill.style.width=(current===0?0:(current/(TOTAL-1)*100))+'%';
+        lbl.classList.add('fade');
+        setTimeout(function(){ lbl.textContent=LABELS[current]; ctr.textContent=(current+1)+' / '+TOTAL; ind.textContent=(current+1)+' / '+TOTAL; lbl.classList.remove('fade'); },200);
+        bP.disabled=current===0; bN.disabled=current===TOTAL-1;
+        if(current===TOTAL-1){ setTimeout(function(){ document.getElementById('tick-svg').classList.add('animate'); },500); }
     }
-
-    function nextSlide() { goTo(current + 1); }
-    function prevSlide() { goTo(current - 1); }
-
-    document.addEventListener('keydown', function(e) {
-        if (isMagazine) return;
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
-        if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prevSlide();
-    });
-
-    var touchStartX = 0;
-    document.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
-    document.addEventListener('touchend',   function(e) {
-        if (isMagazine) return;
-        var dx = e.changedTouches[0].clientX - touchStartX;
-        if (Math.abs(dx) > 50) { dx < 0 ? nextSlide() : prevSlide(); }
-    }, { passive: true });
-
-    function toggleMagazine() {
-        isMagazine = !isMagazine;
-        var btn = document.getElementById('mode-toggle');
-        if (isMagazine) {
-            document.body.classList.remove('course-mode');
-            document.body.classList.add('magazine-mode');
-            btn.textContent = '\u25B6 Course Mode';
-        } else {
-            document.body.classList.remove('magazine-mode');
-            document.body.classList.add('course-mode');
-            btn.textContent = '\u2630 Read as Article';
-        }
+    function nextSlide(){goTo(current+1);} function prevSlide(){goTo(current-1);}
+    document.addEventListener('keydown',function(e){ if(isMag)return; if(e.key==='ArrowRight'||e.key==='ArrowDown')nextSlide(); if(e.key==='ArrowLeft'||e.key==='ArrowUp')prevSlide(); });
+    var tx=0;
+    document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
+    document.addEventListener('touchend',function(e){ if(isMag)return; var dx=e.changedTouches[0].clientX-tx; if(Math.abs(dx)>50){dx<0?nextSlide():prevSlide();} },{passive:true});
+    function toggleMagazine(){
+        isMag=!isMag; var btn=document.getElementById('mode-toggle');
+        if(isMag){ document.body.classList.remove('course-mode'); document.body.classList.add('magazine-mode'); btn.textContent='\u25B6 Course Mode'; }
+        else{ document.body.classList.remove('magazine-mode'); document.body.classList.add('course-mode'); btn.textContent='\u2630 Read as Article'; }
     }
-
-    function toggleMobileNav() {
-        document.getElementById('mobileNav').classList.toggle('open');
-    }
-
+    function toggleMobileNav(){ document.getElementById('mobileNav').classList.toggle('open'); }
     goTo(0);
 </script>
-
 </body>
 </html>
