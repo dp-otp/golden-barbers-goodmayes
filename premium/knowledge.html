@@ -25,21 +25,35 @@
         body { font-family:'Outfit',sans-serif; background:var(--black); color:var(--white); overflow-x:hidden; max-width:100vw; }
         body.course-mode { overflow:hidden; height:100vh; }
 
+        /* CUSTOM CURSOR */
+        body { cursor: none; }
+        .cursor { width:12px; height:12px; background:var(--gold); border-radius:50%; position:fixed; pointer-events:none; z-index:99999; transition:transform 0.2s ease, opacity 0.2s; transform:translate(-50%,-50%); }
+        .cursor.hover { transform:translate(-50%,-50%) scale(2); opacity:0.7; }
+        @media(hover:none) and (pointer:coarse) { .cursor { display:none; } body { cursor:auto; } }
+
         /* NAV */
-        .nav { position:fixed; top:0; left:0; right:0; z-index:9999; padding:0 40px; height:70px; display:flex; align-items:center; background:rgba(0,0,0,0.65); backdrop-filter:blur(20px); border-bottom:1px solid rgba(212,175,55,0.1); }
-        .nav-inner { width:100%; display:flex; align-items:center; justify-content:space-between; }
-        .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--white); font-weight:700; font-size:1.1rem; }
-        .nav-logo img { height:36px; width:auto; }
-        .nav-links { list-style:none; display:flex; gap:32px; }
-        .nav-links a { color:rgba(255,255,255,0.7); text-decoration:none; font-size:0.9rem; font-weight:500; transition:color 0.2s; }
-        .nav-links a:hover, .nav-links a.active { color:var(--gold); }
-        .nav-cta { background:var(--gold); color:var(--black); padding:10px 22px; border-radius:50px; text-decoration:none; font-weight:700; font-size:0.85rem; transition:background 0.2s,transform 0.2s; }
-        .nav-cta:hover { background:var(--gold-light); transform:scale(1.03); }
-        .nav-toggle { display:none; cursor:pointer; flex-direction:column; gap:5px; }
-        .nav-toggle span { display:block; width:24px; height:2px; background:var(--white); border-radius:2px; }
+        .nav { position:fixed; top:0; left:0; right:0; z-index:9999; background:rgba(10,10,10,0.7); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid rgba(212,175,55,0.1); transition:all 0.3s ease; }
+        .nav.scrolled { background:rgba(10,10,10,0.95); box-shadow:0 10px 40px rgba(0,0,0,0.5); }
+        .nav-inner { display:flex; align-items:center; justify-content:space-between; max-width:1400px; margin:0 auto; padding:1.25rem 2rem; }
+        .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--white); }
+        .nav-logo img { width:45px; height:45px; border-radius:50%; object-fit:cover; transition:transform 0.5s cubic-bezier(0.16,1,0.3,1); }
+        .nav-logo:hover img { transform:rotate(360deg) scale(1.1); }
+        .nav-logo span { font-weight:700; font-size:18px; background:linear-gradient(135deg,var(--gold-light),var(--gold)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .nav-links { display:flex; gap:40px; list-style:none; }
+        .nav-links a { color:var(--gray); text-decoration:none; font-size:14px; font-weight:500; letter-spacing:1px; text-transform:uppercase; position:relative; transition:color 0.3s; }
+        .nav-links a::after { content:''; position:absolute; bottom:-8px; left:0; width:0; height:2px; background:var(--gold); transition:width 0.3s cubic-bezier(0.16,1,0.3,1); }
+        .nav-links a:hover { color:var(--gold); }
+        .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+        .nav-links a.active { color:var(--gold); }
+        .nav-cta { padding:12px 30px; background:var(--gold); color:var(--black); text-decoration:none; font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; border-radius:50px; transition:all 0.4s cubic-bezier(0.16,1,0.3,1); position:relative; overflow:hidden; }
+        .nav-cta::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent); transition:left 0.5s; }
+        .nav-cta:hover::before { left:100%; }
+        .nav-cta:hover { transform:scale(1.05); box-shadow:0 10px 40px rgba(212,175,55,0.4); }
+        .nav-toggle { display:none; flex-direction:column; gap:6px; cursor:pointer; padding:10px; }
+        .nav-toggle span { width:25px; height:2px; background:var(--gold); transition:all 0.3s; }
         .mobile-nav { display:none; position:fixed; top:70px; left:0; right:0; background:rgba(0,0,0,0.97); z-index:9998; padding:20px; flex-direction:column; }
         .mobile-nav.open { display:flex; }
-        .mobile-nav a { color:var(--white); text-decoration:none; font-size:1rem; font-weight:500; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.08); }
+        .mobile-nav a { color:var(--white); text-decoration:none; font-size:1rem; font-weight:500; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.08); text-transform:uppercase; letter-spacing:1px; }
         .mobile-nav a.active { color:var(--gold); }
         @media(max-width:900px){ .nav-links,.nav-cta{display:none;} .nav-toggle{display:flex;} }
 
@@ -72,13 +86,16 @@
         #slide-indicator { font-size:0.8rem; color:var(--gray); font-weight:500; min-width:50px; text-align:center; }
 
         /* TYPOGRAPHY */
-        .slide-tag { font-size:0.7rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
-        .slide-title { font-size:clamp(1.9rem,4.5vw,3.6rem); font-weight:900; line-height:1.05; margin-bottom:16px; }
-        .slide-title em { font-style:normal; background:linear-gradient(135deg,var(--gold),var(--gold-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-        .slide-body { font-size:clamp(0.85rem,1.3vw,0.98rem); line-height:1.75; color:rgba(255,255,255,0.75); }
-        .slide-body strong { color:var(--white); font-weight:600; }
-        .slide-body p { margin-bottom:10px; }
+        .slide-tag { font-size:0.68rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+        .slide-tag::before { content:''; display:block; width:22px; height:1px; background:var(--gold); }
+        .slide-title { font-size:clamp(2rem,4.5vw,3.8rem); font-weight:900; line-height:1.03; margin-bottom:18px; letter-spacing:-0.01em; }
+        .slide-title em { font-style:normal; background:linear-gradient(135deg,var(--gold-light),var(--gold)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; filter:drop-shadow(0 0 12px rgba(212,175,55,0.3)); }
+        .slide-body { font-size:clamp(0.85rem,1.25vw,0.97rem); line-height:1.8; color:rgba(255,255,255,0.72); }
+        .slide-body strong { color:var(--white); font-weight:700; }
+        .slide-body p { margin-bottom:12px; }
         .slide-body p:last-child { margin-bottom:0; }
+        /* Lead sentence emphasis */
+        .slide-body p:first-child { color:rgba(255,255,255,0.88); font-size:clamp(0.88rem,1.35vw,1rem); }
 
         /* PHOTO CELLS */
         .photo-cell { position:relative; overflow:hidden; border-radius:6px; }
@@ -138,15 +155,17 @@
         body.magazine-mode #magazine-view { display:block; }
         #magazine-view { display:none; padding-top:70px; }
         .mag-section { padding:80px 60px; border-bottom:1px solid rgba(255,255,255,0.06); max-width:1200px; margin:0 auto; }
-        .mag-tag { font-size:0.7rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
-        .mag-title { font-size:clamp(1.8rem,4vw,3rem); font-weight:900; margin-bottom:20px; }
-        .mag-title em { font-style:normal; background:linear-gradient(135deg,var(--gold),var(--gold-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-        .mag-body { font-size:1rem; line-height:1.85; color:rgba(255,255,255,0.75); max-width:780px; margin-bottom:28px; }
-        .mag-body strong { color:var(--white); font-weight:600; }
-        .mag-body h3 { font-size:1.05rem; font-weight:700; color:var(--gold); margin:22px 0 8px; }
-        .mag-body p { margin-bottom:14px; }
-        .mag-body ul { padding-left:18px; margin-bottom:14px; }
-        .mag-body li { margin-bottom:6px; color:rgba(255,255,255,0.72); }
+        .mag-tag { font-size:0.68rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+        .mag-tag::before { content:''; display:block; width:22px; height:1px; background:var(--gold); }
+        .mag-title { font-size:clamp(2rem,4.5vw,3.2rem); font-weight:900; margin-bottom:22px; letter-spacing:-0.01em; }
+        .mag-title em { font-style:normal; background:linear-gradient(135deg,var(--gold-light),var(--gold)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .mag-body { font-size:1.02rem; line-height:1.9; color:rgba(255,255,255,0.75); max-width:780px; margin-bottom:28px; }
+        .mag-body strong { color:var(--white); font-weight:700; }
+        .mag-body h3 { font-size:1.05rem; font-weight:800; color:var(--gold); margin:26px 0 10px; letter-spacing:0.01em; }
+        .mag-body p { margin-bottom:16px; }
+        .mag-body p:first-child { font-size:1.08rem; color:rgba(255,255,255,0.88); line-height:1.85; }
+        .mag-body ul { padding-left:20px; margin-bottom:16px; }
+        .mag-body li { margin-bottom:8px; color:rgba(255,255,255,0.72); }
         .mag-photo-grid { display:grid; gap:10px; margin-top:28px; }
         .mag-photo-grid.cols-2 { grid-template-columns:1fr 1fr; }
         .mag-photo-grid.cols-3 { grid-template-columns:1fr 1fr 1fr; }
@@ -167,23 +186,176 @@
         ::-webkit-scrollbar-track { background:var(--dark); }
         ::-webkit-scrollbar-thumb { background:var(--gold-dark); border-radius:2px; }
 
+        /* ================================================
+           MOBILE — COMPLETE LAYOUT OVERHAUL
+           ================================================ */
         @media(max-width:768px){
-            .slide-content { padding:120px 22px 90px; }
-            .slide-split { grid-template-columns:1fr; }
-            .slide-split > *:first-child { display:none; }
-            .slide-title { font-size:1.8rem; }
-            .nav { padding:0 20px; }
-            #course-chrome { padding:10px 20px 6px; }
-            .mag-section { padding:50px 22px; }
+
+            /* Nav */
+            .nav-inner { padding:0.9rem 1.2rem; }
+            .nav-logo img { width:36px; height:36px; }
+            .nav-logo span { font-size:15px; }
+            #course-chrome { padding:8px 16px 6px; top:60px; }
+            #progress-label { font-size:0.68rem; }
+
+            /* Mode toggle moves to bottom-left so it doesn't overlap nav buttons */
+            #mode-toggle { right:auto; left:16px; bottom:20px; font-size:0.72rem; padding:8px 14px; }
+
+            /* Slide nav buttons — tighter, raised above bottom edge */
+            .slide-nav { bottom:20px; gap:10px; }
+            .slide-btn { width:44px; height:44px; font-size:1.1rem; }
+            #slide-indicator { font-size:0.72rem; min-width:40px; }
+
+            /* Slide engine */
+            .slide { overflow-y:auto; -webkit-overflow-scrolling:touch; }
+
+            /* ---- SPLIT SLIDES → FULL TEXT + BG PHOTO ---- */
+            /* On mobile, split slides become full-bleed with text overlay */
+            .slide-split {
+                display:block;
+                position:relative;
+                width:100vw;
+                height:100vh;
+                overflow:hidden;
+            }
+            /* The photo half becomes a background behind the text */
+            .slide-split > *:first-child {
+                position:absolute !important;
+                inset:0 !important;
+                display:block !important;
+                z-index:0;
+            }
+            .slide-split > *:first-child::after {
+                content:'';
+                position:absolute;
+                inset:0;
+                background:linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.97) 100%);
+                z-index:1;
+            }
+            /* Text panel becomes scrollable overlay */
+            .slide-split > *:last-child {
+                position:relative !important;
+                z-index:2;
+                height:100vh !important;
+                padding:100px 20px 100px !important;
+                background:transparent !important;
+                overflow-y:auto !important;
+                -webkit-overflow-scrolling:touch;
+            }
+
+            /* Inline photo grids inside text panels — smaller on mobile */
+            .slide-split > *:last-child > div[style*="grid-template-columns:repeat(5"] {
+                grid-template-columns: repeat(5,1fr) !important;
+                height: 68px !important;
+            }
+
+            /* ---- TEXT SIZES ---- */
+            .slide-title { font-size:clamp(1.55rem,6vw,2.1rem) !important; line-height:1.1; }
+            .slide-body { font-size:0.82rem; }
+            .slide-content { padding:100px 20px 100px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+
+            /* ---- FADES SLIDE — row layout → column ---- */
+            .slide-content[style*="flex-direction:row"] {
+                flex-direction:column !important;
+                gap:0 !important;
+                padding-top:100px !important;
+                overflow-y:auto !important;
+            }
+            /* Text panel in row-layout slides */
+            div[style*="flex:0 0 420px"],
+            div[style*="flex:0 0 410px"],
+            div[style*="flex:0 0 430px"],
+            div[style*="flex:0 0 370px"] {
+                flex:none !important;
+                width:100% !important;
+                padding:0 20px !important;
+                max-height:none !important;
+                overflow-y:visible !important;
+            }
+            /* Photo grid panel in row-layout slides — compact strip */
+            .slide-content div[style*="flex:1;display:grid"] {
+                flex:none !important;
+                width:100% !important;
+                height:160px !important;
+                padding:0 20px !important;
+                grid-template-columns:repeat(2,1fr) !important;
+                grid-template-rows:1fr !important;
+                margin-top:12px;
+            }
+            /* 2x2 photo grids become a single row strip */
+            .slide-content div[style*="grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr"] {
+                grid-template-rows:1fr !important;
+                height:120px !important;
+                overflow:hidden;
+            }
+
+            /* ---- COLOUR SLIDE ---- */
+            div[style*="display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr"] {
+                grid-template-columns:repeat(3,1fr) !important;
+                grid-template-rows:1fr 1fr !important;
+                height:220px !important;
+            }
+
+            /* ---- INFO CARDS ---- */
+            .info-cards { gap:5px; }
+            .info-card { padding:8px 11px; }
+            .info-card-title { font-size:0.75rem; }
+            .info-card-body { font-size:0.72rem; }
+
+            /* ---- CHIP ROW ---- */
+            .chip-row { gap:5px; margin-top:10px; }
+            .chip { font-size:0.65rem; padding:3px 10px; }
+
+            /* ---- PRODUCTS SLIDE ---- */
+            .product-grid { grid-template-columns:1fr 1fr !important; gap:8px !important; }
+            .product-img { height:80px; }
+            .product-name { font-size:0.72rem; }
+            .product-desc { font-size:0.65rem; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+            .product-info { padding:7px 9px; }
+
+            /* ---- COMPLETION SLIDE ---- */
+            #tick-svg { width:100px; height:100px; }
+            .completion-title { font-size:1.6rem; }
+            .completion-sub { font-size:0.85rem; }
+            #tick-wrap { gap:14px; padding:0 20px; }
+
+            /* ---- ABOUT/LINE-UP — row becomes column ---- */
+            div[style*="display:flex;gap:40px;height:100%"],
+            div[style*="display:flex;gap:44px;height:100%"],
+            div[style*="display:flex;gap:50px;align-items:stretch"] {
+                flex-direction:column !important;
+                gap:12px !important;
+                overflow-y:auto !important;
+            }
+
+            /* ---- MAGAZINE VIEW ---- */
+            .mag-section { padding:44px 18px; }
+            .mag-title { font-size:1.7rem; }
+            .mag-body { font-size:0.9rem; line-height:1.75; }
             .mag-photo-grid.cols-3 { grid-template-columns:1fr 1fr; }
-            .product-grid { grid-template-columns:1fr 1fr; }
-            .mag-product-grid { grid-template-columns:1fr 1fr; }
+            .mag-photo-grid.cols-2 { grid-template-columns:1fr; }
+            .product-grid { grid-template-columns:1fr; }
+            .mag-product-grid { grid-template-columns:1fr; }
+            .mag-hero-photo { aspect-ratio:16/9; }
+
+            /* Prevent completion bg circles from overflowing on small screens */
+            .completion-bg::before { width:min(600px,140vw); height:min(600px,140vw); }
+            .completion-bg::after  { width:min(400px,100vw);  height:min(400px,100vw);  }
+        }
+
+        @media(max-width:420px){
+            .slide-title { font-size:1.4rem !important; }
+            .product-grid { grid-template-columns:1fr !important; }
+            div[style*="grid-template-columns:repeat(5,1fr)"] {
+                grid-template-columns:repeat(3,1fr) !important;
+            }
         }
     </style>
 </head>
 <body class="course-mode">
+<div class="cursor" id="cursor"></div>
 
-<nav class="nav">
+<nav class="nav" id="mainNav">
     <div class="nav-inner">
         <a href="index.html" class="nav-logo"><img src="../logo.png" alt="Golden Barbers"><span>Golden Barbers</span></a>
         <ul class="nav-links">
@@ -243,8 +415,8 @@
         <div class="slide-tag">Golden Barbers Goodmayes</div>
         <h1 class="slide-title">The <em>Complete</em><br>Grooming Guide</h1>
         <div class="slide-body" style="max-width:560px;">
-            <p>11 chapters of real, practical grooming knowledge &mdash; written by barbers, for customers. Whether you&rsquo;re trying to describe your haircut better, understand what a fade actually is, or figure out which product belongs in your hair, this guide has you covered.</p>
-            <p><strong>Use the arrows to go chapter by chapter</strong>, or hit &ldquo;Read as Article&rdquo; to scroll everything at once.</p>
+            <p>11 chapters of real grooming knowledge &mdash; the kind that normally only comes from years in the chair. Names, techniques, products, treatments, and how to spot the difference between good work and average work.</p>
+            <p><strong>Use the arrows to move chapter by chapter.</strong> Or tap &ldquo;Read as Article&rdquo; to read everything at once.</p>
         </div>
         <div class="chip-row">
             <span class="chip">Haircuts</span><span class="chip">Fades</span><span class="chip">Beard</span><span class="chip">Ear Flaming</span><span class="chip">Hot Towel</span><span class="chip">Colour</span><span class="chip">Products</span><span class="chip">Hair Health</span>
@@ -257,23 +429,23 @@
 <section class="slide">
     <div class="slide-split">
         <div style="position:relative;overflow:hidden;">
-            <img src="SnapInsta.to_84958218_597425240989592_6331447961297910555_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="Barber at work">
+            <img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Hard part comb-over fade">
             <div class="slide-overlay" style="background:linear-gradient(to right,transparent 55%,rgba(0,0,0,0.97) 100%)"></div>
         </div>
         <div style="background:var(--dark);display:flex;flex-direction:column;justify-content:center;padding:44px 44px 90px;overflow-y:auto;">
             <div class="slide-tag">Chapter 2</div>
             <h2 class="slide-title">Haircuts<br>&amp; <em>Styles</em></h2>
             <div class="slide-body">
-                <p>The single most useful thing you can do before your appointment is <strong>bring a reference photo</strong>. Barbers work visually &mdash; a photo communicates in seconds what a verbal description takes minutes to get right and often still doesn&rsquo;t.</p>
-                <p>Know the name of what you want. A <strong>crop</strong> keeps it short and textured on top. A <strong>comb over</strong> sweeps the hair to one side with a sharp part. A <strong>quiff</strong> pushes volume forward and up. A <strong>buzz cut</strong> is uniform all over with a guard. <strong>Locs</strong> and <strong>waves</strong> are their own craft requiring specialist experience &mdash; which Golden Barbers has.</p>
-                <p>Face shape matters too. Round faces suit height on top. Square faces suit textured crops. Oval faces suit almost anything.</p>
+                <p><strong>Before your appointment: bring a reference photo.</strong> Barbers work visually. A photo lands in one second. &ldquo;Short back and sides, not too much off the top&rdquo; means something different to every client who has ever said it &mdash; a photo removes all ambiguity.</p>
+                <p>A <strong>crop</strong> (French crop) sits short and textured on top with the fringe pushed forward &mdash; almost always paired with a fade. A <strong>comb over</strong> sweeps longer hair to one side with a hard part, typically with a high skin fade underneath. A <strong>quiff</strong> pushes volume up and forward from the forehead, held with pomade or clay. A <strong>buzz cut</strong> is uniform all over &mdash; the guard number you pick determines the length (1 = 3mm, 2 = 6mm, up to 8 = 25mm). <strong>Waves</strong> and <strong>locs</strong> are specialist styles requiring specific technique, moisture routines and tools.</p>
+                <p><strong>Face shape changes everything.</strong> Round faces need height on top and tight sides to add length. Square faces suit textured crops and mid fades that soften the jaw. Oval faces are the most versatile &mdash; almost any cut works. Diamond faces benefit from width at the temples.</p>
             </div>
             <div class="chip-row" style="margin-bottom:16px;">
                 <span class="chip">Crop</span><span class="chip">Quiff</span><span class="chip">Comb Over</span><span class="chip">Buzz Cut</span><span class="chip">Textured</span><span class="chip">Locs</span><span class="chip">Waves</span>
             </div>
             <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;height:92px;">
                 <div class="photo-cell"><img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Comb over fade"><div class="photo-label">Comb Over</div></div>
-                <div class="photo-cell"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Hard part"><div class="photo-label">Hard Part</div></div>
+                <div class="photo-cell"><img src="SnapInsta.to_84958218_597425240989592_6331447961297910555_n.jpg" alt="Barber at work"><div class="photo-label">In the Chair</div></div>
                 <div class="photo-cell"><img src="download (4).jpg" alt="Junior cut"><div class="photo-label">Junior</div></div>
                 <div class="photo-cell"><img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French crop"><div class="photo-label">Crop</div></div>
                 <div class="photo-cell"><img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs"><div class="photo-label">Locs</div></div>
@@ -293,14 +465,15 @@
             <div class="slide-tag">Chapter 3</div>
             <h2 class="slide-title">The Art<br>of <em>Fades</em></h2>
             <div class="slide-body">
-                <p>A fade is a gradient blend &mdash; hair goes from longer on top to progressively shorter down the sides until it disappears into the skin. The <strong>starting point</strong> of the fade defines the whole look.</p>
-                <p>The <strong>blend zone</strong> is where a barber&rsquo;s skill truly shows. It takes multiple clipper guards, freehand scissor work, and a trained eye to make the transition seamless. A patchy or visible &ldquo;line&rdquo; is the mark of a rushed job.</p>
+                <p>A fade is a seamless gradient &mdash; hair transitions from longer on top to shorter on the sides until it disappears into bare skin. The <strong>starting height</strong> of that transition is what gives each fade its name and character. Getting it wrong by even a centimetre changes the entire shape of the head.</p>
+                <p>The <strong>blend zone</strong> is where skill separates barbers. It requires multiple overlapping passes with guards 0.5, 1, 1.5, and 2 &mdash; plus freehand scissor-over-comb work at the transition line. A visible &ldquo;step&rdquo; or uneven patch in the blend is always a rushed job.</p>
             </div>
             <div class="info-cards" style="margin-top:14px;">
-                <div class="info-card"><div class="info-card-title">Low Fade</div><div class="info-card-body">Starts just above the ear and neckline. Classic, clean, suits every face shape. The safest choice if you're unsure.</div></div>
-                <div class="info-card"><div class="info-card-title">Mid Fade</div><div class="info-card-body">Starts midway up the side of the head. Creates stronger contrast while keeping length. Very popular with crops and quiffs.</div></div>
-                <div class="info-card"><div class="info-card-title">High / Skin Fade</div><div class="info-card-body">Starts near the temples, goes to bare skin. Maximum contrast and definition. Requires more upkeep &mdash; book every 2&ndash;3 weeks.</div></div>
-                <div class="info-card"><div class="info-card-title">Drop Fade</div><div class="info-card-body">The fade line curves down behind the ear for a sleeker, more stylised silhouette. Popular with waves and afros.</div></div>
+                <div class="info-card"><div class="info-card-title">Low Fade</div><div class="info-card-body">Starts just above the ear, subtle and versatile. The most forgiving if you&rsquo;re growing it out. Suits every face shape and hair type.</div></div>
+                <div class="info-card"><div class="info-card-title">Mid Fade</div><div class="info-card-body">Starts midway up the side. Stronger contrast without being aggressive. Works perfectly with crops, quiffs and textured styles.</div></div>
+                <div class="info-card"><div class="info-card-title">High / Skin Fade</div><div class="info-card-body">Starts at the temples, goes to bare skin. Maximum contrast. Looks sharp but requires upkeep every 2&ndash;3 weeks.</div></div>
+                <div class="info-card"><div class="info-card-title">Burst Fade</div><div class="info-card-body">A semicircular fade that radiates around the ear. Creates a halo-like shape, especially striking on mohawks and afros.</div></div>
+                <div class="info-card"><div class="info-card-title">Taper / Drop Fade</div><div class="info-card-body">Tapers follow the natural hairline down the neckline. Drop fades curve down behind the ear. Both produce a cleaner, more stylised silhouette.</div></div>
             </div>
         </div>
         <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:6px;padding:0 30px 0 10px;">
@@ -319,12 +492,12 @@
             <div class="slide-tag">Chapter 4</div>
             <h2 class="slide-title">Beard<br><em>Grooming</em></h2>
             <div class="slide-body">
-                <p>A beard needs three separate lines to look intentional: the <strong>neckline</strong>, the <strong>cheek line</strong>, and the <strong>mustache edge</strong>. Miss any one of them and the whole beard looks unkempt regardless of how long or full it is.</p>
-                <p><strong>Neckline:</strong> Place two fingers above your Adam&rsquo;s apple &mdash; that&rsquo;s where it should sit. Any lower and the beard looks like it&rsquo;s swallowing your neck. Your barber will razor-clean this line on every visit.</p>
-                <p><strong>Cheek line:</strong> Follow your natural hair growth pattern. Don&rsquo;t shave too high &mdash; removing bulk from the cheeks narrows and shortens the face. A barber will tidy stray hairs without compromising shape.</p>
-                <p>Daily <strong>beard oil</strong> softens the hair and moisturises the skin underneath to prevent itchiness and flaking. Apply 2&ndash;4 drops to damp skin after washing, massage in, then brush through with a boar bristle brush.</p>
+                <p>A beard has three defining lines. Lose any one of them and the whole thing looks unkempt &mdash; no matter how long or full it is. <strong>The neckline, the cheek line, and the moustache edge</strong> are what turn a beard into a groomed beard.</p>
+                <p><strong>Neckline:</strong> Place two fingers above your Adam&rsquo;s apple. That&rsquo;s the exact point where the neckline should sit &mdash; not lower. A neckline that drops below that point blurs into the chest and makes the neck look shorter. Your barber uses a straight razor to keep this crisp on every visit.</p>
+                <p><strong>Beard oil:</strong> Apply 2&ndash;4 drops to damp skin after washing. Argan oil and jojoba oil are the best base ingredients &mdash; they soften coarse hair and moisturise the skin underneath, eliminating beardruff and itch. Finish with a boar bristle brush to distribute evenly and train the hair flat.</p>
+                <p>For longer beards: a <strong>beard balm</strong> provides light hold to tame stray hairs. Apply after the oil as a final step, work through with a wide-tooth comb, and shape to preference.</p>
             </div>
-            <div class="chip-row"><span class="chip">Neckline</span><span class="chip">Cheek Line</span><span class="chip">Beard Oil</span><span class="chip">Line-Up</span><span class="chip">Boar Brush</span></div>
+            <div class="chip-row"><span class="chip">Neckline</span><span class="chip">Cheek Line</span><span class="chip">Beard Oil</span><span class="chip">Beard Balm</span><span class="chip">Boar Brush</span></div>
             <a href="services.html" class="slide-cta">Book a Beard Trim</a>
         </div>
         <div style="display:grid;grid-template-rows:1fr 1fr;gap:5px;overflow:hidden;">
@@ -345,11 +518,11 @@
             <div class="slide-tag">Chapter 5</div>
             <h2 class="slide-title">Ear<br><em>Flaming</em></h2>
             <div class="slide-body">
-                <p>Ear flaming &mdash; also called <strong>ear singeing</strong> or <strong>ear candling</strong> &mdash; is a traditional grooming technique where a lit cotton wick is passed rapidly near the outer ear and ear canal entrance to burn away unwanted hair. The flame is extinguished almost immediately and never touches the skin.</p>
-                <p>The <strong>heat cauterises the hair follicle</strong>, which slows regrowth significantly compared to plucking or waxing. It&rsquo;s completely painless &mdash; clients often describe feeling a gentle warmth and hearing a faint crackling sound.</p>
-                <p>The entire process takes <strong>under 5 minutes</strong>. No chemicals, no irritation, no downtime. It&rsquo;s one of Golden Barbers&rsquo; most requested add-on services and can be booked alongside any haircut or beard trim.</p>
+                <p>Ear flaming &mdash; also known as <strong>ear singeing</strong> &mdash; is a traditional Turkish barbershop technique. A lit cotton wick soaked in a spirit solution is passed rapidly across the outer ear and canal entrance to burn away unwanted hair. The flame is extinguished in under a second and never contacts the skin directly.</p>
+                <p>The brief heat does two things: it burns the visible hair cleanly, and it <strong>cauterises the follicle opening</strong>, which significantly slows regrowth compared to waxing or tweezing. Most clients need it done every 6&ndash;8 weeks rather than the 2&ndash;3 week cycle of waxing. There is no skin irritation because no chemicals or adhesives are involved.</p>
+                <p>The sensation is a mild warmth and a faint crackling sound. The procedure takes <strong>under 5 minutes</strong> and is added to the end of any haircut or beard trim with no additional preparation needed.</p>
             </div>
-            <div class="chip-row"><span class="chip">Painless</span><span class="chip">Under 5 Mins</span><span class="chip">No Chemicals</span><span class="chip">Slows Regrowth</span></div>
+            <div class="chip-row"><span class="chip">Painless</span><span class="chip">Under 5 Mins</span><span class="chip">No Chemicals</span><span class="chip">6&ndash;8 Wk Cycle</span></div>
             <a href="services.html" class="slide-cta">Book Ear Flaming</a>
         </div>
         <div style="flex:0 0 250px;height:350px;position:relative;overflow:hidden;border-radius:12px;">
@@ -369,9 +542,8 @@
             <div class="slide-tag">Chapter 6</div>
             <h2 class="slide-title">Hot Towel<br><em>Shave</em></h2>
             <div class="slide-body">
-                <p>A hot towel shave is the closest shave you will ever get. The process follows a precise sequence: a <strong>hot towel</strong> is applied to the face for 2&ndash;3 minutes to open pores and soften the beard. Then a pre-shave oil is massaged in to create slip and protect the skin.</p>
-                <p>A rich lather is worked in with a badger hair brush &mdash; this lifts every hair away from the skin. The <strong>straight razor</strong> is then drawn across the skin in short, controlled strokes, always with the grain first then across. The result is a shave so close you feel it for days.</p>
-                <p>A <strong>cold towel</strong> closes the pores back down and reduces redness. Aftershave balm (not alcohol-based &mdash; that dries the skin) is applied last. The whole ritual takes 30&ndash;45 minutes and is deeply relaxing.</p>
+                <p>A hot towel shave is a six-step ritual. <strong>Each step serves a specific function</strong> &mdash; skip any one and the result degrades.</p>
+                <p><strong>1. Hot towel (2&ndash;3 min):</strong> Opens pores, softens beard hair, and relaxes the facial muscles. This is what makes the razor glide rather than drag. <strong>2. Pre-shave oil:</strong> Creates a protective slip layer between the blade and skin barrier &mdash; without it, even a sharp razor causes micro-abrasion. <strong>3. Badger brush lather:</strong> Lifts every hair away from the skin so the blade cuts at the root rather than bending the hair flat. <strong>4. Straight razor:</strong> First pass with the grain, second pass across the grain for a closer finish. A skilled barber reads your facial contours and adjusts the blade angle continuously. <strong>5. Cold towel:</strong> Closes pores back down. Skipping this step leaves pores open and vulnerable to ingrown hairs. <strong>6. Aftershave balm</strong> (not splash &mdash; alcohol strips moisture): seals and soothes. The full ritual takes 30&ndash;45 minutes.</p>
             </div>
             <div class="chip-row"><span class="chip">Opens Pores</span><span class="chip">Straight Razor</span><span class="chip">Pre-Shave Oil</span><span class="chip">Cold Towel Finish</span></div>
             <a href="services.html" class="slide-cta">Book Hot Towel Shave</a>
@@ -392,8 +564,8 @@
                 <div class="slide-tag">Chapter 7</div>
                 <h2 class="slide-title" style="font-size:clamp(1.7rem,2.8vw,2.6rem);">Colour &amp;<br><em>Creative</em><br>Cuts</h2>
                 <div class="slide-body" style="font-size:0.85rem;">
-                    <p>Colour and creative carvings are a form of self-expression that Golden Barbers take seriously. <strong>Bleach and dye</strong> work requires multiple sessions for very dark hair and proper conditioning aftercare. Carvings are shaved into the fade using a razor &mdash; they last 2&ndash;3 weeks before growing out.</p>
-                    <p>Always bring a reference image. The more specific, the better the result.</p>
+                    <p>Achieving bold colour on dark hair is a multi-step process, not a single appointment. Dark or black hair must be <strong>pre-lightened with bleach</strong> first, then <strong>toned</strong> to neutralise brassiness, then the colour is deposited. Very dark hair may need 2&ndash;3 sessions to reach the target lightness without breaking the hair structure. Conditioning treatments between sessions are essential.</p>
+                    <p><strong>Carvings</strong> are shaved into the fade using a clipper at zero guard or a precision razor. Geometric shapes, lines, initials, even logos are achievable. They last 2&ndash;3 weeks before the growing hair blurs the edges. Maintenance visits keep them sharp. <strong>Always bring a reference image</strong> &mdash; the more specific, the more accurate the result.</p>
                 </div>
                 <div class="chip-row"><span class="chip">Bleach</span><span class="chip">Toner</span><span class="chip">Colour</span><span class="chip">Carvings</span><span class="chip">Designs</span></div>
                 <a href="services.html" class="slide-cta" style="font-size:0.82rem;padding:10px 20px;">Book a Colour</a>
@@ -417,7 +589,7 @@
         <div class="slide-tag">Chapter 8</div>
         <h2 class="slide-title" style="font-size:clamp(1.6rem,3vw,2.8rem);">Products &amp; <em>Daily Routine</em></h2>
         <div class="slide-body" style="max-width:100%;margin-bottom:14px;">
-            <p>Using the wrong product is one of the most common grooming mistakes. Product choice depends on your hair type, desired finish, and how much hold you need. <strong>Apply to damp (not soaking wet) hair</strong> for better distribution and hold.</p>
+            <p>Product choice comes down to three variables: your hair type, the finish you want (matte vs. shine), and how much hold you need. The single most common mistake is applying product to soaking wet hair &mdash; water dilutes hold and the product runs out before it can set. <strong>Towel-dry first, apply to damp hair</strong>, then style.</p>
         </div>
         <div class="product-grid">
             <div class="product-card">
@@ -456,59 +628,60 @@
             <div class="slide-tag">Chapter 9</div>
             <h2 class="slide-title" style="font-size:clamp(1.6rem,3.2vw,2.8rem);">Hair Health<br>&amp; <em>Hair Loss</em></h2>
             <div class="slide-body">
-                <p>Hair loss affects <strong>85% of men</strong> by the age of 50. The most common cause is androgenetic alopecia (male pattern baldness) &mdash; a genetic condition triggered by DHT hormone sensitivity in the follicles. The earlier you act, the more you can preserve.</p>
-                <p>The <strong>Norwood scale</strong> classifies hair loss severity from Stage 1 (full head) to Stage 7 (only a rim of hair remaining). Most men first notice recession at the temples &mdash; that&rsquo;s Stage 2 to 3, still very treatable.</p>
-                <p><strong>Minoxidil</strong> (brand name Regaine) is the most clinically proven over-the-counter treatment. Applied topically to the scalp twice daily, it widens blood vessels, increasing nutrient flow to follicles. Results appear after 4&ndash;6 months of consistent use.</p>
-                <p>If you&rsquo;d rather embrace it: a <strong>skin fade or buzz cut</strong> makes thinning look intentional and sharp. Some of the best-looking haircuts in the shop are on clients with thinning hair.</p>
+                <p>Hair loss in men is almost always <strong>androgenetic alopecia</strong> (male pattern baldness) &mdash; a genetic condition where DHT (dihydrotestosterone) binds to follicles and progressively miniaturises them until they stop producing hair. It is not caused by hats, shampooing, or stress. It is genetic, and the earlier you act, the more you preserve.</p>
+                <p>The <strong>Norwood scale</strong> runs from Stage 1 (full coverage) to Stage 7 (horseshoe rim only). Recession at the temples is Stage 2&ndash;3 &mdash; still very treatable. Thinning at the crown is Stage 3 vertex. If you&rsquo;re noticing either, start now.</p>
+                <p><strong>Minoxidil</strong> (Regaine / Rogaine): applied directly to the scalp, it widens blood vessels and extends the anagen (growth) phase of the hair cycle, reactivating miniaturised follicles. Use the <strong>5% concentration</strong> &mdash; the 2% version is significantly less effective for men. <strong>Foam formulation</strong> is preferred over liquid (less scalp irritation, easier to apply, dries faster). Apply once in the morning and once at night to a dry scalp &mdash; use the dropper to target the thinning zones, not the whole head. Results appear at <strong>4&ndash;6 months</strong>. Stopping reverses gains within 3&ndash;6 months, so this is a long-term commitment. Available from Boots, Superdrug, or Amazon without a prescription.</p>
+                <p><strong>Finasteride</strong> (Propecia): a prescription oral tablet that blocks DHT at the source. More effective than minoxidil alone. Often stacked with minoxidil for maximum retention. Requires a GP or online clinic prescription (Numan, Manual, HIMS). If treatment isn&rsquo;t for you &mdash; a <strong>tight skin fade or buzz cut</strong> makes thinning look deliberate. Some of the sharpest cuts in this shop are on clients who embraced it.</p>
             </div>
-            <div class="chip-row"><span class="chip">Minoxidil</span><span class="chip">Norwood Scale</span><span class="chip">Finasteride</span><span class="chip">SMP</span><span class="chip">Embrace It</span></div>
+            <div class="chip-row"><span class="chip">Minoxidil 5%</span><span class="chip">Norwood Scale</span><span class="chip">Finasteride</span><span class="chip">SMP</span><span class="chip">Embrace It</span></div>
         </div>
         <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:8px;">
             <div class="photo-cell" style="border-radius:10px;grid-column:span 2;height:190px;">
-                <img src="download (25).jpg" alt="Hair loss before after"><div class="photo-label">Before &amp; After</div>
+                <img src="https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=800&q=80" alt="Male hair thinning crown view" style="object-position:center top;"><div class="photo-label">Male Pattern Thinning</div>
             </div>
             <div class="photo-cell" style="border-radius:10px;height:150px;">
-                <img src="download (26).jpg" alt="Minoxidil product"><div class="photo-label">Minoxidil</div>
+                <img src="https://images.unsplash.com/photo-1631390030972-8b1b3a2b9c1f?w=400&q=80" alt="Minoxidil foam product"><div class="photo-label">Minoxidil 5% Foam</div>
             </div>
             <div class="photo-cell" style="border-radius:10px;height:150px;">
-                <img src="images.jpg" alt="Norwood scale stages"><div class="photo-label">Norwood Scale</div>
+                <img src="https://images.unsplash.com/photo-1559599238-308793637427?w=400&q=80" alt="Scalp treatment"><div class="photo-label">Scalp Treatment</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- 10. ABOUT & AWARDS -->
+<!-- 10. LINE-UP & EDGE-UP -->
 <section class="slide">
-    <div class="slide-bg"><div class="slide-overlay" style="background:var(--dark)"></div></div>
-    <div class="slide-content" style="padding-top:112px;">
-        <div style="display:flex;gap:40px;height:100%;align-items:flex-start;">
-            <div style="flex:0 0 290px;overflow-y:auto;max-height:calc(100vh - 180px);">
-                <div class="slide-tag">Chapter 10</div>
-                <h2 class="slide-title" style="font-size:clamp(1.5rem,2.8vw,2.4rem);">About<br><em>Golden Barbers</em></h2>
-                <div class="slide-body" style="font-size:0.85rem;">
-                    <p>Golden Barbers Goodmayes has been a cornerstone of the Ilford community since it opened on Goodmayes Road. It&rsquo;s not just a barbershop &mdash; it&rsquo;s a <strong>multi-award winning, locally loved institution</strong>.</p>
-                    <p>The team has won <strong>Redbridge Business of the Year 2022</strong> and <strong>Best Local Business 2021</strong> in Goodmayes Ward, recognised by local MPs. With a 4.8&#9733; rating from over 330 genuine reviews, the quality speaks for itself.</p>
-                    <p>Every service &mdash; from a junior cut to ear flaming to a hot towel shave &mdash; is delivered with the same level of precision and care.</p>
-                </div>
-                <div class="chip-row"><span class="chip">4.8&#9733;</span><span class="chip">330+ Reviews</span><span class="chip">2x Award Winner</span></div>
-                <div style="margin-top:16px;border-radius:10px;overflow:hidden;height:110px;position:relative;">
-                    <img src="download (10).jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="GB team">
-                </div>
+    <div class="slide-bg">
+        <img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Sharp line-up hairline">
+        <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.94) 0%,rgba(0,0,0,0.62) 50%,rgba(0,0,0,0.12) 100%)"></div>
+    </div>
+    <div class="slide-content" style="flex-direction:row;align-items:center;gap:44px;padding-top:116px;">
+        <div style="flex:0 0 420px;overflow-y:auto;max-height:calc(100vh - 180px);">
+            <div class="slide-tag">Chapter 10</div>
+            <h2 class="slide-title">The<br><em>Line-Up</em></h2>
+            <div class="slide-body">
+                <p>A line-up &mdash; also called an <strong>edge-up</strong> or <strong>shape-up</strong> &mdash; is the process of defining the hairline at the forehead, temples, and sideburns using a straight razor or T-blade trimmer. It transforms the natural, irregular hairline into a precise, geometric edge. It&rsquo;s the detail that makes a grown-out cut still look fresh.</p>
+                <p>The <strong>three points that define a line-up:</strong> The forehead edge (straight or curved), the temple corners (squared or rounded), and the sideburn taper down to the ear. All three must be symmetrical &mdash; even 2mm off on one temple is visible. A barber uses a razor for the sharpest possible edge; a trimmer gives a slightly softer line.</p>
+                <p><strong>Line-ups are maintenance cuts.</strong> They need touching up every 1&ndash;2 weeks even if you&rsquo;re growing your hair. A sharp hairline on a longer style is always cleaner than an untouched one.</p>
             </div>
-            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:7px;height:calc(100vh - 175px);">
-                <div class="photo-cell" style="border-radius:10px;"><img src="download (5).jpg" alt="Award 2022"><div class="photo-label">2022 Winner</div></div>
-                <div class="photo-cell" style="border-radius:10px;"><img src="download (6).jpg" alt="Award 2021"><div class="photo-label">2021 Winner</div></div>
-                <div class="photo-cell" style="border-radius:10px;"><img src="download (24).jpg" alt="Shopfront"><div class="photo-label">Goodmayes Rd</div></div>
-                <div class="photo-cell" style="border-radius:10px;"><img src="download (19).jpg" alt="Opening"><div class="photo-label">Grand Opening</div></div>
-                <div class="photo-cell" style="border-radius:10px;grid-column:span 2;"><img src="download (20).jpg" alt="Shop interior"><div class="photo-label">The Shop</div></div>
-            </div>
+            <div class="chip-row"><span class="chip">Edge-Up</span><span class="chip">Shape-Up</span><span class="chip">Temple Corners</span><span class="chip">Sideburns</span><span class="chip">T-Blade</span></div>
+            <a href="services.html" class="slide-cta">Book a Shape-Up</a>
+        </div>
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;height:calc(100vh - 200px);">
+            <div class="photo-cell" style="border-radius:10px;"><img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" alt="Sharp temple line"><div class="photo-label">Temple Definition</div></div>
+            <div class="photo-cell" style="border-radius:10px;"><img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="Clean hairline"><div class="photo-label">Clean Hairline</div></div>
+            <div class="photo-cell" style="border-radius:10px;"><img src="download (7).jpg" alt="Razor precision"><div class="photo-label">Razor Edge</div></div>
+            <div class="photo-cell" style="border-radius:10px;"><img src="SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg" alt="Sharp line-up side profile"><div class="photo-label">Side Profile</div></div>
         </div>
     </div>
 </section>
 
 <!-- 11. COMPLETION -->
 <section class="slide">
-    <div class="completion-bg"></div>
+    <div class="slide-bg">
+        <img src="download (17).jpg" alt="Golden Barbers sign at night" style="object-position:center center;">
+        <div class="slide-overlay" style="background:rgba(0,0,0,0.72)"></div>
+    </div>
     <div class="slide-content" style="align-items:center;justify-content:center;position:relative;z-index:10;">
         <div id="tick-wrap">
             <div class="cert-badge">Certificate of Completion</div>
@@ -537,7 +710,7 @@
     <div class="mag-tag">Chapter 1</div>
     <h2 class="mag-title">Welcome to the <em>Complete Grooming Guide</em></h2>
     <div class="mag-body">
-        <p>11 chapters of real, practical grooming knowledge written by barbers for customers. Whether you&rsquo;re trying to describe your haircut better, understand what a fade actually is, or figure out which product belongs in your hair &mdash; this guide covers it all. Take your time, read what matters to you, and book when you&rsquo;re ready.</p>
+        <p>11 chapters of real grooming knowledge &mdash; the kind that normally only comes from years in the chair. Fade types and what separates them. How a hot towel shave actually works. What minoxidil does at the follicle level and how to use it correctly. Which product belongs in which hair. Read what matters to you and skip what doesn&rsquo;t. Everything you need to walk into any barbershop knowing exactly what you want &mdash; or understand exactly what was done to you.</p>
     </div>
     <div class="mag-photo-grid cols-2">
         <div class="mag-photo-cell"><img src="download (17).jpg" alt="Golden Barbers sign"></div>
@@ -548,15 +721,15 @@
 <div class="mag-section">
     <div class="mag-tag">Chapter 2</div>
     <h2 class="mag-title">Haircuts &amp; <em>Styles</em></h2>
-    <div class="mag-hero-photo"><img src="SnapInsta.to_84958218_597425240989592_6331447961297910555_n.jpg" alt="Barber at work"></div>
+    <div class="mag-hero-photo"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Hard part comb-over fade"></div>
     <div class="mag-body">
-        <p>The single most useful thing you can do before your appointment is <strong>bring a reference photo</strong>. Barbers work visually &mdash; a photo communicates in seconds what a verbal description takes minutes to get right and often still doesn&rsquo;t. &ldquo;Short back and sides&rdquo; means something different to everyone. A photo is precise.</p>
-        <h3>Know the Names</h3>
-        <p>A <strong>crop</strong> (or French crop) is short and textured on top with the fringe pushed forward, typically paired with a fade on the sides. A <strong>comb over</strong> sweeps longer hair to one side, usually with a hard part and high fade. A <strong>quiff</strong> pushes volume forward and upward from the forehead. A <strong>buzz cut</strong> is uniform length all over with a clipper guard &mdash; the number you choose determines the length (0 is skin, 1 is 3mm, up to 8 is 25mm).</p>
-        <h3>Face Shape Matters</h3>
-        <p><strong>Round faces</strong> benefit from height on top and tight sides &mdash; it lengthens the face. <strong>Square faces</strong> suit textured crops and mid fades that soften the jawline. <strong>Oval faces</strong> are the most versatile &mdash; almost every style works. <strong>Diamond faces</strong> suit styles with width at the temples. If you&rsquo;re not sure, ask your barber &mdash; it&rsquo;s literally their job to know.</p>
-        <h3>Specialist Styles</h3>
-        <p><strong>Locs</strong> (dreadlocks) and <strong>waves</strong> are their own discipline requiring specialist experience, the right products, and consistent technique. Not every barbershop can do them well. Golden Barbers has specialist experience in both.</p>
+        <p><strong>The most important thing you can do before sitting in the chair: bring a reference photo.</strong> Barbers work visually. A photo eliminates ambiguity instantly. &ldquo;Short back and sides, not too much off the top&rdquo; means something different to every person who has ever said it. A photo is precise &mdash; description is not.</p>
+        <h3>The Core Styles</h3>
+        <p>A <strong>French crop</strong> keeps the hair short and textured on top with the fringe pushed forward, nearly always paired with a fade on the sides. It&rsquo;s one of the most popular styles in the shop because it works across almost every hair type and face shape. A <strong>comb over</strong> sweeps longer hair to one side, typically with a hard part &mdash; a razor-sharp line shaved into the scalp &mdash; and a high skin fade underneath. The contrast between the length on top and the bare sides is what gives it its structure. A <strong>quiff</strong> pushes volume up and forward from the forehead, held with pomade or clay. It requires a minimum of 2&ndash;3 inches on top and a mid or high fade to have the right visual weight. A <strong>buzz cut</strong> is uniform length all over using a clipper guard &mdash; guard 1 is 3mm, guard 2 is 6mm, up to guard 8 which is 25mm. There is no fade, no styling &mdash; just clean, consistent length and a defined neckline.</p>
+        <h3>Face Shape and What It Changes</h3>
+        <p><strong>Round faces</strong> need height on top and tight sides to create the illusion of vertical length. A high fade and textured crop is the ideal formula. Avoid styles that add width at the sides. <strong>Square faces</strong> suit textured crops and mid fades that soften the angular jawline. Hard parts and geometric cuts tend to accentuate squareness rather than balance it. <strong>Oval faces</strong> are the most versatile &mdash; virtually every style translates well. <strong>Diamond faces</strong> (wide at the cheekbones, narrow at forehead and chin) benefit from width at the temples &mdash; a low or mid fade with volume on top works well. <strong>Oblong faces</strong> should avoid extra height on top &mdash; a low to mid fade with textured or wavy hair on top creates balance.</p>
+        <h3>Specialist Styles: Waves and Locs</h3>
+        <p><strong>360 waves</strong> are a textured pattern created by repeatedly brushing damp hair with a medium-hard wave brush in a circular pattern, compressing the hair flat with a durag or wave cap overnight. The process takes weeks of consistent technique to develop and requires moisture &mdash; a leave-in conditioner and wave cream are essential. Dry hair breaks the pattern. A barber who understands waves will cut with the grain rather than against it, and will give you a low fade or taper rather than a high fade that disrupts the pattern. <strong>Locs</strong> (dreadlocks) are formed by allowing sections of natural hair to mat and coil together over time. Starter locs can be created via palm rolling, backcombing, or the interlocking method. Maintenance visits at a specialist barbershop involve retightening the roots and shaping the overall silhouette. Golden Barbers has direct experience with both styles.</p>
     </div>
     <div class="mag-photo-grid cols-3">
         <div class="mag-photo-cell"><img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Comb over fade"></div>
@@ -572,12 +745,23 @@
     <h2 class="mag-title">The Art of <em>Fades</em></h2>
     <div class="mag-hero-photo"><img src="SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg" alt="Skin fade"></div>
     <div class="mag-body">
-        <p>A fade is a gradient blend &mdash; hair transitions from longer on top to progressively shorter as it moves down the sides and back, eventually disappearing into bare skin. It&rsquo;s the most technically demanding aspect of a haircut and where a great barber separates themselves from an average one.</p>
-        <h3>The Four Fade Types</h3>
-        <p>A <strong>low fade</strong> starts just above the ear and neckline. It&rsquo;s the most understated version &mdash; clean, classic, and suits every face shape. A <strong>mid fade</strong> starts midway up the side of the head, creating stronger contrast between top and sides. It works brilliantly with crops and quiffs. A <strong>high fade</strong> starts at or near the temples and often goes all the way to skin &mdash; maximum contrast, very bold, requires upkeep every 2&ndash;3 weeks. A <strong>drop fade</strong> is a variation where the fade line curves downward behind the ear, creating a sleeker and more stylised silhouette &mdash; popular with waves and afros.</p>
-        <h3>What Makes a Good Fade</h3>
-        <p>The <strong>blend zone</strong> is where skill truly shows. It requires multiple clipper guards (typically 0.5, 1, 1.5, and 2) used in overlapping passes, often combined with freehand scissor-over-comb work to create a seamless transition. A patchy or visible &ldquo;step&rdquo; line in the blend zone is the mark of a rushed or unskilled cut.</p>
-        <p>The best barbers also <strong>follow the head shape</strong> rather than cutting in straight lines &mdash; everyone&rsquo;s head is different, and a fade that looks perfect on one person can look wrong on another if the technique is applied rigidly.</p>
+        <p>A fade is a seamless gradient where hair transitions from longer on top to progressively shorter as it moves down the sides and back, ultimately disappearing into bare skin. It is the most technically demanding aspect of any haircut, and the element where a great barber most visibly separates themselves from an average one. The same clipper can produce a beautiful fade or a disaster depending on the hands using it.</p>
+        <h3>Low Fade</h3>
+        <p>Starts just above the ear and neckline. The most understated and versatile of the fade types. It doesn&rsquo;t draw attention to the sides &mdash; it simply cleans them up. A low fade pairs with virtually every style on top and suits every face shape. It&rsquo;s the safest option if you&rsquo;re unsure, and the easiest to grow out without looking unkempt.</p>
+        <h3>Mid Fade</h3>
+        <p>Starts midway up the side of the head. Creates a clear visual contrast between the sides and top without being aggressive. A mid fade gives crops and quiffs their characteristic shape &mdash; the contrast between the shorter sides and longer top is what makes those styles work. One of the most requested fades in the shop.</p>
+        <h3>High Fade &amp; Skin Fade</h3>
+        <p>Starts at or near the temples, often fading all the way down to bare skin. Maximum contrast, extremely bold. The skin fade in particular creates a striking, sculptural silhouette that frames the face precisely. It requires the most maintenance &mdash; the sides grow noticeably within 2 weeks, and most clients with a skin fade book every 2&ndash;3 weeks to keep it sharp.</p>
+        <h3>Drop Fade</h3>
+        <p>A variation of any of the above where the fade line curves downward behind the ear rather than following a straight horizontal line. This creates a rounded, more flowing silhouette at the neckline. It softens the overall shape compared to a straight-line fade, and is particularly popular on afros and waves where the round head shape benefits from a complementary curved fade line.</p>
+        <h3>Burst Fade</h3>
+        <p>A specialised fade where the gradient fans out in a semicircular arc around and behind the ear, radiating outward like a sunburst. The rest of the back and sides are left longer, creating a dramatic halo effect. A burst fade is most common on mohawks, afros, and mullet-style cuts where the contrast is intentional and theatrical. It requires precise freehand clipper technique and is one of the more advanced cuts to execute well.</p>
+        <h3>Taper</h3>
+        <p>Often confused with a fade, a taper is technically different. A taper shortens the hair gradually from the top toward the neckline but stops before reaching skin &mdash; it blends to a close, tight length rather than disappearing entirely. The result is cleaner and more defined than leaving the sides untouched, but more conservative and less dramatic than a full skin fade. Tapers work on professional or conservative dress codes where a skin fade would look too sharp or too high-maintenance.</p>
+        <h3>Temple Fade (Brooklyn Fade)</h3>
+        <p>A precise fade applied only at the temples and around the hairline, leaving more length on the sides and back of the head. The key is the clean definition of the hairline at the forehead corners, creating a very sharp, angular frame for the face. Common in barbershops with a strong West Indian or Black American influence, and often combined with a line-up to define the hairline all the way across the forehead.</p>
+        <h3>The Blend Zone: What to Look For</h3>
+        <p>The blend zone is the gradient between the longer hair on top and the faded section on the sides. A properly blended fade has no visible lines, steps, or uneven patches &mdash; the transition should be imperceptible when looking at the finished cut. Achieving this requires multiple overlapping passes with progressively smaller clipper guards (typically 0.5, 1, 1.5, and 2), combined with freehand scissor-over-comb work at the transition point. The best barbers also follow the natural contour of the head rather than cutting in mechanical straight lines &mdash; heads are round, and a rigid straight-line fade will always reveal itself at certain angles. Always inspect the cut in natural light before you leave the chair.</p>
     </div>
     <div class="mag-photo-grid cols-2">
         <div class="mag-photo-cell"><img src="SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg" alt="Waves skin fade"></div>
@@ -592,14 +776,17 @@
     <h2 class="mag-title">Beard <em>Grooming</em></h2>
     <div class="mag-hero-photo"><img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" alt="Beard and fade in shop"></div>
     <div class="mag-body">
-        <p>A beard needs three separate lines to look intentional: the <strong>neckline</strong>, the <strong>cheek line</strong>, and the <strong>mustache edge</strong>. Miss any one of them and the whole beard looks unkempt regardless of how long or full it is. Getting these lines right is what separates a professionally maintained beard from one you&rsquo;ve tried to manage yourself at home.</p>
-        <h3>The Neckline</h3>
-        <p>Place two fingers above your Adam&rsquo;s apple and draw an imaginary line from ear to ear &mdash; that&rsquo;s where your neckline should sit. Any lower and the beard starts to blur into your chest hair, losing all definition. Your barber will razor-clean this line on every visit, giving it the crisp edge that makes the whole beard look intentional.</p>
+        <p>A beard is only as good as its lines. Three separate boundaries define any beard shape &mdash; the <strong>neckline</strong>, the <strong>cheek line</strong>, and the <strong>moustache edge</strong>. Lose any one of them and the beard looks unfinished, regardless of how thick or long it is. These lines are what separate a grown beard from a maintained beard.</p>
+        <h3>The Neckline: The Most Important Line</h3>
+        <p>Place two fingers horizontally above your Adam&rsquo;s apple. That exact point is where your neckline should sit. Not lower. A neckline that drops below this level blurs the boundary between beard and neck, creating an unkempt, undefined base. A neckline placed too high (shaved up into the jaw area) shortens the beard visually and can make the face look rounder. Your barber will razor-clean this line precisely on every visit. At home, use a detail trimmer or cartridge razor &mdash; never scissors &mdash; to maintain it between appointments.</p>
         <h3>The Cheek Line</h3>
-        <p>Follow your natural hair growth pattern. The mistake most men make is shaving the cheek line too low or too straight &mdash; this removes bulk from the upper beard, narrowing and shortening the face. A barber will tidy stray individual hairs above the natural line without compromising the shape and fullness below.</p>
-        <h3>Daily Beard Care</h3>
-        <p>Apply <strong>2&ndash;4 drops of beard oil</strong> to damp skin (not dripping wet) after washing. The oil works on two levels: it softens coarse beard hair which reduces scratching for the person on the receiving end, and it moisturises the skin underneath which prevents the dreaded beard itch and flaking (beardruff). <strong>Argan oil</strong> and <strong>jojoba oil</strong> are the two best base ingredients to look for on the label. Massage in thoroughly then use a boar bristle brush to distribute evenly and train the hair to lie flat.</p>
-        <p>A <strong>beard balm</strong> serves a similar purpose but also provides light hold for shaping stray hairs on longer beards. Apply as the last step, work through the beard with a comb, and shape to preference.</p>
+        <p>Follow your natural hair growth. The most common DIY mistake is shaving the cheek line too straight or too low &mdash; both remove mass from the upper beard, narrowing the face and reducing the fullness that makes a beard look substantial. A barber tidies stray hairs above the natural growth line without touching the bulk below it. On the right face, a higher natural cheek line is an asset &mdash; don&rsquo;t remove it.</p>
+        <h3>Beard Lengths: Knowing What You&rsquo;re Growing</h3>
+        <p><strong>Stubble (1&ndash;3mm):</strong> The most low-maintenance beard length. A grade 1 clipper gives clean stubble; grade 2 gives heavier designer stubble. Keep the neckline and cheek line clean &mdash; stubble without lines is just a bad shave. <strong>Short beard (5&ndash;10mm):</strong> Starts to show shape. Requires a dedicated beard trimmer with length adjustment. A barber fade into the haircut at this length looks particularly sharp. <strong>Medium beard (10&ndash;25mm):</strong> Fuller, needs daily maintenance. Beard oil and brush are non-optional at this length. A barber will shape the bottom line and tidy the sides without reducing mass. <strong>Full / long beard (25mm+):</strong> The structure of the beard becomes its own feature. Regular trims maintain the shape as the beard grows &mdash; paradoxically, regular cutting keeps a long beard looking longer by removing split ends and maintaining a clean bottom line.</p>
+        <h3>Connecting the Fade to the Beard</h3>
+        <p>On a client with both a haircut fade and a beard, the barber has to decide where the fade ends and the beard begins. This transition &mdash; where the skin fade on the sides graduates into the beard at the cheeks and jawline &mdash; is one of the most technically demanding parts of the cut. Done well, it creates a seamless, flowing silhouette from the top of the head to the bottom of the chin. Done poorly, there&rsquo;s a visible harsh line between faded scalp and beard hair. Look at this junction when assessing any barbershop&rsquo;s skill level.</p>
+        <h3>Daily Beard Care Routine</h3>
+        <p>After washing, pat dry and immediately apply <strong>2&ndash;4 drops of beard oil</strong> while the skin is still slightly damp &mdash; damp skin absorbs oil better than dry skin. Warm the oil between your palms first, then massage into the beard from root to tip and into the skin underneath. This prevents beardruff (beard dandruff &mdash; dead skin flaking out of the beard), beard itch during the growing phase, and coarseness that can irritate your skin and everyone else&rsquo;s. Look for <strong>argan oil</strong>, <strong>jojoba oil</strong> or <strong>sweet almond oil</strong> as the primary base ingredient on the label &mdash; these are the most effective carriers. Avoid products where the first ingredient is a silicone (dimethicone, cyclomethicone) &mdash; they coat the hair rather than nourishing it and build up over time. Use a boar bristle brush to distribute the oil evenly and train the hair to lie flat. For longer beards, finish with a <strong>beard balm</strong> (after the oil, not instead of) to provide light hold and shape.</p>
     </div>
     <div class="mag-photo-grid cols-2">
         <div class="mag-photo-cell"><img src="SnapInsta.to_118516576_242770710236355_3326219608200829104_n.jpg" alt="Well groomed beard"></div>
@@ -612,12 +799,13 @@
     <h2 class="mag-title">Ear <em>Flaming</em></h2>
     <div class="mag-hero-photo"><img src="download (12).jpg" alt="Ear flaming"></div>
     <div class="mag-body">
-        <p>Ear flaming &mdash; also known as <strong>ear singeing</strong> or <strong>ear candling</strong> &mdash; is a traditional grooming technique that has been practised in Turkish barbershops for generations. A lit cotton wick soaked in a spirit solution is passed rapidly near the outer ear and ear canal entrance to burn away unwanted hair. The flame is extinguished almost immediately and never touches the skin directly.</p>
-        <h3>How It Works</h3>
-        <p>The brief heat of the flame does two things. First, it burns the visible hair cleanly without irritating the skin the way waxing or tweezing can. Second, the heat <strong>cauterises the hair follicle</strong>, which significantly slows regrowth compared to mechanical hair removal. Most clients find they need it done every 6&ndash;8 weeks rather than the 2&ndash;3 week cycle of waxing.</p>
-        <h3>What to Expect</h3>
-        <p>The process is completely painless. Clients typically describe feeling a gentle warmth near the ear and hearing a faint crackling sound as the hair ignites briefly. The entire procedure takes <strong>under 5 minutes</strong>. No chemicals are used, there is zero skin irritation, and there is no downtime whatsoever. It can be combined with any haircut or beard trim as an add-on service.</p>
-        <p>It&rsquo;s one of the most requested services at Golden Barbers and a perfect example of the kind of specialist technique that separates a proper barbershop from a walk-in chain.</p>
+        <p>Ear flaming &mdash; also known as <strong>ear singeing</strong> &mdash; is a traditional technique rooted in Turkish and Mediterranean barbershop culture, practised for generations as a standard part of the full grooming ritual. It targets the fine vellus and terminal hairs that grow on and around the outer ear and at the entrance to the ear canal &mdash; hairs that clippers cannot reach and tweezing or waxing can irritate.</p>
+        <h3>The Technique</h3>
+        <p>A thin cotton wick or twist of cotton wool is dipped in spirit (typically ethanol) and lit. The barber moves it in a rapid, controlled motion across the outer ear surface and around the ear canal entrance. The flame is present for a fraction of a second over any one area &mdash; it never rests against the skin. The burning hair is immediately wiped away with a damp cloth. The entire process takes under 5 minutes per ear.</p>
+        <h3>Why It Works Better Than Alternatives</h3>
+        <p>Tweezing pulls hair from the follicle and causes significant irritation in a sensitive area. Waxing around the ear applies adhesive directly to delicate skin and can cause redness, swelling, and ingrown hairs. Threading, while effective for eyebrows, is not practical for the curved surface of the ear. Ear flaming avoids all of these issues: no contact with the skin, no adhesives, no pulling. The brief heat cauterises the follicle opening which slows regrowth &mdash; most clients find the cycle extends to 6&ndash;8 weeks versus the 2&ndash;3 week cycle of waxing.</p>
+        <h3>Safety</h3>
+        <p>Performed correctly by an experienced barber, ear flaming is completely safe. The spirit used burns at a low temperature and the wick is moved too quickly to transfer meaningful heat to the skin. The sensation clients describe is a subtle warmth and the sound of faint crackling as the hair burns. There is no pain, no redness, and no recovery time. The key word is &ldquo;experienced&rdquo; &mdash; this is not a technique to attempt at home. At Golden Barbers, it is performed as a standard service by barbers trained in the procedure.</p>
     </div>
     <div class="mag-photo-grid cols-2">
         <div class="mag-photo-cell"><img src="pic.jpg" alt="Ear flaming close-up"></div>
@@ -629,14 +817,19 @@
     <h2 class="mag-title">Hot Towel <em>Shave</em></h2>
     <div class="mag-hero-photo"><img src="download (23).jpg" alt="Hot towel wrap"></div>
     <div class="mag-body">
-        <p>A hot towel shave is the definitive barbershop ritual &mdash; a full sensory experience that leaves your skin feeling immaculate. Every step in the sequence serves a specific function, and skipping any one of them degrades the result.</p>
-        <h3>The Process, Step by Step</h3>
-        <p><strong>Step 1 &mdash; Hot Towel:</strong> A towel soaked in hot water is wrapped around the face for 2&ndash;3 minutes. The sustained heat opens the pores, softens the beard hair (making it easier to cut), and relaxes the facial muscles. This is what makes a barber shave so much closer than a home shave &mdash; the prep.</p>
-        <p><strong>Step 2 &mdash; Pre-Shave Oil:</strong> A light oil is massaged into the skin to create slip between the blade and the face, and to provide a protective layer over the skin barrier. Without this, even the sharpest razor causes micro-abrasions.</p>
-        <p><strong>Step 3 &mdash; Lather:</strong> A rich shaving cream or soap is worked into the beard using a badger hair brush. The brush lifts every hair away from the skin so the blade can cut it cleanly at the base rather than bending it flat.</p>
-        <p><strong>Step 4 &mdash; The Straight Razor:</strong> The blade is drawn across the skin in short, controlled strokes. First pass goes <em>with the grain</em>, second pass goes <em>across the grain</em> for a closer finish. A skilled barber reads your facial contours and adapts the blade angle continuously. The result is a shave so close you can&rsquo;t feel any stubble for 2&ndash;3 days.</p>
-        <p><strong>Step 5 &mdash; Cold Towel:</strong> A cold towel is applied to close the pores back down and reduce any surface redness. This step is critical &mdash; skipping it leaves pores open and vulnerable to ingrown hairs and irritation.</p>
-        <p><strong>Step 6 &mdash; Aftershave Balm:</strong> Not an alcohol-based splash (which strips moisture and burns) but a moisturising balm that soothes the skin and seals the finish. The entire ritual takes 30&ndash;45 minutes and is deeply relaxing.</p>
+        <p>A hot towel shave is a six-step ritual. Every step has a specific mechanical purpose. Skip any one of them and the result degrades. This is why a barber shave produces a fundamentally different finish to anything you can achieve at home &mdash; it&rsquo;s not the razor, it&rsquo;s the preparation and the sequence.</p>
+        <h3>Step 1 &mdash; Hot Towel (2&ndash;3 minutes)</h3>
+        <p>A towel soaked in hot (not boiling) water is wrung out and wrapped tightly around the lower face. The sustained, moist heat does three things simultaneously: it opens and softens the pores, it hydrates and softens the beard hair (soft hair cuts far more easily than dry hair &mdash; this is the single biggest reason a barber shave is closer than a home shave), and it relaxes the underlying facial muscles, allowing the skin to lie flat. Duration matters &mdash; 30 seconds isn&rsquo;t enough. 2&ndash;3 minutes is the minimum for full effectiveness.</p>
+        <h3>Step 2 &mdash; Pre-Shave Oil</h3>
+        <p>A lightweight, non-comedogenic oil (typically a blend of castor, jojoba and vitamin E) is massaged directly into the skin after the towel is removed. This creates a slick protective layer between the blade edge and the skin barrier. Without it, the razor&rsquo;s edge creates micro-abrasions on the skin surface with every stroke &mdash; this is what causes razor burn. The oil also prevents the blade from dragging, which is what causes nicks. Even a disposable cartridge razor at home performs measurably better with pre-shave oil applied first.</p>
+        <h3>Step 3 &mdash; Badger Brush Lather</h3>
+        <p>Shaving cream or soap is loaded onto a badger hair brush and worked into the beard in circular motions. The function of the brush is critical: the stiff bristles lift each individual hair away from the skin surface and coat it with lather. A hair that is standing upright can be cut cleanly at the base. A hair that&rsquo;s been pushed flat by a razor&rsquo;s edge (as with a home shave without a brush) gets bent before it&rsquo;s cut &mdash; it springs back below the skin surface and creates ingrown hairs. The brush eliminates this problem entirely.</p>
+        <h3>Step 4 &mdash; Straight Razor</h3>
+        <p>The straight razor is drawn across the skin in short, controlled strokes with the correct blade angle (typically 30 degrees to the skin). The first pass goes <em>with the grain</em> &mdash; the direction the hair grows. This removes the majority of the hair. The second pass goes <em>across the grain</em> for a closer finish. On the most sensitive or contoured areas (upper lip, jaw angle, adam&rsquo;s apple), a skilled barber will use shorter strokes and continuously re-angle the blade to follow the facial topography. A straight razor on a well-prepared face produces a shave you can&rsquo;t feel stubble from for 2&ndash;3 days.</p>
+        <h3>Step 5 &mdash; Cold Towel</h3>
+        <p>A cold towel (sometimes with witch hazel applied) is pressed firmly against the shaved skin for 60&ndash;90 seconds. The cold contracts the pores back to their normal size, closing them off before bacteria or debris can enter the freshly-opened follicles. Skipping this step is a mistake &mdash; open pores after shaving are a direct route to spots, ingrown hairs, and post-shave irritation. The cold towel is also where a lot of the post-shave comfort comes from.</p>
+        <h3>Step 6 &mdash; Aftershave Balm</h3>
+        <p>Not an alcohol splash. Alcohol-based aftershaves sting, strip the skin&rsquo;s moisture barrier, and cause the rebound oiliness that leads to post-shave breakouts. An aftershave <em>balm</em> &mdash; typically containing aloe vera, glycerine, and panthenol &mdash; soothes the skin, seals the surface, and replaces the moisture that the hot water and oil removed. It also reduces any surface redness. The full ritual takes 30&ndash;45 minutes from start to finish.</p>
     </div>
     <div class="mag-photo-grid cols-2">
         <div class="mag-photo-cell"><img src="download (15).jpg" alt="Straight razor"></div>
@@ -648,11 +841,14 @@
     <div class="mag-tag">Chapter 7</div>
     <h2 class="mag-title">Colour &amp; <em>Creative Cuts</em></h2>
     <div class="mag-body">
-        <p>Colour and creative carvings are a form of self-expression that Golden Barbers take seriously. They require specialist skill, the right products, and crucially &mdash; a good reference image from the client.</p>
-        <h3>Hair Colour</h3>
-        <p>Achieving bold colour like platinum blonde, teal or vivid red on dark hair is a multi-step process. The hair must be <strong>pre-lightened (bleached) first</strong> using a developer and bleach powder, then toned to neutralise unwanted yellow or orange undertones, then the colour is applied. Very dark or black hair may require 2&ndash;3 separate sessions to reach the lightness needed without damaging the hair beyond repair. Conditioning treatments between sessions are essential. Always come with clean, dry hair and no silicone-based products applied beforehand.</p>
+        <p>Colour work and creative carvings are specialised services that go beyond a standard haircut. Both require additional skill, precision, and in the case of colour &mdash; multiple stages that can span more than one appointment.</p>
+        <h3>Hair Colour: The Process</h3>
+        <p>Colour on dark hair is not a single-step service. Dark brown or black hair cannot take vivid colour (platinum, teal, red, orange) in one sitting. The hair must first be pre-lightened using a bleach powder mixed with a developer (typically 20 or 30 vol). The bleach opens the hair cuticle and strips the existing pigment, lifting the hair to a pale yellow or white stage. The higher the developer volume, the faster and more aggressively it lifts &mdash; but also the more damaging. Very dark or coarse hair may require 2&ndash;3 bleaching sessions, spaced at least 2 weeks apart with deep conditioning treatments in between, to reach the target level without the hair snapping.</p>
+        <p>After bleaching, a <strong>toner</strong> is applied to neutralise the underlying warmth. Bleached dark hair typically pulls orange or brassy yellow &mdash; an ash or violet toner counteracts this and brings the hair to a clean, cool blonde or grey base. Only then can vivid colour be deposited with an accurate result. Coming in without this context and asking for &ldquo;platinum blonde in one session&rdquo; on black hair sets unrealistic expectations &mdash; a good barber will always explain the staged process before starting. Come in with clean, dry hair, no silicone serums or heavy conditioners applied (these prevent bleach from penetrating evenly), and a specific reference photo.</p>
+        <h3>Bleach Maintenance and Aftercare</h3>
+        <p>Bleached and coloured hair requires a different maintenance routine. Use a <strong>purple/violet shampoo</strong> once a week to counteract the brassy yellow that develops as the toner fades. Use a <strong>sulphate-free shampoo</strong> for all other washes &mdash; sulphates strip colour quickly. Always condition after every wash, and use a weekly deep conditioning mask to maintain elasticity. Bleached hair is structurally weaker &mdash; use a heat protectant before any hot tools and reduce heat styling frequency.</p>
         <h3>Hair Carvings &amp; Designs</h3>
-        <p>Carvings are shaved into the fade using a precision razor or clipper blade at a zero guard. Lines, geometric shapes, initials and logos are all achievable. They typically last <strong>2&ndash;3 weeks</strong> before the growing hair blurs the edges. Maintenance visits keep them sharp. Always bring a reference &mdash; the more detailed your image, the closer the result.</p>
+        <p>Carvings are shaved into the fade section of a haircut using a clipper at zero guard or a straight-edge razor. A clean skin fade is required as the base &mdash; carvings cut into longer hair are difficult to see and lose their sharpness quickly. Lines, geometric shapes, initials, numbers, logos, and abstract patterns are all achievable depending on the size of the area and the complexity of the design. Simple lines or single shapes take 10&ndash;15 minutes. Intricate multi-element designs take longer. Carvings last 2&ndash;3 weeks before the regrowth blurs the edges. Regular maintenance visits keep them sharp. Always bring a reference image &mdash; showing the exact design you want removes all ambiguity about scale, thickness of lines, and placement.</p>
     </div>
     <div class="mag-photo-grid cols-3">
         <div class="mag-photo-cell"><img src="SnapInsta.to_70010652_1348701105288372_8634153704668559015_n.jpg" alt="Honey blonde"></div>
@@ -712,38 +908,48 @@
 <div class="mag-section">
     <div class="mag-tag">Chapter 9</div>
     <h2 class="mag-title">Hair Health &amp; <em>Hair Loss</em></h2>
-    <div class="mag-hero-photo"><img src="download (25).jpg" alt="Hair loss before after"></div>
+    <div class="mag-hero-photo"><img src="https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=1200&q=80" alt="Male hair thinning crown" style="object-position:center top;"></div>
     <div class="mag-body">
-        <p>Hair loss affects <strong>85% of men by age 50</strong>, and the vast majority of it is caused by androgenetic alopecia &mdash; male pattern baldness. It&rsquo;s genetic, triggered by the hormone DHT (dihydrotestosterone) binding to follicles in the scalp and gradually miniaturising them until they stop producing hair entirely. It is not caused by wearing hats, shampooing too much, or anything else you might have heard.</p>
-        <h3>Recognising It Early</h3>
-        <p>The <strong>Norwood scale</strong> classifies hair loss from Stage 1 (full head of hair) to Stage 7 (only a horseshoe rim of hair remains at the sides). Most men first notice recession at the temples or thinning at the crown &mdash; that&rsquo;s Stage 2 to 3, still very treatable. The earlier you act, the more follicles you can preserve.</p>
-        <h3>Treatments That Actually Work</h3>
-        <p><strong>Minoxidil (Regaine)</strong> is the most widely used and clinically proven OTC treatment. Applied topically to the scalp twice daily, it works by widening blood vessels and increasing nutrient flow to hair follicles, re-activating miniaturised follicles and extending the growth phase of the hair cycle. Results take <strong>4&ndash;6 months</strong> of consistent use to become visible. Stopping treatment reverses the gains within 3&ndash;6 months, so it requires long-term commitment.</p>
-        <p><strong>Finasteride</strong> is a prescription oral medication that blocks the conversion of testosterone to DHT. It&rsquo;s more effective than minoxidil but requires a doctor&rsquo;s prescription and carries potential side effects. Often used in combination with minoxidil for maximum effect.</p>
-        <p><strong>Scalp Micropigmentation (SMP)</strong> is a cosmetic tattooing technique that deposits pigment into the scalp to mimic the look of a buzz cut on a shaved head. It provides instant visual results and is permanent. Not a hair loss treatment but a highly effective cosmetic solution.</p>
+        <p>Hair loss in men is almost exclusively <strong>androgenetic alopecia</strong> &mdash; male pattern baldness. It is caused by DHT (dihydrotestosterone), a derivative of testosterone, binding to receptors in genetically sensitive follicles and progressively miniaturising them until they produce finer, shorter hairs and eventually stop entirely. It is not caused by wearing hats. It is not caused by shampooing too frequently. It is not caused by stress (though stress can trigger a temporary, separate condition called telogen effluvium). It is genetic and, if it&rsquo;s going to happen, it will. The only variable you control is how early you start managing it.</p>
+        <h3>The Norwood Scale: Knowing Where You Are</h3>
+        <p>The Norwood scale classifies androgenetic alopecia into seven stages. <strong>Stage 1</strong>: no visible hair loss, hairline intact. <strong>Stage 2</strong>: slight recession at the temples, often dismissed as a &ldquo;mature hairline.&rdquo; <strong>Stage 3</strong>: more pronounced temple recession forming an M-shape, and/or thinning beginning at the crown (Stage 3 vertex). <strong>Stage 4</strong>: significant recession at the front and thinning at the crown, still separated by a band of hair. <strong>Stage 5</strong>: front and crown thinning merge. <strong>Stage 6</strong>: only a strip across the top remains. <strong>Stage 7</strong>: horseshoe rim of hair at the sides and back only. If you&rsquo;re at Stage 2 or 3, treatment will almost certainly work. At Stage 5 or 6, treatments can maintain what remains but won&rsquo;t regenerate already lost follicles. Act early.</p>
+        <h3>Minoxidil: The Full Picture</h3>
+        <p>Minoxidil is the most widely used and clinically proven over-the-counter hair loss treatment. Originally developed as an oral blood pressure medication, it was discovered to cause hair growth as a side effect &mdash; and the topical version followed. Applied directly to the scalp, minoxidil widens blood vessels and prolongs the <strong>anagen (growth) phase</strong> of the hair cycle, reactivating miniaturised follicles and prompting them to produce thicker, longer hairs again.</p>
+        <p><strong>Which concentration:</strong> Always use the <strong>5% formulation</strong> for men. The 2% version exists but is substantially less effective at the male dose. The FDA and MHRA have approved 5% minoxidil for men. <strong>Foam vs. liquid:</strong> The <strong>foam formulation</strong> (Regaine Men Extra Strength Foam) is generally preferred &mdash; it absorbs faster, causes less scalp irritation, and doesn&rsquo;t leave residue in the hair the way the liquid can. The liquid formulation contains propylene glycol which some people react to. Both work &mdash; but foam is easier to apply and better tolerated by most.</p>
+        <p><strong>How to apply:</strong> Apply to a <em>dry</em> scalp (not wet hair) twice daily &mdash; morning and night. Use the dropper or foam cap to target the thinning zones: temples and crown, not the whole head. Part the hair, apply directly to the scalp, and massage in with fingertips. Leave for at least 4 hours before washing. Wash your hands after applying. Do not apply before bed if your scalp will be in contact with a pillow within an hour &mdash; minoxidil on a pillow is wasted minoxidil.</p>
+        <p><strong>Timeline:</strong> Weeks 1&ndash;4: you may notice increased shedding. This is temporary and normal &mdash; follicles are cycling through to restart. Months 2&ndash;3: shedding stops. Months 4&ndash;6: first visible regrowth begins, usually fine vellus hair that thickens over time. Month 12: full results measurable. <strong>Stopping reverses gains within 3&ndash;6 months</strong> as follicles miniaturise again. Minoxidil requires indefinite use to maintain results. <strong>Where to buy:</strong> Boots, Superdrug, LloydsPharmacy, or Amazon. Available without a prescription in the UK.</p>
+        <h3>Finasteride: The Prescription Option</h3>
+        <p>Finasteride (brand name Propecia) is an oral tablet taken once daily that works at the source &mdash; it blocks the enzyme that converts testosterone into DHT. Less DHT in the scalp means less follicle miniaturisation. Clinical studies show it stops hair loss in over 80% of men and causes visible regrowth in around 65% after two years of use. It is significantly more effective than minoxidil alone, and the two are often used together for maximum retention. Finasteride requires a prescription in the UK. Online clinics (Numan, Manual, HIMS) offer straightforward consultations without a GP visit.</p>
+        <h3>Scalp Micropigmentation</h3>
+        <p>SMP is a cosmetic tattooing technique where pigment is deposited into the scalp in fine dots to replicate the appearance of a shaved head with a clean skin fade. It does not grow hair &mdash; it creates the visual impression of a full, sharp buzz cut regardless of actual hair density. Results are immediate and permanent (though colour can fade slightly over years and may need a top-up). It is particularly effective for Stage 5&ndash;7 hair loss where the top is largely bare.</p>
         <h3>Embrace It</h3>
-        <p>If you&rsquo;d rather work with it than against it: a <strong>skin fade or buzz cut</strong> makes thinning look deliberate and sharp. Some of the best-looking haircuts in the shop are on clients with thinning hair who have committed to owning it.</p>
+        <p>A <strong>skin fade or grade 1 buzz cut</strong> on thinning hair looks intentional, sharp and clean. The worst outcome is trying to camouflage thinning hair with a longer style &mdash; it draws attention precisely to what you&rsquo;re trying to hide. Some of the best-looking cuts in the shop are on clients at Stage 4&ndash;5 who committed to a clean buzz and never looked back.</p>
     </div>
     <div class="mag-photo-grid cols-2">
-        <div class="mag-photo-cell"><img src="download (26).jpg" alt="Minoxidil product"></div>
-        <div class="mag-photo-cell"><img src="images.jpg" alt="Norwood scale"></div>
+        <div class="mag-photo-cell"><img src="https://images.unsplash.com/photo-1631390030972-8b1b3a2b9c1f?w=600&q=80" alt="Minoxidil foam product"></div>
+        <div class="mag-photo-cell"><img src="https://images.unsplash.com/photo-1559599238-308793637427?w=600&q=80" alt="Scalp treatment product"></div>
     </div>
 </div>
 
 <div class="mag-section">
     <div class="mag-tag">Chapter 10</div>
-    <h2 class="mag-title">About <em>Golden Barbers</em></h2>
-    <div class="mag-hero-photo"><img src="download (10).jpg" alt="Golden Barbers team"></div>
+    <h2 class="mag-title">The <em>Line-Up</em></h2>
+    <div class="mag-hero-photo"><img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Sharp line-up hairline"></div>
     <div class="mag-body">
-        <p>Golden Barbers Goodmayes has been a cornerstone of the Ilford community since it opened on Goodmayes Road. It&rsquo;s not just a barbershop &mdash; it&rsquo;s a <strong>multi-award winning, locally loved institution</strong> that takes every service seriously, from a junior haircut to a full hot towel shave.</p>
-        <p>The team won <strong>Redbridge Business of the Year 2022</strong>, recognised at the Ilford Business Awards, and <strong>Best Local Business in Goodmayes Ward 2021</strong>, presented by Sam Tarry MP. These are community awards based on real customer votes and business performance &mdash; not pay-to-win competitions. With a <strong>4.8&#9733; rating from over 330 reviews</strong>, the quality speaks for itself.</p>
-        <p>Every barber in the shop is experienced across all hair types &mdash; straight, wavy, curly, coily, locs, waves &mdash; and every service from basic cuts to specialist techniques like ear flaming, colour work and creative carvings is available. Walk-ins are welcome. Online booking is available through the website.</p>
+        <p>The line-up &mdash; also called an <strong>edge-up</strong> or <strong>shape-up</strong> &mdash; is the process of defining the natural hairline into a precise, geometric edge using a straight razor or T-blade trimmer. It is one of the most requested standalone services at the barbershop, and one of the most underappreciated details of any haircut. A sharp line-up takes a grown-out or in-between cut and makes it look intentional and fresh.</p>
+        <h3>What a Line-Up Actually Does</h3>
+        <p>The natural hairline is irregular. Hair doesn&rsquo;t grow in a perfectly straight horizontal line across the forehead &mdash; it has peaks, valleys, and a leading edge that gradually feathers into skin. A line-up replaces this with a clean, defined boundary. The barber uses a T-outliner or straight razor to cut a sharp new edge along three zones: the <strong>forehead line</strong> (straight or slightly curved, following the client&rsquo;s natural shape), the <strong>temple corners</strong> (typically squared at 90 degrees for maximum definition, or slightly rounded for a softer look), and the <strong>sideburns</strong> (tapered down to a point or blended into the fade).</p>
+        <h3>Forehead Shape Matters</h3>
+        <p>The exact placement and angle of the forehead line significantly affects how the face reads. A line that follows the natural peak of the hairline creates a more V-shaped result that adds length to the face &mdash; good for round or wide faces. A line that runs straighter and lower creates a squarer, more assertive result &mdash; better for oval and oblong faces. A barber reads your existing hairline and face shape before making any cut. If you have a preference, say it before the razor comes out &mdash; not after.</p>
+        <h3>Temple Corners: Squared vs. Rounded</h3>
+        <p><strong>Squared temple corners</strong> create a 90-degree angle where the forehead line meets the temple. This gives a bold, structured, almost architectural look. It&rsquo;s the most popular choice with high skin fades and comb overs. <strong>Rounded corners</strong> curve gently from forehead to temple, giving a softer silhouette. Better suited to clients with a naturally receded temple or those who want a more understated result. Neither is wrong &mdash; it&rsquo;s a style preference, and you should know which you prefer before you sit down.</p>
+        <h3>How Often You Need One</h3>
+        <p>The line-up grows out noticeably within 1&ndash;2 weeks. The good news is a standalone line-up (without a full haircut) is a quick service &mdash; typically 10&ndash;15 minutes &mdash; and keeps the entire cut looking fresh between full appointments. If you have a high skin fade with a sharp line-up, expect to be in the shop every 2 weeks minimum to maintain it. If you have a longer style with a softer line-up, once a month may be sufficient. A clean hairline is always worth maintaining &mdash; it&rsquo;s the first thing people see.</p>
     </div>
     <div class="mag-photo-grid cols-3">
-        <div class="mag-photo-cell"><img src="download (5).jpg" alt="Award 2022"></div>
-        <div class="mag-photo-cell"><img src="download (6).jpg" alt="Award 2021"></div>
-        <div class="mag-photo-cell"><img src="download (19).jpg" alt="Grand opening"></div>
-        <div class="mag-photo-cell" style="grid-column:span 2;"><img src="download (20).jpg" alt="Shop interior"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" alt="Sharp temple line and beard fade"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="Clean defined hairline with high fade"></div>
+        <div class="mag-photo-cell"><img src="download (7).jpg" alt="Razor precision on temple"></div>
     </div>
 </div>
 
@@ -757,7 +963,7 @@
 </div>
 
 <script>
-    var TOTAL=11, LABELS=['Welcome','Haircuts & Styles','The Art of Fades','Beard Grooming','Ear Flaming','Hot Towel Shave','Colour & Creative','Products & Routine','Hair Health','About & Awards','Complete!'];
+    var TOTAL=11, LABELS=['Welcome','Haircuts & Styles','The Art of Fades','Beard Grooming','Ear Flaming','Hot Towel Shave','Colour & Creative','Products & Routine','Hair Health','The Line-Up','Complete!'];
     var current=0, isMag=false;
     var track=document.getElementById('slides-track'), fill=document.getElementById('progress-fill'), lbl=document.getElementById('progress-label'), ctr=document.getElementById('progress-counter'), ind=document.getElementById('slide-indicator'), bP=document.getElementById('btn-prev'), bN=document.getElementById('btn-next');
     function goTo(i){
@@ -781,6 +987,22 @@
     }
     function toggleMobileNav(){ document.getElementById('mobileNav').classList.toggle('open'); }
     goTo(0);
+
+    /* Custom cursor */
+    var cur=document.getElementById('cursor');
+    if(cur){
+        document.addEventListener('mousemove',function(e){ cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
+        document.querySelectorAll('a,button,.slide-btn,.photo-cell').forEach(function(el){
+            el.addEventListener('mouseenter',function(){ cur.classList.add('hover'); });
+            el.addEventListener('mouseleave',function(){ cur.classList.remove('hover'); });
+        });
+    }
+
+    /* Nav scroll class */
+    window.addEventListener('scroll',function(){
+        var nav=document.getElementById('mainNav');
+        if(nav) nav.classList.toggle('scrolled', window.scrollY > 20);
+    }, {passive:true});
 </script>
 </body>
 </html>
