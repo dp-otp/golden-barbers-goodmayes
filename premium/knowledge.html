@@ -86,8 +86,7 @@
         #slide-indicator { font-size:0.8rem; color:var(--gray); font-weight:500; min-width:50px; text-align:center; }
 
         /* TYPOGRAPHY */
-        .slide-tag { font-size:0.68rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
-        .slide-tag::before { content:''; display:block; width:22px; height:1px; background:var(--gold); }
+        .slide-tag { font-size:0.68rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
         .slide-title { font-size:clamp(2rem,4.5vw,3.8rem); font-weight:900; line-height:1.03; margin-bottom:18px; letter-spacing:-0.01em; }
         .slide-title em { font-style:normal; background:linear-gradient(135deg,var(--gold-light),var(--gold)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; filter:drop-shadow(0 0 12px rgba(212,175,55,0.3)); }
         .slide-body { font-size:clamp(0.85rem,1.25vw,0.97rem); line-height:1.8; color:rgba(255,255,255,0.72); }
@@ -155,8 +154,7 @@
         body.magazine-mode #magazine-view { display:block; }
         #magazine-view { display:none; padding-top:70px; }
         .mag-section { padding:80px 60px; border-bottom:1px solid rgba(255,255,255,0.06); max-width:1200px; margin:0 auto; }
-        .mag-tag { font-size:0.68rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
-        .mag-tag::before { content:''; display:block; width:22px; height:1px; background:var(--gold); }
+        .mag-tag { font-size:0.68rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
         .mag-title { font-size:clamp(2rem,4.5vw,3.2rem); font-weight:900; margin-bottom:22px; letter-spacing:-0.01em; }
         .mag-title em { font-style:normal; background:linear-gradient(135deg,var(--gold-light),var(--gold)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
         .mag-body { font-size:1.02rem; line-height:1.9; color:rgba(255,255,255,0.75); max-width:780px; margin-bottom:28px; }
@@ -429,26 +427,27 @@
 <section class="slide">
     <div class="slide-split">
         <div style="position:relative;overflow:hidden;">
-            <img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Hard part comb-over fade">
+            <img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Hard part comb-over fade">
             <div class="slide-overlay" style="background:linear-gradient(to right,transparent 55%,rgba(0,0,0,0.97) 100%)"></div>
         </div>
-        <div style="background:var(--dark);display:flex;flex-direction:column;justify-content:center;padding:44px 44px 90px;overflow-y:auto;">
+        <div style="background:var(--dark);display:flex;flex-direction:column;justify-content:center;padding:136px 44px 90px;overflow-y:auto;">
             <div class="slide-tag">Chapter 2</div>
             <h2 class="slide-title">Haircuts<br>&amp; <em>Styles</em></h2>
             <div class="slide-body">
-                <p><strong>Before your appointment: bring a reference photo.</strong> Barbers work visually. A photo lands in one second. &ldquo;Short back and sides, not too much off the top&rdquo; means something different to every client who has ever said it &mdash; a photo removes all ambiguity.</p>
-                <p>A <strong>crop</strong> (French crop) sits short and textured on top with the fringe pushed forward &mdash; almost always paired with a fade. A <strong>comb over</strong> sweeps longer hair to one side with a hard part, typically with a high skin fade underneath. A <strong>quiff</strong> pushes volume up and forward from the forehead, held with pomade or clay. A <strong>buzz cut</strong> is uniform all over &mdash; the guard number you pick determines the length (1 = 3mm, 2 = 6mm, up to 8 = 25mm). <strong>Waves</strong> and <strong>locs</strong> are specialist styles requiring specific technique, moisture routines and tools.</p>
-                <p><strong>Face shape changes everything.</strong> Round faces need height on top and tight sides to add length. Square faces suit textured crops and mid fades that soften the jaw. Oval faces are the most versatile &mdash; almost any cut works. Diamond faces benefit from width at the temples.</p>
+                <p><strong>Always bring a reference photo.</strong> Verbal descriptions lose information. A photo is exact.</p>
+                <p>The main styles: a <strong>French crop</strong> sits short and textured on top, fringe forward, always with a fade. A <strong>quiff</strong> sweeps volume forward and up — needs 2+ inches on top and pomade or clay. A <strong>comb over with hard part</strong> sweeps length to one side with a razor-sharp parting line, skin fade underneath. A <strong>buzz cut</strong> is uniform all over — guard 1 = 3mm, guard 2 = 6mm, up to guard 8 = 25mm. A <strong>textured fringe</strong> (sometimes called a French crop variation) keeps length at the front choppy and unstructured. A <strong>short fro</strong> maintains natural curl texture with a clean skin fade. <strong>360 waves</strong> require consistent brushing, a durag, and moisture — they are a commitment, not a one-visit style. <strong>Locs</strong> are a specialist discipline — not every shop can maintain them properly.</p>
+                <p><strong>Face shape matters.</strong> Round faces: add height on top, keep sides tight. Square faces: textured crops and mid fades soften the jawline. Oval faces: almost anything works. Diamond faces: keep width at the temples.</p>
             </div>
             <div class="chip-row" style="margin-bottom:16px;">
-                <span class="chip">Crop</span><span class="chip">Quiff</span><span class="chip">Comb Over</span><span class="chip">Buzz Cut</span><span class="chip">Textured</span><span class="chip">Locs</span><span class="chip">Waves</span>
+                <span class="chip">French Crop</span><span class="chip">Quiff</span><span class="chip">Comb Over</span><span class="chip">Buzz Cut</span><span class="chip">Textured Fringe</span><span class="chip">Short Fro</span><span class="chip">360 Waves</span><span class="chip">Locs</span>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;height:92px;">
-                <div class="photo-cell"><img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Comb over fade"><div class="photo-label">Comb Over</div></div>
-                <div class="photo-cell"><img src="SnapInsta.to_84958218_597425240989592_6331447961297910555_n.jpg" alt="Barber at work"><div class="photo-label">In the Chair</div></div>
-                <div class="photo-cell"><img src="download (4).jpg" alt="Junior cut"><div class="photo-label">Junior</div></div>
-                <div class="photo-cell"><img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French crop"><div class="photo-label">Crop</div></div>
+            <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;height:92px;">
+                <div class="photo-cell"><img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French crop"><div class="photo-label">French Crop</div></div>
+                <div class="photo-cell"><img src="SnapInsta.to_66620431_493779438090103_5926486896537980734_n.jpg" alt="Curly fade"><div class="photo-label">Curly Fade</div></div>
+                <div class="photo-cell"><img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="Short fro"><div class="photo-label">Short Fro</div></div>
+                <div class="photo-cell"><img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="360 waves"><div class="photo-label">360 Waves</div></div>
                 <div class="photo-cell"><img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs"><div class="photo-label">Locs</div></div>
+                <div class="photo-cell"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Kids cut"><div class="photo-label">Kids Cut</div></div>
             </div>
         </div>
     </div>
@@ -488,7 +487,7 @@
 <!-- 4. BEARD -->
 <section class="slide">
     <div class="slide-split">
-        <div style="background:var(--dark);display:flex;flex-direction:column;justify-content:center;padding:44px 44px 90px;overflow-y:auto;">
+        <div style="background:var(--dark);display:flex;flex-direction:column;justify-content:center;padding:136px 44px 90px;overflow-y:auto;">
             <div class="slide-tag">Chapter 4</div>
             <h2 class="slide-title">Beard<br><em>Grooming</em></h2>
             <div class="slide-body">
@@ -525,9 +524,6 @@
             <div class="chip-row"><span class="chip">Painless</span><span class="chip">Under 5 Mins</span><span class="chip">No Chemicals</span><span class="chip">6&ndash;8 Wk Cycle</span></div>
             <a href="services.html" class="slide-cta">Book Ear Flaming</a>
         </div>
-        <div style="flex:0 0 250px;height:350px;position:relative;overflow:hidden;border-radius:12px;">
-            <img src="pic.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="Ear flaming close up">
-        </div>
     </div>
 </section>
 
@@ -550,7 +546,7 @@
         </div>
         <div style="flex:1;max-width:300px;display:grid;grid-template-rows:1fr 1fr;gap:8px;height:340px;">
             <div class="photo-cell" style="border-radius:10px;"><img src="download (15).jpg" alt="Straight razor"><div class="photo-label">Straight Razor</div></div>
-            <div class="photo-cell" style="border-radius:10px;"><img src="download (27).jpg" alt="Hair wash ritual"><div class="photo-label">The Ritual</div></div>
+            <div class="photo-cell" style="border-radius:10px;"><img src="56490494_441941899910184_1535393151337681820_n.jpg" alt="Luxury treatment"><div class="photo-label">Luxury Treatment</div></div>
         </div>
     </div>
 </section>
@@ -593,28 +589,28 @@
         </div>
         <div class="product-grid">
             <div class="product-card">
-                <div class="product-img"><img src="https://images.unsplash.com/photo-1585751119414-ef2636f8aede?w=400&q=80" alt="Hair clay"></div>
+                <div class="product-img"><img src="https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=400&q=80" alt="Hair clay"></div>
                 <div class="product-info"><div class="product-name">Hair Clay</div><div class="product-desc">High hold, matte finish. Best for textured crops, faux hawks and messy styles. Work a pea-sized amount between palms and rake through damp hair.</div><span class="product-tag">Matte &bull; High Hold</span></div>
             </div>
             <div class="product-card">
-                <div class="product-img"><img src="https://images.unsplash.com/photo-1621607512214-68297480165e?w=400&q=80" alt="Pomade"></div>
+                <div class="product-img"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&q=80" alt="Pomade"></div>
                 <div class="product-info"><div class="product-name">Pomade</div><div class="product-desc">Medium hold, high shine. Classic look for comb overs, slick backs and quiffs. Water-based pomades wash out easily; oil-based last longer but need proper shampoo.</div><span class="product-tag">Shine &bull; Medium Hold</span></div>
             </div>
             <div class="product-card">
-                <div class="product-img"><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&q=80" alt="Sea salt spray"></div>
+                <div class="product-img"><img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&q=80" alt="Sea salt spray"></div>
                 <div class="product-info"><div class="product-name">Sea Salt Spray</div><div class="product-desc">Lightweight, no hold, natural texture. Spray onto damp hair and scrunch for beachy waves or tousled texture. Ideal for wavy and curly hair types.</div><span class="product-tag">Natural &bull; Light Hold</span></div>
             </div>
             <div class="product-card">
-                <div class="product-img"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80" alt="Beard oil"></div>
+                <div class="product-img"><img src="https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=400&q=80" alt="Beard oil"></div>
                 <div class="product-info"><div class="product-name">Beard Oil</div><div class="product-desc">Apply 2&ndash;4 drops to damp skin after washing. Softens coarse beard hair and moisturises the skin underneath preventing itch and flaking. Argan and jojoba oils are best.</div><span class="product-tag">Daily Use &bull; Skin + Hair</span></div>
             </div>
             <div class="product-card">
-                <div class="product-img"><img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=400&q=80" alt="Clippers Wahl"></div>
+                <div class="product-img"><img src="download (7).jpg" alt="Clippers Wahl"></div>
                 <div class="product-info"><div class="product-name">Wahl Clippers</div><div class="product-desc">The industry standard. Used by Golden Barbers for all fades. The Magic Clip and Senior are the professional favourites for their precision blade alignment and quiet motor.</div><span class="product-tag">Professional Grade</span></div>
             </div>
             <div class="product-card">
-                <div class="product-img"><img src="https://images.unsplash.com/photo-1582095133179-bfd08e2fb6b8?w=400&q=80" alt="Shampoo conditioner"></div>
-                <div class="product-info"><div class="product-name">Shampoo &amp; Conditioner</div><div class="product-desc">Wash 2&ndash;3 times per week maximum. Over-washing strips natural oils. Use a sulphate-free shampoo and always follow with conditioner applied from mid-lengths to ends.</div><span class="product-tag">Weekly Routine</span></div>
+                <div class="product-img"><img src="SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg" alt="Shampoo conditioner"></div>
+                <div class="product-info"><div class="product-name">Shampoo &amp; Conditioner</div><div class="product-desc">A proper hair wash at the basin completes the grooming experience. Use sulphate-free shampoo, wash 2–3 times per week maximum, and always follow with conditioner.</div><span class="product-tag">Weekly Routine</span></div>
             </div>
         </div>
     </div>
@@ -636,14 +632,14 @@
             <div class="chip-row"><span class="chip">Minoxidil 5%</span><span class="chip">Norwood Scale</span><span class="chip">Finasteride</span><span class="chip">SMP</span><span class="chip">Embrace It</span></div>
         </div>
         <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:8px;">
-            <div class="photo-cell" style="border-radius:10px;grid-column:span 2;height:190px;">
-                <img src="https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=800&q=80" alt="Male hair thinning crown view" style="object-position:center top;"><div class="photo-label">Male Pattern Thinning</div>
+            <div class="photo-cell" style="border-radius:10px;grid-column:span 2;height:200px;">
+                <img src="download (25).jpg" alt="Hair loss before and after"><div class="photo-label">Before &amp; After</div>
             </div>
-            <div class="photo-cell" style="border-radius:10px;height:150px;">
-                <img src="https://images.unsplash.com/photo-1631390030972-8b1b3a2b9c1f?w=400&q=80" alt="Minoxidil foam product"><div class="photo-label">Minoxidil 5% Foam</div>
+            <div class="photo-cell" style="border-radius:10px;height:160px;">
+                <img src="download (26).jpg" alt="Minoxidil 5% product"><div class="photo-label">Minoxidil 5%</div>
             </div>
-            <div class="photo-cell" style="border-radius:10px;height:150px;">
-                <img src="https://images.unsplash.com/photo-1559599238-308793637427?w=400&q=80" alt="Scalp treatment"><div class="photo-label">Scalp Treatment</div>
+            <div class="photo-cell" style="border-radius:10px;height:160px;">
+                <img src="images.jpg" alt="Norwood scale stages"><div class="photo-label">Norwood Scale</div>
             </div>
         </div>
     </div>
@@ -721,7 +717,7 @@
 <div class="mag-section">
     <div class="mag-tag">Chapter 2</div>
     <h2 class="mag-title">Haircuts &amp; <em>Styles</em></h2>
-    <div class="mag-hero-photo"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Hard part comb-over fade"></div>
+    <div class="mag-hero-photo"><img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Hard part comb-over fade"></div>
     <div class="mag-body">
         <p><strong>The most important thing you can do before sitting in the chair: bring a reference photo.</strong> Barbers work visually. A photo eliminates ambiguity instantly. &ldquo;Short back and sides, not too much off the top&rdquo; means something different to every person who has ever said it. A photo is precise &mdash; description is not.</p>
         <h3>The Core Styles</h3>
@@ -900,7 +896,7 @@
         <div class="mag-photo-cell"><img src="download (16).jpg" alt="Barber styling hair"></div>
         <div class="mag-photo-cell"><img src="download (18).jpg" alt="Scalp treatment"></div>
         <div class="mag-photo-cell"><img src="56490494_441941899910184_1535393151337681820_n.jpg" alt="Face mask treatment"></div>
-        <div class="mag-photo-cell" style="grid-column:span 2;aspect-ratio:16/5;"><img src="SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg" alt="Hair wash sink"></div>
+        <div class="mag-photo-cell" style="grid-column:span 2;aspect-ratio:3/2;"><img src="SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg" alt="Hair wash sink"></div>
         <div class="mag-photo-cell"><img src="download (28).jpg" alt="Grooming routine guide"></div>
     </div>
 </div>
@@ -908,7 +904,7 @@
 <div class="mag-section">
     <div class="mag-tag">Chapter 9</div>
     <h2 class="mag-title">Hair Health &amp; <em>Hair Loss</em></h2>
-    <div class="mag-hero-photo"><img src="https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=1200&q=80" alt="Male hair thinning crown" style="object-position:center top;"></div>
+    <div class="mag-hero-photo"><img src="download (25).jpg" alt="Male hair thinning crown" style="object-position:center top;"></div>
     <div class="mag-body">
         <p>Hair loss in men is almost exclusively <strong>androgenetic alopecia</strong> &mdash; male pattern baldness. It is caused by DHT (dihydrotestosterone), a derivative of testosterone, binding to receptors in genetically sensitive follicles and progressively miniaturising them until they produce finer, shorter hairs and eventually stop entirely. It is not caused by wearing hats. It is not caused by shampooing too frequently. It is not caused by stress (though stress can trigger a temporary, separate condition called telogen effluvium). It is genetic and, if it&rsquo;s going to happen, it will. The only variable you control is how early you start managing it.</p>
         <h3>The Norwood Scale: Knowing Where You Are</h3>
@@ -926,8 +922,8 @@
         <p>A <strong>skin fade or grade 1 buzz cut</strong> on thinning hair looks intentional, sharp and clean. The worst outcome is trying to camouflage thinning hair with a longer style &mdash; it draws attention precisely to what you&rsquo;re trying to hide. Some of the best-looking cuts in the shop are on clients at Stage 4&ndash;5 who committed to a clean buzz and never looked back.</p>
     </div>
     <div class="mag-photo-grid cols-2">
-        <div class="mag-photo-cell"><img src="https://images.unsplash.com/photo-1631390030972-8b1b3a2b9c1f?w=600&q=80" alt="Minoxidil foam product"></div>
-        <div class="mag-photo-cell"><img src="https://images.unsplash.com/photo-1559599238-308793637427?w=600&q=80" alt="Scalp treatment product"></div>
+        <div class="mag-photo-cell"><img src="download (26).jpg" alt="Minoxidil 5% product"></div>
+        <div class="mag-photo-cell"><img src="images.jpg" alt="Norwood scale stages"></div>
     </div>
 </div>
 
