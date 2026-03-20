@@ -190,163 +190,168 @@
         @media(max-width:768px){
 
             /* Nav */
-            .nav-inner { padding:0.9rem 1.2rem; }
-            .nav-logo img { width:36px; height:36px; }
+            .nav-inner { padding:0.85rem 1.2rem; }
+            .nav-logo img { width:34px; height:34px; }
             .nav-logo span { font-size:15px; }
-            #course-chrome { padding:8px 16px 6px; top:60px; }
-            #progress-label { font-size:0.68rem; }
+            #course-chrome { padding:8px 16px 5px; top:62px; }
+            #progress-label { font-size:0.66rem; }
 
-            /* Mode toggle moves to bottom-left so it doesn't overlap nav buttons */
-            #mode-toggle { right:auto; left:16px; bottom:20px; font-size:0.72rem; padding:8px 14px; }
+            /* Mode toggle — bottom-left, clear of nav buttons */
+            #mode-toggle { right:auto; left:14px; bottom:18px; font-size:0.7rem; padding:7px 13px; }
 
-            /* Slide nav buttons — tighter, raised above bottom edge */
-            .slide-nav { bottom:20px; gap:10px; }
-            .slide-btn { width:44px; height:44px; font-size:1.1rem; }
-            #slide-indicator { font-size:0.72rem; min-width:40px; }
-
-            /* Slide engine */
-            .slide { overflow-y:auto; -webkit-overflow-scrolling:touch; }
-
-            /* ---- SPLIT SLIDES → FULL TEXT + BG PHOTO ---- */
-            /* On mobile, split slides become full-bleed with text overlay */
-            .slide-split {
-                display:block;
-                position:relative;
-                width:100vw;
-                height:100vh;
-                overflow:hidden;
-            }
-            /* The photo half becomes a background behind the text */
-            .slide-split > *:first-child {
-                position:absolute !important;
-                inset:0 !important;
-                display:block !important;
-                z-index:0;
-            }
-            .slide-split > *:first-child::after {
-                content:'';
-                position:absolute;
-                inset:0;
-                background:linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.97) 100%);
-                z-index:1;
-            }
-            /* Text panel becomes scrollable overlay */
-            .slide-split > *:last-child {
-                position:relative !important;
-                z-index:2;
-                height:100vh !important;
-                padding:100px 20px 100px !important;
-                background:transparent !important;
-                overflow-y:auto !important;
-                -webkit-overflow-scrolling:touch;
-            }
-
-            /* Inline photo grids inside text panels — smaller on mobile */
-            .slide-split > *:last-child > div[style*="grid-template-columns:repeat(5"] {
-                grid-template-columns: repeat(5,1fr) !important;
-                height: 68px !important;
-            }
+            /* Slide nav — bottom center, smaller */
+            .slide-nav { bottom:18px; gap:10px; }
+            .slide-btn { width:42px; height:42px; font-size:1rem; }
+            #slide-indicator { font-size:0.7rem; min-width:38px; }
 
             /* ---- TEXT SIZES ---- */
-            .slide-title { font-size:clamp(1.55rem,6vw,2.1rem) !important; line-height:1.1; }
-            .slide-body { font-size:0.82rem; }
-            .slide-content { padding:100px 20px 100px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+            .slide-title { font-size:clamp(1.45rem,5.5vw,2rem) !important; line-height:1.08; }
+            .slide-body { font-size:0.82rem; line-height:1.7; }
+            .slide-body p:first-child { font-size:0.86rem; }
+            .slide-content { padding:108px 20px 90px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
 
-            /* ---- FADES SLIDE — row layout → column ---- */
+            /* ---- CHAPTER 1 (WELCOME) — full bleed, works fine already ---- */
+
+            /* ---- CHAPTER 2 (HAIRCUTS) — 2-col grid → stack ---- */
+            /* On mobile: hide left photo, show right panel full width */
+            .slide > div[style*="grid-template-columns:1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+            }
+            /* First child in these grids (the photo half) → become a fixed background */
+            .slide > div[style*="grid-template-columns:1fr 1fr"] > *:first-child {
+                display: none !important;
+            }
+            /* Second child (text panel) → full width, with dark bg */
+            .slide > div[style*="grid-template-columns:1fr 1fr"] > *:last-child {
+                padding: 108px 20px 90px !important;
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* ---- CHAPTER 2 style tile grid: 3x2 → 2x3 ---- */
+            div[style*="grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr"] {
+                grid-template-columns: 1fr 1fr !important;
+                grid-template-rows: repeat(3,80px) !important;
+                flex: none !important;
+                height: auto !important;
+            }
+
+            /* ---- CHAPTER 3 (FADES) — 380px+1fr → stack ---- */
+            .slide > div[style*="grid-template-columns:380px"] {
+                grid-template-columns: 1fr !important;
+                grid-template-rows: auto 1fr !important;
+                overflow-y: auto !important;
+            }
+            .slide > div[style*="grid-template-columns:380px"] > *:first-child {
+                padding: 108px 20px 14px !important;
+                max-height: none !important;
+            }
+            /* Fade tiles stack: on mobile show as 5-row strip at bottom */
+            .slide > div[style*="grid-template-columns:380px"] > *:last-child {
+                grid-template-rows: repeat(5,64px) !important;
+                gap: 3px !important;
+            }
+            .slide > div[style*="grid-template-columns:380px"] > *:last-child > div > div:last-child {
+                display: none; /* hide description text in tiles on mobile, keep name */
+            }
+
+            /* ---- CHAPTER 4 (BEARD) — 2-col → hide photos, show text ---- */
+            .slide > div[style*="grid-template-columns:1fr 1fr"] > *:first-child {
+                display: none !important; /* photos hidden on mobile */
+            }
+
+            /* ---- EAR FLAMING / HOT TOWEL — full-bleed text panels ---- */
             .slide-content[style*="flex-direction:row"] {
-                flex-direction:column !important;
-                gap:0 !important;
-                padding-top:100px !important;
-                overflow-y:auto !important;
+                flex-direction: column !important;
+                overflow-y: auto !important;
+                padding: 108px 20px 90px !important;
+                gap: 16px !important;
             }
-            /* Text panel in row-layout slides */
-            div[style*="flex:0 0 420px"],
-            div[style*="flex:0 0 410px"],
-            div[style*="flex:0 0 430px"],
-            div[style*="flex:0 0 370px"] {
-                flex:none !important;
-                width:100% !important;
-                padding:0 20px !important;
-                max-height:none !important;
-                overflow-y:visible !important;
+            div[style*="flex:0 0 430px"], div[style*="flex:0 0 410px"],
+            div[style*="flex:0 0 420px"], div[style*="flex:0 0 370px"] {
+                flex: none !important;
+                width: 100% !important;
+                padding: 0 !important;
             }
-            /* Photo grid panel in row-layout slides — compact strip */
+            /* Right photo panel in ear/hot towel slides → compact strip */
+            .slide-content div[style*="flex:1;max-width"],
             .slide-content div[style*="flex:1;display:grid"] {
-                flex:none !important;
-                width:100% !important;
-                height:160px !important;
-                padding:0 20px !important;
-                grid-template-columns:repeat(2,1fr) !important;
-                grid-template-rows:1fr !important;
-                margin-top:12px;
-            }
-            /* 2x2 photo grids become a single row strip */
-            .slide-content div[style*="grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr"] {
-                grid-template-rows:1fr !important;
-                height:120px !important;
-                overflow:hidden;
+                flex: none !important;
+                width: 100% !important;
+                height: 130px !important;
+                grid-template-columns: repeat(2,1fr) !important;
+                grid-template-rows: 1fr !important;
             }
 
-            /* ---- COLOUR SLIDE ---- */
-            div[style*="display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr"] {
-                grid-template-columns:repeat(3,1fr) !important;
-                grid-template-rows:1fr 1fr !important;
-                height:220px !important;
+            /* ---- CHAPTER 7 COLOUR — 3x2 grid stays 3 wide, shrinks height ---- */
+            div[style*="grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;height:calc"] {
+                height: 200px !important;
             }
 
-            /* ---- INFO CARDS ---- */
-            .info-cards { gap:5px; }
-            .info-card { padding:8px 11px; }
-            .info-card-title { font-size:0.75rem; }
-            .info-card-body { font-size:0.72rem; }
+            /* ---- CHAPTER 8 PRODUCTS ---- */
+            .product-grid { grid-template-columns:1fr 1fr !important; gap:7px !important; }
+            .product-img { height:72px; }
+            .product-name { font-size:0.7rem; }
+            .product-desc { font-size:0.63rem; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+            .product-info { padding:6px 8px; }
+            .product-tag { font-size:0.6rem; }
 
-            /* ---- CHIP ROW ---- */
+            /* ---- CHAPTER 9 HAIR HEALTH — row → column ---- */
+            .slide-content[style*="flex-direction:row;gap:44px"] {
+                flex-direction: column !important;
+                overflow-y: auto !important;
+                padding: 108px 20px 90px !important;
+                gap: 14px !important;
+            }
+            div[style*="flex:0 0 370px"] {
+                flex: none !important; width:100% !important;
+                padding: 0 !important; max-height:none !important;
+            }
+            /* photo grid in hair health */
+            div[style*="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto"] {
+                flex: none !important;
+                height: auto !important;
+                width: 100% !important;
+                grid-template-rows: 160px 120px !important;
+            }
+            div[style*="grid-column:span 2;height:200px"] { height: 160px !important; }
+            div[style*="border-radius:10px;height:160px"] { height: 110px !important; }
+
+            /* ---- CHAPTER 10 LINE-UP — row → column ---- */
+            .slide-content[style*="flex-direction:row;align-items:center;gap:44px;padding-top:116px"] {
+                flex-direction: column !important;
+                overflow-y: auto !important;
+                padding: 108px 20px 90px !important;
+                gap: 14px !important;
+            }
+            div[style*="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;height:calc"] {
+                flex: none !important; height: 180px !important; width:100% !important;
+                grid-template-rows: 1fr 1fr !important;
+                grid-template-columns: 1fr 1fr !important;
+            }
+
+            /* ---- COMPLETION ---- */
+            #tick-svg { width:90px; height:90px; }
+            .completion-title { font-size:1.5rem; }
+            .completion-sub { font-size:0.83rem; }
+            #tick-wrap { gap:12px; padding:0 18px; }
+
+            /* ---- CHIPS ---- */
             .chip-row { gap:5px; margin-top:10px; }
-            .chip { font-size:0.65rem; padding:3px 10px; }
-
-            /* ---- PRODUCTS SLIDE ---- */
-            .product-grid { grid-template-columns:1fr 1fr !important; gap:8px !important; }
-            .product-img { height:80px; }
-            .product-name { font-size:0.72rem; }
-            .product-desc { font-size:0.65rem; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-            .product-info { padding:7px 9px; }
-
-            /* ---- COMPLETION SLIDE ---- */
-            #tick-svg { width:100px; height:100px; }
-            .completion-title { font-size:1.6rem; }
-            .completion-sub { font-size:0.85rem; }
-            #tick-wrap { gap:14px; padding:0 20px; }
-
-            /* ---- ABOUT/LINE-UP — row becomes column ---- */
-            div[style*="display:flex;gap:40px;height:100%"],
-            div[style*="display:flex;gap:44px;height:100%"],
-            div[style*="display:flex;gap:50px;align-items:stretch"] {
-                flex-direction:column !important;
-                gap:12px !important;
-                overflow-y:auto !important;
-            }
+            .chip { font-size:0.63rem; padding:3px 9px; }
 
             /* ---- MAGAZINE VIEW ---- */
-            .mag-section { padding:44px 18px; }
-            .mag-title { font-size:1.7rem; }
+            .mag-section { padding:40px 18px; }
+            .mag-title { font-size:1.65rem; }
             .mag-body { font-size:0.9rem; line-height:1.75; }
             .mag-photo-grid.cols-3 { grid-template-columns:1fr 1fr; }
-            .mag-photo-grid.cols-2 { grid-template-columns:1fr; }
-            .product-grid { grid-template-columns:1fr; }
+            .mag-photo-grid.cols-2 { grid-template-columns:1fr 1fr; }
             .mag-product-grid { grid-template-columns:1fr; }
-            .mag-hero-photo { aspect-ratio:16/9; }
-
-            /* Prevent completion bg circles from overflowing on small screens */
-            .completion-bg::before { width:min(600px,140vw); height:min(600px,140vw); }
-            .completion-bg::after  { width:min(400px,100vw);  height:min(400px,100vw);  }
+            .mag-hero-photo { aspect-ratio:4/3; }
         }
 
         @media(max-width:420px){
-            .slide-title { font-size:1.4rem !important; }
-            .product-grid { grid-template-columns:1fr !important; }
-            div[style*="grid-template-columns:repeat(5,1fr)"] {
-                grid-template-columns:repeat(3,1fr) !important;
-            }
+            .slide-title { font-size:1.35rem !important; }
         }
     </style>
 </head>
@@ -425,29 +430,28 @@
 
 <!-- 2. HAIRCUTS -->
 <section class="slide">
-    <div class="slide-split">
+    <div style="position:relative;width:100%;height:100%;display:grid;grid-template-columns:1fr 1fr;">
+        <!-- Left: hero photo -->
         <div style="position:relative;overflow:hidden;">
-            <img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Hard part comb-over fade">
-            <div class="slide-overlay" style="background:linear-gradient(to right,transparent 55%,rgba(0,0,0,0.97) 100%)"></div>
+            <img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Comb over hard part fade">
+            <div class="slide-overlay" style="background:linear-gradient(to right,transparent 50%,rgba(0,0,0,0.95) 100%)"></div>
         </div>
-        <div style="background:var(--dark);display:flex;flex-direction:column;justify-content:center;padding:136px 44px 90px;overflow-y:auto;">
+        <!-- Right: text + 2x3 style tiles -->
+        <div style="background:var(--dark);display:flex;flex-direction:column;padding:136px 36px 80px;overflow-y:auto;">
             <div class="slide-tag">Chapter 2</div>
             <h2 class="slide-title">Haircuts<br>&amp; <em>Styles</em></h2>
-            <div class="slide-body">
-                <p><strong>Always bring a reference photo.</strong> Verbal descriptions lose information. A photo is exact.</p>
-                <p>The main styles: a <strong>French crop</strong> sits short and textured on top, fringe forward, always with a fade. A <strong>quiff</strong> sweeps volume forward and up — needs 2+ inches on top and pomade or clay. A <strong>comb over with hard part</strong> sweeps length to one side with a razor-sharp parting line, skin fade underneath. A <strong>buzz cut</strong> is uniform all over — guard 1 = 3mm, guard 2 = 6mm, up to guard 8 = 25mm. A <strong>textured fringe</strong> (sometimes called a French crop variation) keeps length at the front choppy and unstructured. A <strong>short fro</strong> maintains natural curl texture with a clean skin fade. <strong>360 waves</strong> require consistent brushing, a durag, and moisture — they are a commitment, not a one-visit style. <strong>Locs</strong> are a specialist discipline — not every shop can maintain them properly.</p>
-                <p><strong>Face shape matters.</strong> Round faces: add height on top, keep sides tight. Square faces: textured crops and mid fades soften the jawline. Oval faces: almost anything works. Diamond faces: keep width at the temples.</p>
+            <div class="slide-body" style="margin-bottom:18px;">
+                <p><strong>Always bring a reference photo</strong> — verbal descriptions lose information, a photo is exact. Know what you're asking for.</p>
+                <p>A <strong>French crop</strong>: short textured top, fringe forward, fade on sides. A <strong>comb over</strong>: length swept to one side with a hard part, skin fade under. A <strong>quiff</strong>: volume pushed up and forward, needs pomade or clay. A <strong>buzz cut</strong>: uniform all over — guard 1 = 3mm up to guard 8 = 25mm. A <strong>short fro</strong>: natural curl kept full on top, skin fade underneath. <strong>360 waves</strong>: brushed in with a durag daily — a discipline, not a haircut. <strong>Locs</strong>: a specialist service, not every shop does them right.</p>
             </div>
-            <div class="chip-row" style="margin-bottom:16px;">
-                <span class="chip">French Crop</span><span class="chip">Quiff</span><span class="chip">Comb Over</span><span class="chip">Buzz Cut</span><span class="chip">Textured Fringe</span><span class="chip">Short Fro</span><span class="chip">360 Waves</span><span class="chip">Locs</span>
-            </div>
-            <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;height:92px;">
-                <div class="photo-cell"><img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French crop"><div class="photo-label">French Crop</div></div>
-                <div class="photo-cell"><img src="SnapInsta.to_66620431_493779438090103_5926486896537980734_n.jpg" alt="Curly fade"><div class="photo-label">Curly Fade</div></div>
-                <div class="photo-cell"><img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="Short fro"><div class="photo-label">Short Fro</div></div>
-                <div class="photo-cell"><img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="360 waves"><div class="photo-label">360 Waves</div></div>
-                <div class="photo-cell"><img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs"><div class="photo-label">Locs</div></div>
-                <div class="photo-cell"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Kids cut"><div class="photo-label">Kids Cut</div></div>
+            <!-- 2x3 style photo tiles -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:6px;flex:1;min-height:0;">
+                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French Crop"><div class="photo-label">French Crop</div></div>
+                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_66620431_493779438090103_5926486896537980734_n.jpg" alt="Textured Fade"><div class="photo-label">Textured Fade</div></div>
+                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_70010652_1348701105288372_8634153704668559015_n.jpg" alt="Short Fro"><div class="photo-label">Short Fro</div></div>
+                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="360 Waves"><div class="photo-label">360 Waves</div></div>
+                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs"><div class="photo-label">Locs</div></div>
+                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Comb Over"><div class="photo-label">Hard Part</div></div>
             </div>
         </div>
     </div>
@@ -455,53 +459,81 @@
 
 <!-- 3. FADES -->
 <section class="slide">
-    <div class="slide-bg">
-        <img src="SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg" alt="Skin fade">
-        <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.94) 0%,rgba(0,0,0,0.62) 50%,rgba(0,0,0,0.12) 100%)"></div>
-    </div>
-    <div class="slide-content" style="flex-direction:row;align-items:stretch;padding:110px 0 80px;">
-        <div style="flex:0 0 420px;padding:20px 44px;display:flex;flex-direction:column;justify-content:center;overflow-y:auto;">
+    <div style="position:relative;width:100%;height:100%;display:grid;grid-template-columns:380px 1fr;">
+        <!-- Left: title + explanation -->
+        <div style="background:rgba(0,0,0,0.92);display:flex;flex-direction:column;justify-content:center;padding:136px 36px 90px;z-index:2;overflow-y:auto;">
             <div class="slide-tag">Chapter 3</div>
             <h2 class="slide-title">The Art<br>of <em>Fades</em></h2>
             <div class="slide-body">
-                <p>A fade is a seamless gradient &mdash; hair transitions from longer on top to shorter on the sides until it disappears into bare skin. The <strong>starting height</strong> of that transition is what gives each fade its name and character. Getting it wrong by even a centimetre changes the entire shape of the head.</p>
-                <p>The <strong>blend zone</strong> is where skill separates barbers. It requires multiple overlapping passes with guards 0.5, 1, 1.5, and 2 &mdash; plus freehand scissor-over-comb work at the transition line. A visible &ldquo;step&rdquo; or uneven patch in the blend is always a rushed job.</p>
-            </div>
-            <div class="info-cards" style="margin-top:14px;">
-                <div class="info-card"><div class="info-card-title">Low Fade</div><div class="info-card-body">Starts just above the ear, subtle and versatile. The most forgiving if you&rsquo;re growing it out. Suits every face shape and hair type.</div></div>
-                <div class="info-card"><div class="info-card-title">Mid Fade</div><div class="info-card-body">Starts midway up the side. Stronger contrast without being aggressive. Works perfectly with crops, quiffs and textured styles.</div></div>
-                <div class="info-card"><div class="info-card-title">High / Skin Fade</div><div class="info-card-body">Starts at the temples, goes to bare skin. Maximum contrast. Looks sharp but requires upkeep every 2&ndash;3 weeks.</div></div>
-                <div class="info-card"><div class="info-card-title">Burst Fade</div><div class="info-card-body">A semicircular fade that radiates around the ear. Creates a halo-like shape, especially striking on mohawks and afros.</div></div>
-                <div class="info-card"><div class="info-card-title">Taper / Drop Fade</div><div class="info-card-body">Tapers follow the natural hairline down the neckline. Drop fades curve down behind the ear. Both produce a cleaner, more stylised silhouette.</div></div>
+                <p>A fade is a seamless gradient from longer on top to skin at the sides. The <strong>starting height</strong> defines the character. The <strong>blend zone</strong> — multiple overlapping clipper passes from guard 0.5 up to 2 — is where skill shows. A visible step means a rushed barber.</p>
             </div>
         </div>
-        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:6px;padding:0 30px 0 10px;">
-            <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg" alt="Waves skin fade"><div class="photo-label">Waves + Skin Fade</div></div>
-            <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="Waves low fade"><div class="photo-label">Waves + Low Fade</div></div>
-            <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="High fade curly"><div class="photo-label">High Fade</div></div>
-            <div class="photo-cell" style="border-radius:8px;"><img src="download (7).jpg" alt="Clipper technique"><div class="photo-label">The Blend Zone</div></div>
+        <!-- Right: 5 fade type photo tiles stacked vertically -->
+        <div style="display:grid;grid-template-rows:repeat(5,1fr);gap:3px;overflow:hidden;">
+            <div class="photo-cell" style="border-radius:0;position:relative;">
+                <img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Low fade">
+                <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.6) 0%,transparent 60%);"></div>
+                <div style="position:absolute;bottom:8px;left:14px;z-index:2;">
+                    <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);">Low Fade</div>
+                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.75);margin-top:1px;">Just above the ear. Subtle, versatile, suits every face shape.</div>
+                </div>
+            </div>
+            <div class="photo-cell" style="border-radius:0;position:relative;">
+                <img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Mid fade">
+                <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.6) 0%,transparent 60%);"></div>
+                <div style="position:absolute;bottom:8px;left:14px;z-index:2;">
+                    <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);">Mid Fade</div>
+                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.75);margin-top:1px;">Midway up the side. Stronger contrast, works with crops &amp; quiffs.</div>
+                </div>
+            </div>
+            <div class="photo-cell" style="border-radius:0;position:relative;">
+                <img src="SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;" alt="High skin fade">
+                <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.6) 0%,transparent 60%);"></div>
+                <div style="position:absolute;bottom:8px;left:14px;z-index:2;">
+                    <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);">High / Skin Fade</div>
+                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.75);margin-top:1px;">Temples to bare skin. Maximum contrast. Needs upkeep every 2&ndash;3 weeks.</div>
+                </div>
+            </div>
+            <div class="photo-cell" style="border-radius:0;position:relative;">
+                <img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Burst fade">
+                <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.6) 0%,transparent 60%);"></div>
+                <div style="position:absolute;bottom:8px;left:14px;z-index:2;">
+                    <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);">Burst Fade</div>
+                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.75);margin-top:1px;">Radiates around the ear in a semicircle. Striking on afros and curls.</div>
+                </div>
+            </div>
+            <div class="photo-cell" style="border-radius:0;position:relative;">
+                <img src="SnapInsta.to_118516576_242770710236355_3326219608200829104_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Drop fade">
+                <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.6) 0%,transparent 60%);"></div>
+                <div style="position:absolute;bottom:8px;left:14px;z-index:2;">
+                    <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);">Drop / Taper Fade</div>
+                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.75);margin-top:1px;">Curves down behind the ear. Cleaner silhouette, popular with locs &amp; waves.</div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- 4. BEARD -->
 <section class="slide">
-    <div class="slide-split">
+    <div style="position:relative;width:100%;height:100%;display:grid;grid-template-columns:1fr 1fr;">
+        <!-- Left: photos (becomes background on mobile) -->
+        <div style="display:grid;grid-template-rows:1fr 1fr;gap:4px;overflow:hidden;">
+            <div class="photo-cell" style="border-radius:0;"><img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Beard mid fade"></div>
+            <div class="photo-cell" style="border-radius:0;"><img src="download (11).jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;" alt="Neckline trim"></div>
+        </div>
+        <!-- Right: text (stays visible on mobile) -->
         <div style="background:var(--dark);display:flex;flex-direction:column;justify-content:center;padding:136px 44px 90px;overflow-y:auto;">
             <div class="slide-tag">Chapter 4</div>
             <h2 class="slide-title">Beard<br><em>Grooming</em></h2>
             <div class="slide-body">
-                <p>A beard has three defining lines. Lose any one of them and the whole thing looks unkempt &mdash; no matter how long or full it is. <strong>The neckline, the cheek line, and the moustache edge</strong> are what turn a beard into a groomed beard.</p>
-                <p><strong>Neckline:</strong> Place two fingers above your Adam&rsquo;s apple. That&rsquo;s the exact point where the neckline should sit &mdash; not lower. A neckline that drops below that point blurs into the chest and makes the neck look shorter. Your barber uses a straight razor to keep this crisp on every visit.</p>
-                <p><strong>Beard oil:</strong> Apply 2&ndash;4 drops to damp skin after washing. Argan oil and jojoba oil are the best base ingredients &mdash; they soften coarse hair and moisturise the skin underneath, eliminating beardruff and itch. Finish with a boar bristle brush to distribute evenly and train the hair flat.</p>
-                <p>For longer beards: a <strong>beard balm</strong> provides light hold to tame stray hairs. Apply after the oil as a final step, work through with a wide-tooth comb, and shape to preference.</p>
+                <p>A beard has three defining lines. Lose any one and the whole thing looks unkempt regardless of length. <strong>The neckline, the cheek line, and the moustache edge</strong> are what turn a beard into a groomed beard.</p>
+                <p><strong>Neckline:</strong> Two fingers above the Adam's apple — that's where it sits. Lower than that and it blurs into the chest. Your barber razor-cleans this every visit.</p>
+                <p><strong>Beard oil:</strong> 2–4 drops to damp skin after washing. Argan or jojoba oil softens coarse hair and moisturises the skin underneath, stopping beardruff and itch. Follow with a boar bristle brush to distribute and train the hair flat.</p>
+                <p>For longer beards, a <strong>beard balm</strong> provides light hold. Apply after the oil, comb through, and shape.</p>
             </div>
             <div class="chip-row"><span class="chip">Neckline</span><span class="chip">Cheek Line</span><span class="chip">Beard Oil</span><span class="chip">Beard Balm</span><span class="chip">Boar Brush</span></div>
             <a href="services.html" class="slide-cta">Book a Beard Trim</a>
-        </div>
-        <div style="display:grid;grid-template-rows:1fr 1fr;gap:5px;overflow:hidden;">
-            <div class="photo-cell" style="border-radius:0;"><img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" alt="Beard and fade in shop"></div>
-            <div class="photo-cell" style="border-radius:0;"><img src="download (11).jpg" alt="Beard trim with trimmer"></div>
         </div>
     </div>
 </section>
