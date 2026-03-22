@@ -75,7 +75,7 @@
         .slide-bg { position:absolute; inset:0; overflow:hidden; }
         .slide-bg img, .slide-bg video { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
         .slide-overlay { position:absolute; inset:0; pointer-events:none; }
-        .slide-content { position:relative; z-index:10; width:100%; height:100%; display:flex; flex-direction:column; padding:160px 60px 90px; }
+        .slide-content { position:relative; z-index:10; width:100%; height:100%; display:flex; flex-direction:column; padding:170px 60px 90px; }
         .slide-split { position:relative; z-index:10; width:100%; height:100%; display:grid; grid-template-columns:1fr 1fr; }
 
         /* NAV ARROWS */
@@ -121,7 +121,7 @@
         /* PRODUCT CARD */
         .product-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px; }
         .product-card { background:rgba(255,255,255,0.04); border:1px solid rgba(212,175,55,0.12); border-radius:12px; overflow:hidden; }
-        .product-img { height:110px; position:relative; overflow:hidden; background:rgba(255,255,255,0.06); }
+        .product-img { height:140px; position:relative; overflow:hidden; background:rgba(255,255,255,0.06); }
         .product-img img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
         .product-info { padding:10px 12px; }
         .product-name { font-size:0.78rem; font-weight:700; color:var(--white); margin-bottom:3px; }
@@ -235,6 +235,7 @@
             #slide-fades .slide-content {
                 flex-direction: column !important;
                 padding: 120px 20px 90px !important;
+                overflow-y: auto !important;
             }
             #slide-fades .slide-content > div[style*="flex:0 0 300px"] {
                 flex: none !important;
@@ -245,6 +246,7 @@
                 flex: none !important;
                 width: 100% !important;
                 height: auto !important;
+                grid-template-columns: 1fr 1fr !important;
                 grid-template-rows: 140px 140px 120px !important;
                 padding: 0 !important;
                 margin-top: 14px;
@@ -254,17 +256,15 @@
                 display: none !important;
             }
 
-            /* ---- CHAPTER 4 (BEARD) — show photos on top, text below ---- */
+            /* ---- CHAPTER 4 (BEARD) — hide photo grid, show text only ---- */
             #slide-beard > div[style*="grid-template-columns:1fr 1fr"] {
                 grid-template-columns: 1fr !important;
-                grid-template-rows: 200px 1fr !important;
             }
             #slide-beard > div[style*="grid-template-columns:1fr 1fr"] > *:first-child {
-                grid-template-rows: 1fr !important;
-                height: 200px !important;
+                display: none !important;
             }
             #slide-beard > div[style*="grid-template-columns:1fr 1fr"] > *:last-child {
-                padding: 20px !important;
+                padding: 120px 20px 90px !important;
                 overflow-y: auto !important;
             }
 
@@ -520,7 +520,7 @@
             </div>
         </div>
         <!-- Right: 5 fade tiles in 2x2+1 grid — proper aspect ratios, no strips -->
-        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:4px;padding:16px;overflow:hidden;height:100%;">
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 0.8fr;gap:4px;padding:130px 16px 90px;overflow:hidden;height:100%;">
             <div style="position:relative;overflow:hidden;border-radius:10px;">
                 <img src="SnapInsta.to_118516576_242770710236355_3326219608200829104_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Low fade">
                 <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 50%);"></div>
@@ -760,7 +760,7 @@
 <!-- 11. LINE-UP & EDGE-UP -->
 <section class="slide" id="slide-lineup">
     <div class="slide-bg">
-        <img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Sharp line-up hairline">
+        <img src="pic.jpg" alt="Sharp line-up hairline">
         <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.94) 0%,rgba(0,0,0,0.62) 50%,rgba(0,0,0,0.12) 100%)"></div>
     </div>
     <div class="slide-content" style="flex-direction:row;align-items:center;gap:44px;padding-top:116px;">
