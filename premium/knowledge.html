@@ -242,18 +242,14 @@
                 width: 100% !important;
                 padding: 0 !important;
             }
-            #slide-fades .slide-content > div[style*="flex:1;display:flex"] {
+            #slide-fades .slide-content > div[style*="flex:1;display:grid"] {
                 flex: none !important;
                 width: 100% !important;
                 height: auto !important;
-                padding: 0 !important;
+                padding: 0 16px !important;
                 margin-top: 14px;
                 gap: 4px !important;
-            }
-            #slide-fades .slide-content > div[style*="flex:1;display:flex"] > div[style*="display:grid"] {
-                flex: none !important;
-                height: auto !important;
-                grid-template-rows: 130px !important;
+                grid-template-columns: 1fr 1fr !important;
             }
 
             /* ---- CHAPTER 4 (BEARD) — stack photos on top, text below ---- */
@@ -529,31 +525,28 @@
             </div>
         </div>
         <!-- Right: 5 fade tiles — square boxes, not strips -->
-        <div style="flex:1;display:flex;flex-direction:column;gap:4px;padding:130px 16px 90px;overflow:hidden;">
-            <div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;">
-                <div style="position:relative;overflow:hidden;border-radius:10px;">
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;padding:130px 16px 90px;align-content:center;">
+                <div style="position:relative;overflow:hidden;border-radius:10px;aspect-ratio:4/3;">
                     <img src="SnapInsta.to_118516576_242770710236355_3326219608200829104_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Low fade">
                     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 50%);"></div>
                     <div style="position:absolute;bottom:10px;left:12px;z-index:2;">
                         <div style="font-size:0.68rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">Low Fade</div>
                     </div>
                 </div>
-                <div style="position:relative;overflow:hidden;border-radius:10px;">
+                <div style="position:relative;overflow:hidden;border-radius:10px;aspect-ratio:4/3;">
                     <img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Mid fade">
                     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 50%);"></div>
                     <div style="position:absolute;bottom:10px;left:12px;z-index:2;">
                         <div style="font-size:0.68rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">Mid Fade</div>
                     </div>
                 </div>
-                <div style="position:relative;overflow:hidden;border-radius:10px;">
+                <div style="position:relative;overflow:hidden;border-radius:10px;aspect-ratio:4/3;">
                     <img src="pic.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="High fade">
                     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 50%);"></div>
                     <div style="position:absolute;bottom:10px;left:12px;z-index:2;">
                         <div style="font-size:0.68rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">High / Skin Fade</div>
                     </div>
                 </div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;">
                 <div style="position:relative;overflow:hidden;border-radius:10px;aspect-ratio:4/3;">
                     <img src="SnapInsta.to_70010652_1348701105288372_8634153704668559015_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Burst fade">
                     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 50%);"></div>
@@ -568,7 +561,6 @@
                         <div style="font-size:0.68rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">Taper Fade</div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 </section>
@@ -768,7 +760,7 @@
 <!-- 11. LINE-UP & EDGE-UP -->
 <section class="slide" id="slide-lineup">
     <div class="slide-bg">
-        <img src="pic.jpg" alt="Sharp line-up hairline" id="lineup-bg">
+        <img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="Sharp line-up hairline" id="lineup-bg">
         <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.94) 0%,rgba(0,0,0,0.62) 50%,rgba(0,0,0,0.12) 100%)"></div>
     </div>
     <div class="slide-content" style="flex-direction:row;align-items:center;gap:44px;padding-top:116px;">
@@ -849,11 +841,12 @@
         <p><strong>360 waves</strong> are built by brushing damp hair daily in circular patterns and compressing overnight with a durag. It takes weeks of consistent work. A barber who understands waves cuts with the grain and uses a low fade or taper that doesn&rsquo;t disrupt the pattern. <strong>Locs</strong> require specialist knowledge &mdash; not every barber handles them. Maintenance involves retightening the roots and shaping the overall silhouette.</p>
     </div>
     <div class="mag-photo-grid cols-3">
-        <div class="mag-photo-cell"><img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Comb over fade"></div>
-        <div class="mag-photo-cell"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Hard part fade"></div>
         <div class="mag-photo-cell"><img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French crop"></div>
-        <div class="mag-photo-cell"><img src="download (4).jpg" alt="Junior cut"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_66620431_493779438090103_5926486896537980734_n.jpg" alt="Blowout Taper"></div>
+        <div class="mag-photo-cell"><img src="download (13).jpg" alt="V-Part Nape Design"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="360 Waves"></div>
         <div class="mag-photo-cell"><img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Hard Part"></div>
     </div>
 </div>
 
@@ -880,11 +873,13 @@
         <h3>The Blend Zone: What to Look For</h3>
         <p>The blend zone is the gradient between the longer hair on top and the faded section on the sides. A properly blended fade has no visible lines, steps, or uneven patches &mdash; the transition should be imperceptible when looking at the finished cut. Achieving this requires multiple overlapping passes with progressively smaller clipper guards (typically 0.5, 1, 1.5, and 2), combined with freehand scissor-over-comb work at the transition point. The best barbers also follow the natural contour of the head rather than cutting in mechanical straight lines &mdash; heads are round, and a rigid straight-line fade will always reveal itself at certain angles. Always inspect the cut in natural light before you leave the chair.</p>
     </div>
-    <div class="mag-photo-grid cols-2">
-        <div class="mag-photo-cell"><img src="SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg" alt="Waves skin fade"></div>
-        <div class="mag-photo-cell"><img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="Waves low fade"></div>
+    <div class="mag-photo-grid cols-3">
+        <div class="mag-photo-cell"><img src="SnapInsta.to_118516576_242770710236355_3326219608200829104_n.jpg" alt="Low fade"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Mid fade"></div>
+        <div class="mag-photo-cell"><img src="pic.jpg" alt="High fade"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_70010652_1348701105288372_8634153704668559015_n.jpg" alt="Burst fade"></div>
+        <div class="mag-photo-cell"><img src="download (21).jpg" alt="Taper fade"></div>
         <div class="mag-photo-cell"><img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="High fade curly"></div>
-        <div class="mag-photo-cell"><img src="download (7).jpg" alt="Clipper technique"></div>
     </div>
 </div>
 
@@ -923,7 +918,8 @@
         <p>Performed correctly by an experienced barber, ear flaming is completely safe. The spirit used burns at a low temperature and the wick is moved too quickly to transfer meaningful heat to the skin. The sensation clients describe is a subtle warmth and the sound of faint crackling as the hair burns. There is no pain, no redness, and no recovery time. The key word is &ldquo;experienced&rdquo; &mdash; this is not a technique to attempt at home. At Golden Barbers, it is performed as a standard service by barbers trained in the procedure.</p>
     </div>
     <div class="mag-photo-grid cols-2">
-        <div class="mag-photo-cell"><img src="pic.jpg" alt="Ear flaming close-up"></div>
+        <div class="mag-photo-cell"><img src="download (12).jpg" alt="Ear flaming technique"></div>
+        <div class="mag-photo-cell"><img src="pic.jpg" alt="Barber precision work"></div>
     </div>
 </div>
 
@@ -942,7 +938,7 @@
     </div>
     <div class="mag-photo-grid cols-2">
         <div class="mag-photo-cell"><img src="download (15).jpg" alt="Straight razor"></div>
-        <div class="mag-photo-cell"><img src="download (27).jpg" alt="Hair wash ritual"></div>
+        <div class="mag-photo-cell"><img src="download (23).jpg" alt="Hot towel ritual"></div>
     </div>
 </div>
 
@@ -966,7 +962,6 @@
         <div class="mag-photo-cell"><img src="download (22).jpg" alt="Teal colour"></div>
         <div class="mag-photo-cell"><img src="SnapInsta.to_50119020_2338328669729367_6657319863597735597_n.jpg" alt="Line design"></div>
         <div class="mag-photo-cell"><img src="SnapInsta.to_83452999_639920510104267_5362544737012483305_n.jpg" alt="Carvings"></div>
-        <div class="mag-photo-cell"><img src="download (13).jpg" alt="V notch design"></div>
     </div>
 </div>
 
@@ -1009,15 +1004,16 @@
         <div class="mag-photo-cell"><img src="download (16).jpg" alt="Barber styling hair"></div>
         <div class="mag-photo-cell"><img src="download (18).jpg" alt="Scalp treatment"></div>
         <div class="mag-photo-cell"><img src="56490494_441941899910184_1535393151337681820_n.jpg" alt="Face mask treatment"></div>
-        <div class="mag-photo-cell" style="grid-column:span 2;aspect-ratio:3/2;"><img src="SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg" alt="Hair wash sink"></div>
-        <div class="mag-photo-cell"><img src="download (28).jpg" alt="Grooming routine guide"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_57488416_365176680768084_824092055890440870_n.jpg" alt="Hair wash sink"></div>
+        <div class="mag-photo-cell"><img src="download (14).jpg" alt="Products shelf"></div>
+        <div class="mag-photo-cell"><img src="download (20).jpg" alt="Styling routine"></div>
     </div>
 </div>
 
 <div class="mag-section">
     <div class="mag-tag">Chapter 9</div>
     <h2 class="mag-title">Hair Health &amp; <em>Hair Loss</em></h2>
-    <div class="mag-hero-photo"><img src="download (25).jpg" alt="Male hair thinning crown" style="object-position:center top;"></div>
+    <div class="mag-hero-photo"><img src="../weakend-hair-men-shampoo-scalp-health-kit-my-hair-science-9012126_1120x.webp" alt="Hair health and treatment" style="object-position:center;"></div>
     <div class="mag-body">
         <p>Hair loss in men is almost always <strong>androgenetic alopecia</strong> &mdash; genetic male pattern baldness caused by DHT miniaturising follicles over time. It is not caused by hats, shampooing, or stress. The only variable you control is how early you act.</p>
         <h3>The Norwood Scale</h3>
@@ -1029,16 +1025,17 @@
         <h3>SMP &amp; Embracing It</h3>
         <p>Scalp micropigmentation (SMP) deposits pigment to replicate the look of a shaved buzz cut at any hair density. Permanent and immediate. Alternatively &mdash; a <strong>skin fade or grade 1 buzz cut</strong> on thinning hair looks intentional and sharp. Trying to cover thinning with a longer style does the opposite of what you intend. Some of the best cuts in this shop are on clients who committed to a clean buzz and never looked back.</p>
     </div>
-    <div class="mag-photo-grid cols-2">
-        <div class="mag-photo-cell"><img src="download (26).jpg" alt="Minoxidil 5% product"></div>
-        <div class="mag-photo-cell"><img src="images.jpg" alt="Norwood scale stages"></div>
+    <div class="mag-photo-grid cols-3">
+        <div class="mag-photo-cell"><img src="../weakend-hair-men-shampoo-scalp-health-kit-my-hair-science-9012126_1120x.webp" alt="Hair health kit"></div>
+        <div class="mag-photo-cell"><img src="../Foligain-Minoxidil-Advanced-Hair-Regrowth-Treatment-for-Men-hand.webp" alt="Minoxidil treatment"></div>
+        <div class="mag-photo-cell"><img src="../untitled-design-2023-11-07t193853-673-1600x900.webp" alt="Hair care routine"></div>
     </div>
 </div>
 
 <div class="mag-section">
     <div class="mag-tag">Chapter 10</div>
     <h2 class="mag-title">The <em>Line-Up</em></h2>
-    <div class="mag-hero-photo"><img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Sharp line-up hairline"></div>
+    <div class="mag-hero-photo"><img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="Sharp line-up hairline"></div>
     <div class="mag-body">
         <p>The line-up &mdash; also called an <strong>edge-up</strong> or <strong>shape-up</strong> &mdash; is the process of defining the natural hairline into a precise, geometric edge using a straight razor or T-blade trimmer. It is one of the most requested standalone services at the barbershop, and one of the most underappreciated details of any haircut. A sharp line-up takes a grown-out or in-between cut and makes it look intentional and fresh.</p>
         <h3>What It Does</h3>
@@ -1048,10 +1045,11 @@
         <h3>How Often</h3>
         <p>Line-ups grow out visibly within 1&ndash;2 weeks. A standalone shape-up takes 10&ndash;15 minutes and costs a fraction of a full cut. If you have a sharp line-up with a high skin fade, plan for the shop every 2 weeks. A clean hairline is the first thing people notice up close &mdash; it&rsquo;s always worth maintaining.</p>
     </div>
-    <div class="mag-photo-grid cols-3">
-        <div class="mag-photo-cell"><img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" alt="Sharp temple line and beard fade"></div>
-        <div class="mag-photo-cell"><img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="Clean defined hairline with high fade"></div>
-        <div class="mag-photo-cell"><img src="download (7).jpg" alt="Razor precision on temple"></div>
+    <div class="mag-photo-grid cols-2">
+        <div class="mag-photo-cell"><img src="download (8).jpg" alt="Temple definition edge-up"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" alt="Clean hairline"></div>
+        <div class="mag-photo-cell"><img src="download (9).jpg" alt="Razor edge"></div>
+        <div class="mag-photo-cell"><img src="SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg" alt="Sharp line-up side profile"></div>
     </div>
 </div>
 
