@@ -223,12 +223,12 @@
                 -webkit-overflow-scrolling: touch;
             }
 
-            /* Ch2 style tile grid: 3x2 → 2x3 with proper height */
+            /* Ch2 style tile grid: 3x2 → 2x3 on mobile */
             #slide-haircuts div[style*="grid-template-columns:1fr 1fr 1fr"] {
                 grid-template-columns: 1fr 1fr !important;
-                grid-template-rows: repeat(3,120px) !important;
-                flex: none !important;
-                height: auto !important;
+            }
+            #slide-haircuts div[style*="grid-template-columns:1fr 1fr 1fr"] .photo-cell {
+                aspect-ratio: 4/3 !important;
             }
 
             /* ---- CHAPTER 3 (FADES) — row → column ---- */
@@ -499,13 +499,13 @@
                 <p><strong>Know your numbers:</strong> When asking for a fade, use the actual guard number — not just &ldquo;low&rdquo; or &ldquo;short&rdquo;. Guard 0 = 0.5mm (skin), guard 1 = 3mm, guard 2 = 6mm. &ldquo;Mid skin fade with a 2 on top&rdquo; is a complete instruction. &ldquo;Short back and sides&rdquo; means something different to every person who has ever said it.</p>
             </div>
             <!-- 2x3 style photo tiles -->
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:6px;flex:1;min-height:280px;">
-                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French Crop"><div class="photo-label">French Crop</div></div>
-                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_66620431_493779438090103_5926486896537980734_n.jpg" alt="Blowout Taper"><div class="photo-label">Blowout Taper</div></div>
-                <div class="photo-cell" style="border-radius:8px;"><img src="download (13).jpg" alt="V-Part Nape Design"><div class="photo-label">V-Part / Nape Design</div></div>
-                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="360 Waves"><div class="photo-label">360 Waves</div></div>
-                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs"><div class="photo-label">Locs</div></div>
-                <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Comb Over"><div class="photo-label">Hard Part</div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+                <div class="photo-cell" style="border-radius:8px;aspect-ratio:4/3;"><img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French Crop"><div class="photo-label">French Crop</div></div>
+                <div class="photo-cell" style="border-radius:8px;aspect-ratio:4/3;"><img src="SnapInsta.to_66620431_493779438090103_5926486896537980734_n.jpg" alt="Blowout Taper"><div class="photo-label">Blowout Taper</div></div>
+                <div class="photo-cell" style="border-radius:8px;aspect-ratio:4/3;"><img src="download (13).jpg" alt="V-Part Nape Design"><div class="photo-label">V-Part / Nape Design</div></div>
+                <div class="photo-cell" style="border-radius:8px;aspect-ratio:4/3;"><img src="SnapInsta.to_82839840_2548721172118550_8902421025210291226_n.jpg" alt="360 Waves"><div class="photo-label">360 Waves</div></div>
+                <div class="photo-cell" style="border-radius:8px;aspect-ratio:4/3;"><img src="SnapInsta.to_194099757_538068850663865_75050373041129123_n.jpg" alt="Locs"><div class="photo-label">Locs</div></div>
+                <div class="photo-cell" style="border-radius:8px;aspect-ratio:4/3;"><img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" alt="Comb Over"><div class="photo-label">Hard Part</div></div>
             </div>
         </div>
     </div>
