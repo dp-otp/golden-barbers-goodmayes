@@ -208,89 +208,124 @@
             .slide-title { font-size:clamp(1.45rem,5.5vw,2rem) !important; line-height:1.08; }
             .slide-body { font-size:0.82rem; line-height:1.7; }
             .slide-body p:first-child { font-size:0.86rem; }
-            .slide-content { padding:108px 20px 90px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+            .slide-content { padding:120px 20px 90px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
 
-            /* ---- CHAPTER 1 (WELCOME) — full bleed, works fine already ---- */
-
-            /* ---- CHAPTER 2 (HAIRCUTS) — 2-col grid → stack ---- */
-            /* On mobile: hide left photo, show right panel full width */
-            .slide > div[style*="grid-template-columns:1fr 1fr"] {
+            /* ---- CHAPTER 2 (HAIRCUTS) — 2-col grid → hide hero, stack text ---- */
+            #slide-haircuts > div[style*="grid-template-columns:1fr 1fr"] {
                 grid-template-columns: 1fr !important;
             }
-            /* First child in these grids (the photo half) → become a fixed background */
-            .slide > div[style*="grid-template-columns:1fr 1fr"] > *:first-child {
+            #slide-haircuts > div[style*="grid-template-columns:1fr 1fr"] > *:first-child {
                 display: none !important;
             }
-            /* Second child (text panel) → full width, with dark bg */
-            .slide > div[style*="grid-template-columns:1fr 1fr"] > *:last-child {
-                padding: 108px 20px 90px !important;
+            #slide-haircuts > div[style*="grid-template-columns:1fr 1fr"] > *:last-child {
+                padding: 120px 20px 90px !important;
                 overflow-y: auto !important;
                 -webkit-overflow-scrolling: touch;
             }
 
-            /* ---- CHAPTER 2 style tile grid: 3x2 → 2x3 ---- */
-            div[style*="grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr"] {
+            /* Ch2 style tile grid: 3x2 → 2x3 with proper height */
+            #slide-haircuts div[style*="grid-template-columns:1fr 1fr 1fr"] {
                 grid-template-columns: 1fr 1fr !important;
-                grid-template-rows: repeat(3,80px) !important;
+                grid-template-rows: repeat(3,120px) !important;
                 flex: none !important;
                 height: auto !important;
             }
 
-            /* ---- CHAPTER 3 (FADES) — flex row → stack ---- */
-            /* Left text panel: shrink to auto height */
-            .slide > .slide-content[style*="flex-direction:row"] > div[style*="flex:0 0 300px"] {
-                flex: none !important;
-                width: 100% !important;
-                padding: 108px 20px 14px !important;
-                justify-content: flex-start !important;
-            }
-            /* Right photo stack: compact fixed-height strip */
-            .slide > .slide-content[style*="flex-direction:row"] > div[style*="flex:1;display:flex;flex-direction:column"] {
-                flex: none !important;
-                height: 260px !important;
-                overflow-y: auto !important;
-                padding: 0 10px 10px !important;
-                gap: 3px !important;
-            }
-            /* Hide description text in tiles on mobile, keep name label */
-            .slide > .slide-content[style*="flex-direction:row"] > div[style*="flex:1;display:flex;flex-direction:column"] > div > div:last-child {
-                display: none !important;
-            }
-
-            /* ---- CHAPTER 4 (BEARD) — 2-col → hide photos, show text ---- */
-            .slide > div[style*="grid-template-columns:1fr 1fr"] > *:first-child {
-                display: none !important; /* photos hidden on mobile */
-            }
-
-            /* ---- EAR FLAMING / HOT TOWEL — full-bleed text panels ---- */
-            .slide-content[style*="flex-direction:row"] {
+            /* ---- CHAPTER 3 (FADES) — row → column ---- */
+            #slide-fades .slide-content {
                 flex-direction: column !important;
-                overflow-y: auto !important;
-                padding: 108px 20px 90px !important;
-                gap: 16px !important;
+                padding: 120px 20px 90px !important;
             }
-            div[style*="flex:0 0 430px"], div[style*="flex:0 0 410px"],
-            div[style*="flex:0 0 420px"], div[style*="flex:0 0 370px"] {
+            #slide-fades .slide-content > div[style*="flex:0 0 300px"] {
                 flex: none !important;
                 width: 100% !important;
                 padding: 0 !important;
             }
-            /* Right photo panel in ear/hot towel slides → compact strip */
-            .slide-content div[style*="flex:1;max-width"],
-            .slide-content div[style*="flex:1;display:grid"] {
+            #slide-fades .slide-content > div[style*="flex:1;display:grid"] {
                 flex: none !important;
                 width: 100% !important;
-                height: 130px !important;
-                grid-template-columns: repeat(2,1fr) !important;
-                grid-template-rows: 1fr !important;
+                height: auto !important;
+                grid-template-rows: 140px 140px 120px !important;
+                padding: 0 !important;
+                margin-top: 14px;
+            }
+            /* Hide description text in fade tiles on mobile */
+            #slide-fades .slide-content > div[style*="flex:1;display:grid"] div[style*="font-size:0.67rem"] {
+                display: none !important;
             }
 
-            /* ---- CHAPTER 7 COLOUR — 3x2 grid stays 3 wide, shrinks height ---- */
-            div[style*="grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;height:calc"] {
+            /* ---- CHAPTER 4 (BEARD) — show photos on top, text below ---- */
+            #slide-beard > div[style*="grid-template-columns:1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+                grid-template-rows: 200px 1fr !important;
+            }
+            #slide-beard > div[style*="grid-template-columns:1fr 1fr"] > *:first-child {
+                grid-template-rows: 1fr !important;
                 height: 200px !important;
             }
+            #slide-beard > div[style*="grid-template-columns:1fr 1fr"] > *:last-child {
+                padding: 20px !important;
+                overflow-y: auto !important;
+            }
 
-            /* ---- CHAPTER 8 PRODUCTS ---- */
+            /* ---- CHAPTER 5 (EAR FLAMING) ---- */
+            #slide-earflaming .slide-content {
+                flex-direction: column !important;
+                padding: 120px 20px 90px !important;
+                gap: 14px !important;
+            }
+            #slide-earflaming .slide-content > div[style*="flex:0 0"] {
+                flex: none !important;
+                width: 100% !important;
+                padding: 0 !important;
+            }
+            #slide-earflaming .slide-content > div[style*="flex:1"] {
+                flex: none !important;
+                width: 100% !important;
+                height: 160px !important;
+            }
+
+            /* ---- CHAPTER 6 (HOT TOWEL) ---- */
+            #slide-hottowel .slide-content {
+                padding: 120px 20px 90px !important;
+                padding-left: 20px !important;
+            }
+
+            /* ---- CHAPTER 7 (FACE TREATMENTS) — row → column ---- */
+            #slide-treatments .slide-content {
+                flex-direction: column !important;
+                padding: 120px 20px 90px !important;
+                gap: 14px !important;
+            }
+            #slide-treatments .slide-content > div[style*="flex:0 0"] {
+                flex: none !important;
+                width: 100% !important;
+                padding: 0 !important;
+            }
+            #slide-treatments .slide-content > div[style*="flex:1;display:grid"] {
+                flex: none !important;
+                width: 100% !important;
+                height: 160px !important;
+            }
+
+            /* ---- CHAPTER 8 (COLOUR) — flex row → column ---- */
+            #slide-colour .slide-content > div[style*="display:flex;gap:44px"] {
+                flex-direction: column !important;
+                gap: 14px !important;
+            }
+            #slide-colour .slide-content > div[style*="display:flex;gap:44px"] > div[style*="flex:0 0 270px"] {
+                flex: none !important;
+                width: 100% !important;
+            }
+            #slide-colour .slide-content > div[style*="display:flex;gap:44px"] > div[style*="flex:1;display:grid"] {
+                flex: none !important;
+                width: 100% !important;
+                height: auto !important;
+                grid-template-columns: 1fr 1fr !important;
+                grid-template-rows: 130px 130px 130px !important;
+            }
+
+            /* ---- CHAPTER 9 (PRODUCTS) ---- */
             .product-grid { grid-template-columns:1fr 1fr !important; gap:7px !important; }
             .product-img { height:72px; }
             .product-name { font-size:0.7rem; }
@@ -298,38 +333,45 @@
             .product-info { padding:6px 8px; }
             .product-tag { font-size:0.6rem; }
 
-            /* ---- CHAPTER 9 HAIR HEALTH — row → column ---- */
-            .slide-content[style*="flex-direction:row;gap:44px"] {
+            /* ---- CHAPTER 10 (HAIR HEALTH) — row → column ---- */
+            #slide-hairhealth .slide-content {
                 flex-direction: column !important;
                 overflow-y: auto !important;
-                padding: 108px 20px 90px !important;
+                padding: 120px 20px 90px !important;
                 gap: 14px !important;
             }
-            div[style*="flex:0 0 370px"] {
-                flex: none !important; width:100% !important;
-                padding: 0 !important; max-height:none !important;
-            }
-            /* photo grid in hair health */
-            div[style*="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto"] {
+            #slide-hairhealth .slide-content > div[style*="flex:0 0 420px"] {
                 flex: none !important;
-                height: auto !important;
                 width: 100% !important;
-                grid-template-rows: 160px 120px !important;
+                padding: 0 !important;
+                max-height: none !important;
             }
-            div[style*="grid-column:span 2;height:200px"] { height: 160px !important; }
-            div[style*="border-radius:10px;height:160px"] { height: 110px !important; }
+            #slide-hairhealth .slide-content > div[style*="flex:1;display:grid"] {
+                flex: none !important;
+                width: 100% !important;
+                height: auto !important;
+                grid-template-rows: 150px 150px 150px !important;
+            }
 
-            /* ---- CHAPTER 10 LINE-UP — row → column ---- */
-            .slide-content[style*="flex-direction:row;align-items:center;gap:44px;padding-top:116px"] {
+            /* ---- CHAPTER 11 (LINE-UP) — row → column ---- */
+            #slide-lineup .slide-content {
                 flex-direction: column !important;
                 overflow-y: auto !important;
-                padding: 108px 20px 90px !important;
+                padding: 120px 20px 90px !important;
                 gap: 14px !important;
             }
-            div[style*="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;height:calc"] {
-                flex: none !important; height: 180px !important; width:100% !important;
-                grid-template-rows: 1fr 1fr !important;
+            #slide-lineup .slide-content > div[style*="flex:0 0 420px"] {
+                flex: none !important;
+                width: 100% !important;
+                padding: 0 !important;
+                max-height: none !important;
+            }
+            #slide-lineup .slide-content > div[style*="flex:1;display:grid"] {
+                flex: none !important;
+                width: 100% !important;
+                height: auto !important;
                 grid-template-columns: 1fr 1fr !important;
+                grid-template-rows: 160px 160px !important;
             }
 
             /* ---- COMPLETION ---- */
@@ -409,7 +451,7 @@
 <div id="course-wrapper"><div id="slides-track">
 
 <!-- 1. WELCOME -->
-<section class="slide">
+<section class="slide" id="slide-welcome">
     <div class="slide-bg">
         <video autoplay muted loop playsinline poster="download (17).jpg">
             <source src="SnapInsta.to_AQPGe6NeSzxsBsWUbAVB5TpDvzujkBSx3TvtDa7ubYDj0gzj_5kT1IfkJx4qXcwZbpig_aQ92mCtFrW6lC-1kz1IN7rGxufewkpMPJw.mp4" type="video/mp4">
@@ -431,11 +473,11 @@
 </section>
 
 <!-- 2. HAIRCUTS -->
-<section class="slide">
+<section class="slide" id="slide-haircuts">
     <div style="position:relative;width:100%;height:100%;display:grid;grid-template-columns:1fr 1fr;">
         <!-- Left: hero photo -->
         <div style="position:relative;overflow:hidden;">
-            <img src="pic.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Barber precision cut">
+            <img src="download (16).jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Barber precision cut">
             <div class="slide-overlay" style="background:linear-gradient(to right,transparent 50%,rgba(0,0,0,0.95) 100%)"></div>
         </div>
         <!-- Right: text + 2x3 style tiles -->
@@ -448,7 +490,7 @@
                 <p><strong>Know your numbers:</strong> When asking for a fade, use the actual guard number — not just &ldquo;low&rdquo; or &ldquo;short&rdquo;. Guard 0 = 0.5mm (skin), guard 1 = 3mm, guard 2 = 6mm. &ldquo;Mid skin fade with a 2 on top&rdquo; is a complete instruction. &ldquo;Short back and sides&rdquo; means something different to every person who has ever said it.</p>
             </div>
             <!-- 2x3 style photo tiles -->
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:6px;flex:1;min-height:0;">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:150px 150px;gap:6px;flex:1;min-height:0;">
                 <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_68749337_357705691844165_377929490531432681_n.jpg" alt="French Crop"><div class="photo-label">French Crop</div></div>
                 <div class="photo-cell" style="border-radius:8px;"><img src="SnapInsta.to_66620431_493779438090103_5926486896537980734_n.jpg" alt="Blowout Taper"><div class="photo-label">Blowout Taper</div></div>
                 <div class="photo-cell" style="border-radius:8px;"><img src="download (13).jpg" alt="V-Part Nape Design"><div class="photo-label">V-Part / Nape Design</div></div>
@@ -461,7 +503,7 @@
 </section>
 
 <!-- 3. FADES -->
-<section class="slide">
+<section class="slide" id="slide-fades">
     <!-- Full-bleed hero bg: the best skin fade photo -->
     <div class="slide-bg">
         <img src="SnapInsta.to_181979640_3805332879565696_2141673147377316404_n.jpg" alt="Skin fade" style="object-position:center top;">
@@ -478,45 +520,45 @@
             </div>
         </div>
         <!-- Right: 5 fade tiles in 2x2+1 grid — proper aspect ratios, no strips -->
-        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:4px;padding:78px 16px 78px 6px;overflow:hidden;">
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:4px;padding:16px;overflow:hidden;">
             <div style="position:relative;overflow:hidden;border-radius:10px;">
-                <img src="SnapInsta.to_82439389_108668813942941_3416741542364017582_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Low fade">
+                <img src="SnapInsta.to_118516576_242770710236355_3326219608200829104_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Low fade">
                 <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 50%);"></div>
                 <div style="position:absolute;bottom:10px;left:14px;z-index:2;">
                     <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">Low Fade</div>
-                    <div style="font-size:0.67rem;color:rgba(255,255,255,0.82);margin-top:2px;line-height:1.3;">Just above the ear. Subtle, versatile, suits every face shape.</div>
+                    <div style="font-size:0.67rem;color:rgba(255,255,255,0.82);margin-top:2px;line-height:1.3;">Starts just above the ear. Clean, subtle transition. Works with any style on top.</div>
                 </div>
             </div>
             <div style="position:relative;overflow:hidden;border-radius:10px;">
-                <img src="SnapInsta.to_49615166_2022753967774101_4690110353293928981_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Mid fade">
+                <img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Mid fade">
                 <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 50%);"></div>
                 <div style="position:absolute;bottom:10px;left:14px;z-index:2;">
                     <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">Mid Fade</div>
-                    <div style="font-size:0.67rem;color:rgba(255,255,255,0.82);margin-top:2px;line-height:1.3;">Midway up the side. Stronger contrast, works with crops &amp; quiffs.</div>
+                    <div style="font-size:0.67rem;color:rgba(255,255,255,0.82);margin-top:2px;line-height:1.3;">Starts midway up the side. Balanced contrast between top length and faded sides.</div>
                 </div>
             </div>
             <div style="position:relative;overflow:hidden;border-radius:10px;">
-                <img src="SnapInsta.to_85090473_168861084411106_4171799100086006_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="High skin fade">
+                <img src="pic.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="High fade">
                 <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 50%);"></div>
                 <div style="position:absolute;bottom:10px;left:14px;z-index:2;">
                     <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">High / Skin Fade</div>
-                    <div style="font-size:0.67rem;color:rgba(255,255,255,0.82);margin-top:2px;line-height:1.3;">Temples to bare skin. Maximum contrast. Needs upkeep every 2–3 weeks.</div>
+                    <div style="font-size:0.67rem;color:rgba(255,255,255,0.82);margin-top:2px;line-height:1.3;">Starts near the temple. Maximum contrast, sharp look. Needs a touch-up every 2–3 weeks.</div>
                 </div>
             </div>
             <div style="position:relative;overflow:hidden;border-radius:10px;">
-                <img src="SnapInsta.to_118636306_413002349673307_1049675581448333155_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Burst fade">
+                <img src="SnapInsta.to_70010652_1348701105288372_8634153704668559015_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Burst fade">
                 <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 50%);"></div>
                 <div style="position:absolute;bottom:10px;left:14px;z-index:2;">
                     <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">Burst Fade</div>
-                    <div style="font-size:0.67rem;color:rgba(255,255,255,0.82);margin-top:2px;line-height:1.3;">Radiates around the ear in a semicircle. Striking on afros and curls.</div>
+                    <div style="font-size:0.67rem;color:rgba(255,255,255,0.82);margin-top:2px;line-height:1.3;">Radiates around the ear in a curve. Works naturally with textured and curly hair.</div>
                 </div>
             </div>
             <div style="position:relative;overflow:hidden;border-radius:10px;grid-column:span 2;">
-                <img src="SnapInsta.to_118516576_242770710236355_3326219608200829104_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Drop fade">
+                <img src="download (21).jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Taper fade">
                 <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 50%);"></div>
                 <div style="position:absolute;bottom:10px;left:14px;z-index:2;">
-                    <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">Drop / Taper Fade</div>
-                    <div style="font-size:0.67rem;color:rgba(255,255,255,0.82);margin-top:2px;line-height:1.3;">Curves down behind the ear. Cleaner silhouette, popular with locs &amp; waves.</div>
+                    <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">Taper Fade</div>
+                    <div style="font-size:0.67rem;color:rgba(255,255,255,0.82);margin-top:2px;line-height:1.3;">Gradually tapers down behind the ear. Clean neckline, natural-looking finish.</div>
                 </div>
             </div>
         </div>
@@ -524,11 +566,11 @@
 </section>
 
 <!-- 4. BEARD -->
-<section class="slide">
+<section class="slide" id="slide-beard">
     <div style="position:relative;width:100%;height:100%;display:grid;grid-template-columns:1fr 1fr;">
         <!-- Left: photos (becomes background on mobile) -->
         <div style="display:grid;grid-template-rows:1fr 1fr;gap:4px;overflow:hidden;">
-            <div class="photo-cell" style="border-radius:0;"><img src="SnapInsta.to_187808517_1044738236053320_2458909227727331354_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" alt="Beard grooming"></div>
+            <div class="photo-cell" style="border-radius:0;"><img src="SnapInsta.to_187808517_1044738236053320_2458909227727331354_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;" alt="Beard grooming"></div>
             <div class="photo-cell" style="border-radius:0;"><img src="download (11).jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;" alt="Neckline trim"></div>
         </div>
         <!-- Right: text (stays visible on mobile) -->
@@ -549,7 +591,7 @@
 </section>
 
 <!-- 5. EAR FLAMING -->
-<section class="slide">
+<section class="slide" id="slide-earflaming">
     <div class="slide-bg">
         <img src="download (12).jpg" alt="Ear flaming fire">
         <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.93) 0%,rgba(0,0,0,0.58) 60%,rgba(0,0,0,0.1) 100%)"></div>
@@ -571,13 +613,13 @@
 </section>
 
 <!-- 6. HOT TOWEL SHAVE -->
-<section class="slide">
+<section class="slide" id="slide-hottowel">
     <div class="slide-bg">
         <img src="download (23).jpg" alt="Hot towel wrap">
         <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.52) 60%,rgba(0,0,0,0.08) 100%)"></div>
     </div>
-    <div class="slide-content" style="flex-direction:row;align-items:center;justify-content:center;">
-        <div style="max-width:520px;">
+    <div class="slide-content" style="flex-direction:column;align-items:flex-start;justify-content:center;padding-left:80px;">
+        <div style="max-width:560px;">
             <div class="slide-tag">Chapter 6</div>
             <h2 class="slide-title">Hot Towel<br><em>Shave</em></h2>
             <div class="slide-body">
@@ -592,7 +634,7 @@
 </section>
 
 <!-- 7. FACE TREATMENTS -->
-<section class="slide">
+<section class="slide" id="slide-treatments">
     <div class="slide-bg">
         <img src="56490494_441941899910184_1535393151337681820_n.jpg" alt="Face treatment">
         <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.94) 0%,rgba(0,0,0,0.55) 60%,rgba(0,0,0,0.1) 100%)"></div>
@@ -625,7 +667,7 @@
 </section>
 
 <!-- 8. COLOUR & CREATIVE -->
-<section class="slide">
+<section class="slide" id="slide-colour">
     <div class="slide-bg"><div class="slide-overlay" style="background:var(--dark)"></div></div>
     <div class="slide-content" style="padding-top:112px;">
         <div style="display:flex;gap:44px;height:100%;align-items:flex-start;">
@@ -653,7 +695,7 @@
 </section>
 
 <!-- 9. PRODUCTS -->
-<section class="slide">
+<section class="slide" id="slide-products">
     <div class="slide-bg"><div class="slide-overlay" style="background:var(--dark)"></div></div>
     <div class="slide-content" style="padding-top:112px;overflow-y:auto;">
         <div class="slide-tag">Chapter 9</div>
@@ -692,9 +734,9 @@
 </section>
 
 <!-- 10. HAIR HEALTH -->
-<section class="slide">
+<section class="slide" id="slide-hairhealth">
     <div class="slide-bg"><div class="slide-overlay" style="background:var(--dark)"></div></div>
-    <div class="slide-content" style="flex-direction:row;align-items:flex-start;padding-top:116px;gap:36px;">
+    <div class="slide-content" style="flex-direction:row;align-items:stretch;padding-top:116px;gap:36px;">
         <div style="flex:0 0 420px;overflow-y:auto;max-height:calc(100vh - 180px);">
             <div class="slide-tag">Chapter 10</div>
             <h2 class="slide-title" style="font-size:clamp(1.6rem,3.2vw,2.8rem);">Hair Health<br>&amp; <em>Hair Loss</em></h2>
@@ -707,7 +749,7 @@
             </div>
             <div class="chip-row"><span class="chip">Minoxidil 5%</span><span class="chip">Norwood Scale</span><span class="chip">Finasteride</span><span class="chip">SMP</span><span class="chip">Embrace It</span></div>
         </div>
-        <div style="flex:1;display:grid;grid-template-columns:1fr;grid-template-rows:1fr 1fr 1fr;gap:8px;max-height:calc(100vh - 180px);overflow:hidden;">
+        <div style="flex:1;display:grid;grid-template-columns:1fr;grid-template-rows:1fr 1fr 1fr;gap:8px;height:calc(100vh - 200px);overflow:hidden;">
             <div class="photo-cell" style="border-radius:10px;"><img src="../weakend-hair-men-shampoo-scalp-health-kit-my-hair-science-9012126_1120x.webp" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;" alt="Hair loss before and after"></div>
             <div class="photo-cell" style="border-radius:10px;"><img src="../Foligain-Minoxidil-Advanced-Hair-Regrowth-Treatment-for-Men-hand.webp" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;" alt="Minoxidil treatment"></div>
             <div class="photo-cell" style="border-radius:10px;"><img src="../untitled-design-2023-11-07t193853-673-1600x900.webp" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;" alt="Hair care routine"></div>
@@ -715,8 +757,8 @@
     </div>
 </section>
 
-<!-- 10. LINE-UP & EDGE-UP -->
-<section class="slide">
+<!-- 11. LINE-UP & EDGE-UP -->
+<section class="slide" id="slide-lineup">
     <div class="slide-bg">
         <img src="SnapInsta.to_47691874_1193530784127220_2989254306916053496_n.jpg" alt="Sharp line-up hairline">
         <div class="slide-overlay" style="background:linear-gradient(to right,rgba(0,0,0,0.94) 0%,rgba(0,0,0,0.62) 50%,rgba(0,0,0,0.12) 100%)"></div>
@@ -743,8 +785,8 @@
     </div>
 </section>
 
-<!-- 11. COMPLETION -->
-<section class="slide">
+<!-- 12. COMPLETION -->
+<section class="slide" id="slide-complete">
     <div class="slide-bg">
         <img src="download (17).jpg" alt="Golden Barbers sign at night" style="object-position:center center;">
         <div class="slide-overlay" style="background:rgba(0,0,0,0.72)"></div>
@@ -1029,9 +1071,9 @@
     }
     function nextSlide(){goTo(current+1);} function prevSlide(){goTo(current-1);}
     document.addEventListener('keydown',function(e){ if(isMag)return; if(e.key==='ArrowRight'||e.key==='ArrowDown')nextSlide(); if(e.key==='ArrowLeft'||e.key==='ArrowUp')prevSlide(); });
-    var tx=0;
-    document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
-    document.addEventListener('touchend',function(e){ if(isMag)return; var dx=e.changedTouches[0].clientX-tx; if(Math.abs(dx)>50){dx<0?nextSlide():prevSlide();} },{passive:true});
+    var tx=0,ty=0;
+    document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+    document.addEventListener('touchend',function(e){ if(isMag)return; var dx=e.changedTouches[0].clientX-tx; var dy=e.changedTouches[0].clientY-ty; if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){dx<0?nextSlide():prevSlide();} },{passive:true});
     function toggleMagazine(){
         isMag=!isMag; var btn=document.getElementById('mode-toggle');
         if(isMag){ document.body.classList.remove('course-mode'); document.body.classList.add('magazine-mode'); btn.textContent='\u25B6 Course Mode'; }
