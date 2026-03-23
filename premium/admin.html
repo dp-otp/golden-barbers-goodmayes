@@ -2917,6 +2917,90 @@
         }
         .bm-name { font-weight: 700; font-size: 14px; color: #fff; }
         .bm-detail { font-size: 12px; color: #888; margin-bottom: 4px; }
+        .bm-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .bm-action-btn {
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        .bm-action-btn.complete {
+            background: rgba(34,197,94,0.12);
+            border-color: rgba(34,197,94,0.3);
+            color: #4ade80;
+        }
+        .bm-action-btn.warn {
+            background: rgba(245,158,11,0.12);
+            border-color: rgba(245,158,11,0.3);
+            color: #fbbf24;
+        }
+        .am-engine-copy {
+            color: #888;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .am-engine-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #bbb;
+            background: rgba(255,255,255,0.04);
+        }
+        .am-engine-pill.live {
+            color: #4ade80;
+            border-color: rgba(34,197,94,0.3);
+            background: rgba(34,197,94,0.12);
+        }
+        .am-engine-pill.legacy {
+            color: #fbbf24;
+            border-color: rgba(245,158,11,0.3);
+            background: rgba(245,158,11,0.12);
+        }
+        .am-engine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .am-engine-tile {
+            background: rgba(0,0,0,0.18);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 14px;
+        }
+        .am-engine-tile span {
+            display: block;
+            color: #888;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .am-engine-tile strong {
+            display: block;
+            color: #fff;
+            font-size: 14px;
+            line-height: 1.4;
+        }
 
         /* ---- Confirmation Modal ---- */
         .confirm-modal-overlay {
@@ -3459,7 +3543,7 @@
             <button class="admin-nav-btn" onclick="switchSection('contacts')">Contacts</button>
             <button class="admin-nav-btn" onclick="switchSection('gallery')">Gallery</button>
             <button class="admin-nav-btn" onclick="switchSection('settings')">Settings</button>
-            <button class="admin-nav-btn" onclick="switchSection('automanager')" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.25);color:#d4af37;">Auto-Manager</button>
+            <button class="admin-nav-btn" onclick="switchSection('automanager')" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.25);color:#d4af37;">Automation</button>
         </div>
 
         <!-- Sub-navigation strip (for grouped tabs like Money, Team, Content) -->
@@ -4353,8 +4437,26 @@
 
         <!-- ==================== AUTO-MANAGER SECTION ==================== -->
         <div class="admin-section" id="section-automanager">
-            <h2 style="color:#d4af37;margin-bottom:4px;">Auto-Manager</h2>
-            <p style="color:#888;font-size:13px;margin-bottom:16px;">Automated business intelligence — inventory, reviews, expenses, commissions & clients</p>
+            <h2 style="color:#d4af37;margin-bottom:4px;">Automation Engine</h2>
+            <p style="color:#888;font-size:13px;margin-bottom:16px;">Backend-owned automation for inventory, reviews, expenses, commissions and client intelligence</p>
+
+            <div class="am-card">
+                <div class="am-card-title">
+                    Engine Status
+                    <span class="am-engine-pill legacy" id="am-engine-pill">Legacy Frontend</span>
+                </div>
+                <div class="am-engine-copy" id="am-engine-copy">Deploy the Firebase functions engine to move critical automation out of the browser and into backend triggers.</div>
+                <div class="am-engine-grid" id="am-engine-metrics">
+                    <div class="am-engine-tile"><span>Mode</span><strong id="am-engine-mode">Legacy browser logic</strong></div>
+                    <div class="am-engine-tile"><span>Last Sync</span><strong id="am-engine-last-sync">Waiting for backend</strong></div>
+                    <div class="am-engine-tile"><span>Alert Load</span><strong id="am-engine-alerts">No backend metrics yet</strong></div>
+                    <div class="am-engine-tile"><span>Data Health</span><strong id="am-engine-health">Deploy functions to activate</strong></div>
+                </div>
+                <div class="am-form-actions">
+                    <button class="am-btn am-btn-gold" onclick="AutoManager.requestRebuild()">Backfill &amp; Sync</button>
+                    <button class="am-btn am-btn-ghost" onclick="AutoManager.requestMetricRefresh()">Refresh Metrics</button>
+                </div>
+            </div>
 
             <div class="am-tabs">
                 <button class="am-tab active" onclick="AutoManager.switchTab('inventory', this)">Inventory</button>
@@ -4368,7 +4470,7 @@
             <div class="am-view active" id="am-inventory">
                 <div class="am-needs-banner">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    <div><strong>Needs: Barcode Scanner</strong> — Connect a barcode scanner for instant stock counting and product lookup</div>
+                    <div><strong>Optional: Barcode Scanner</strong> — Manual stock control already works. A scanner only speeds up counting and product lookup.</div>
                 </div>
 
                 <div class="am-stats-row" id="am-inv-stats"></div>
@@ -4435,11 +4537,11 @@
             <div class="am-view" id="am-reviews">
                 <div class="am-needs-banner">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    <div><strong>Needs: WhatsApp Business API</strong> — For fully automated zero-tap review request sending</div>
+                    <div><strong>Optional: WhatsApp Business API</strong> — Manual one-tap WhatsApp sending works now. The API only removes the final tap.</div>
                 </div>
                 <div class="am-needs-banner">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    <div><strong>Needs: Google Business API</strong> — For automatic review detection and response tracking</div>
+                    <div><strong>Optional: Google Business API</strong> — Only needed for automatic review pull-in and response tracking after the review is sent.</div>
                 </div>
 
                 <div class="am-stats-row" id="am-review-stats"></div>
@@ -4579,7 +4681,7 @@
             <div class="am-view" id="am-clients">
                 <div class="am-needs-banner">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    <div><strong>Needs: Customer-facing payment identity</strong> — For tracking walk-ins without bookings</div>
+                    <div><strong>Critical input: name + phone for walk-ins</strong> — Anonymous visits cannot become reusable client profiles, no matter how much backend automation you add.</div>
                 </div>
 
                 <div class="am-stats-row" id="am-client-stats"></div>
@@ -5038,7 +5140,7 @@
 
         function isOpenVisit(visit) {
             var status = (visit && visit.visitStatus) || '';
-            return status !== 'cancelled' && status !== 'rejected';
+            return status !== 'cancelled' && status !== 'rejected' && status !== 'no_show';
         }
 
         function escapeHtml(value) {
@@ -5075,6 +5177,42 @@
                     '</div>' +
                 '</div>';
             }).join('');
+        }
+
+        function markVisitCompleted(key) {
+            if (!key) return;
+            showConfirmModal('Mark Visit Complete', 'This closes the visit and allows backend automation to issue review, commission and client updates from a real completion event.', function() {
+                database.ref('visits/' + key).once('value').then(function(snapshot) {
+                    var visit = snapshot.val();
+                    if (!visit) return null;
+                    return database.ref('visits/' + key).update({
+                        visitStatus: 'completed',
+                        completedAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    }).then(function() {
+                        showToast('Visit marked complete', 'success');
+                        logActivity('visits', (visit.customerName || 'Visit') + ' marked complete');
+                    });
+                });
+            });
+        }
+
+        function markVisitNoShow(key) {
+            if (!key) return;
+            showConfirmModal('Mark No-Show', 'This keeps the booking on record but prevents follow-up automation from treating it as a completed service.', function() {
+                database.ref('visits/' + key).once('value').then(function(snapshot) {
+                    var visit = snapshot.val();
+                    if (!visit) return null;
+                    return database.ref('visits/' + key).update({
+                        visitStatus: 'no_show',
+                        noShowAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    }).then(function() {
+                        showToast('Visit marked no-show', 'warning');
+                        logActivity('visits', (visit.customerName || 'Visit') + ' marked no-show');
+                    });
+                });
+            });
         }
 
         function loadBookings() {
@@ -5125,7 +5263,7 @@
             if (typeof renderManagedBookings === 'function') renderManagedBookings();
             if (typeof updateDailyBriefing === 'function') updateDailyBriefing();
             if (typeof updateSmartAlerts === 'function') updateSmartAlerts();
-            // Auto-Manager: update client intelligence from latest booking
+            // Automation engine fallback: legacy client hint update
             if (window.AutoManager && allBookings.length > 0) {
                 AutoManager.updateClientFromBooking(allBookings[0]);
             }
@@ -5916,7 +6054,7 @@
                     return null;
                 });
             }).then(function() {
-                // Auto-Manager hook: stock, reviews, commissions
+                // Automation hook: legacy browser fallback if backend is not active
                 if (window.AutoManager) AutoManager.onPaymentConfirmed(key);
             });
         }
@@ -8486,7 +8624,7 @@
         }
 
         // ============================================
-        // BOOKING MANAGEMENT (read-only)
+        // BOOKING MANAGEMENT
         // ============================================
         var managedBookings = [];
 
@@ -8513,6 +8651,12 @@
                 html += '<div class="bm-detail">' + escapeHtml(sourceLabel + ' &middot; ' + statusLabel) + '</div>';
                 if (b.customerPhone || b.phone) html += '<div class="bm-detail">Phone: ' + escapeHtml(b.customerPhone || b.phone) + '</div>';
                 if (b.preferredBarber) html += '<div class="bm-detail">Barber: ' + escapeHtml(b.preferredBarber) + '</div>';
+                if (b._key && b.source === 'online_booking' && b.visitStatus === 'confirmed') {
+                    html += '<div class="bm-actions">';
+                    html += '<button class="bm-action-btn complete" onclick="markVisitCompleted(\'' + b._key + '\')">Mark Complete</button>';
+                    html += '<button class="bm-action-btn warn" onclick="markVisitNoShow(\'' + b._key + '\')">No-Show</button>';
+                    html += '</div>';
+                }
                 html += '</div>';
             });
             container.innerHTML = html;

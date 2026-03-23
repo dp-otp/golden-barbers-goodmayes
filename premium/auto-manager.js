@@ -12,7 +12,9 @@
     var allProducts = [], stockLog = [], reviewQueue = [], reviewSettings = {};
     var recurringExpenses = [], oneoffExpenses = [], generatedExpenses = [];
     var commissionSettings = { defaultRate: 40, staffRates: {} }, commissionAssignments = [];
-    var clientProfiles = {}, clientsBuilt = false;
+    var clientProfiles = {};
+    var engineStatus = {}, engineMetrics = {}, backendOwned = false;
+    var lastLegacyVisitClientKey = '', lastLegacyBookingClientKey = '';
     var amStaffList = []; // populated from main admin staff listener
     var serviceNameMap = {}; // name -> id lookup
 
@@ -77,6 +79,88 @@
         if (visit && visit.items && visit.items.length) return visit.items.join(', ');
         return payment && payment.items ? payment.items.join(', ') : 'Service';
     }
+
+    function isBackendOwned() {
+        return !!backendOwned;
+    }
+
+    function formatDateTime(value) {
+        if (!value) return 'Waiting for backend';
+        try {
+            return new Date(value).toLocaleString('en-GB', {
+                day: 'numeric',
+                month: 'short',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        } catch (err) {
+            return value;
+        }
+    }
+
+    function renderEngineStatus() {
+        var pill = document.getElementById('am-engine-pill');
+        var copy = document.getElementById('am-engine-copy');
+        var modeEl = document.getElementById('am-engine-mode');
+        var lastSyncEl = document.getElementById('am-engine-last-sync');
+        var alertsEl = document.getElementById('am-engine-alerts');
+        var healthEl = document.getElementById('am-engine-health');
+        if (!pill || !copy || !modeEl || !lastSyncEl || !alertsEl || !healthEl) return;
+
+        backendOwned = !!(engineStatus && engineStatus.backendOwned);
+        pill.textContent = backendOwned ? 'Backend Live' : 'Legacy Frontend';
+        pill.className = 'am-engine-pill ' + (backendOwned ? 'live' : 'legacy');
+
+        if (backendOwned) {
+            copy.textContent = 'Reviews, commissions, clients, inventory alerts and summaries are now projected from Firebase Functions instead of fragile browser logic.';
+            modeEl.textContent = 'Backend-owned projections';
+            lastSyncEl.textContent = formatDateTime(engineStatus.lastVisitSyncAt || engineStatus.lastPendingAuditAt || engineStatus.updatedAt);
+            alertsEl.textContent = (engineMetrics.stalePendingPayments || 0) + ' stale payments · ' + (engineMetrics.lowStockAlerts || 0) + ' low stock';
+            if (engineStatus.lastCommandStatus === 'failed') {
+                healthEl.textContent = 'Command failed: ' + (engineStatus.lastErrorMessage || 'Check Firebase logs');
+            } else {
+                healthEl.textContent = (engineMetrics.totalClients || 0) + ' clients · ' + (engineMetrics.totalAssignments || 0) + ' commissions';
+            }
+            return;
+        }
+
+        copy.textContent = 'Deploy the Firebase functions engine to move reviews, commissions, clients, inventory alerts and summaries out of the browser.';
+        modeEl.textContent = 'Browser fallback still active';
+        lastSyncEl.textContent = 'Waiting for backend deploy';
+        alertsEl.textContent = 'No backend metrics yet';
+        healthEl.textContent = 'Use Backfill & Sync after deploy';
+    }
+
+    function loadEngineStatus() {
+        db.ref('automationV2/system/status').on('value', function(snap) {
+            engineStatus = snap.val() || {};
+            renderEngineStatus();
+        });
+        db.ref('automationV2/system/metrics').on('value', function(snap) {
+            engineMetrics = snap.val() || {};
+            renderEngineStatus();
+        });
+    }
+
+    AM.requestEngineCommand = function(type, extra) {
+        var payload = Object.assign({
+            type: type,
+            requestedBy: 'admin_panel',
+            createdAt: new Date().toISOString()
+        }, extra || {});
+        return db.ref('automationV2/commands').push(payload).then(function() {
+            showToast(isBackendOwned() ? 'Automation command queued' : 'Command saved. Deploy the backend to process it.', isBackendOwned() ? 'success' : 'warning');
+            logActivity('automation', 'Command queued: ' + type);
+        });
+    };
+
+    AM.requestRebuild = function() {
+        return AM.requestEngineCommand('rebuild_projections');
+    };
+
+    AM.requestMetricRefresh = function() {
+        return AM.requestEngineCommand('refresh_metrics');
+    };
 
     function parseLinkedServiceIds() {
         var linkedChecks = document.querySelectorAll('.am-svc-check:checked');
@@ -303,6 +387,7 @@
 
     // Auto-decrement stock on confirmed payment
     AM.autoDecrementStock = function(paymentKey) {
+        if (isBackendOwned()) return;
         db.ref('payments/' + paymentKey).once('value', function(snap) {
             var payment = snap.val();
             if (!payment || !payment.items) return;
@@ -478,6 +563,7 @@
 
     // Queue review on payment confirm
     AM.queueReviewRequest = function(paymentKey) {
+        if (isBackendOwned()) return;
         db.ref('autoManager/reviews/settings').once('value', function(snap) {
             var settings = snap.val();
             if (!settings || settings.autoQueueEnabled === false || !settings.googleReviewUrl) return;
@@ -856,6 +942,7 @@
     };
 
     AM.autoAssignCommission = function(paymentKey) {
+        if (isBackendOwned()) return;
         db.ref('payments/' + paymentKey).once('value', function(snap) {
             var payment = snap.val();
             if (!payment) return;
@@ -941,7 +1028,9 @@
             paymentKey: paymentKey, amount: amount || 0,
             commission: Math.round(commission * 100) / 100, rate: rate,
             date: new Date().toISOString().split('T')[0], service: service || 'Service',
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            manualOverride: true,
+            source: 'manual'
         });
         showToast(staffMatch.name + ' assigned (£' + commission.toFixed(2) + ' commission)', 'success');
     };
@@ -955,12 +1044,6 @@
         db.ref('autoManager/clients').on('value', function(snap) {
             clientProfiles = snap.val() || {};
             renderClients();
-        });
-
-        db.ref('autoManager/meta/clientsBuilt').once('value', function(snap) {
-            if (!snap.exists()) {
-                rebuildClientIntelligence();
-            }
         });
     }
 
@@ -976,40 +1059,6 @@
             total: booking.service && booking.service.price ? booking.service.price : 0,
             createdAt: booking.createdAt || new Date().toISOString()
         };
-    }
-
-    function rebuildClientIntelligence() {
-        db.ref('visits').once('value', function(vSnap) {
-            var clients = {};
-            var visits = vSnap.val();
-
-            if (visits) {
-                Object.keys(visits).forEach(function(visitKey) {
-                    upsertClientFromVisitRecord(clients, visits[visitKey]);
-                });
-            }
-
-            if (Object.keys(clients).length > 0) {
-                db.ref('autoManager/clients').set(clients);
-                db.ref('autoManager/meta/clientsBuilt').set(true);
-                return;
-            }
-
-            db.ref('bookings').once('value', function(bSnap) {
-                var bookings = bSnap.val();
-                if (!bookings) {
-                    db.ref('autoManager/meta/clientsBuilt').set(true);
-                    return;
-                }
-
-                Object.keys(bookings).forEach(function(bookingKey) {
-                    upsertClientFromVisitRecord(clients, buildLegacyVisitFromBooking(bookings[bookingKey]));
-                });
-
-                db.ref('autoManager/clients').set(clients);
-                db.ref('autoManager/meta/clientsBuilt').set(true);
-            });
-        });
     }
 
     function getTopKey(obj) {
@@ -1035,11 +1084,19 @@
 
     AM.updateClientFromBooking = function(booking) {
         if (!booking) return;
+        if (isBackendOwned()) return;
+        var bookingKey = booking._key || [booking.name, booking.date, booking.time, booking.phone].join('|');
+        if (bookingKey && bookingKey === lastLegacyBookingClientKey) return;
+        lastLegacyBookingClientKey = bookingKey;
         updateClientFromVisitRecord(buildLegacyVisitFromBooking(booking));
     };
 
     AM.updateClientFromVisit = function(visit) {
         if (!visit) return;
+        if (isBackendOwned()) return;
+        var visitKey = visit._key || visit.paymentKey || visit.createdAt || '';
+        if (visitKey && visitKey === lastLegacyVisitClientKey) return;
+        lastLegacyVisitClientKey = visitKey;
         updateClientFromVisitRecord(visit);
     };
 
@@ -1102,6 +1159,7 @@
     // ================================================================
 
     AM.onPaymentConfirmed = function(paymentKey) {
+        if (isBackendOwned()) return;
         AM.autoDecrementStock(paymentKey);
         AM.queueReviewRequest(paymentKey);
         AM.autoAssignCommission(paymentKey);
@@ -1113,6 +1171,7 @@
     // ================================================================
 
     AM.init = function() {
+        loadEngineStatus();
         buildServiceMap();
         loadInventory();
         loadReviews();

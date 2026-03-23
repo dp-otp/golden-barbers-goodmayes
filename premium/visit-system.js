@@ -215,6 +215,7 @@
         if (status === 'confirmed') return 'Confirmed';
         if (status === 'completed_pending_payment') return 'Awaiting payment check';
         if (status === 'completed') return 'Completed';
+        if (status === 'no_show') return 'No-show';
         if (status === 'cancelled') return 'Cancelled';
         if (status === 'rejected') return 'Rejected';
         return status ? status.replace(/_/g, ' ') : 'Pending';
