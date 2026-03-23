@@ -125,26 +125,26 @@
         if (!pill || !copy || !modeEl || !lastSyncEl || !alertsEl || !healthEl) return;
 
         backendOwned = !!(engineStatus && engineStatus.backendOwned);
-        pill.textContent = backendOwned ? 'Backend Live' : 'Legacy Frontend';
+        pill.textContent = backendOwned ? 'Server Active' : 'Browser Mode';
         pill.className = 'am-engine-pill ' + (backendOwned ? 'live' : 'legacy');
 
         if (backendOwned) {
-            copy.textContent = 'Reviews, commissions, clients, inventory alerts and summaries are now projected from Firebase Functions instead of fragile browser logic.';
-            modeEl.textContent = 'Backend-owned projections';
+            copy.textContent = 'Reviews, commissions, clients, inventory alerts and summaries are now running on a server for faster, more reliable automation.';
+            modeEl.textContent = 'Running on server';
             lastSyncEl.textContent = formatDateTime(engineStatus.lastVisitSyncAt || engineStatus.lastPendingAuditAt || engineStatus.updatedAt);
             alertsEl.textContent = (engineMetrics.stalePendingPayments || 0) + ' stale payments · ' + (engineMetrics.lowStockAlerts || 0) + ' low stock';
             if (engineStatus.lastCommandStatus === 'failed') {
-                healthEl.textContent = 'Command failed: ' + (engineStatus.lastErrorMessage || 'Check Firebase logs');
+                healthEl.textContent = 'Something went wrong: ' + (engineStatus.lastErrorMessage || 'Check the server logs');
             } else {
                 healthEl.textContent = (engineMetrics.totalClients || 0) + ' clients · ' + (engineMetrics.totalAssignments || 0) + ' commissions';
             }
             return;
         }
 
-        copy.textContent = 'Deploy the Firebase functions engine to move reviews, commissions, clients, inventory alerts and summaries out of the browser.';
-        modeEl.textContent = 'Browser fallback still active';
-        lastSyncEl.textContent = 'Waiting for backend deploy';
-        alertsEl.textContent = 'No backend metrics yet';
+        copy.textContent = 'Upgrade to server-based automation for reviews, commissions, clients, inventory alerts and summaries &#8212; faster and more reliable.';
+        modeEl.textContent = 'Running in your browser';
+        lastSyncEl.textContent = 'Not upgraded yet';
+        alertsEl.textContent = 'No server stats yet';
         healthEl.textContent = 'Use Backfill & Sync after deploy';
     }
 
@@ -166,7 +166,7 @@
             createdAt: new Date().toISOString()
         }, extra || {});
         return db.ref('automationV2/commands').push(payload).then(function() {
-            showToast(isBackendOwned() ? 'Automation command queued' : 'Command saved. Deploy the backend to process it.', isBackendOwned() ? 'success' : 'warning');
+            showToast(isBackendOwned() ? 'Automation command queued' : 'Command saved. Upgrade to server mode to process it automatically.', isBackendOwned() ? 'success' : 'warning');
             logActivity('automation', 'Command queued: ' + type);
         });
     };
