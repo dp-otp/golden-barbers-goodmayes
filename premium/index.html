@@ -2909,6 +2909,55 @@
         /* Theme color overrides */
         body.themed { transition: background-color 0.5s; }
     </style>
+    <script>
+        (function () {
+            function rgb(hex) {
+                hex = (hex || '').replace('#', '');
+                if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+                var r = parseInt(hex.slice(0, 2), 16);
+                var g = parseInt(hex.slice(2, 4), 16);
+                var b = parseInt(hex.slice(4, 6), 16);
+                return { r: isNaN(r) ? 212 : r, g: isNaN(g) ? 175 : g, b: isNaN(b) ? 55 : b };
+            }
+            function hex(r, g, b) {
+                return '#' + [r, g, b].map(function (c) {
+                    return Math.max(0, Math.min(255, Math.round(c))).toString(16).padStart(2, '0');
+                }).join('');
+            }
+            function shade(value, amount) {
+                var c = rgb(value);
+                return hex(c.r * (1 - amount), c.g * (1 - amount), c.b * (1 - amount));
+            }
+            function tint(value, amount) {
+                var c = rgb(value);
+                return hex(c.r + (255 - c.r) * amount, c.g + (255 - c.g) * amount, c.b + (255 - c.b) * amount);
+            }
+            function alpha(value, amount) {
+                var c = rgb(value);
+                return 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + amount + ')';
+            }
+            try {
+                var raw = localStorage.getItem('gb_site_theme_cache_v1');
+                if (!raw) return;
+                var data = JSON.parse(raw);
+                if (!data || !data.themeId) return;
+                var root = document.documentElement;
+                var styles = getComputedStyle(root);
+                var accentKey = ({ christmas: 'secondary' })[data.themeId] || 'primary';
+                var accent = (data.colors && (data.colors[accentKey] || data.colors.primary)) || '#d4af37';
+                ['--gold', '--gold-dark', '--gold-light', '--gold-glow', '--gold-neon'].forEach(function (name) {
+                    var attr = 'data-gb-base-' + name.replace(/^--/, '').replace(/[^a-z0-9]+/gi, '-').toLowerCase();
+                    if (!root.hasAttribute(attr)) root.setAttribute(attr, styles.getPropertyValue(name).trim());
+                });
+                root.style.setProperty('--gold', accent);
+                root.style.setProperty('--gold-dark', shade(accent, 0.3));
+                root.style.setProperty('--gold-light', tint(accent, 0.35));
+                root.style.setProperty('--gold-glow', alpha(accent, 0.5));
+                root.style.setProperty('--gold-neon', tint(accent, 0.2));
+                root.setAttribute('data-gb-theme', 'active');
+            } catch (err) {}
+        })();
+    </script>
 </head>
 <body>
 
@@ -3981,7 +4030,7 @@
 
     <script src="christmas-svgs.js"></script>
     <script src="seasonal-overlays-engine.js?v=3"></script>
-    <script src="theme-effects.js?v=20"></script>
+    <script src="theme-effects.js?v=21"></script>
     <!-- Firebase Live Data Integration -->
     <script>
         (function() {

@@ -17,6 +17,7 @@
     var state = {
         active: false,
         themeId: null,
+        themeSignature: null,
         savedVars: null,
         styleEl: null,
         animStyleEl: null,
@@ -29,6 +30,7 @@
 
     var isMobile = window.innerWidth < 768;
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var CACHE_KEY = 'gb_site_theme_cache_v1';
 
     window.addEventListener('resize', function () { isMobile = window.innerWidth < 768; });
 
@@ -73,6 +75,33 @@
     function getAccent(data) {
         var key = ACCENT_KEY[data.themeId] || 'primary';
         return (data.colors && data.colors[key]) || (data.colors && data.colors.primary) || '#d4af37';
+    }
+
+    function serializeThemeData(data) {
+        try { return JSON.stringify(data || null) || ''; }
+        catch (err) { return String(data && data.themeId || ''); }
+    }
+
+    function cacheTheme(data) {
+        try {
+            if (data && data.themeId) localStorage.setItem(CACHE_KEY, serializeThemeData(data));
+            else localStorage.removeItem(CACHE_KEY);
+        } catch (err) {}
+    }
+
+    function getBaseVarAttrName(v) {
+        return 'data-gb-base-' + v.replace(/^--/, '').replace(/[^a-z0-9]+/gi, '-').toLowerCase();
+    }
+
+    function getBaseVars(root) {
+        var vars = ['--gold','--gold-dark','--gold-light','--gold-glow','--gold-neon'];
+        var styles = getComputedStyle(root);
+        var saved = {};
+        vars.forEach(function(v) {
+            var attr = root.getAttribute(getBaseVarAttrName(v));
+            saved[v] = attr != null && attr !== '' ? attr : (styles.getPropertyValue(v).trim() || '');
+        });
+        return saved;
     }
 
     /* ═══════════════════════════════════════════
@@ -850,11 +879,7 @@
         var accentNeon = lighten(accent, 0.2);
 
         // Save originals for restore
-        var vars = ['--gold','--gold-dark','--gold-light','--gold-glow','--gold-neon'];
-        state.savedVars = {};
-        vars.forEach(function(v) {
-            state.savedVars[v] = getComputedStyle(root).getPropertyValue(v).trim();
-        });
+        state.savedVars = getBaseVars(root);
 
         root.style.setProperty('--gold', accent);
         root.style.setProperty('--gold-dark', accentDark);
@@ -862,7 +887,8 @@
         root.style.setProperty('--gold-glow', accentGlow);
         root.style.setProperty('--gold-neon', accentNeon);
 
-        document.body.setAttribute('data-gb-theme', 'active');
+        root.setAttribute('data-gb-theme', 'active');
+        if (document.body) document.body.setAttribute('data-gb-theme', 'active');
 
         // Additional themed CSS for sections
         state.themeStyleEl = document.createElement('style');
@@ -907,16 +933,27 @@
     }
 
     function restoreCSS() {
-        if (state.savedVars) {
-            var root = document.documentElement;
-            Object.keys(state.savedVars).forEach(function(v) {
-                if (state.savedVars[v]) root.style.setProperty(v, state.savedVars[v]);
-                else root.style.removeProperty(v);
-            });
-            state.savedVars = null;
-        }
-        document.body.removeAttribute('data-gb-theme');
+        var root = document.documentElement;
+        var vars = state.savedVars || getBaseVars(root);
+        Object.keys(vars).forEach(function(v) {
+            if (vars[v]) root.style.setProperty(v, vars[v]);
+            else root.style.removeProperty(v);
+        });
+        state.savedVars = null;
+        root.removeAttribute('data-gb-theme');
+        if (document.body) document.body.removeAttribute('data-gb-theme');
+
         if (state.themeStyleEl) { state.themeStyleEl.remove(); state.themeStyleEl = null; }
+    }
+
+    function hasAppliedThemeState() {
+        return state.active
+            || document.documentElement.hasAttribute('data-gb-theme')
+            || !!(document.body && document.body.hasAttribute('data-gb-theme'));
+    }
+
+    function clearCachedTheme() {
+        cacheTheme(null);
     }
 
     /* ═══════════════════════════════════════════
@@ -1653,12 +1690,15 @@
 
     function apply(data) {
         if (!data || !data.themeId) { remove(); return; }
-        if (state.active && state.themeId === data.themeId) return;
+        var signature = serializeThemeData(data);
+        if (state.active && state.themeSignature === signature) return;
         remove();
 
         var accent = getAccent(data);
         state.active = true;
         state.themeId = data.themeId;
+        state.themeSignature = signature;
+        cacheTheme(data);
 
         // 1. Override CSS variables (all pages - for consistent accent colors)
         applyCSS(accent, data.colors);
@@ -1695,7 +1735,13 @@
        REMOVE THEME
     ═══════════════════════════════════════════ */
     function remove() {
-        if (!state.active) return;
+        if (!hasAppliedThemeState()) {
+            clearCachedTheme();
+            state.active = false;
+            state.themeId = null;
+            state.themeSignature = null;
+            return;
+        }
 
         // Remove decoration container (removes all decorations at once)
         if (state.container) { state.container.remove(); state.container = null; }
@@ -1713,9 +1759,11 @@
 
         // Restore CSS variables
         restoreCSS();
+        clearCachedTheme();
 
         state.active = false;
         state.themeId = null;
+        state.themeSignature = null;
     }
 
     /* ═══════════════════════════════════════════
