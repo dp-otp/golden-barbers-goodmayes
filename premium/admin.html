@@ -3434,6 +3434,105 @@
             .am-client-meta { flex-direction: column; gap: 2px; }
         }
 
+        /* ==================== GUIDE PAGE STYLES ==================== */
+        .guide-header { text-align: center; margin-bottom: 28px; }
+        .guide-header h2 { color: #d4af37; font-size: 24px; margin-bottom: 6px; }
+        .guide-header p { color: #888; font-size: 13px; }
+
+        .guide-search { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 14px 18px 14px 44px; color: #fff; font-size: 14px; margin-bottom: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 14px center; }
+        .guide-search::placeholder { color: #555; }
+        .guide-search:focus { border-color: rgba(212,175,55,0.5); outline: none; }
+
+        .guide-progress { background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.15); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 16px; }
+        .guide-progress-ring { width: 52px; height: 52px; flex-shrink: 0; }
+        .guide-progress-ring circle { fill: none; stroke-width: 4; }
+        .guide-progress-ring .ring-bg { stroke: rgba(255,255,255,0.08); }
+        .guide-progress-ring .ring-fill { stroke: #d4af37; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease; transform: rotate(-90deg); transform-origin: center; }
+        .guide-progress-info { flex: 1; }
+        .guide-progress-label { color: #d4af37; font-weight: 700; font-size: 15px; }
+        .guide-progress-sub { color: #888; font-size: 12px; margin-top: 2px; }
+        .guide-progress-pct { color: #d4af37; font-size: 22px; font-weight: 700; }
+
+        .guide-quickstart { background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(78,203,113,0.05)); border: 1px solid rgba(212,175,55,0.2); border-radius: 14px; padding: 20px; margin-bottom: 24px; }
+        .guide-quickstart-title { color: #d4af37; font-size: 16px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .guide-checklist { list-style: none; padding: 0; margin: 0; }
+        .guide-checklist li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); color: #ccc; font-size: 13px; cursor: pointer; transition: opacity 0.2s; }
+        .guide-checklist li:last-child { border-bottom: none; }
+        .guide-checklist li .check-box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; margin-top: 1px; }
+        .guide-checklist li.done { opacity: 0.45; }
+        .guide-checklist li.done .check-box { background: #4ecb71; border-color: #4ecb71; }
+        .guide-checklist li.done .check-box::after { content: '\2713'; color: #000; font-size: 12px; font-weight: 700; }
+        .guide-checklist li .check-content strong { color: #fff; }
+        .guide-checklist li .check-go { margin-left: auto; padding: 4px 12px; border-radius: 6px; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.25); color: #d4af37; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+        .guide-checklist li .check-go:hover { background: rgba(212,175,55,0.25); }
+
+        .guide-group { margin-bottom: 20px; }
+        .guide-group-label { color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 10px; padding-left: 4px; }
+
+        .guide-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden; transition: border-color 0.2s; }
+        .guide-card:hover { border-color: rgba(212,175,55,0.2); }
+        .guide-card.open { border-color: rgba(212,175,55,0.3); }
+        .guide-card-head { padding: 16px 18px; cursor: pointer; display: flex; align-items: center; gap: 14px; }
+        .guide-card-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+        .guide-card-icon.blue { background: rgba(91,168,255,0.12); }
+        .guide-card-icon.green { background: rgba(78,203,113,0.12); }
+        .guide-card-icon.gold { background: rgba(212,175,55,0.12); }
+        .guide-card-icon.red { background: rgba(255,107,107,0.12); }
+        .guide-card-icon.purple { background: rgba(168,85,247,0.12); }
+        .guide-card-title { flex: 1; }
+        .guide-card-title h4 { color: #fff; font-size: 14px; margin: 0 0 2px 0; }
+        .guide-card-title span { color: #888; font-size: 12px; }
+        .guide-card-arrow { color: #555; font-size: 18px; transition: transform 0.3s; }
+        .guide-card.open .guide-card-arrow { transform: rotate(180deg); color: #d4af37; }
+
+        .guide-card-body { display: none; padding: 0 18px 18px; }
+        .guide-card.open .guide-card-body { display: block; }
+
+        .guide-flow { display: flex; flex-direction: column; gap: 0; margin: 10px 0; }
+        .guide-step { display: flex; gap: 12px; position: relative; }
+        .guide-step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(212,175,55,0.15); color: #d4af37; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; }
+        .guide-step-line { position: absolute; left: 13px; top: 28px; bottom: -12px; width: 2px; background: rgba(255,255,255,0.06); }
+        .guide-step:last-child .guide-step-line { display: none; }
+        .guide-step-content { flex: 1; padding-bottom: 16px; }
+        .guide-step-content strong { color: #fff; font-size: 13px; display: block; margin-bottom: 3px; }
+        .guide-step-content p { color: #999; font-size: 12px; margin: 0; line-height: 1.5; }
+
+        .guide-tip { background: rgba(78,203,113,0.06); border-left: 3px solid #4ecb71; border-radius: 0 8px 8px 0; padding: 10px 14px; margin: 10px 0; }
+        .guide-tip strong { color: #4ecb71; font-size: 12px; }
+        .guide-tip p { color: #aaa; font-size: 12px; margin: 3px 0 0; }
+
+        .guide-warn { background: rgba(255,107,107,0.06); border-left: 3px solid #ff6b6b; border-radius: 0 8px 8px 0; padding: 10px 14px; margin: 10px 0; }
+        .guide-warn strong { color: #ff6b6b; font-size: 12px; }
+        .guide-warn p { color: #aaa; font-size: 12px; margin: 3px 0 0; }
+
+        .guide-keys { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+        .guide-key { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 12px; color: #ccc; }
+        .guide-key kbd { background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.3); border-radius: 4px; padding: 2px 6px; color: #d4af37; font-family: monospace; font-size: 11px; }
+
+        .guide-tryit { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3); border-radius: 8px; color: #d4af37; font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 8px; transition: all 0.2s; }
+        .guide-tryit:hover { background: rgba(212,175,55,0.25); }
+
+        .guide-visual { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 16px; margin: 12px 0; text-align: center; }
+        .guide-visual-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .guide-visual-flow { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .guide-visual-node { padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; }
+        .guide-visual-node.action { background: rgba(91,168,255,0.15); color: #5ba8ff; border: 1px solid rgba(91,168,255,0.3); }
+        .guide-visual-node.auto { background: rgba(78,203,113,0.15); color: #4ecb71; border: 1px solid rgba(78,203,113,0.3); }
+        .guide-visual-node.result { background: rgba(212,175,55,0.15); color: #d4af37; border: 1px solid rgba(212,175,55,0.3); }
+        .guide-visual-arrow { color: #555; font-size: 16px; }
+
+        .guide-hidden { display: none !important; }
+
+        @media (max-width: 600px) {
+            .guide-progress { flex-wrap: wrap; }
+            .guide-card-head { padding: 14px; gap: 10px; }
+            .guide-card-icon { width: 32px; height: 32px; font-size: 15px; }
+            .guide-card-title h4 { font-size: 13px; }
+            .guide-checklist li .check-go { padding: 4px 8px; font-size: 10px; }
+            .guide-visual-flow { flex-direction: column; }
+            .guide-visual-arrow { transform: rotate(90deg); }
+        }
+
     </style>
 </head>
 <body>
@@ -3543,6 +3642,7 @@
             <button type="button" class="admin-nav-btn" data-target="gallery">Gallery</button>
             <button type="button" class="admin-nav-btn" data-target="settings">Settings</button>
             <button type="button" class="admin-nav-btn" data-target="automanager" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.25);color:#d4af37;">Automation</button>
+            <button type="button" class="admin-nav-btn" data-target="guide" style="background:rgba(91,168,255,0.1);border:1px solid rgba(91,168,255,0.25);color:#5ba8ff;">Guide</button>
         </div>
 
         <!-- Sub-navigation strip (for grouped tabs like Money, Team, Content) -->
@@ -4691,6 +4791,491 @@
             </div>
         </div>
 
+        <!-- ==================== GUIDE SECTION ==================== -->
+        <div class="admin-section" id="section-guide">
+
+            <div class="guide-header">
+                <h2>Admin Guide</h2>
+                <p>Interactive walkthrough of every feature. Tap any card to learn, then hit "Try It" to jump straight there.</p>
+            </div>
+
+            <input type="text" class="guide-search" id="guideSearch" placeholder="Search for any feature..." oninput="filterGuide()">
+
+            <!-- Progress Ring -->
+            <div class="guide-progress" id="guideProgress">
+                <svg class="guide-progress-ring" viewBox="0 0 52 52">
+                    <circle class="ring-bg" cx="26" cy="26" r="22"/>
+                    <circle class="ring-fill" id="guideRingFill" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="138.2"/>
+                </svg>
+                <div class="guide-progress-info">
+                    <div class="guide-progress-label">Your Progress</div>
+                    <div class="guide-progress-sub"><span id="guideLearnedCount">0</span> of <span id="guideTotalCount">0</span> sections explored</div>
+                </div>
+                <div class="guide-progress-pct" id="guideProgressPct">0%</div>
+            </div>
+
+            <!-- Quick Start Checklist -->
+            <div class="guide-quickstart" data-guide-search="quick start setup first time checklist getting started">
+                <div class="guide-quickstart-title">&#9889; First-Time Setup Checklist</div>
+                <ul class="guide-checklist" id="guideChecklist">
+                    <li data-check="staff" onclick="toggleGuideCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-content"><strong>Add your barbers</strong><br>Go to Staff and add each barber's name so bookings and commissions track correctly.</div>
+                        <button class="check-go" onclick="event.stopPropagation();navTo('visits')">Go &#8594;</button>
+                    </li>
+                    <li data-check="prices" onclick="toggleGuideCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-content"><strong>Set your service prices</strong><br>Update haircut, beard, and add-on prices. These show on the booking page and calculate revenue.</div>
+                        <button class="check-go" onclick="event.stopPropagation();navTo('website')">Go &#8594;</button>
+                    </li>
+                    <li data-check="hours" onclick="toggleGuideCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-content"><strong>Set opening hours</strong><br>Under Settings, configure your shop hours for each day. This controls the booking calendar.</div>
+                        <button class="check-go" onclick="event.stopPropagation();switchSection('settings')">Go &#8594;</button>
+                    </li>
+                    <li data-check="gallery" onclick="toggleGuideCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-content"><strong>Upload gallery photos</strong><br>Add your best work to the gallery. Mark photos as "Live" to show them on the website.</div>
+                        <button class="check-go" onclick="event.stopPropagation();navTo('website')">Go &#8594;</button>
+                    </li>
+                    <li data-check="goal" onclick="toggleGuideCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-content"><strong>Set a revenue goal</strong><br>Pick a daily target on the Dashboard. The progress bar keeps you motivated.</div>
+                        <button class="check-go" onclick="event.stopPropagation();navTo('today')">Go &#8594;</button>
+                    </li>
+                    <li data-check="expenses" onclick="toggleGuideCheck(this)">
+                        <div class="check-box"></div>
+                        <div class="check-content"><strong>Add recurring expenses</strong><br>Enter rent, bills, and regular costs in Auto-Manager so profit calculates automatically.</div>
+                        <button class="check-go" onclick="event.stopPropagation();navTo('advanced')">Go &#8594;</button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- ====== GROUP: TODAY ====== -->
+            <div class="guide-group" data-guide-group="today">
+                <div class="guide-group-label">Today</div>
+
+                <div class="guide-card" data-guide-search="dashboard overview stats revenue goal briefing alerts home" data-guide-id="dashboard">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon gold">&#127968;</div>
+                        <div class="guide-card-title"><h4>Dashboard</h4><span>Live stats, revenue goal, daily briefing, smart alerts</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-visual">
+                            <div class="guide-visual-label">What you see at a glance</div>
+                            <div class="guide-visual-flow">
+                                <div class="guide-visual-node action">Week Revenue</div>
+                                <div class="guide-visual-node action">Today's Revenue</div>
+                                <div class="guide-visual-node action">Staff On</div>
+                                <div class="guide-visual-node action">Active Discounts</div>
+                            </div>
+                        </div>
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Stats Bar</strong><p>Five tiles at the top update in real-time: week revenue, today's payment count, today's revenue, staff on duty, active discount codes.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Daily Briefing</strong><p>Morning-style summary: yesterday's takings, booking count, who's working, week total. Glance at it when you open up.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Revenue Goal</strong><p>Tap a preset (&#163;200&#8211;&#163;1000) or type a custom target. The gold progress bar fills as confirmed payments come in.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Smart Alerts</strong><p>Yellow banners auto-appear when something needs attention: pending payments, low stock, unassigned commissions.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">5</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Quick Actions</strong><p><strong>Toggle Shop Status</strong> flips OPEN/CLOSED on the website. <strong>Holiday Mode</strong> blocks all bookings. <strong>Emergency Close</strong> shuts everything instantly.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">6</div><div class="guide-step-content"><strong>Cash Panel</strong><p>Expand to see quick-log buttons (&#163;5&#8211;&#163;100 or custom). Each tap instantly creates a confirmed cash payment record.</p></div></div>
+                        </div>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>The Revenue Hero card breaks down QR vs Cash totals and shows average spend per customer.</p></div>
+                        <button class="guide-tryit" onclick="navTo('today')">&#9654; Try It &#8212; Go to Dashboard</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="payments pending confirmed verify cash payment feed" data-guide-id="payments">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon green">&#128176;</div>
+                        <div class="guide-card-title"><h4>Payment Feed</h4><span>Verify, confirm or reject incoming payments</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-visual">
+                            <div class="guide-visual-label">Payment lifecycle</div>
+                            <div class="guide-visual-flow">
+                                <div class="guide-visual-node action">Customer Pays</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node auto">Appears Pending</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node action">You Verify Amount</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node result">Confirmed</div>
+                            </div>
+                        </div>
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Pending Tab</strong><p>New QR payments land here with a yellow badge. The count tells you how many are waiting.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Confirm Payment</strong><p>Tap "Confirm" and enter the exact amount that landed in your bank. Mismatches are blocked to prevent errors.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>What Fires Automatically</strong><p>Three things: product stock decrements, a Google review request queues, and barber commission assigns. Zero manual work.</p></div></div>
+                        </div>
+                        <div class="guide-warn"><strong>Important</strong><p>Never confirm until money is in your bank. The amount verification exists to catch fraud.</p></div>
+                        <button class="guide-tryit" onclick="navTo('today')">&#9654; Try It &#8212; Check Payments</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== GROUP: TRANSACTIONS ====== -->
+            <div class="guide-group" data-guide-group="transactions">
+                <div class="guide-group-label">Transactions</div>
+
+                <div class="guide-card" data-guide-search="revenue money transactions income total earnings" data-guide-id="revenue">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon green">&#128200;</div>
+                        <div class="guide-card-title"><h4>Revenue Tracking</h4><span>All payment records, filter by period</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Period Tabs</strong><p>Switch between This Week, This Month, and All Time to see payment history for different ranges.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Each Entry Shows</strong><p>Payment reference, amount, service items, date/time, and status (confirmed/pending/rejected).</p></div></div>
+                        </div>
+                        <button class="guide-tryit" onclick="navTo('transactions')">&#9654; Try It &#8212; View Revenue</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="reports analytics summary weekly monthly performance" data-guide-id="reports">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon blue">&#128202;</div>
+                        <div class="guide-card-title"><h4>Reports</h4><span>Weekly/monthly summaries you can copy and share</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Pick a Period</strong><p>Tap "This Week", "Last Week", or "This Month". The report generates instantly from live payment data.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Copy Report</strong><p>Hit copy to get a clean text summary you can paste into WhatsApp, Notes, or send to your accountant.</p></div></div>
+                        </div>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>Run "This Month" on the last day of each month and save it. Builds a history for month-over-month comparison.</p></div>
+                        <button class="guide-tryit" onclick="navTo('transactions')">&#9654; Try It &#8212; Generate Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== GROUP: VISITS ====== -->
+            <div class="guide-group" data-guide-group="visits">
+                <div class="guide-group-label">Visits</div>
+
+                <div class="guide-card" data-guide-search="bookings visits appointments customers calendar" data-guide-id="bookings">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon blue">&#128197;</div>
+                        <div class="guide-card-title"><h4>Bookings</h4><span>All online bookings and visit records</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Booking List</strong><p>Every online booking sorted newest-first: customer name, phone, service, barber, date and time.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Auto-tracking</strong><p>Each booking automatically updates the client's profile in Auto-Manager: visit count, preferred barber, preferred service.</p></div></div>
+                        </div>
+                        <button class="guide-tryit" onclick="navTo('visits')">&#9654; Try It &#8212; View Bookings</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="staff barbers team members add remove" data-guide-id="staff">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon purple">&#128119;</div>
+                        <div class="guide-card-title"><h4>Staff Management</h4><span>Add barbers, manage your team</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Add a Barber</strong><p>Type their name and tap Add. They appear on the booking page and in the commission calculator.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Remove / Edit</strong><p>Use edit and delete buttons. Removing a barber won't delete their historical data.</p></div></div>
+                        </div>
+                        <div class="guide-warn"><strong>Important</strong><p>Staff names must match exactly. If a barber is "Mo" here, bookings saying "Mohammed" won't auto-assign commissions.</p></div>
+                        <button class="guide-tryit" onclick="navTo('visits')">&#9654; Try It &#8212; Manage Staff</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="contacts phone emergency instagram google maps" data-guide-id="contacts">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon green">&#128222;</div>
+                        <div class="guide-card-title"><h4>Contacts</h4><span>Quick-dial emergency numbers and business links</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <p style="color:#999;font-size:13px;">One-tap access to emergency services (999, 101), your Instagram, Google Maps listing, QR admin page, and customer pay page.</p>
+                        <button class="guide-tryit" onclick="navTo('visits')">&#9654; Try It &#8212; View Contacts</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== GROUP: WEBSITE ====== -->
+            <div class="guide-group" data-guide-group="website">
+                <div class="guide-group-label">Website</div>
+
+                <div class="guide-card" data-guide-search="prices services haircut beard add-on pricing cost" data-guide-id="prices">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon gold">&#163;</div>
+                        <div class="guide-card-title"><h4>Service Prices</h4><span>Set prices for haircuts, beards, and add-ons</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Three Categories</strong><p>Haircuts (Skin Fade, Scissors Cut), Beard (Trim, Hot Towel Shave), and Add-ons (Hair Wash, Eyebrows).</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Edit &amp; Save</strong><p>Change any name or price inline, then Save. Changes go live on the booking page immediately.</p></div></div>
+                        </div>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>Price changes don't affect existing confirmed payments &#8212; only new bookings and the pay page.</p></div>
+                        <button class="guide-tryit" onclick="navTo('website')">&#9654; Try It &#8212; Edit Prices</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="gallery photos videos upload images live" data-guide-id="gallery">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon blue">&#128247;</div>
+                        <div class="guide-card-title"><h4>Gallery</h4><span>Upload photos/videos and control what's live on site</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Upload</strong><p>Tap the upload area or drag photos/videos onto it. They upload to Cloudinary and appear in the grid.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Make Live</strong><p>Tap "Make Live" and pick a category (Fades, Beards, etc.) so it appears in the right website section.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Manage Visibility</strong><p>Switch between Visible and Hidden tabs. Un-live or delete photos at any time.</p></div></div>
+                        </div>
+                        <button class="guide-tryit" onclick="navTo('website')">&#9654; Try It &#8212; Manage Gallery</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="themes seasonal design sticky bar popup overlay" data-guide-id="themes">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon purple">&#127912;</div>
+                        <div class="guide-card-title"><h4>Themes</h4><span>Seasonal overlays, sticky bars, and popups</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Apply a Theme</strong><p>Pick from the grid (Eid, Christmas, Summer, etc.). Adds a visual overlay and optional discount to the website.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Sticky Bar</strong><p>A thin banner at the top of every page. Toggle on, type your message, and it's live instantly.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Popup</strong><p>A one-time popup for visitors. Set title, discount code, and display duration. Toggle on/off anytime.</p></div></div>
+                        </div>
+                        <button class="guide-tryit" onclick="navTo('website')">&#9654; Try It &#8212; Browse Themes</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="discounts codes coupons promo percentage fixed" data-guide-id="discounts">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon red">&#127991;</div>
+                        <div class="guide-card-title"><h4>Discount Codes</h4><span>Create and manage discount codes</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Create a Code</strong><p>Type a code (or auto-generate), pick percentage/fixed, set dates and max uses. Tap Add.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Customer Uses It</strong><p>Customers enter the code on the pay page. Discount applies before payment. Usage counts track automatically.</p></div></div>
+                        </div>
+                        <button class="guide-tryit" onclick="navTo('website')">&#9654; Try It &#8212; Create Discount</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="announcement banner notice message" data-guide-id="announce">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon gold">&#128227;</div>
+                        <div class="guide-card-title"><h4>Announcements</h4><span>Website-wide announcement banner</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <p style="color:#999;font-size:13px;margin-bottom:8px;">Toggle on, type your message, pick a colour. Displays across the top of the website. Toggle off to remove instantly.</p>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>Use for temporary info: "Back in 30 mins", "Closed for refurb until Monday", "Walk-ins only today".</p></div>
+                        <button class="guide-tryit" onclick="switchSection('announce')">&#9654; Try It &#8212; Set Announcement</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== GROUP: ADVANCED ====== -->
+            <div class="guide-group" data-guide-group="advanced">
+                <div class="guide-group-label">Advanced &#8212; Auto-Manager</div>
+
+                <div class="guide-card" data-guide-search="automation auto-manager engine system backend hook" data-guide-id="automation">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon gold">&#9881;</div>
+                        <div class="guide-card-title"><h4>How Auto-Manager Works</h4><span>The automation engine behind the scenes</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-visual">
+                            <div class="guide-visual-label">What happens when you confirm a payment</div>
+                            <div class="guide-visual-flow">
+                                <div class="guide-visual-node action">Confirm Payment</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node auto">Stock Decrements</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node auto">Review Queues</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node auto">Commission Assigns</div>
+                            </div>
+                        </div>
+                        <p style="color:#999;font-size:13px;margin:12px 0;">Every payment confirmation triggers three systems at once. You don't lift a finger &#8212; it's all wired into the confirm button.</p>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>The Engine Status card shows sync health and stale alerts. If something looks off, hit "Backfill &amp; Sync".</p></div>
+                        <button class="guide-tryit" onclick="navTo('advanced')">&#9654; Try It &#8212; View Auto-Manager</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="inventory stock products supplies reorder threshold barcode" data-guide-id="inventory">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon green">&#128230;</div>
+                        <div class="guide-card-title"><h4>Inventory &amp; Stock</h4><span>Track products, auto-decrement on payment</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Add a Product</strong><p>Tap "+ Add Product". Enter name, category, stock count, reorder threshold, cost price, and link to services (e.g. "Styling Gel" linked to "Skin Fade").</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Auto-Decrement</strong><p>Confirming a payment for a linked service automatically drops stock. 1 Skin Fade = 1 gel removed.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Low Stock Alerts</strong><p>Below the reorder threshold? Product turns red, Dashboard smart alert fires.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><strong>Manual Adjust &amp; Restock</strong><p>+/- buttons for quick tweaks. "Restock" for bulk entry when a delivery arrives. Everything logs.</p></div></div>
+                        </div>
+                        <button class="guide-tryit" onclick="navTo('advanced')">&#9654; Try It &#8212; Manage Inventory</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="reviews google whatsapp rating feedback nudge" data-guide-id="reviews">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon gold">&#11088;</div>
+                        <div class="guide-card-title"><h4>Review Engine</h4><span>Auto-queue Google review requests via WhatsApp</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-visual">
+                            <div class="guide-visual-label">Review request flow</div>
+                            <div class="guide-visual-flow">
+                                <div class="guide-visual-node action">Payment Confirmed</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node auto">Queued</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node action">Tap Send</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node result">WhatsApp Opens</div>
+                            </div>
+                        </div>
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Setup</strong><p>Paste your Google Review URL, write a message template with {name} and {link} placeholders, enable auto-queue.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Auto-Queue</strong><p>Each confirmed payment matches a same-day booking to get the customer's phone. Queues as "Pending".</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>One-Tap Send</strong><p>"Send via WhatsApp" opens WhatsApp with their number and your personalised message pre-filled.</p></div></div>
+                        </div>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>Set a minimum spend filter (e.g. &#163;15) so you only request reviews from proper service customers.</p></div>
+                        <button class="guide-tryit" onclick="navTo('advanced')">&#9654; Try It &#8212; Review Settings</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="expenses profit loss rent bills costs recurring one-off" data-guide-id="expenses">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon red">&#128184;</div>
+                        <div class="guide-card-title"><h4>Expense &amp; Profit Tracker</h4><span>Track costs, see real profit</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-visual">
+                            <div class="guide-visual-label">Profit formula</div>
+                            <div class="guide-visual-flow">
+                                <div class="guide-visual-node auto">Revenue</div>
+                                <div class="guide-visual-arrow">&#8722;</div>
+                                <div class="guide-visual-node result">Expenses</div>
+                                <div class="guide-visual-arrow">&#8722;</div>
+                                <div class="guide-visual-node result">Commissions</div>
+                                <div class="guide-visual-arrow">=</div>
+                                <div class="guide-visual-node action">Net Profit</div>
+                            </div>
+                        </div>
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Recurring Expenses</strong><p>Rent, electricity, insurance, subscriptions. Set amount and day of month. Auto-generates entries monthly.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>One-Off Expenses</strong><p>New clippers, repairs, marketing. Pick a date and category.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Profit Hero Card</strong><p>Net profit: revenue minus expenses minus commissions. Green = profit, red = loss. Switch week/month/year.</p></div></div>
+                        </div>
+                        <div class="guide-warn"><strong>Important</strong><p>Profit is only accurate if you log ALL expenses. Missing rent makes profit look higher than reality.</p></div>
+                        <button class="guide-tryit" onclick="navTo('advanced')">&#9654; Try It &#8212; Track Expenses</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="commissions barber pay percentage rate staff earnings" data-guide-id="commissions">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon purple">&#128178;</div>
+                        <div class="guide-card-title"><h4>Staff Commissions</h4><span>Auto-calculate what each barber earned</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Set Rates</strong><p>Default 40%. Override per barber &#8212; Mo at 50%, Jake at 35%, etc. Changes apply to future payments only.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Auto-Assign</strong><p>Payment confirmed &#8594; system matches to booking by date + service &#8594; finds the barber &#8594; calculates commission.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Monthly Summary</strong><p>Each barber's total: services done, revenue generated, commission earned. Use this to pay out at month end.</p></div></div>
+                        </div>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>Walk-ins without bookings show as "unassigned". Tap to manually pick the barber who did the job.</p></div>
+                        <button class="guide-tryit" onclick="navTo('advanced')">&#9654; Try It &#8212; View Commissions</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="clients customers profiles intelligence CRM visits spend preferred" data-guide-id="clients">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon blue">&#128101;</div>
+                        <div class="guide-card-title"><h4>Client Intelligence</h4><span>Auto-built customer profiles from bookings</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-visual">
+                            <div class="guide-visual-label">How client profiles build themselves</div>
+                            <div class="guide-visual-flow">
+                                <div class="guide-visual-node action">Customer Books</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node auto">Profile Created/Updated</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node result">Visit Count, Spend, Preferences</div>
+                            </div>
+                        </div>
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Zero Manual Input</strong><p>Every booking with a phone number auto-creates or updates a client profile. Phone (digits only) is the unique key.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>What's Tracked</strong><p>Name, phone, email, first visit, last visit, total visits, total spend, average spend, preferred barber, preferred service.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Stats at a Glance</strong><p>Total clients, new this month, and return rate percentage. Tells you how sticky your customer base is.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><strong>Search</strong><p>Type any name or phone number to instantly filter the list. Clients sorted by visit frequency.</p></div></div>
+                        </div>
+                        <div class="guide-warn"><strong>Important</strong><p>Walk-ins without bookings can't build profiles automatically &#8212; they need a name + phone captured. The "Needs" banner on this tab explains this.</p></div>
+                        <button class="guide-tryit" onclick="navTo('advanced')">&#9654; Try It &#8212; View Clients</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== GROUP: SYSTEM ====== -->
+            <div class="guide-group" data-guide-group="other">
+                <div class="guide-group-label">System</div>
+
+                <div class="guide-card" data-guide-search="promotions campaigns marketing offers" data-guide-id="promotions">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon gold">&#11088;</div>
+                        <div class="guide-card-title"><h4>Promotions</h4><span>Create and manage marketing campaigns</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <p style="color:#999;font-size:13px;margin-bottom:8px;">Create time-limited campaigns with a title, description, and linked discount. Active ones show on the website. Delete when expired.</p>
+                        <button class="guide-tryit" onclick="switchSection('promotions')">&#9654; Try It &#8212; Create Promotion</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="activity log history audit trail actions" data-guide-id="activitylog">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon blue">&#128339;</div>
+                        <div class="guide-card-title"><h4>Activity Log</h4><span>Audit trail of every admin action</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <p style="color:#999;font-size:13px;margin-bottom:8px;">Every action is logged: payments confirmed, prices changed, staff added, discounts created. Filter by type to find what you need.</p>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>If something looks wrong, check the activity log to trace exactly what happened and when.</p></div>
+                        <button class="guide-tryit" onclick="switchSection('activitylog')">&#9654; Try It &#8212; View Activity</button>
+                    </div>
+                </div>
+
+                <div class="guide-card" data-guide-search="settings hours opening closing shop business profile" data-guide-id="settings">
+                    <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
+                        <div class="guide-card-icon purple">&#9881;</div>
+                        <div class="guide-card-title"><h4>Settings</h4><span>Opening hours, business profile</span></div>
+                        <span class="guide-card-arrow">&#9660;</span>
+                    </div>
+                    <div class="guide-card-body">
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Opening Hours</strong><p>Set open/close times for each day. Tick "Closed" for days off. Controls the booking calendar on the website.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Business Profile</strong><p>Shop name, address, contact details. Feeds into receipts, website footer, and automated messages.</p></div></div>
+                        </div>
+                        <button class="guide-tryit" onclick="switchSection('settings')">&#9654; Try It &#8212; Edit Settings</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
     <!-- Toast Container -->
@@ -4734,6 +5319,10 @@
         <button type="button" class="bottom-nav-item" data-section="advanced">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 014 4v1a1 1 0 001 1h1a4 4 0 010 8h-1a1 1 0 00-1 1v1a4 4 0 01-8 0v-1a1 1 0 00-1-1H6a4 4 0 010-8h1a1 1 0 001-1V6a4 4 0 014-4z"/><circle cx="12" cy="12" r="3"/></svg>
             <span>Advanced</span>
+        </button>
+        <button type="button" class="bottom-nav-item" data-section="guide">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+            <span>Guide</span>
         </button>
         <button type="button" class="bottom-nav-item" onclick="doLogout()" style="margin-top:auto;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -4940,6 +5529,12 @@
                     { id: 'promotions', label: 'Promotions' },
                     { id: 'activitylog', label: 'Activity' },
                     { id: 'settings', label: 'Settings' }
+                ]
+            },
+            guide: {
+                defaultSection: 'guide',
+                sections: [
+                    { id: 'guide', label: 'Guide' }
                 ]
             }
         };
@@ -8988,6 +9583,115 @@
                 const prevAction = undoStack[undoStack.length - 1];
                 showUndoButton(prevAction.description);
             }
+        }
+
+        // ============================================
+        // GUIDE PAGE — Interactive walkthrough logic
+        // ============================================
+
+        // Accordion: toggle card open/close and track progress
+        function toggleGuideCard(card) {
+            var wasOpen = card.classList.contains('open');
+            card.classList.toggle('open');
+            // Mark as explored on first open
+            if (!wasOpen) {
+                var id = card.getAttribute('data-guide-id');
+                if (id) {
+                    var explored = JSON.parse(localStorage.getItem('guideExplored') || '{}');
+                    if (!explored[id]) {
+                        explored[id] = true;
+                        localStorage.setItem('guideExplored', JSON.stringify(explored));
+                        updateGuideProgress();
+                    }
+                }
+            }
+        }
+
+        // Search / filter guide cards
+        function filterGuide() {
+            var query = (document.getElementById('guideSearch').value || '').toLowerCase().trim();
+            var cards = document.querySelectorAll('#section-guide .guide-card');
+            var groups = document.querySelectorAll('#section-guide .guide-group');
+            var quickstart = document.querySelector('#section-guide .guide-quickstart');
+
+            if (!query) {
+                cards.forEach(function(c) { c.classList.remove('guide-hidden'); });
+                groups.forEach(function(g) { g.classList.remove('guide-hidden'); });
+                if (quickstart) quickstart.classList.remove('guide-hidden');
+                return;
+            }
+
+            // Hide quickstart when searching
+            if (quickstart) quickstart.classList.add('guide-hidden');
+
+            cards.forEach(function(c) {
+                var searchText = (c.getAttribute('data-guide-search') || '') + ' ' +
+                    (c.querySelector('h4') ? c.querySelector('h4').textContent : '') + ' ' +
+                    (c.querySelector('.guide-card-title span') ? c.querySelector('.guide-card-title span').textContent : '');
+                var match = searchText.toLowerCase().indexOf(query) !== -1;
+                c.classList.toggle('guide-hidden', !match);
+            });
+
+            // Hide groups with no visible cards
+            groups.forEach(function(g) {
+                var visibleCards = g.querySelectorAll('.guide-card:not(.guide-hidden)');
+                g.classList.toggle('guide-hidden', visibleCards.length === 0);
+            });
+        }
+
+        // Progress tracking
+        function updateGuideProgress() {
+            var allCards = document.querySelectorAll('#section-guide .guide-card[data-guide-id]');
+            var total = allCards.length;
+            var explored = JSON.parse(localStorage.getItem('guideExplored') || '{}');
+            var count = 0;
+            allCards.forEach(function(c) {
+                if (explored[c.getAttribute('data-guide-id')]) count++;
+            });
+            var pct = total > 0 ? Math.round(count / total * 100) : 0;
+
+            var countEl = document.getElementById('guideLearnedCount');
+            var totalEl = document.getElementById('guideTotalCount');
+            var pctEl = document.getElementById('guideProgressPct');
+            var ringEl = document.getElementById('guideRingFill');
+
+            if (countEl) countEl.textContent = count;
+            if (totalEl) totalEl.textContent = total;
+            if (pctEl) pctEl.textContent = pct + '%';
+            if (ringEl) {
+                var circumference = 138.2;
+                var offset = circumference - (circumference * pct / 100);
+                ringEl.style.strokeDashoffset = offset;
+            }
+        }
+
+        // Quick Start checklist persistence
+        function toggleGuideCheck(li) {
+            li.classList.toggle('done');
+            var checks = JSON.parse(localStorage.getItem('guideChecks') || '{}');
+            var key = li.getAttribute('data-check');
+            if (key) {
+                checks[key] = li.classList.contains('done');
+                localStorage.setItem('guideChecks', JSON.stringify(checks));
+            }
+        }
+
+        // Restore checklist and progress on load
+        function initGuide() {
+            // Restore checklist
+            var checks = JSON.parse(localStorage.getItem('guideChecks') || '{}');
+            document.querySelectorAll('#guideChecklist li[data-check]').forEach(function(li) {
+                if (checks[li.getAttribute('data-check')]) li.classList.add('done');
+            });
+            // Update progress ring
+            updateGuideProgress();
+        }
+
+        // Run after DOM ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initGuide);
+        } else {
+            setTimeout(initGuide, 100);
         }
     </script>
     <script src="auto-manager.js"></script>
