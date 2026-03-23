@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pay | Golden Barbers</title>
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#000000">
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="visit-system.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -672,6 +673,14 @@
                 </div>
             </div>
 
+            <div class="card" id="bookingContextCard" style="display:none;">
+                <div class="card-header">
+                    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3 6h18M7 2v4M17 2v4M5 22h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div>
+                    <div><div class="card-title" id="bookingContextTitle">Booking Details</div><div class="card-subtitle" id="bookingContextSubtitle">Pulled from your booking request</div></div>
+                </div>
+                <div id="bookingContextBody"></div>
+            </div>
+
             <!-- Discount Code -->
             <div class="card discount-section">
                 <div class="card-header">
@@ -715,7 +724,9 @@
                     Copy All Details
                 </button>
                 <div style="margin-top:12px;padding:10px 14px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:10px;font-size:12px;color:#f87171;text-align:center;line-height:1.5;">
+                    <span id="paymentReviewNote">
                     The exact amount will be verified by staff before your service. Incorrect amounts will be rejected.
+                    </span>
                 </div>
             </div>
 
@@ -757,19 +768,19 @@
         <!-- Success -->
         <div id="successScreen" class="success-screen">
             <div class="success-circle"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
-            <h2>Payment Verified!</h2>
-            <p class="success-sub">Thank you for your payment</p>
+            <h2 id="successTitle">Payment Submitted</h2>
+            <p class="success-sub" id="successSubtitle">Your payment has been sent for review</p>
             <div class="success-amount" id="successAmount">&pound;0.00</div>
             <div class="success-ref">Ref: <span id="successRef">-</span></div>
             <div class="success-badge">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-                Verified
+                <span id="successBadgeText">Pending Review</span>
             </div>
             <div class="success-verify-code">
                 <div class="success-verify-label">Verification Code</div>
                 <div class="success-verify-value" id="successCode">-</div>
             </div>
-            <div class="success-show-staff">Show this screen to your barber</div>
+            <div class="success-show-staff" id="successInstructions">Show this screen to your barber so the payment can be confirmed.</div>
         </div>
 
         <!-- Error -->
@@ -925,6 +936,8 @@
         var reference = '';
         var verifyCode = '';
         var appliedDiscount = null;
+        var checkoutSource = '';
+        var checkoutContext = null;
 
         // ============================================
         // LOAD LIVE PRICES FROM FIREBASE
@@ -969,13 +982,117 @@
             return params.get('s') || params.get('services') || '';
         }
 
+        function getCheckoutSource() {
+            if (window.GBVisitSystem) {
+                return window.GBVisitSystem.getSourceFromUrl() || 'direct_payment';
+            }
+            var params = new URLSearchParams(window.location.search);
+            return params.get('source') || 'direct_payment';
+        }
+
+        function escapeHtml(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function renderBookingContext() {
+            var card = document.getElementById('bookingContextCard');
+            var body = document.getElementById('bookingContextBody');
+            var title = document.getElementById('bookingContextTitle');
+            var subtitle = document.getElementById('bookingContextSubtitle');
+            var note = document.getElementById('paymentReviewNote');
+
+            if (!card || !body) return;
+
+            if (checkoutSource === 'online_booking' && checkoutContext) {
+                card.style.display = 'block';
+                title.textContent = 'Booking Request';
+                subtitle.textContent = 'These details will be attached to the online booking';
+                body.innerHTML =
+                    '<div class="service-line"><span class="service-line-name">Name</span><span class="service-line-price">' + escapeHtml(checkoutContext.customerName || 'Guest') + '</span></div>' +
+                    '<div class="service-line"><span class="service-line-name">Phone</span><span class="service-line-price">' + escapeHtml(checkoutContext.customerPhone || 'Not provided') + '</span></div>' +
+                    '<div class="service-line"><span class="service-line-name">Preferred date</span><span class="service-line-price">' + escapeHtml(checkoutContext.preferredDate || 'To be confirmed') + '</span></div>' +
+                    '<div class="service-line"><span class="service-line-name">Preferred time</span><span class="service-line-price">' + escapeHtml(checkoutContext.preferredTime || 'To be confirmed') + '</span></div>' +
+                    (checkoutContext.preferredBarber ? '<div class="service-line"><span class="service-line-name">Preferred barber</span><span class="service-line-price">' + escapeHtml(checkoutContext.preferredBarber) + '</span></div>' : '');
+                if (note) {
+                    note.textContent = 'The manager reviews the transfer before the booking is confirmed. Incorrect amounts or missing references will be rejected.';
+                }
+                return;
+            }
+
+            if (checkoutSource === 'qr_walkin') {
+                card.style.display = 'block';
+                title.textContent = 'In-Shop QR Payment';
+                subtitle.textContent = 'This payment is for a completed in-shop service';
+                body.innerHTML =
+                    '<div class="service-line"><span class="service-line-name">Flow</span><span class="service-line-price">Pay after service</span></div>' +
+                    '<div class="service-line"><span class="service-line-name">Confirmation</span><span class="service-line-price">Show the code to staff</span></div>';
+                if (note) {
+                    note.textContent = 'The exact amount is checked by staff before the payment is accepted.';
+                }
+                return;
+            }
+
+            card.style.display = 'none';
+            if (note) {
+                note.textContent = 'The exact amount will be verified by staff before your service. Incorrect amounts will be rejected.';
+            }
+        }
+
+        function updateSuccessCopy() {
+            var title = document.getElementById('successTitle');
+            var subtitle = document.getElementById('successSubtitle');
+            var badge = document.getElementById('successBadgeText');
+            var instructions = document.getElementById('successInstructions');
+
+            if (checkoutSource === 'online_booking') {
+                title.textContent = 'Booking Request Submitted';
+                subtitle.textContent = 'Your payment and booking details have been sent for manager review';
+                badge.textContent = 'Awaiting Confirmation';
+                instructions.textContent = 'The manager will confirm your booking after checking the transfer.';
+                return;
+            }
+
+            title.textContent = 'Payment Submitted';
+            subtitle.textContent = 'Your payment has been sent for staff review';
+            badge.textContent = 'Pending Review';
+            instructions.textContent = 'Show this screen to your barber so the payment can be confirmed.';
+        }
+
+        function showSuccessScreen() {
+            updateSuccessCopy();
+            document.getElementById('paymentContent').classList.remove('show');
+            var s = document.getElementById('successScreen');
+            s.classList.add('show');
+            document.getElementById('successAmount').textContent = '\u00a3' + orderTotal.toFixed(2);
+            document.getElementById('successRef').textContent = reference;
+            document.getElementById('successCode').textContent = verifyCode;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function init() {
             reference = generateReference();
             verifyCode = generateVerifyCode();
+            checkoutSource = getCheckoutSource();
+            checkoutContext = window.GBVisitSystem ? window.GBVisitSystem.getCheckoutContext() : null;
             var servicesStr = getServicesFromUrl();
 
-            // Handle custom amount format: amt:XX.XX
-            if (servicesStr.indexOf('amt:') === 0) {
+            if (checkoutSource === 'online_booking' && checkoutContext && checkoutContext.items && checkoutContext.items.length) {
+                orderItems = checkoutContext.items.map(function(item) {
+                    return {
+                        id: item.id,
+                        name: item.name,
+                        price: item.price
+                    };
+                });
+                orderTotal = orderItems.reduce(function(sum, item) {
+                    return sum + (item.price || 0);
+                }, 0);
+            } else if (servicesStr.indexOf('amt:') === 0) {
                 var customAmt = parseFloat(servicesStr.substring(4));
                 if (customAmt > 0) {
                     orderItems.push({ id: 'custom', name: 'Custom Amount', price: customAmt });
@@ -1000,6 +1117,7 @@
 
             renderOrder();
             renderBanks();
+            renderBookingContext();
 
             document.getElementById('loadingScreen').style.display = 'none';
             document.getElementById('paymentContent').classList.add('show');
@@ -1288,36 +1406,61 @@
                 itemsDetail: orderItems.map(function(i) { return { name: i.name, price: i.price }; }),
                 discount: appliedDiscount ? { code: appliedDiscount.code, type: appliedDiscount.type, value: appliedDiscount.value, saved: (subtotal - orderTotal).toFixed(2) } : null,
                 targetBank: BANK.name,
+                source: checkoutSource || 'direct_payment',
+                paymentMethod: 'bank_transfer',
+                customerName: checkoutContext && checkoutContext.customerName ? checkoutContext.customerName : '',
+                customerPhone: checkoutContext && checkoutContext.customerPhone ? checkoutContext.customerPhone : '',
+                preferredDate: checkoutContext && checkoutContext.preferredDate ? checkoutContext.preferredDate : '',
+                preferredTime: checkoutContext && checkoutContext.preferredTime ? checkoutContext.preferredTime : '',
+                preferredBarber: checkoutContext && checkoutContext.preferredBarber ? checkoutContext.preferredBarber : '',
                 status: 'pending',
                 createdAt: new Date().toISOString(),
                 date: new Date().toISOString().split('T')[0]
             };
+            var paymentRef = db.ref('payments').push();
+            var visitRecord = window.GBVisitSystem ? window.GBVisitSystem.buildVisitRecord({
+                paymentKey: paymentRef.key,
+                source: checkoutSource || 'direct_payment',
+                context: checkoutContext,
+                payment: paymentData
+            }) : null;
 
-            db.ref('payments').push(paymentData).then(function() {
+            paymentRef.set(paymentData).then(function() {
+                var followUps = [];
+                if (window.GBVisitSystem && visitRecord) {
+                    followUps.push(window.GBVisitSystem.saveVisit(db, paymentRef.key, visitRecord));
+                    if (checkoutSource === 'online_booking') {
+                        followUps.push(window.GBVisitSystem.createOpsNotification(db, {
+                            type: 'booking_pending',
+                            title: 'New online booking request',
+                            body: (checkoutContext && checkoutContext.customerName ? checkoutContext.customerName : 'Customer') + ' requested ' + (checkoutContext && checkoutContext.preferredDate ? checkoutContext.preferredDate : 'a booking') + (checkoutContext && checkoutContext.preferredTime ? ' at ' + checkoutContext.preferredTime : ''),
+                            paymentKey: paymentRef.key,
+                            amount: orderTotal,
+                            customerName: checkoutContext && checkoutContext.customerName ? checkoutContext.customerName : '',
+                            data: {
+                                source: checkoutSource,
+                                serviceSummary: visitRecord.serviceSummary
+                            }
+                        }));
+                    }
+                }
+                return Promise.all(followUps).catch(function(error) {
+                    console.warn('Payment was saved but visit follow-up tasks failed.', error);
+                    return null;
+                });
+            }).then(function() {
                 btn.classList.remove('loading');
                 btn.disabled = false;
                 document.getElementById('verifyOverlay').classList.remove('show');
-
-                // Show success
-                document.getElementById('paymentContent').classList.remove('show');
-                var s = document.getElementById('successScreen');
-                s.classList.add('show');
-                document.getElementById('successAmount').textContent = '\u00a3'+orderTotal.toFixed(2);
-                document.getElementById('successRef').textContent = reference;
-                document.getElementById('successCode').textContent = verifyCode;
-                window.scrollTo({top:0, behavior:'smooth'});
-            }).catch(function() {
-                // Still show success even if Firebase fails (don't block customer)
+                if (window.GBVisitSystem) {
+                    window.GBVisitSystem.clearCheckoutContext();
+                }
+                showSuccessScreen();
+            }).catch(function(error) {
+                console.error('Failed to submit payment verification.', error);
                 btn.classList.remove('loading');
                 btn.disabled = false;
-                document.getElementById('verifyOverlay').classList.remove('show');
-                document.getElementById('paymentContent').classList.remove('show');
-                var s = document.getElementById('successScreen');
-                s.classList.add('show');
-                document.getElementById('successAmount').textContent = '\u00a3'+orderTotal.toFixed(2);
-                document.getElementById('successRef').textContent = reference;
-                document.getElementById('successCode').textContent = verifyCode;
-                window.scrollTo({top:0, behavior:'smooth'});
+                errorEl.textContent = 'We could not submit your payment right now. Please try again or show staff.';
             });
         }
 

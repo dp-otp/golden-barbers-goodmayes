@@ -11,6 +11,7 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="visit-system.js" defer></script>
     <script src="auto-manager.js" defer></script>
 
     <style>
@@ -1398,7 +1399,33 @@
         /* Hide old navigation — replaced by bottom nav */
         .admin-nav { display: none !important; }
         .logout-btn { display: none !important; }
-        .sub-nav { display: none !important; }
+        .sub-nav {
+            display: flex !important;
+            gap: 8px;
+            overflow-x: auto;
+            margin-bottom: 12px;
+            padding: 2px 2px 10px;
+            scrollbar-width: none;
+        }
+        .sub-nav::-webkit-scrollbar { display: none; }
+        .sub-nav-btn {
+            border: 1px solid rgba(212,175,55,0.14);
+            background: rgba(255,255,255,0.02);
+            color: #8f8f8f;
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .sub-nav-btn.active {
+            color: #d4af37;
+            border-color: rgba(212,175,55,0.32);
+            background: rgba(212,175,55,0.08);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+        }
 
         /* Card improvements — premium glass morphism */
         .admin-card {
@@ -2312,6 +2339,16 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+        .feed-meta {
+            margin-top: 4px;
+            font-size: 11px;
+            color: #8f8f8f;
+            line-height: 1.45;
+        }
+        .feed-meta strong {
+            color: #cfcfcf;
+            font-weight: 700;
         }
         .feed-right {
             text-align: right;
@@ -3426,7 +3463,7 @@
         </div>
 
         <!-- Sub-navigation strip (for grouped tabs like Money, Team, Content) -->
-        <div class="sub-nav" id="subNav" style="display:none;"></div>
+        <div class="sub-nav" id="subNav"></div>
 
         <!-- ==================== OVERVIEW SECTION ==================== -->
         <div class="admin-section active" id="section-overview">
@@ -3444,7 +3481,7 @@
                         <div class="briefing-item-sub" id="briefYesterdaySub">Loading...</div>
                     </div>
                     <div class="briefing-item">
-                        <div class="briefing-item-label">Bookings Today</div>
+                        <div class="briefing-item-label">Visits Today</div>
                         <div class="briefing-item-value" id="briefBookings">0</div>
                         <div class="briefing-item-sub" id="briefBookingsSub">--</div>
                     </div>
@@ -3585,15 +3622,15 @@
                 </div>
             </div>
 
-            <!-- Recent Bookings -->
+            <!-- Recent Visits -->
             <div class="bookings-card">
                 <h3>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    Recent Bookings
+                    Recent Visits
                 </h3>
                 <div class="bookings-list" id="bookingsList"></div>
                 <button onclick="clearAllBookings()" class="btn btn-secondary" style="margin-top: 12px; font-size: 12px; padding: 8px 16px;">
-                    Clear All Bookings
+                    Clear Legacy Bookings
                 </button>
             </div>
 
@@ -4215,10 +4252,10 @@
             <div class="section-card">
                 <h2>
                     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    Online Bookings
+                    Visits &amp; Bookings
                 </h2>
                 <div id="bookingManageList">
-                    <div class="empty-state"><div class="empty-state-icon">&#128197;</div><div class="empty-state-text">No bookings yet</div><div class="empty-state-sub">Bookings appear when customers book online</div></div>
+                    <div class="empty-state"><div class="empty-state-icon">&#128197;</div><div class="empty-state-text">No visits yet</div><div class="empty-state-sub">Online bookings and in-shop payments appear here</div></div>
                 </div>
             </div>
         </div>
@@ -4339,7 +4376,7 @@
                 <div class="am-card">
                     <div class="am-card-title">
                         Products
-                        <button class="am-add-btn" onclick="AutoManager.toggleAddProductForm()">+ Add Product</button>
+                        <button class="am-add-btn" onclick="AutoManager.toggleAddProduct()">+ Add Product</button>
                     </div>
 
                     <div class="am-form" id="am-add-product-form">
@@ -4380,17 +4417,17 @@
                             <input type="text" id="am-prod-services" placeholder="e.g. Skin Fade, Beard Trim">
                         </div>
                         <div class="am-form-actions">
-                            <button class="am-btn am-btn-ghost" onclick="AutoManager.toggleAddProductForm()">Cancel</button>
+                            <button class="am-btn am-btn-ghost" onclick="AutoManager.toggleAddProduct()">Cancel</button>
                             <button class="am-btn am-btn-gold" onclick="AutoManager.addProduct()">Add Product</button>
                         </div>
                     </div>
 
-                    <div id="am-product-list"></div>
+                    <div id="am-inv-grid"></div>
                 </div>
 
                 <div class="am-card">
                     <div class="am-card-title">Stock Log</div>
-                    <div class="am-log-feed" id="am-stock-log"></div>
+                    <div class="am-log-feed" id="am-inv-log"></div>
                 </div>
             </div>
 
@@ -4418,8 +4455,12 @@
                         <textarea id="am-review-template" rows="3" onchange="AutoManager.saveReviewSettings()" placeholder="Hi {name}! Thanks for visiting Golden Barbers. We'd love a quick Google review: {link}"></textarea>
                     </div>
                     <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-                        <div class="am-toggle" id="am-review-auto-toggle" onclick="AutoManager.toggleAutoReview()"></div>
+                        <input type="checkbox" id="am-review-autotoggle" onchange="AutoManager.saveReviewSettings()" style="width:18px;height:18px;accent-color:#d4af37;">
                         <span style="color:#ccc;font-size:13px;">Auto-queue review requests on payment</span>
+                    </div>
+                    <div class="am-form-row" style="margin-bottom:0;">
+                        <label>Minimum spend before queueing a review</label>
+                        <input type="number" id="am-review-minspend" min="0" step="0.01" onchange="AutoManager.saveReviewSettings()" placeholder="0">
                     </div>
                 </div>
 
@@ -4475,7 +4516,7 @@
                             <button class="am-btn am-btn-gold" onclick="AutoManager.addRecurring()">Add Expense</button>
                         </div>
                     </div>
-                    <div id="am-recurring-list"></div>
+                    <div id="am-exp-recurring-list"></div>
                 </div>
 
                 <div class="am-card">
@@ -4517,7 +4558,7 @@
                             <button class="am-btn am-btn-gold" onclick="AutoManager.addOneoff()">Log Expense</button>
                         </div>
                     </div>
-                    <div id="am-oneoff-list"></div>
+                    <div id="am-exp-oneoff-list"></div>
                 </div>
             </div>
 
@@ -4573,69 +4614,25 @@
             <img src="../logo.png" alt="GB">
             <span>ADMIN</span>
         </div>
-        <div class="nav-divider">MAIN</div>
-        <button class="bottom-nav-item active" onclick="navTo('overview')" data-section="overview">
+        <button class="bottom-nav-item active" onclick="navTo('today')" data-section="today">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <span>Home</span>
+            <span>Today</span>
         </button>
-        <button class="bottom-nav-item" onclick="navTo('bookings')" data-section="bookings">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span>Bookings</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('revenue')" data-section="revenue">
+        <button class="bottom-nav-item" onclick="navTo('transactions')" data-section="transactions">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            <span>Revenue</span>
+            <span>Transactions</span>
         </button>
-        <div class="nav-divider">MANAGE</div>
-        <button class="bottom-nav-item" onclick="navTo('gallery')" data-section="gallery">
+        <button class="bottom-nav-item" onclick="navTo('visits')" data-section="visits">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Visits</span>
+        </button>
+        <button class="bottom-nav-item" onclick="navTo('website')" data-section="website">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <span>Gallery</span>
+            <span>Website</span>
         </button>
-        <button class="bottom-nav-item" onclick="navTo('staff')" data-section="staff">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-            <span>Staff</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('prices')" data-section="prices">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-            <span>Prices</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('themes')" data-section="themes">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-            <span>Themes</span>
-        </button>
-        <div class="nav-divider">BUSINESS</div>
-        <button class="bottom-nav-item" onclick="navTo('automanager')" data-section="automanager">
+        <button class="bottom-nav-item" onclick="navTo('advanced')" data-section="advanced">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 014 4v1a1 1 0 001 1h1a4 4 0 010 8h-1a1 1 0 00-1 1v1a4 4 0 01-8 0v-1a1 1 0 00-1-1H6a4 4 0 010-8h1a1 1 0 001-1V6a4 4 0 014-4z"/><circle cx="12" cy="12" r="3"/></svg>
-            <span>Auto-Mgr</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('reports')" data-section="reports">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            <span>Reports</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('promotions')" data-section="promotions">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span>Promos</span>
-        </button>
-        <div class="nav-divider">SYSTEM</div>
-        <button class="bottom-nav-item" onclick="navTo('discounts')" data-section="discounts">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
-            <span>Discounts</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('announce')" data-section="announce">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-            <span>Announce</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('activitylog')" data-section="activitylog">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="12 8 12 12 14 14"/><circle cx="12" cy="12" r="10"/></svg>
-            <span>Activity</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('contacts')" data-section="contacts">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 11.04 11.04 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 11.04 11.04 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-            <span>Contacts</span>
-        </button>
-        <button class="bottom-nav-item" onclick="navTo('settings')" data-section="settings">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-            <span>Settings</span>
+            <span>Advanced</span>
         </button>
         <button class="bottom-nav-item" onclick="doLogout()" style="margin-top:auto;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -4791,32 +4788,169 @@
             location.reload();
         }
 
-        // Load existing data
-        function loadData() {
-            // Load business settings
-            const businessData = JSON.parse(localStorage.getItem('goldenBarbers_business') || '{}');
-            if (businessData.name) document.getElementById('businessName').value = businessData.name;
-            if (businessData.phone) document.getElementById('businessPhone').value = businessData.phone;
-            if (businessData.email) document.getElementById('businessEmail').value = businessData.email;
-            if (businessData.address) document.getElementById('businessAddress').value = businessData.address;
+        const DEFAULT_BUSINESS_PROFILE = {
+            name: 'Golden Barbers Goodmayes',
+            phone: '+44 20 8598 9920',
+            email: 'ltdgoldenbarbers@gmail.com',
+            address: '14 Goodmayes Rd, London, Ilford IG3 9UN'
+        };
+        const NAV_GROUPS = {
+            today: {
+                defaultSection: 'overview',
+                sections: [
+                    { id: 'overview', label: 'Dashboard' },
+                    { id: 'bookings', label: 'Visits' }
+                ]
+            },
+            transactions: {
+                defaultSection: 'revenue',
+                sections: [
+                    { id: 'revenue', label: 'Payments' },
+                    { id: 'reports', label: 'Reports' }
+                ]
+            },
+            visits: {
+                defaultSection: 'bookings',
+                sections: [
+                    { id: 'bookings', label: 'All Visits' },
+                    { id: 'staff', label: 'Barbers' },
+                    { id: 'contacts', label: 'Contacts' }
+                ]
+            },
+            website: {
+                defaultSection: 'prices',
+                sections: [
+                    { id: 'prices', label: 'Prices' },
+                    { id: 'gallery', label: 'Gallery' },
+                    { id: 'themes', label: 'Themes' },
+                    { id: 'discounts', label: 'Discounts' },
+                    { id: 'announce', label: 'Announcement' }
+                ]
+            },
+            advanced: {
+                defaultSection: 'automanager',
+                sections: [
+                    { id: 'automanager', label: 'Automation' },
+                    { id: 'promotions', label: 'Promotions' },
+                    { id: 'activitylog', label: 'Activity' },
+                    { id: 'settings', label: 'Settings' }
+                ]
+            }
+        };
+        var currentNavGroup = 'today';
+        var allBookings = [];
+        var liveVisits = [];
+        var businessProfileCache = Object.assign({}, DEFAULT_BUSINESS_PROFILE);
+        var openingHoursCache = {};
+        var settingsListenersStarted = false;
 
-            // Load hours
-            const hours = JSON.parse(localStorage.getItem('goldenBarbers_hours') || '{}');
-            Object.keys(hours).forEach(day => {
-                if (hours[day].open) document.getElementById(`${day}-open`).value = hours[day].open;
-                if (hours[day].close) document.getElementById(`${day}-close`).value = hours[day].close;
-                document.getElementById(`${day}-closed`).checked = hours[day].closed;
+        function buildDefaultHours() {
+            return {
+                monday: { open: '09:30', close: '20:00', closed: false },
+                tuesday: { open: '09:30', close: '20:00', closed: false },
+                wednesday: { open: '09:30', close: '20:00', closed: false },
+                thursday: { open: '09:30', close: '20:00', closed: false },
+                friday: { open: '09:30', close: '20:00', closed: false },
+                saturday: { open: '09:30', close: '20:00', closed: false },
+                sunday: { open: '09:30', close: '18:00', closed: false }
+            };
+        }
+
+        function mergeHours(hours) {
+            var merged = buildDefaultHours();
+            Object.keys(hours || {}).forEach(function(day) {
+                merged[day] = {
+                    open: hours[day].open || merged[day].open,
+                    close: hours[day].close || merged[day].close,
+                    closed: !!hours[day].closed
+                };
+            });
+            return merged;
+        }
+
+        function applyBusinessProfile(profile) {
+            businessProfileCache = Object.assign({}, DEFAULT_BUSINESS_PROFILE, profile || {});
+            document.getElementById('businessName').value = businessProfileCache.name;
+            document.getElementById('businessPhone').value = businessProfileCache.phone;
+            document.getElementById('businessEmail').value = businessProfileCache.email;
+            document.getElementById('businessAddress').value = businessProfileCache.address;
+            localStorage.setItem('goldenBarbers_business', JSON.stringify(businessProfileCache));
+        }
+
+        function applyOpeningHours(hours) {
+            openingHoursCache = mergeHours(hours);
+            Object.keys(openingHoursCache).forEach(function(day) {
+                document.getElementById(day + '-open').value = openingHoursCache[day].open;
+                document.getElementById(day + '-close').value = openingHoursCache[day].close;
+                document.getElementById(day + '-closed').checked = !!openingHoursCache[day].closed;
+            });
+            localStorage.setItem('goldenBarbers_hours', JSON.stringify(openingHoursCache));
+        }
+
+        function startSharedSettingsListeners() {
+            if (settingsListenersStarted) return;
+            settingsListenersStarted = true;
+
+            var localBusiness = JSON.parse(localStorage.getItem('goldenBarbers_business') || '{}');
+            var localHours = JSON.parse(localStorage.getItem('goldenBarbers_hours') || '{}');
+
+            database.ref('settings/businessProfile').on('value', function(snapshot) {
+                var data = snapshot.val();
+                if (data) {
+                    applyBusinessProfile(data);
+                } else if (Object.keys(localBusiness).length > 0) {
+                    applyBusinessProfile(localBusiness);
+                    database.ref('settings/businessProfile').set(Object.assign({}, DEFAULT_BUSINESS_PROFILE, localBusiness));
+                } else {
+                    applyBusinessProfile(DEFAULT_BUSINESS_PROFILE);
+                }
             });
 
-            // Load bookings
+            database.ref('settings/hours').on('value', function(snapshot) {
+                var data = snapshot.val();
+                if (data) {
+                    applyOpeningHours(data);
+                } else if (Object.keys(localHours).length > 0) {
+                    applyOpeningHours(localHours);
+                    database.ref('settings/hours').set(mergeHours(localHours));
+                } else {
+                    applyOpeningHours(buildDefaultHours());
+                }
+            });
+        }
+
+        function getGroupForSection(section) {
+            var groupNames = Object.keys(NAV_GROUPS);
+            for (var i = 0; i < groupNames.length; i++) {
+                var group = NAV_GROUPS[groupNames[i]];
+                for (var j = 0; j < group.sections.length; j++) {
+                    if (group.sections[j].id === section) return groupNames[i];
+                }
+            }
+            return 'today';
+        }
+
+        function renderSubNav(groupName, activeSection) {
+            var strip = document.getElementById('subNav');
+            var group = NAV_GROUPS[groupName] || NAV_GROUPS.today;
+            if (!strip) return;
+            strip.innerHTML = group.sections.map(function(section) {
+                return '<button class="sub-nav-btn' + (section.id === activeSection ? ' active' : '') + '" onclick="navTo(\'' + section.id + '\')">' + section.label + '</button>';
+            }).join('');
+        }
+
+        // Load existing data
+        function loadData() {
+            startSharedSettingsListeners();
             loadBookings();
+            navTo('overview');
         }
 
         // Save business settings
-        document.getElementById('businessForm').addEventListener('submit', (e) => {
+        document.getElementById('businessForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const data = {
+            var data = {
                 name: document.getElementById('businessName').value,
                 phone: document.getElementById('businessPhone').value,
                 email: document.getElementById('businessEmail').value,
@@ -4824,64 +4958,133 @@
             };
 
             localStorage.setItem('goldenBarbers_business', JSON.stringify(data));
+            database.ref('settings/businessProfile').set(data);
             logActivity('settings', 'Business settings updated');
             showToast('Business settings saved', 'success');
         });
 
         // Save hours
-        document.getElementById('hoursForm').addEventListener('submit', (e) => {
+        document.getElementById('hoursForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-            const hours = {};
+            var days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            var hours = {};
 
-            days.forEach(day => {
+            days.forEach(function(day) {
                 hours[day] = {
-                    open: document.getElementById(`${day}-open`).value,
-                    close: document.getElementById(`${day}-close`).value,
-                    closed: document.getElementById(`${day}-closed`).checked
+                    open: document.getElementById(day + '-open').value,
+                    close: document.getElementById(day + '-close').value,
+                    closed: document.getElementById(day + '-closed').checked
                 };
             });
 
             localStorage.setItem('goldenBarbers_hours', JSON.stringify(hours));
+            database.ref('settings/hours').set(hours);
+            applyOpeningHours(hours);
             logActivity('settings', 'Opening hours updated');
             showToast('Opening hours updated', 'success');
         });
 
-        // Load bookings from Firebase (LIVE - real-time)
-        var allBookings = [];
+        function normalizeLegacyBooking(booking) {
+            var service = booking.service ? (booking.service.name || booking.service) : 'Service';
+            var amount = booking.service && booking.service.price ? booking.service.price : 0;
+            return {
+                _key: booking._key,
+                reference: booking.reference || booking._key || 'LEGACY',
+                source: 'legacy_booking',
+                customerName: booking.name || 'Guest',
+                customerPhone: booking.phone || '',
+                preferredDate: booking.date || '',
+                preferredTime: booking.time || '',
+                preferredBarber: booking.barber ? (booking.barber.name || booking.barber) : '',
+                serviceSummary: service,
+                items: [service],
+                total: amount,
+                paymentStatus: 'unknown',
+                visitStatus: booking.status || 'booked',
+                createdAt: booking.createdAt || new Date().toISOString()
+            };
+        }
 
-        function loadBookings() {
-            // Initial call handled by Firebase listener below
+        function getDisplayVisits() {
+            var combined = liveVisits.slice();
+            allBookings.forEach(function(booking) {
+                combined.push(normalizeLegacyBooking(booking));
+            });
+            combined.sort(function(a, b) {
+                return new Date(b.createdAt || b.date || 0) - new Date(a.createdAt || a.date || 0);
+            });
+            return combined;
+        }
+
+        function getVisitDateDisplay(visit) {
+            var dateText = visit.preferredDate || visit.date || '';
+            var timeText = visit.preferredTime || '';
+            if (!dateText) return 'Not scheduled';
+            try {
+                return new Date(dateText + 'T00:00:00').toLocaleDateString('en-GB') + (timeText ? ' ' + timeText : '');
+            } catch (err) {
+                return dateText + (timeText ? ' ' + timeText : '');
+            }
+        }
+
+        function getVisitScheduleDate(visit) {
+            if (!visit) return '';
+            if (visit.preferredDate) return visit.preferredDate;
+            if (visit.date) return visit.date;
+            if (visit.createdAt) return String(visit.createdAt).split('T')[0];
+            return '';
+        }
+
+        function isOpenVisit(visit) {
+            var status = (visit && visit.visitStatus) || '';
+            return status !== 'cancelled' && status !== 'rejected';
+        }
+
+        function escapeHtml(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
         }
 
         function renderBookings() {
-            const container = document.getElementById('bookingsList');
+            var container = document.getElementById('bookingsList');
+            var visits = getDisplayVisits().slice(0, 8);
 
-            if (allBookings.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #888; padding: 40px 0;">No bookings yet</p>';
+            if (!container) return;
+            if (visits.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #888; padding: 40px 0;">No visits yet</p>';
                 return;
             }
 
-            container.innerHTML = allBookings.map(booking => `
-                <div class="booking-item">
-                    <div class="booking-ref">${booking.reference || 'N/A'}</div>
-                    <div class="booking-details">
-                        <div>Customer<strong>${booking.name || 'Unknown'}</strong></div>
-                        <div>Phone<strong>${booking.phone || 'N/A'}</strong></div>
-                        <div>Service<strong>${booking.service ? booking.service.name + ' (£' + booking.service.price + ')' : 'N/A'}</strong></div>
-                        <div>Barber<strong>${booking.barber ? booking.barber.name : 'N/A'}</strong></div>
-                        <div>Date<strong>${booking.date ? new Date(booking.date + 'T00:00:00').toLocaleDateString('en-GB') : 'N/A'}</strong></div>
-                        <div>Time<strong>${booking.time || 'N/A'}</strong></div>
-                    </div>
-                </div>
-            `).join('');
+            container.innerHTML = visits.map(function(visit) {
+                var statusLabel = window.GBVisitSystem ? window.GBVisitSystem.getVisitStatusLabel(visit) : (visit.visitStatus || 'Pending');
+                var sourceLabel = window.GBVisitSystem ? window.GBVisitSystem.getSourceLabel(visit.source) : (visit.source || 'Visit');
+                return '<div class="booking-item">' +
+                    '<div class="booking-ref">' + escapeHtml(visit.reference || visit.paymentReference || sourceLabel) + '</div>' +
+                    '<div class="booking-details">' +
+                        '<div>Customer<strong>' + escapeHtml(visit.customerName || 'Guest') + '</strong></div>' +
+                        '<div>Phone<strong>' + escapeHtml(visit.customerPhone || 'N/A') + '</strong></div>' +
+                        '<div>Services<strong>' + escapeHtml(visit.serviceSummary || (visit.items || []).join(', ') || 'N/A') + '</strong></div>' +
+                        '<div>Barber<strong>' + escapeHtml(visit.preferredBarber || 'Any available') + '</strong></div>' +
+                        '<div>Visit<strong>' + escapeHtml(getVisitDateDisplay(visit)) + '</strong></div>' +
+                        '<div>Status<strong>' + escapeHtml(statusLabel + ' · ' + sourceLabel) + '</strong></div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function loadBookings() {
+            renderBookings();
         }
 
         // Clear bookings
         function clearAllBookings() {
-            if (confirm('Are you sure you want to clear all bookings? This cannot be undone.')) {
-                // Will be connected to Firebase after init
+            if (confirm('Are you sure you want to clear all legacy bookings? This cannot be undone.')) {
+                database.ref('bookings').remove();
             }
         }
 
@@ -4919,18 +5122,33 @@
             // Sort newest first
             allBookings.sort(function(a, b) { return new Date(b.createdAt) - new Date(a.createdAt); });
             renderBookings();
+            if (typeof renderManagedBookings === 'function') renderManagedBookings();
+            if (typeof updateDailyBriefing === 'function') updateDailyBriefing();
+            if (typeof updateSmartAlerts === 'function') updateSmartAlerts();
             // Auto-Manager: update client intelligence from latest booking
             if (window.AutoManager && allBookings.length > 0) {
                 AutoManager.updateClientFromBooking(allBookings[0]);
             }
         });
 
-        // Update clearAllBookings to use Firebase
-        clearAllBookings = function() {
-            if (confirm('Are you sure you want to clear all bookings? This cannot be undone.')) {
-                database.ref('bookings').remove();
+        database.ref('visits').orderByChild('createdAt').on('value', function(snapshot) {
+            var data = snapshot.val();
+            liveVisits = data ? Object.keys(data).map(function(k) {
+                var visit = data[k];
+                visit._key = k;
+                return visit;
+            }) : [];
+            liveVisits.sort(function(a, b) {
+                return new Date(b.createdAt || b.date || 0) - new Date(a.createdAt || a.date || 0);
+            });
+            renderBookings();
+            if (typeof renderManagedBookings === 'function') renderManagedBookings();
+            if (typeof updateDailyBriefing === 'function') updateDailyBriefing();
+            if (typeof updateSmartAlerts === 'function') updateSmartAlerts();
+            if (window.AutoManager && liveVisits.length > 0 && typeof AutoManager.updateClientFromVisit === 'function') {
+                AutoManager.updateClientFromVisit(liveVisits[0]);
             }
-        };
+        });
 
         // ============================================
         // CLOUDINARY GALLERY MANAGEMENT
@@ -5398,22 +5616,30 @@
         // SIMPLE DIRECT NAVIGATION
         // ============================================
         function navTo(section) {
-            switchSection(section);
+            var targetSection = section;
+            var targetGroup = NAV_GROUPS[section] ? section : getGroupForSection(section);
+            if (NAV_GROUPS[section]) {
+                targetSection = NAV_GROUPS[section].defaultSection;
+            }
+
+            currentNavGroup = targetGroup;
+            renderSubNav(targetGroup, targetSection);
+            switchSection(targetSection);
 
             // Update bottom nav active states
             document.querySelectorAll('.bottom-nav-item').forEach(function(b) {
-                b.classList.toggle('active', b.dataset.section === section);
+                b.classList.toggle('active', b.dataset.section === targetGroup);
             });
 
             // Show/hide stats bar and quick actions (only on Home/overview)
             var statsBar = document.getElementById('statsBar');
             var quickActions = document.getElementById('quickActions');
-            var isHome = section === 'overview';
+            var isHome = targetSection === 'overview';
             if (statsBar) statsBar.style.display = isHome ? '' : 'none';
             if (quickActions) quickActions.style.display = isHome ? '' : 'none';
 
             // Scroll active nav item into view on mobile
-            var activeBtn = document.querySelector('.bottom-nav-item[data-section="' + section + '"]');
+            var activeBtn = document.querySelector('.bottom-nav-item[data-section="' + targetGroup + '"]');
             if (activeBtn && window.innerWidth < 769) {
                 activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             }
@@ -5432,6 +5658,8 @@
         var currentPaymentTab = 'pending';
         var _prevPendingKeys = {};
         var _paymentsInitialised = false;
+        var _prevOpsNotificationKeys = {};
+        var _opsNotificationsInitialised = false;
 
         // Payment notification sound (Web Audio API — no external files)
         function playPaymentSound() {
@@ -5466,7 +5694,7 @@
                 });
                 n.onclick = function() {
                     window.focus();
-                    switchSection('overview');
+                    navTo('overview');
                     var pendingTab = document.querySelector('.tab-btn[onclick*="pending"]');
                     if (pendingTab) switchPaymentTab(pendingTab, 'pending');
                     n.close();
@@ -5474,6 +5702,21 @@
             } else if (Notification.permission !== 'denied') {
                 Notification.requestPermission();
             }
+        }
+
+        function notifyOpsEvent(title, body) {
+            showToast(title, 'success');
+            if (!('Notification' in window) || Notification.permission !== 'granted') return;
+            var n = new Notification(title, {
+                body: body,
+                icon: 'images/logo.png',
+                tag: 'gb-ops-' + title.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+            });
+            n.onclick = function() {
+                window.focus();
+                navTo('bookings');
+                n.close();
+            };
         }
 
         // Request notification permission on first interaction
@@ -5522,6 +5765,35 @@
             }
         });
 
+        database.ref('opsNotifications').orderByChild('createdAt').limitToLast(25).on('value', function(snapshot) {
+            var entries = [];
+            snapshot.forEach(function(child) {
+                var item = child.val();
+                item._key = child.key;
+                entries.push(item);
+            });
+            entries.sort(function(a, b) {
+                return new Date(a.createdAt || 0) - new Date(b.createdAt || 0);
+            });
+
+            var currentKeys = {};
+            entries.forEach(function(item) {
+                currentKeys[item._key] = true;
+                if (_opsNotificationsInitialised && !_prevOpsNotificationKeys[item._key]) {
+                    if (item.type === 'booking_pending') {
+                        notifyOpsEvent(item.title || 'New online booking request', item.body || 'A booking is awaiting review.');
+                    } else if (item.type === 'booking_confirmed') {
+                        notifyOpsEvent(item.title || 'Booking confirmed', item.body || 'An online booking has been confirmed.');
+                    } else if (item.type === 'booking_rejected') {
+                        notifyOpsEvent(item.title || 'Booking rejected', item.body || 'An online booking needs manual follow-up.');
+                    }
+                }
+            });
+
+            _prevOpsNotificationKeys = currentKeys;
+            _opsNotificationsInitialised = true;
+        });
+
         function switchPaymentTab(btn, tab) {
             currentPaymentTab = tab;
             // Support both old .tab-btn and new .feed-tab
@@ -5561,8 +5833,16 @@
                 var isCash = p.isCash;
                 var time = new Date(p.createdAt);
                 var timeStr = time.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-                var itemsStr = p.items ? p.items.join(', ') : 'Unknown';
-                var verifyCode = p.verifyCode && p.verifyCode !== '------' ? p.verifyCode : '';
+                var itemsStr = escapeHtml(p.items ? p.items.join(', ') : 'Unknown');
+                var verifyCode = p.verifyCode && p.verifyCode !== '------' ? escapeHtml(p.verifyCode) : '';
+                var customerName = escapeHtml(p.customerName || '');
+                var customerPhone = escapeHtml(p.customerPhone || '');
+                var scheduled = [p.preferredDate, p.preferredTime].filter(Boolean).join(' ');
+                var scheduledText = scheduled ? escapeHtml(scheduled) : '';
+                var sourceLabel = window.GBVisitSystem ? window.GBVisitSystem.getSourceLabel(p.source) : (p.source || 'Payment');
+                var metaLines = ['<strong>Flow:</strong> ' + escapeHtml(sourceLabel)];
+                if (customerName) metaLines.push('<strong>Customer:</strong> ' + customerName + (customerPhone ? ' · ' + customerPhone : ''));
+                if (scheduledText) metaLines.push('<strong>Requested:</strong> ' + scheduledText);
 
                 var actionsHtml = '';
                 if (isPending) {
@@ -5578,6 +5858,7 @@
                     '<div class="feed-info">' +
                         '<div class="feed-amount">\u00A3' + (p.amount || 0).toFixed(2) + '</div>' +
                         '<div class="feed-service">' + itemsStr + '</div>' +
+                        '<div class="feed-meta">' + metaLines.join('<br>') + '</div>' +
                         (verifyCode ? '<div class="feed-verify">CODE: ' + verifyCode + '</div>' : '') +
                         actionsHtml +
                     '</div>' +
@@ -5600,20 +5881,79 @@
                 alert('Amount mismatch!\n\nExpected: £' + expectedAmount.toFixed(2) + '\nYou entered: £' + received.toFixed(2) + '\n\nDo NOT confirm unless the correct amount has landed in your bank.');
                 return;
             }
+            var confirmedAt = new Date().toISOString();
             database.ref('payments/' + key).update({
                 status: 'confirmed',
-                confirmedAt: new Date().toISOString(),
+                confirmedAt: confirmedAt,
                 verifiedAmount: received
+            }).then(function() {
+                return database.ref('visits/' + key).once('value');
+            }).then(function(snapshot) {
+                var visit = snapshot.val();
+                if (!visit || !window.GBVisitSystem) return null;
+                var nextStatus = visit.source === 'online_booking' ? 'confirmed' : 'completed';
+                return window.GBVisitSystem.updateVisit(database, key, {
+                    paymentStatus: 'confirmed',
+                    visitStatus: nextStatus,
+                    verifiedAmount: received,
+                    confirmedAt: confirmedAt,
+                    requiresManagerVerification: false
+                }).then(function() {
+                    if (visit.source === 'online_booking') {
+                        return window.GBVisitSystem.createOpsNotification(database, {
+                            type: 'booking_confirmed',
+                            title: 'Online booking confirmed',
+                            body: (visit.customerName || 'Customer') + ' is confirmed for ' + (visit.preferredDate || visit.date || 'their booking'),
+                            paymentKey: key,
+                            amount: expectedAmount,
+                            customerName: visit.customerName || '',
+                            data: {
+                                source: visit.source,
+                                serviceSummary: visit.serviceSummary || ''
+                            }
+                        });
+                    }
+                    return null;
+                });
+            }).then(function() {
+                // Auto-Manager hook: stock, reviews, commissions
+                if (window.AutoManager) AutoManager.onPaymentConfirmed(key);
             });
-            // Auto-Manager hook: stock, reviews, commissions
-            if (window.AutoManager) AutoManager.onPaymentConfirmed(key);
         }
 
         function rejectPayment(key) {
             if (!confirm('Reject this payment? The customer may have not actually paid.')) return;
+            var rejectedAt = new Date().toISOString();
             database.ref('payments/' + key).update({
                 status: 'rejected',
-                rejectedAt: new Date().toISOString()
+                rejectedAt: rejectedAt
+            }).then(function() {
+                return database.ref('visits/' + key).once('value');
+            }).then(function(snapshot) {
+                var visit = snapshot.val();
+                if (!visit || !window.GBVisitSystem) return null;
+                return window.GBVisitSystem.updateVisit(database, key, {
+                    paymentStatus: 'rejected',
+                    visitStatus: visit.source === 'online_booking' ? 'cancelled' : 'rejected',
+                    rejectedAt: rejectedAt,
+                    requiresManagerVerification: false
+                }).then(function() {
+                    if (visit.source === 'online_booking') {
+                        return window.GBVisitSystem.createOpsNotification(database, {
+                            type: 'booking_rejected',
+                            title: 'Online booking rejected',
+                            body: (visit.customerName || 'Customer') + ' needs a new payment attempt or manual follow-up.',
+                            paymentKey: key,
+                            amount: visit.total || 0,
+                            customerName: visit.customerName || '',
+                            data: {
+                                source: visit.source,
+                                serviceSummary: visit.serviceSummary || ''
+                            }
+                        });
+                    }
+                    return null;
+                });
             });
         }
 
@@ -6904,6 +7244,8 @@
 
         // One-tap cash logging
         function logCash(name, amount) {
+            var createdAt = new Date().toISOString();
+            var paymentRef = database.ref('payments').push();
             var paymentData = {
                 reference: 'CASH-' + Date.now().toString(36).toUpperCase(),
                 verifyCode: '------',
@@ -6914,15 +7256,39 @@
                 itemsDetail: [{ name: name, price: amount }],
                 discount: null,
                 targetBank: 'CASH',
+                source: 'walk_in_cash',
+                paymentMethod: 'cash',
                 status: 'confirmed',
-                confirmedAt: new Date().toISOString(),
-                createdAt: new Date().toISOString(),
-                date: new Date().toISOString().split('T')[0],
+                confirmedAt: createdAt,
+                createdAt: createdAt,
+                date: createdAt.split('T')[0],
                 isCash: true
             };
-            var cashRef = database.ref('payments').push(paymentData);
-            // Auto-Manager hook: stock, reviews, commissions
-            if (window.AutoManager && cashRef.key) AutoManager.onPaymentConfirmed(cashRef.key);
+            paymentRef.set(paymentData).then(function() {
+                if (!window.GBVisitSystem) return null;
+                var visitRecord = window.GBVisitSystem.buildVisitRecord({
+                    paymentKey: paymentRef.key,
+                    source: 'walk_in_cash',
+                    payment: paymentData,
+                    items: paymentData.itemsDetail
+                });
+                return Promise.all([
+                    window.GBVisitSystem.saveVisit(database, paymentRef.key, visitRecord),
+                    window.GBVisitSystem.createOpsNotification(database, {
+                        type: 'walk_in_paid',
+                        title: 'Cash walk-in logged',
+                        body: name + ' was logged as a completed cash visit.',
+                        paymentKey: paymentRef.key,
+                        amount: amount,
+                        data: {
+                            source: 'walk_in_cash',
+                            serviceSummary: name
+                        }
+                    })
+                ]);
+            }).then(function() {
+                if (window.AutoManager && paymentRef.key) AutoManager.onPaymentConfirmed(paymentRef.key);
+            });
             logActivity('payment', 'Cash payment logged: ' + name + ' (\u00A3' + amount.toFixed(2) + ')');
             // Flash feedback on the button
             var btns = document.querySelectorAll('.cash-service-btn');
@@ -7729,16 +8095,15 @@
                 if (sub) sub.textContent = count + ' transactions';
             });
 
-            // Today's bookings
+            // Today's visits
             var todayStr = now.toISOString().split('T')[0];
-            database.ref('bookings').orderByChild('date').equalTo(todayStr).once('value', function(snap) {
-                var count = 0;
-                snap.forEach(function() { count++; });
-                var el = document.getElementById('briefBookings');
-                if (el) el.textContent = count;
-                var sub = document.getElementById('briefBookingsSub');
-                if (sub) sub.textContent = count > 0 ? 'appointments today' : 'no bookings today';
+            var todayVisits = getDisplayVisits().filter(function(visit) {
+                return getVisitScheduleDate(visit) === todayStr && isOpenVisit(visit);
             });
+            var el = document.getElementById('briefBookings');
+            if (el) el.textContent = todayVisits.length;
+            var sub = document.getElementById('briefBookingsSub');
+            if (sub) sub.textContent = todayVisits.length > 0 ? 'planned or active visits today' : 'no visits lined up';
 
             // Staff on duty
             database.ref('staff').once('value', function(snap) {
@@ -7790,10 +8155,11 @@
             var hour = now.getHours();
             if (hour >= 9 && hour < 20) {
                 // Shop should likely be open
-                database.ref('settings/shopStatus').once('value', function(snap) {
+                database.ref('shopStatus').once('value', function(snap) {
                     var status = snap.val();
-                    if (status === 'closed' || status === 'holiday') {
-                        alerts.push({ type: 'info', icon: '\uD83D\uDEAA', text: 'Shop is marked as ' + status + ' during business hours', sub: 'Update shop status if open' });
+                    var shopState = status && status.status ? status.status : status;
+                    if (shopState === 'closed' || shopState === 'holiday') {
+                        alerts.push({ type: 'info', icon: '\uD83D\uDEAA', text: 'Shop is marked as ' + shopState + ' during business hours', sub: 'Update shop status if open' });
                     }
                     renderSmartAlerts(alerts);
                 });
@@ -7813,18 +8179,14 @@
                 renderSmartAlerts(alerts);
             });
 
-            // Check for no-show bookings
-            database.ref('bookings').orderByChild('date').equalTo(today).once('value', function(snap) {
-                var bookingCount = 0;
-                snap.forEach(function(c) {
-                    var b = c.val();
-                    if (b.status !== 'cancelled') bookingCount++;
-                });
-                if (bookingCount === 0 && hour >= 10) {
-                    alerts.push({ type: 'info', icon: '\uD83D\uDCC5', text: 'No bookings scheduled for today', sub: 'Walk-ins only today' });
-                }
-                renderSmartAlerts(alerts);
-            });
+            // Check for scheduled visits
+            var scheduledToday = getDisplayVisits().filter(function(visit) {
+                return getVisitScheduleDate(visit) === today && isOpenVisit(visit);
+            }).length;
+            if (scheduledToday === 0 && hour >= 10) {
+                alerts.push({ type: 'info', icon: '\uD83D\uDCC5', text: 'No visits scheduled for today', sub: 'Walk-ins will drive the day unless new bookings land' });
+            }
+            renderSmartAlerts(alerts);
 
             // Default render if no async callbacks triggered
             setTimeout(function() { renderSmartAlerts(alerts); }, 500);
@@ -8129,44 +8491,28 @@
         var managedBookings = [];
 
         function loadBookingManagement() {
-            // Fallback: if Firebase doesn't respond in 8s, clear the spinner
-            var bookingSpinnerTimeout = setTimeout(function() {
-                var c = document.getElementById('bookingManageList');
-                if (c && c.querySelector('.loading-spinner')) {
-                    c.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128197;</div><div class="empty-state-text">No bookings yet</div><div class="empty-state-sub">Bookings appear when customers book online</div></div>';
-                }
-            }, 8000);
-
-            database.ref('bookings').orderByChild('date').on('value', function(snap) {
-                clearTimeout(bookingSpinnerTimeout);
-                managedBookings = [];
-                snap.forEach(function(c) {
-                    var b = c.val();
-                    b._key = c.key;
-                    managedBookings.push(b);
-                });
-                managedBookings.reverse();
-                renderManagedBookings();
-            }, function(err) {
-                clearTimeout(bookingSpinnerTimeout);
-                var c = document.getElementById('bookingManageList');
-                if (c) c.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128197;</div><div class="empty-state-text">No bookings yet</div><div class="empty-state-sub">Bookings appear when customers book online</div></div>';
-            });
+            managedBookings = getDisplayVisits();
+            renderManagedBookings();
         }
 
         function renderManagedBookings() {
             var container = document.getElementById('bookingManageList');
+            managedBookings = getDisplayVisits();
             if (!container) return;
             if (managedBookings.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128197;</div><div class="empty-state-text">No bookings yet</div><div class="empty-state-sub">Bookings appear when customers book online</div></div>';
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128197;</div><div class="empty-state-text">No visits yet</div><div class="empty-state-sub">Online bookings and in-shop payments appear here</div></div>';
                 return;
             }
             var html = '';
             managedBookings.slice(0, 50).forEach(function(b) {
+                var statusLabel = window.GBVisitSystem ? window.GBVisitSystem.getVisitStatusLabel(b) : (b.visitStatus || b.status || 'Pending');
+                var sourceLabel = window.GBVisitSystem ? window.GBVisitSystem.getSourceLabel(b.source) : (b.source || 'Visit');
                 html += '<div class="booking-manage-item">';
-                html += '<div class="bm-header"><div class="bm-name">' + (b.name || 'Guest') + '</div></div>';
-                html += '<div class="bm-detail">' + (b.service || 'Service N/A') + ' &middot; ' + (b.date || '') + ' ' + (b.time || '') + '</div>';
-                if (b.phone) html += '<div class="bm-detail">Phone: ' + b.phone + '</div>';
+                html += '<div class="bm-header"><div class="bm-name">' + escapeHtml(b.customerName || b.name || 'Guest') + '</div></div>';
+                html += '<div class="bm-detail">' + escapeHtml((b.serviceSummary || b.service || 'Service N/A') + ' &middot; ' + getVisitDateDisplay(b)) + '</div>';
+                html += '<div class="bm-detail">' + escapeHtml(sourceLabel + ' &middot; ' + statusLabel) + '</div>';
+                if (b.customerPhone || b.phone) html += '<div class="bm-detail">Phone: ' + escapeHtml(b.customerPhone || b.phone) + '</div>';
+                if (b.preferredBarber) html += '<div class="bm-detail">Barber: ' + escapeHtml(b.preferredBarber) + '</div>';
                 html += '</div>';
             });
             container.innerHTML = html;
@@ -8195,55 +8541,47 @@
             // Skip if emergency closed
             if (shopStatus.emergencyClose) return;
 
-            var hoursData = localStorage.getItem('goldenBarbers_hours');
-            if (!hoursData) return;
+            var hours = Object.keys(openingHoursCache || {}).length ? openingHoursCache : mergeHours(JSON.parse(localStorage.getItem('goldenBarbers_hours') || '{}'));
+            var now = new Date();
+            var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            var today = days[now.getDay()];
+            var todayHours = hours[today];
 
-            try {
-                var hours = JSON.parse(hoursData);
-                var now = new Date();
-                var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-                var today = days[now.getDay()];
-                var todayHours = hours[today];
+            if (!todayHours) return;
 
-                if (!todayHours) return;
-
-                // If marked as closed day
-                if (todayHours.closed) {
-                    if (shopStatus.status === 'open') {
-                        shopStatus.status = 'closed';
-                        shopStatus.updatedAt = new Date().toISOString();
-                        shopStatus.autoManaged = true;
-                        saveShopStatus();
-                        logActivity('settings', 'Shop auto-closed (closed day)');
-                    }
-                    return;
-                }
-
-                var nowMinutes = now.getHours() * 60 + now.getMinutes();
-                var openParts = todayHours.open.split(':');
-                var closeParts = todayHours.close.split(':');
-                var openMinutes = parseInt(openParts[0]) * 60 + parseInt(openParts[1]);
-                var closeMinutes = parseInt(closeParts[0]) * 60 + parseInt(closeParts[1]);
-
-                var shouldBeOpen = nowMinutes >= openMinutes && nowMinutes < closeMinutes;
-
-                if (shouldBeOpen && shopStatus.status !== 'open') {
-                    shopStatus.status = 'open';
-                    shopStatus.updatedAt = new Date().toISOString();
-                    shopStatus.autoManaged = true;
-                    saveShopStatus();
-                    logActivity('settings', 'Shop auto-opened (' + todayHours.open + ')');
-                    autoSetStaffDuty(true);
-                } else if (!shouldBeOpen && shopStatus.status === 'open') {
+            if (todayHours.closed) {
+                if (shopStatus.status === 'open') {
                     shopStatus.status = 'closed';
                     shopStatus.updatedAt = new Date().toISOString();
                     shopStatus.autoManaged = true;
                     saveShopStatus();
-                    logActivity('settings', 'Shop auto-closed (' + todayHours.close + ')');
-                    autoSetStaffDuty(false);
+                    logActivity('settings', 'Shop auto-closed (closed day)');
                 }
-            } catch (e) {
-                // Invalid hours data, skip
+                return;
+            }
+
+            var nowMinutes = now.getHours() * 60 + now.getMinutes();
+            var openParts = todayHours.open.split(':');
+            var closeParts = todayHours.close.split(':');
+            var openMinutes = parseInt(openParts[0], 10) * 60 + parseInt(openParts[1], 10);
+            var closeMinutes = parseInt(closeParts[0], 10) * 60 + parseInt(closeParts[1], 10);
+
+            var shouldBeOpen = nowMinutes >= openMinutes && nowMinutes < closeMinutes;
+
+            if (shouldBeOpen && shopStatus.status !== 'open') {
+                shopStatus.status = 'open';
+                shopStatus.updatedAt = new Date().toISOString();
+                shopStatus.autoManaged = true;
+                saveShopStatus();
+                logActivity('settings', 'Shop auto-opened (' + todayHours.open + ')');
+                autoSetStaffDuty(true);
+            } else if (!shouldBeOpen && shopStatus.status === 'open') {
+                shopStatus.status = 'closed';
+                shopStatus.updatedAt = new Date().toISOString();
+                shopStatus.autoManaged = true;
+                saveShopStatus();
+                logActivity('settings', 'Shop auto-closed (' + todayHours.close + ')');
+                autoSetStaffDuty(false);
             }
         }
 

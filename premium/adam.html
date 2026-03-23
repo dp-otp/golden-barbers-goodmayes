@@ -707,317 +707,31 @@
         </div>
     </main>
 
+    <script src="adam-knowledge.js"></script>
     <script>
-        // Adam - Smart Rule-Based Assistant for Golden Barbers
-
-        // Comprehensive response patterns
-        const responses = {
-            // === GREETINGS ===
-            greetings: {
-                patterns: [/^(hi|hey|hello|hiya|yo|sup|hola|howdy|good\s*(morning|afternoon|evening)|alright)/i],
-                replies: [
-                    "Hey there! Welcome to Golden Barbers! 👋 How can I help you today?",
-                    "Hello! Great to see you here. Looking for a fresh cut or have any questions?",
-                    "Hey! I'm Adam from Golden Barbers. What can I do for you today?",
-                    "Hi there! Whether it's a quick trim or a full makeover, I'm here to help!"
-                ]
-            },
-
-            // === FAREWELLS ===
-            farewells: {
-                patterns: [/^(bye|goodbye|see ya|later|take care|cheers|thanks bye|cya)/i],
-                replies: [
-                    "Take care! Hope to see you at Golden Barbers soon! ✌️",
-                    "Cheers mate! Pop in anytime - we're at 14 Goodmayes Road!",
-                    "See you later! Looking forward to sorting out your next cut!",
-                    "Bye for now! Don't be a stranger! 👋"
-                ]
-            },
-
-            // === THANKS ===
-            thanks: {
-                patterns: [/(thank|thanks|cheers|ta|appreciate|thx|tysm)/i],
-                replies: [
-                    "No worries at all! Anything else you'd like to know?",
-                    "You're welcome! Happy to help anytime!",
-                    "Anytime! That's what I'm here for!",
-                    "My pleasure! Let me know if there's anything else!"
-                ]
-            },
-
-            // === HOW ARE YOU ===
-            howAreYou: {
-                patterns: [/(how are you|how('s| is) it going|how you doing|you (ok|okay|alright)|what'?s up)/i],
-                replies: [
-                    "I'm doing great, thanks for asking! Ready to help you with anything barber-related. What's on your mind?",
-                    "All good here! The shop's buzzing as always. How can I help you today?",
-                    "Can't complain! Always happy to chat. What brings you here?"
-                ]
-            },
-
-            // === SERVICES & PRICES ===
-            services: {
-                patterns: [/(service|what (do you|can you) (do|offer)|menu|treatment|what('s| is) available)/i],
-                replies: [
-                    "Here's what we offer at Golden Barbers:<br><br>💈 <strong>Haircuts:</strong><br>• Golden Luxury (full package) - £45<br>• Golden Bundle - £27<br>• Skin Fade - £15.95<br>• Gents Cut - £13.95<br>• Head Shave - £12.95<br>• Kids Under 12 - £8.95<br><br>🧔 <strong>Beard & Grooming:</strong><br>• Deluxe Hot Towel Shave - £11<br>• Beard Trim - £6.95<br>• Turkish Hot Towel - £3<br>• Ear & Nose Waxing - £6<br><br>✨ <strong>Extras:</strong><br>• Patterns & Designs - £5<br>• Hair Colour - £5<br>• Head Massage - £5<br>• Black/Mud Mask - £5<br><br>Check out our <a href='services.html'>full services page</a> for more details!"
-                ]
-            },
-
-            prices: {
-                patterns: [/(price|cost|how much|pricing|rate|fee|£|pound|charge)/i],
-                replies: [
-                    "Here are our prices:<br><br>💇 <strong>Cuts:</strong><br>• Golden Luxury - £45<br>• Golden Bundle - £27<br>• Skin Fade - £15.95<br>• Gents Cut - £13.95<br>• Head Shave - £12.95<br>• Kids (Under 12) - £8.95<br><br>🧔 <strong>Beard:</strong><br>• Hot Towel Shave - £11<br>• Beard Trim - £6.95<br><br>✨ <strong>Extras from £3-£6</strong><br><br>Great value for premium service! Want details on anything specific?"
-                ]
-            },
-
-            // === SPECIFIC SERVICES ===
-            skinFade: {
-                patterns: [/(skin\s*fade|bald\s*fade|zero\s*fade)/i],
-                replies: [
-                    "Skin fades are one of our specialties! 💈<br><br>A skin fade starts from the skin (hence the name!) and gradually blends up. It's clean, sharp, and looks fresh for weeks.<br><br><strong>Price: £15.95</strong><br><br>We can do low, mid, or high skin fades depending on your style. Our barbers are experts at getting that seamless blend. Want to book one in?"
-                ]
-            },
-
-            fade: {
-                patterns: [/(fade|taper|blend)/i],
-                replies: [
-                    "Fades are what we do best! 💈<br><br>We offer all types:<br>• <strong>Skin/Bald Fade</strong> - starts from the skin<br>• <strong>Low Fade</strong> - starts just above the ear<br>• <strong>Mid Fade</strong> - starts at the temple<br>• <strong>High Fade</strong> - starts near the top<br>• <strong>Taper Fade</strong> - more subtle, gradual blend<br><br>All fades are £15.95. Our barbers will help you choose what suits your face shape best!"
-                ]
-            },
-
-            beard: {
-                patterns: [/(beard|facial hair|stubble|goatee|moustache|mustache)/i],
-                replies: [
-                    "We've got you covered for beard grooming! 🧔<br><br>• <strong>Beard Trim (Machine)</strong> - £6.95<br>• <strong>Deluxe Hot Towel Shave</strong> - £11<br>• <strong>Turkish Hot Towel</strong> - £3<br><br>Whether you want a clean shave, shape-up, or just a tidy trim, our barbers will sort you out. We also give advice on growing and maintaining your beard!"
-                ]
-            },
-
-            beardCare: {
-                patterns: [/(beard\s*(care|oil|balm|maintenance|grow|tips)|grow.*(beard|facial))/i],
-                replies: [
-                    "Here are my top beard care tips! 🧔<br><br>1. <strong>Wash it</strong> - Use a proper beard shampoo 2-3 times a week<br>2. <strong>Oil it</strong> - Beard oil daily keeps it soft and healthy<br>3. <strong>Brush it</strong> - Train your beard to grow in the right direction<br>4. <strong>Trim regularly</strong> - Even if growing, trim split ends<br>5. <strong>Be patient</strong> - Give it at least 4-6 weeks before judging<br><br>Pop in for a beard trim and we can give you personalized advice!"
-                ]
-            },
-
-            hotTowel: {
-                patterns: [/(hot\s*towel|turkish|shave|wet\s*shave|straight\s*razor)/i],
-                replies: [
-                    "Our hot towel shave is a proper luxury experience! 🔥<br><br>• <strong>Deluxe Hot Towel Shave</strong> - £11<br>• <strong>Turkish Hot Towel</strong> - £3 (add-on)<br><br>The deluxe includes hot towels, pre-shave oil, a proper straight razor shave, and aftershave balm. It's the smoothest shave you'll ever have - perfect for special occasions or just treating yourself!"
-                ]
-            },
-
-            kidsHaircut: {
-                patterns: [/(kid|child|son|daughter|boy|little one|young)/i],
-                replies: [
-                    "We love having the little ones in! 👦<br><br><strong>Kids Haircut (Under 12): £8.95</strong><br><br>Our barbers are great with children - patient and friendly. We make sure they have a good experience so they're not scared of haircuts! Some tips:<br>• Bring them when they're not tired<br>• Show them pictures of what they want<br>• First time? Keep it simple!<br><br>No appointment needed - just walk in!"
-                ]
-            },
-
-            goldenLuxury: {
-                patterns: [/(golden\s*luxury|full\s*package|premium\s*service|vip|deluxe\s*package)/i],
-                replies: [
-                    "The Golden Luxury is our ultimate package! ✨<br><br><strong>Price: £45</strong><br><br>It includes:<br>• Premium haircut of your choice<br>• Hot towel shave or beard trim<br>• Head massage<br>• Face mask treatment<br>• Hair wash and style<br><br>It's the full VIP experience - perfect for special occasions or when you want to feel like a million quid! Takes about 60-75 minutes."
-                ]
-            },
-
-            goldenBundle: {
-                patterns: [/(golden\s*bundle|bundle)/i],
-                replies: [
-                    "The Golden Bundle is our most popular combo! 🌟<br><br><strong>Price: £27</strong><br><br>Includes:<br>• Haircut (any style)<br>• Beard trim or hot towel<br>• Head massage<br><br>It's brilliant value - you're saving compared to booking separately. Most of our regulars go for this one!"
-                ]
-            },
-
-            colour: {
-                patterns: [/(colou?r|dye|bleach|highlight|tint)/i],
-                replies: [
-                    "Yes, we do hair colour! 🎨<br><br><strong>Hair Colour: £5</strong> (on top of your cut)<br><br>We can do:<br>• Full colour<br>• Grey coverage<br>• Subtle highlights<br>• Bold colours (just ask!)<br><br>Have a chat with your barber about what you're after - they'll advise on what works best for your hair type and skin tone."
-                ]
-            },
-
-            massage: {
-                patterns: [/(massage|head\s*rub|relax)/i],
-                replies: [
-                    "Our head massage is pure relaxation! 💆<br><br><strong>Head Massage: £5</strong><br><br>It's included in the Golden Luxury and Golden Bundle packages, or you can add it to any service. Great for relieving stress and tension. Many customers say it's the best part of their visit!"
-                ]
-            },
-
-            // === HAIR LOSS ===
-            hairLoss: {
-                patterns: [/(hair\s*loss|losing\s*(my\s*)?hair|bald(ing)?|thin(ning)?|receding|going\s*bald)/i],
-                replies: [
-                    "Hair loss is more common than you'd think, and there's no shame in it at all! Here's some honest advice:<br><br>💇 <strong>Style Solutions:</strong><br>• Shorter cuts often look better with thinning hair<br>• Skin fades can make thinning less noticeable<br>• Buzz cuts or head shaves look confident and sharp<br><br>🧴 <strong>Treatments to consider:</strong><br>• Minoxidil (available over the counter)<br>• See a GP about finasteride<br>• Look into scalp micropigmentation<br><br>🧔 <strong>Embrace it:</strong><br>• Many men look great bald - it's a power move!<br>• A good beard can balance things out<br><br>Come in for a chat - our barbers can recommend styles that work with your hair, not against it. We'll be honest and help you look your best! Check out our <a href='knowledge.html'>Learn page</a> for more tips."
-                ]
-            },
-
-            // === BOOKING ===
-            booking: {
-                patterns: [/(book|appointment|reserve|schedule)/i],
-                replies: [
-                    "Booking is easy! You've got a few options:<br><br>📞 <strong>Call us:</strong> <a href='tel:02085989920'>020 8598 9920</a><br>📱 <strong>WhatsApp:</strong> Send us a message<br>🚶 <strong>Walk-in:</strong> Just come down!<br><br>We're open Mon-Sat 9:30am-8pm and Sunday 9:30am-6pm. Walk-ins are always welcome, but if you want a specific barber or time, calling ahead is best!"
-                ]
-            },
-
-            walkIn: {
-                patterns: [/(walk\s*in|no\s*appointment|just\s*(come|show\s*up)|queue|wait\s*time)/i],
-                replies: [
-                    "Yes, walk-ins are absolutely welcome! 🚶<br><br>No appointment? No problem! Just come down to the shop and we'll fit you in.<br><br>⏰ <strong>Best times for shorter waits:</strong><br>• Weekday mornings (before 11am)<br>• Early afternoons (2-4pm)<br><br>⚠️ <strong>Busier times:</strong><br>• Saturday afternoons<br>• After work (5-7pm)<br><br>If there's a wait, you can pop to the shops nearby or we'll give you a time estimate. We try to be as quick as possible while still doing quality work!"
-                ]
-            },
-
-            // === LOCATION & HOURS ===
-            location: {
-                patterns: [/(where|location|address|find you|directions?|map|how (to|do i) get)/i],
-                replies: [
-                    "We're easy to find! 📍<br><br><strong>Address:</strong><br>14 Goodmayes Road<br>Ilford, IG3 9UN<br><br><strong>Near:</strong> Goodmayes Station (Elizabeth Line)<br><br>Just a 2-minute walk from the station - come out the main exit and head down Goodmayes Road. You can't miss us!<br><br><a href='https://maps.google.com/?q=14+Goodmayes+Road+Ilford+IG3+9UN' target='_blank'>Open in Google Maps</a>"
-                ]
-            },
-
-            hours: {
-                patterns: [/(hour|open|close|time|when are you|schedule)/i],
-                replies: [
-                    "Here are our opening hours! ⏰<br><br><strong>Monday - Saturday:</strong> 9:30am - 8:00pm<br><strong>Sunday:</strong> 9:30am - 6:00pm<br><br>We're open every day of the week! Last appointments are usually 30 mins before closing, but walk-ins might need to be a bit earlier depending on what you need."
-                ]
-            },
-
-            // === PAYMENT ===
-            payment: {
-                patterns: [/(pay|card|cash|contactless|apple\s*pay|google\s*pay)/i],
-                replies: [
-                    "We accept all payment methods! 💳<br><br>• Cash<br>• Card (Visa, Mastercard, Amex)<br>• Contactless<br>• Apple Pay<br>• Google Pay<br><br>Whatever's easiest for you!"
-                ]
-            },
-
-            // === CONTACT ===
-            contact: {
-                patterns: [/(contact|phone|call|number|reach|get\s*in\s*touch|whatsapp)/i],
-                replies: [
-                    "Here's how to reach us! 📞<br><br><strong>Phone:</strong> <a href='tel:02085989920'>020 8598 9920</a><br><strong>WhatsApp:</strong> Available for bookings<br><strong>Visit:</strong> 14 Goodmayes Road, Ilford IG3 9UN<br><br>Give us a ring or just pop in - we're always happy to help!"
-                ]
-            },
-
-            // === PARKING ===
-            parking: {
-                patterns: [/(park|parking|car|drive)/i],
-                replies: [
-                    "Parking info for you! 🚗<br><br>• Street parking available on Goodmayes Road<br>• Free parking on surrounding residential streets<br>• Pay & display nearby if needed<br><br>Most customers find a spot pretty easily. Alternatively, we're just 2 mins from Goodmayes Station if you'd rather take the train!"
-                ]
-            },
-
-            // === STYLE ADVICE ===
-            styleAdvice: {
-                patterns: [/(what (haircut|style|cut).*(suit|for) me|recommend|suggestion|face\s*shape|what should i get)/i],
-                replies: [
-                    "Great question! Here's a quick guide based on face shapes:<br><br>🔲 <strong>Square face:</strong> Short sides, textured top<br>⭕ <strong>Round face:</strong> High fade, height on top<br>🥚 <strong>Oval face:</strong> Lucky you - most styles work!<br>💎 <strong>Diamond face:</strong> Fringes and side parts<br>📐 <strong>Long face:</strong> Avoid too much height<br><br>Honestly though, the best advice is to come in and chat with one of our barbers. They'll look at your face shape, hair type, and lifestyle to recommend something perfect. Bring any pictures of styles you like!"
-                ]
-            },
-
-            // === HAIR CARE ===
-            hairCare: {
-                patterns: [/(hair\s*care|shampoo|product|how (often|to) wash|maintain|keep.*fresh)/i],
-                replies: [
-                    "Here are my top hair care tips! 💇<br><br>1. <strong>Don't overwash</strong> - 2-3 times a week is enough<br>2. <strong>Use proper products</strong> - Not just any soap!<br>3. <strong>Condition</strong> - Keeps hair healthy<br>4. <strong>Pat dry</strong> - Don't rub aggressively<br>5. <strong>Regular trims</strong> - Every 3-4 weeks for fades<br><br>Want product recommendations? Just ask, or chat with your barber during your next visit!"
-                ]
-            },
-
-            // === COMPLIMENTS ===
-            compliments: {
-                patterns: [/(you('re| are) (great|awesome|helpful|amazing|the best)|good (job|work)|love (this|you)|brilliant)/i],
-                replies: [
-                    "Aw, that's really kind of you! Thanks! 😊 We try our best to help everyone out. Anything else you'd like to know?",
-                    "Cheers mate! Really appreciate that! Is there anything else I can help with?",
-                    "You're making me blush! 😄 Happy to help anytime!"
-                ]
-            },
-
-            // === BARBERS/TEAM ===
-            team: {
-                patterns: [/(barber|who (work|cut)|staff|team|specific person)/i],
-                replies: [
-                    "We've got a great team of skilled barbers! ✂️<br><br>All our barbers are trained in:<br>• Classic cuts<br>• Modern fades<br>• Beard grooming<br>• Hot towel shaves<br><br>If you want a specific barber, just let us know when booking or walking in. Each has their own style and specialties. Come meet the team - they're a friendly bunch!"
-                ]
-            },
-
-            // === GENERAL CHAT - Weather ===
-            weather: {
-                patterns: [/(weather|rain|sun|cold|hot|temperature)/i],
-                replies: [
-                    "Ha! I'm more of a haircut expert than a weatherman, but whatever the weather, we're here keeping everyone looking fresh! ☀️🌧️<br><br>Is there anything about Golden Barbers I can help you with?",
-                    "British weather, eh? Always unpredictable! One thing that's always reliable though - a good haircut from Golden Barbers! How can I help?"
-                ]
-            },
-
-            // === GENERAL CHAT - Sports ===
-            sports: {
-                patterns: [/(football|soccer|arsenal|spurs|chelsea|west ham|match|game|sport|boxing|ufc)/i],
-                replies: [
-                    "Ah, a sports fan! You'll fit right in at the shop - there's always some banter going on about the latest matches! ⚽<br><br>But I'm here to help with barbershop stuff - got any questions about cuts or booking?",
-                    "The barbers love chatting about sports! Come in for a cut and join the debate - there's always something going on! Can I help with anything about our services?"
-                ]
-            },
-
-            // === JOKES ===
-            jokes: {
-                patterns: [/(joke|funny|laugh|make me (laugh|smile))/i],
-                replies: [
-                    "Why did the barber win the race? Because he knew all the shortcuts! 😄<br><br>Alright, alright, I'll stick to haircut advice! How can I actually help you?",
-                    "What do you call a barber who only cuts hair occasionally? A part-timer! 😂<br><br>Okay, I'll leave the comedy to the professionals. What can I help you with?"
-                ]
-            },
-
-            // === WHO ARE YOU ===
-            whoAreYou: {
-                patterns: [/(who are you|what are you|are you (real|human|a bot|ai)|your name)/i],
-                replies: [
-                    "I'm Adam! 👋 I'm the virtual assistant for Golden Barbers Goodmayes. I'm here to answer your questions about our services, prices, booking, and anything else barber-related!<br><br>I'm not a real person, but I know everything about the shop and can help you out anytime. What would you like to know?"
-                ]
-            },
-
-            // === GENERAL QUESTIONS ===
-            whatCanYouDo: {
-                patterns: [/(what can you (do|help)|how (can|do) you help|capabilities)/i],
-                replies: [
-                    "I can help you with loads of things! Here's what I know about:<br><br>💈 Our services and prices<br>📍 Location and directions<br>⏰ Opening hours<br>📞 Booking and contact info<br>💇 Style recommendations<br>🧔 Beard and hair care tips<br>💇 Hair loss advice<br><br>Just ask away! And if I can't help, I'll point you in the right direction."
-                ]
-            }
-        };
-
-        // Fallback responses - friendly and helpful
-        const fallbackResponses = [
-            "Hmm, I'm not quite sure about that one! But I'm great with anything about Golden Barbers - services, prices, booking, hair advice, you name it. What would you like to know?",
-            "That's a bit outside my expertise! I'm best at helping with barbershop stuff. Fancy asking about our services, booking, or hair tips?",
-            "I might not have the answer to that, but I'm your go-to for anything Golden Barbers related! Try asking about our prices, opening hours, or style advice.",
-            "Not sure I can help with that one mate, but hit me with any barber questions - that's my thing! What can I tell you about Golden Barbers?",
-            "I'd love to help but that's not really my area! I'm all about haircuts, beards, and Golden Barbers. Ask me anything about the shop!"
-        ];
-
-        function getResponse(message) {
-            const lowerMessage = message.toLowerCase();
-
-            // Check each category
-            for (const category of Object.values(responses)) {
-                for (const pattern of category.patterns) {
-                    if (pattern.test(lowerMessage)) {
-                        const replies = category.replies;
-                        return replies[Math.floor(Math.random() * replies.length)];
-                    }
-                }
-            }
-
-            // Return random fallback
-            return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-        }
+        // Adam - shared deterministic Golden Barbers assistant
 
         function addMessage(content, isUser = false) {
             const messagesContainer = document.getElementById('chatMessages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = isUser ? '👤' : 'A';
 
-            messageDiv.innerHTML = `
-                <div class="message-avatar">${isUser ? '👤' : 'A'}</div>
-                <div class="message-content">
-                    <p>${content}</p>
-                </div>
-            `;
+            const body = document.createElement('div');
+            body.className = 'message-content';
+
+            const paragraph = document.createElement('p');
+            if (isUser) {
+                paragraph.textContent = content;
+            } else {
+                paragraph.innerHTML = content;
+            }
+
+            body.appendChild(paragraph);
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(body);
 
             messagesContainer.appendChild(messageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -1054,7 +768,9 @@
             // Simulate typing delay (300-800ms)
             setTimeout(() => {
                 hideTyping();
-                const response = getResponse(message);
+                const response = window.GoldenBarbersAdam
+                    ? window.GoldenBarbersAdam.getResponse(message)
+                    : "Call <a href='tel:02085989920'>020 8598 9920</a> for direct help.";
                 addMessage(response, false);
             }, 300 + Math.random() * 500);
         }

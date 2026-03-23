@@ -2403,15 +2403,41 @@
                             <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" style="color:#25D366;">
                                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.122 1.523 5.854L0 24l6.338-1.499A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.006-1.369l-.36-.213-3.728.882.946-3.618-.235-.372A9.779 9.779 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/>
                             </svg>
-                            WhatsApp Booking
+                            Booking Details
                         </div>
-                        <div style="font-size: 11px; color: var(--gray);">Confirm &amp; Pay In-Shop</div>
+                        <div style="font-size: 11px; color: var(--gray);">Choose how you want to secure the visit</div>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 18px; margin-bottom: 20px;">
+                        <div style="font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 14px;">Booking Information</div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
+                            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: #aaa;">
+                                Full name
+                                <input type="text" id="bookingCustomerName" placeholder="Your name" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); background: rgba(0,0,0,0.28); color: #fff;">
+                            </label>
+                            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: #aaa;">
+                                Phone number
+                                <input type="tel" id="bookingCustomerPhone" placeholder="07..." style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); background: rgba(0,0,0,0.28); color: #fff;">
+                            </label>
+                            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: #aaa;">
+                                Preferred date
+                                <input type="date" id="bookingPreferredDate" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); background: rgba(0,0,0,0.28); color: #fff;">
+                            </label>
+                            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: #aaa;">
+                                Preferred time
+                                <input type="time" id="bookingPreferredTime" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); background: rgba(0,0,0,0.28); color: #fff;">
+                            </label>
+                        </div>
+                        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: #aaa; margin-top: 12px;">
+                            Preferred barber (optional)
+                            <input type="text" id="bookingPreferredBarber" placeholder="Any available barber" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); background: rgba(0,0,0,0.28); color: #fff;">
+                        </label>
                     </div>
 
                     <!-- Checkout info -->
                     <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 18px; margin-bottom: 20px;">
                         <p style="font-size: 13px; color: #aaa; line-height: 1.6; margin-bottom: 12px;">
-                            Choose how you'd like to proceed. WhatsApp confirms your slot and you pay on the day. Bank transfer pays now.
+                            WhatsApp keeps the conversation manual. Bank transfer lets you request the booking online now, with manager confirmation after payment review.
                         </p>
                         <div style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: rgba(212,175,55,0.07); border: 1px solid rgba(212,175,55,0.18); border-radius: 10px;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
@@ -2441,7 +2467,7 @@
                                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                                 <path d="M7 11V7a5 5 0 0110 0v4"/>
                             </svg>
-                            Verified by your bank &mdash; Golden Barbers receives payment instantly
+                            Bank transfers are reviewed by the manager before an online appointment is locked in
                         </p>
                     </div>
                 </div>
@@ -2490,6 +2516,7 @@
         <button class="cart-clear-btn" onclick="CartManager.clear()">Clear Cart</button>
     </div>
 
+    <script src="visit-system.js"></script>
     <script>
         // Simple Cursor
         const cursor = document.querySelector('.cursor');
@@ -2917,6 +2944,44 @@
             document.getElementById('paymentFormSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
 
+        function getBookingDetails() {
+            return {
+                customerName: document.getElementById('bookingCustomerName').value.trim(),
+                customerPhone: document.getElementById('bookingCustomerPhone').value.trim(),
+                preferredDate: document.getElementById('bookingPreferredDate').value,
+                preferredTime: document.getElementById('bookingPreferredTime').value,
+                preferredBarber: document.getElementById('bookingPreferredBarber').value.trim()
+            };
+        }
+
+        function validateOnlineBookingDetails(details) {
+            if (!details.customerName) return 'Please enter your full name for the online booking.';
+            if (!details.customerPhone) return 'Please enter your phone number so the manager can confirm the booking.';
+            if (!details.preferredDate) return 'Please choose a preferred date for the online booking.';
+            if (!details.preferredTime) return 'Please choose a preferred time for the online booking.';
+            return '';
+        }
+
+        function getSelectedCheckoutItems() {
+            const items = CartManager.services.map(service => ({
+                id: service.id,
+                name: service.name,
+                price: service.price,
+                type: 'service'
+            }));
+
+            selectedExtras.forEach(extra => {
+                items.push({
+                    id: extra.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                    name: extra.name,
+                    price: extra.price,
+                    type: 'extra'
+                });
+            });
+
+            return items;
+        }
+
         // Back to summary
         document.getElementById('backToSummary').addEventListener('click', () => {
             document.getElementById('paymentFormSection').classList.remove('active');
@@ -2927,6 +2992,7 @@
         document.getElementById('payNowBtn').addEventListener('click', () => {
             const totals = CartManager.getTotals();
             if (totals.count === 0) return;
+            const details = getBookingDetails();
 
             let extrasTotal = 0;
             selectedExtras.forEach(e => { extrasTotal += e.price; });
@@ -2939,14 +3005,20 @@
                 lines.push('• ' + s.name + ' — £' + s.price.toFixed(2));
             });
             if (selectedExtras.length > 0) {
-                selectedExtras.forEach(e => {
-                    lines.push('• Extra: ' + e.name + ' — £' + e.price.toFixed(2));
-                });
+            selectedExtras.forEach(e => {
+                lines.push('• Extra: ' + e.name + ' — £' + e.price.toFixed(2));
+            });
             }
             lines.push('');
+            if (details.customerName) lines.push('Name: ' + details.customerName);
+            if (details.customerPhone) lines.push('Phone: ' + details.customerPhone);
+            if (details.preferredDate) lines.push('Preferred date: ' + details.preferredDate);
+            if (details.preferredTime) lines.push('Preferred time: ' + details.preferredTime);
+            if (details.preferredBarber) lines.push('Preferred barber: ' + details.preferredBarber);
+            if (details.customerName || details.customerPhone || details.preferredDate || details.preferredTime || details.preferredBarber) lines.push('');
             lines.push('Total: £' + grandTotal.toFixed(2));
             lines.push('');
-            lines.push('Please let me know your next available slot. Thanks!');
+            lines.push('Please confirm my booking or nearest suitable slot. Thanks!');
 
             const msg = encodeURIComponent(lines.join('\n'));
             window.open('https://wa.me/447858232531?text=' + msg, '_blank');
@@ -2956,15 +3028,36 @@
         document.getElementById('bankTransferBtn').addEventListener('click', () => {
             const totals = CartManager.getTotals();
             if (totals.count === 0) return;
+            const details = getBookingDetails();
+            const validationError = validateOnlineBookingDetails(details);
+            if (validationError) {
+                alert(validationError);
+                return;
+            }
             let extrasTotal = 0;
             selectedExtras.forEach(e => { extrasTotal += e.price; });
             const grandTotal = totals.price + extrasTotal;
+            const items = getSelectedCheckoutItems();
+            if (window.GBVisitSystem) {
+                window.GBVisitSystem.setCheckoutContext({
+                    source: 'online_booking',
+                    channel: 'services_page',
+                    customerName: details.customerName,
+                    customerPhone: details.customerPhone,
+                    preferredDate: details.preferredDate,
+                    preferredTime: details.preferredTime,
+                    preferredBarber: details.preferredBarber,
+                    items: items,
+                    subtotal: grandTotal,
+                    total: grandTotal
+                });
+            }
             let url;
             if (selectedExtras.length === 0 && CartManager.services.length > 0) {
                 const ids = CartManager.services.map(s => s.id).join(',');
-                url = 'pay.html#' + ids;
+                url = 'pay.html?source=online_booking#' + ids;
             } else {
-                url = 'pay.html#amt:' + grandTotal.toFixed(2);
+                url = 'pay.html?source=online_booking#amt:' + grandTotal.toFixed(2);
             }
             window.location.href = url;
         });

@@ -1375,7 +1375,7 @@
             }).join(',');
 
             // Use hash-based URL for shorter length
-            var paymentUrl = 'https://dp-otp.github.io/golden-barbers-goodmayes/premium/pay.html#' + cartData;
+            var paymentUrl = 'https://dp-otp.github.io/golden-barbers-goodmayes/premium/pay.html?source=qr_walkin#' + cartData;
 
             console.log('Payment URL:', paymentUrl);
             console.log('URL Length:', paymentUrl.length);
@@ -1448,7 +1448,7 @@
             if (!(val > 0)) return;
 
             var amount = val.toFixed(2);
-            var paymentUrl = 'https://dp-otp.github.io/golden-barbers-goodmayes/premium/pay.html#amt:' + amount;
+            var paymentUrl = 'https://dp-otp.github.io/golden-barbers-goodmayes/premium/pay.html?source=qr_walkin#amt:' + amount;
 
             document.getElementById('displayAmount').textContent = '\u00A3' + amount;
             document.getElementById('displayServices').textContent = 'Custom amount';

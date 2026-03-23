@@ -41,6 +41,111 @@
         });
     }
 
+    function getByAnyId(ids) {
+        for (var i = 0; i < ids.length; i++) {
+            var el = document.getElementById(ids[i]);
+            if (el) return el;
+        }
+        return null;
+    }
+
+    function normalizeServiceId(name) {
+        return String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    }
+
+    function getVisitDate(visit) {
+        if (!visit) return '';
+        if (visit.preferredDate) return visit.preferredDate;
+        if (visit.date) return visit.date;
+        return visit.createdAt ? String(visit.createdAt).split('T')[0] : '';
+    }
+
+    function getVisitCustomerName(visit, fallback) {
+        return (visit && (visit.customerName || visit.name)) || fallback || 'Walk-in';
+    }
+
+    function getVisitCustomerPhone(visit, fallback) {
+        return (visit && (visit.customerPhone || visit.phone)) || fallback || '';
+    }
+
+    function getVisitCustomerEmail(visit, fallback) {
+        return (visit && (visit.customerEmail || visit.email)) || fallback || '';
+    }
+
+    function getVisitServiceSummary(visit, payment) {
+        if (visit && visit.serviceSummary) return visit.serviceSummary;
+        if (visit && visit.items && visit.items.length) return visit.items.join(', ');
+        return payment && payment.items ? payment.items.join(', ') : 'Service';
+    }
+
+    function parseLinkedServiceIds() {
+        var linkedChecks = document.querySelectorAll('.am-svc-check:checked');
+        var linked = [];
+        linkedChecks.forEach(function(c) { linked.push(c.value); });
+        if (linked.length > 0) return linked;
+
+        var textInput = document.getElementById('am-prod-services');
+        if (!textInput || !textInput.value.trim()) return [];
+        return textInput.value.split(',').map(function(part) {
+            var name = part.trim();
+            if (!name) return '';
+            return serviceNameMap[name.toLowerCase()] || normalizeServiceId(name);
+        }).filter(Boolean);
+    }
+
+    function findStaffMatchByName(name) {
+        var target = String(name || '').trim().toLowerCase();
+        if (!target) return null;
+        return amStaffList.find(function(staff) {
+            return String(staff.name || '').trim().toLowerCase() === target;
+        }) || null;
+    }
+
+    function upsertClientFromVisitRecord(clients, visit) {
+        var phone = getVisitCustomerPhone(visit);
+        if (!phone) return;
+        var normPhone = phone.replace(/[^0-9]/g, '');
+        if (normPhone.length < 8) return;
+
+        if (!clients[normPhone]) {
+            clients[normPhone] = {
+                name: getVisitCustomerName(visit, 'Unknown'),
+                phone: phone,
+                email: getVisitCustomerEmail(visit),
+                firstVisit: getVisitDate(visit) || visit.createdAt,
+                lastVisit: getVisitDate(visit) || visit.createdAt,
+                totalVisits: 0,
+                totalSpend: 0,
+                services: {},
+                barbers: {},
+                updatedAt: new Date().toISOString()
+            };
+        }
+
+        var client = clients[normPhone];
+        client.name = getVisitCustomerName(visit, client.name);
+        client.email = getVisitCustomerEmail(visit, client.email);
+        client.totalVisits = (client.totalVisits || 0) + 1;
+
+        var visitDate = getVisitDate(visit) || visit.createdAt;
+        if (!client.firstVisit || visitDate < client.firstVisit) client.firstVisit = visitDate;
+        if (!client.lastVisit || visitDate > client.lastVisit) client.lastVisit = visitDate;
+
+        getVisitServiceSummary(visit).split(',').map(function(part) { return part.trim(); }).filter(Boolean).forEach(function(serviceName) {
+            client.services[serviceName] = (client.services[serviceName] || 0) + 1;
+        });
+
+        if (visit.preferredBarber) {
+            client.barbers[visit.preferredBarber] = (client.barbers[visit.preferredBarber] || 0) + 1;
+        }
+
+        client.totalSpend = (client.totalSpend || 0) + (visit.total || 0);
+        client.averageSpend = client.totalVisits > 0 ? Math.round(client.totalSpend / client.totalVisits * 100) / 100 : 0;
+        client.preferredService = getTopKey(client.services);
+        client.preferredBarber = getTopKey(client.barbers);
+        client.updatedAt = new Date().toISOString();
+    }
+
     // ================================================================
     // 1. INVENTORY & STOCK
     // ================================================================
@@ -69,7 +174,7 @@
 
     function renderInventory() {
         var statsEl = document.getElementById('am-inv-stats');
-        var gridEl = document.getElementById('am-inv-grid');
+        var gridEl = getByAnyId(['am-inv-grid', 'am-product-list']);
         if (!statsEl || !gridEl) return;
 
         var totalProducts = allProducts.length;
@@ -107,7 +212,7 @@
     }
 
     function renderStockLog() {
-        var el = document.getElementById('am-inv-log');
+        var el = getByAnyId(['am-inv-log', 'am-stock-log']);
         if (!el) return;
         if (stockLog.length === 0) {
             el.innerHTML = '<div class="am-empty">No stock movements yet.</div>';
@@ -128,9 +233,7 @@
         var stock = parseInt(document.getElementById('am-prod-stock').value) || 0;
         var threshold = parseInt(document.getElementById('am-prod-threshold').value) || 3;
         var cost = parseFloat(document.getElementById('am-prod-cost').value) || 0;
-        var linkedChecks = document.querySelectorAll('.am-svc-check:checked');
-        var linked = [];
-        linkedChecks.forEach(function(c) { linked.push(c.value); });
+        var linked = parseLinkedServiceIds();
         var usage = parseInt(document.getElementById('am-prod-usage').value) || 1;
 
         if (!name) { showToast('Enter a product name', 'error'); return; }
@@ -145,6 +248,7 @@
         document.getElementById('am-prod-name').value = '';
         document.getElementById('am-prod-stock').value = '';
         document.getElementById('am-prod-cost').value = '';
+        if (document.getElementById('am-prod-services')) document.getElementById('am-prod-services').value = '';
         AM.toggleAddProduct();
     };
 
@@ -195,6 +299,7 @@
         var form = document.getElementById('am-add-product-form');
         form.style.display = form.style.display === 'none' ? 'block' : 'none';
     };
+    AM.toggleAddProductForm = AM.toggleAddProduct;
 
     // Auto-decrement stock on confirmed payment
     AM.autoDecrementStock = function(paymentKey) {
@@ -259,14 +364,17 @@
     }
 
     function renderReviewSettings() {
-        var el = document.getElementById('am-review-url');
-        if (el && !el._loaded) {
-            el.value = reviewSettings.googleReviewUrl || '';
-            document.getElementById('am-review-template').value = reviewSettings.messageTemplate || 'Hi {name}! Thanks for visiting Golden Barbers. We\'d really appreciate a quick review: {link}';
-            document.getElementById('am-review-autotoggle').checked = reviewSettings.autoQueueEnabled !== false;
-            document.getElementById('am-review-minspend').value = reviewSettings.minimumSpend || 0;
-            el._loaded = true;
+        var urlEl = document.getElementById('am-review-url');
+        var templateEl = document.getElementById('am-review-template');
+        var toggleEl = getByAnyId(['am-review-autotoggle', 'am-review-auto-toggle']);
+        var minSpendEl = document.getElementById('am-review-minspend');
+        if (urlEl) urlEl.value = reviewSettings.googleReviewUrl || '';
+        if (templateEl) templateEl.value = reviewSettings.messageTemplate || 'Hi {name}! Thanks for visiting Golden Barbers. We\'d really appreciate a quick review: {link}';
+        if (toggleEl) {
+            if (typeof toggleEl.checked === 'boolean') toggleEl.checked = reviewSettings.autoQueueEnabled !== false;
+            toggleEl.classList.toggle('active', reviewSettings.autoQueueEnabled !== false);
         }
+        if (minSpendEl) minSpendEl.value = reviewSettings.minimumSpend || 0;
     }
 
     function renderReviewQueue() {
@@ -318,13 +426,25 @@
     }
 
     AM.saveReviewSettings = function() {
+        var toggleEl = getByAnyId(['am-review-autotoggle', 'am-review-auto-toggle']);
         db.ref('autoManager/reviews/settings').set({
             googleReviewUrl: document.getElementById('am-review-url').value.trim(),
             messageTemplate: document.getElementById('am-review-template').value.trim(),
-            autoQueueEnabled: document.getElementById('am-review-autotoggle').checked,
-            minimumSpend: parseFloat(document.getElementById('am-review-minspend').value) || 0
+            autoQueueEnabled: toggleEl ? (typeof toggleEl.checked === 'boolean' ? toggleEl.checked : toggleEl.classList.contains('active')) : true,
+            minimumSpend: parseFloat((document.getElementById('am-review-minspend') || {}).value) || 0
         });
         showToast('Review settings saved', 'success');
+    };
+
+    AM.toggleAutoReview = function() {
+        var toggleEl = getByAnyId(['am-review-autotoggle', 'am-review-auto-toggle']);
+        if (!toggleEl) return;
+        if (typeof toggleEl.checked === 'boolean') {
+            toggleEl.checked = !toggleEl.checked;
+        } else {
+            toggleEl.classList.toggle('active');
+        }
+        AM.saveReviewSettings();
     };
 
     AM.sendReview = function(queueKey) {
@@ -365,40 +485,55 @@
             db.ref('payments/' + paymentKey).once('value', function(pSnap) {
                 var payment = pSnap.val();
                 if (!payment || (payment.amount || 0) < (settings.minimumSpend || 0)) return;
-
-                // Try to find customer info from bookings (same day + service match)
-                var contactInfo = { name: 'Walk-in', phone: '', email: '' };
-                db.ref('bookings').orderByChild('date').equalTo(payment.date || '').once('value', function(bSnap) {
-                    bSnap.forEach(function(child) {
-                        var b = child.val();
-                        if (b.phone && payment.items) {
-                            var svcName = b.service ? (b.service.name || b.service) : '';
-                            var match = payment.items.some(function(item) {
-                                return item.toLowerCase().includes(svcName.toLowerCase()) || svcName.toLowerCase().includes(item.toLowerCase());
-                            });
-                            if (match || !contactInfo.phone) {
-                                contactInfo.name = b.name || contactInfo.name;
-                                contactInfo.phone = b.phone || contactInfo.phone;
-                                contactInfo.email = b.email || contactInfo.email;
-                            }
-                        }
-                    });
-
-                    // Also check client intelligence
-                    if (!contactInfo.phone) {
-                        // No match found from bookings — queue without phone
+                db.ref('visits/' + paymentKey).once('value', function(vSnap) {
+                    var visit = vSnap.val();
+                    if (visit) {
+                        db.ref('autoManager/reviews/queue').push({
+                            customerName: getVisitCustomerName(visit, 'Walk-in'),
+                            customerPhone: getVisitCustomerPhone(visit, ''),
+                            customerEmail: getVisitCustomerEmail(visit, ''),
+                            service: getVisitServiceSummary(visit, payment),
+                            amount: payment.amount || 0,
+                            paymentKey: paymentKey,
+                            visitKey: paymentKey,
+                            status: 'pending',
+                            queuedAt: new Date().toISOString(),
+                            sentAt: null,
+                            reviewedAt: null
+                        });
+                        return;
                     }
 
-                    db.ref('autoManager/reviews/queue').push({
-                        customerName: contactInfo.name,
-                        customerPhone: contactInfo.phone,
-                        customerEmail: contactInfo.email,
-                        service: payment.items ? payment.items.join(', ') : 'Service',
-                        amount: payment.amount || 0,
-                        paymentKey: paymentKey,
-                        status: 'pending',
-                        queuedAt: new Date().toISOString(),
-                        sentAt: null, reviewedAt: null
+                    // Legacy fallback
+                    var contactInfo = { name: payment.customerName || 'Walk-in', phone: payment.customerPhone || '', email: '' };
+                    db.ref('bookings').orderByChild('date').equalTo(payment.date || '').once('value', function(bSnap) {
+                        bSnap.forEach(function(child) {
+                            var b = child.val();
+                            if (b.phone && payment.items) {
+                                var svcName = b.service ? (b.service.name || b.service) : '';
+                                var match = payment.items.some(function(item) {
+                                    return item.toLowerCase().includes(svcName.toLowerCase()) || svcName.toLowerCase().includes(item.toLowerCase());
+                                });
+                                if (match || !contactInfo.phone) {
+                                    contactInfo.name = b.name || contactInfo.name;
+                                    contactInfo.phone = b.phone || contactInfo.phone;
+                                    contactInfo.email = b.email || contactInfo.email;
+                                }
+                            }
+                        });
+
+                        db.ref('autoManager/reviews/queue').push({
+                            customerName: contactInfo.name,
+                            customerPhone: contactInfo.phone,
+                            customerEmail: contactInfo.email,
+                            service: payment.items ? payment.items.join(', ') : 'Service',
+                            amount: payment.amount || 0,
+                            paymentKey: paymentKey,
+                            status: 'pending',
+                            queuedAt: new Date().toISOString(),
+                            sentAt: null,
+                            reviewedAt: null
+                        });
                     });
                 });
             });
@@ -513,7 +648,7 @@
 
     function renderExpenses() {
         // Recurring list
-        var recEl = document.getElementById('am-exp-recurring-list');
+        var recEl = getByAnyId(['am-exp-recurring-list', 'am-recurring-list']);
         if (recEl) {
             if (recurringExpenses.length === 0) {
                 recEl.innerHTML = '<div class="am-empty">No recurring expenses. Add rent, utilities, etc.</div>';
@@ -533,7 +668,7 @@
         }
 
         // One-off list
-        var oneEl = document.getElementById('am-exp-oneoff-list');
+        var oneEl = getByAnyId(['am-exp-oneoff-list', 'am-oneoff-list']);
         if (oneEl) {
             if (oneoffExpenses.length === 0) {
                 oneEl.innerHTML = '<div class="am-empty">No one-off expenses logged.</div>';
@@ -553,6 +688,9 @@
         var start, end;
         if (expensePeriod === 'week') {
             start = new Date(now); start.setDate(start.getDate() - start.getDay()); start.setHours(0,0,0,0);
+            end = new Date(now); end.setHours(23,59,59,999);
+        } else if (expensePeriod === 'year') {
+            start = new Date(now.getFullYear(), 0, 1);
             end = new Date(now); end.setHours(23,59,59,999);
         } else if (expensePeriod === 'lastmonth') {
             start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
@@ -726,40 +864,64 @@
             db.ref('autoManager/commissions/assignments/' + paymentKey).once('value', function(aSnap) {
                 if (aSnap.exists()) return;
 
-                // Try to match with booking
-                db.ref('bookings').orderByChild('date').equalTo(payment.date || '').once('value', function(bSnap) {
-                    var matchedBarber = null;
-                    bSnap.forEach(function(child) {
-                        var b = child.val();
-                        if (b.barber && b.barber.name && b.barber.id !== 'any') {
-                            if (payment.items) {
-                                var svcName = b.service ? (b.service.name || '') : '';
-                                var match = payment.items.some(function(item) {
-                                    return item.toLowerCase().includes(svcName.toLowerCase()) || svcName.toLowerCase().includes(item.toLowerCase());
+                db.ref('visits/' + paymentKey).once('value', function(vSnap) {
+                    var visit = vSnap.val();
+                    var staffMatch = visit && visit.preferredBarber ? findStaffMatchByName(visit.preferredBarber) : null;
+
+                    if (staffMatch) {
+                        var rate = (commissionSettings.staffRates && commissionSettings.staffRates[staffMatch._key]) || commissionSettings.defaultRate || 40;
+                        var commission = (payment.amount || 0) * (rate / 100);
+                        db.ref('autoManager/commissions/assignments/' + paymentKey).set({
+                            staffKey: staffMatch._key,
+                            staffName: staffMatch.name,
+                            paymentKey: paymentKey,
+                            amount: payment.amount || 0,
+                            commission: Math.round(commission * 100) / 100,
+                            rate: rate,
+                            date: getVisitDate(visit) || payment.date,
+                            service: getVisitServiceSummary(visit, payment),
+                            createdAt: new Date().toISOString()
+                        });
+                        logActivity('commissions', staffMatch.name + ' earned £' + commission.toFixed(2) + ' commission on £' + (payment.amount || 0).toFixed(2));
+                        return;
+                    }
+
+                    // Legacy fallback
+                    db.ref('bookings').orderByChild('date').equalTo(payment.date || '').once('value', function(bSnap) {
+                        var matchedBarber = null;
+                        bSnap.forEach(function(child) {
+                            var b = child.val();
+                            if (b.barber && b.barber.name && b.barber.id !== 'any') {
+                                if (payment.items) {
+                                    var svcName = b.service ? (b.service.name || '') : '';
+                                    var match = payment.items.some(function(item) {
+                                        return item.toLowerCase().includes(svcName.toLowerCase()) || svcName.toLowerCase().includes(item.toLowerCase());
+                                    });
+                                    if (match) matchedBarber = b.barber;
+                                }
+                            }
+                        });
+
+                        if (matchedBarber) {
+                            var legacyStaffMatch = findStaffMatchByName(matchedBarber.name);
+                            if (legacyStaffMatch) {
+                                var legacyRate = (commissionSettings.staffRates && commissionSettings.staffRates[legacyStaffMatch._key]) || commissionSettings.defaultRate || 40;
+                                var legacyCommission = (payment.amount || 0) * (legacyRate / 100);
+                                db.ref('autoManager/commissions/assignments/' + paymentKey).set({
+                                    staffKey: legacyStaffMatch._key,
+                                    staffName: legacyStaffMatch.name,
+                                    paymentKey: paymentKey,
+                                    amount: payment.amount || 0,
+                                    commission: Math.round(legacyCommission * 100) / 100,
+                                    rate: legacyRate,
+                                    date: payment.date,
+                                    service: payment.items ? payment.items.join(', ') : 'Service',
+                                    createdAt: new Date().toISOString()
                                 });
-                                if (match) matchedBarber = b.barber;
+                                logActivity('commissions', legacyStaffMatch.name + ' earned £' + legacyCommission.toFixed(2) + ' commission on £' + (payment.amount || 0).toFixed(2));
                             }
                         }
                     });
-
-                    if (matchedBarber) {
-                        // Find staff key
-                        var staffMatch = amStaffList.find(function(s) {
-                            return s.name.toLowerCase() === matchedBarber.name.toLowerCase();
-                        });
-                        if (staffMatch) {
-                            var rate = (commissionSettings.staffRates && commissionSettings.staffRates[staffMatch._key]) || commissionSettings.defaultRate || 40;
-                            var commission = (payment.amount || 0) * (rate / 100);
-                            db.ref('autoManager/commissions/assignments/' + paymentKey).set({
-                                staffKey: staffMatch._key, staffName: staffMatch.name,
-                                paymentKey: paymentKey, amount: payment.amount || 0,
-                                commission: Math.round(commission * 100) / 100, rate: rate,
-                                date: payment.date, service: payment.items ? payment.items.join(', ') : 'Service',
-                                createdAt: new Date().toISOString()
-                            });
-                            logActivity('commissions', staffMatch.name + ' earned £' + commission.toFixed(2) + ' commission on £' + (payment.amount || 0).toFixed(2));
-                        }
-                    }
                 });
             });
         });
@@ -770,7 +932,7 @@
         var names = amStaffList.map(function(s) { return s.name; }).join(', ');
         var name = prompt('Assign barber (' + names + '):');
         if (!name) return;
-        var staffMatch = amStaffList.find(function(s) { return s.name.toLowerCase() === name.toLowerCase(); });
+        var staffMatch = findStaffMatchByName(name);
         if (!staffMatch) { showToast('Staff member not found', 'error'); return; }
         var rate = (commissionSettings.staffRates && commissionSettings.staffRates[staffMatch._key]) || commissionSettings.defaultRate || 40;
         var commission = (amount || 0) * (rate / 100);
@@ -795,7 +957,6 @@
             renderClients();
         });
 
-        // Check if initial build needed
         db.ref('autoManager/meta/clientsBuilt').once('value', function(snap) {
             if (!snap.exists()) {
                 rebuildClientIntelligence();
@@ -803,50 +964,51 @@
         });
     }
 
+    function buildLegacyVisitFromBooking(booking) {
+        return {
+            customerName: booking.name || 'Unknown',
+            customerPhone: booking.phone || '',
+            customerEmail: booking.email || '',
+            preferredDate: booking.date || '',
+            preferredTime: booking.time || '',
+            preferredBarber: booking.barber ? (booking.barber.name || booking.barber) : '',
+            serviceSummary: booking.service ? (booking.service.name || booking.service) : 'Service',
+            total: booking.service && booking.service.price ? booking.service.price : 0,
+            createdAt: booking.createdAt || new Date().toISOString()
+        };
+    }
+
     function rebuildClientIntelligence() {
-        db.ref('bookings').once('value', function(bSnap) {
-            var bookings = bSnap.val();
-            if (!bookings) { db.ref('autoManager/meta/clientsBuilt').set(true); return; }
-
+        db.ref('visits').once('value', function(vSnap) {
             var clients = {};
-            Object.keys(bookings).forEach(function(bKey) {
-                var b = bookings[bKey];
-                if (!b.phone) return;
-                var normPhone = b.phone.replace(/[^0-9]/g, '');
-                if (normPhone.length < 8) return;
+            var visits = vSnap.val();
 
-                if (!clients[normPhone]) {
-                    clients[normPhone] = {
-                        name: b.name || 'Unknown', phone: b.phone, email: b.email || '',
-                        firstVisit: b.date || b.createdAt, lastVisit: b.date || b.createdAt,
-                        totalVisits: 0, totalSpend: 0, services: {}, barbers: {},
-                        updatedAt: new Date().toISOString()
-                    };
+            if (visits) {
+                Object.keys(visits).forEach(function(visitKey) {
+                    upsertClientFromVisitRecord(clients, visits[visitKey]);
+                });
+            }
+
+            if (Object.keys(clients).length > 0) {
+                db.ref('autoManager/clients').set(clients);
+                db.ref('autoManager/meta/clientsBuilt').set(true);
+                return;
+            }
+
+            db.ref('bookings').once('value', function(bSnap) {
+                var bookings = bSnap.val();
+                if (!bookings) {
+                    db.ref('autoManager/meta/clientsBuilt').set(true);
+                    return;
                 }
-                var c = clients[normPhone];
-                c.name = b.name || c.name;
-                c.email = b.email || c.email;
-                c.totalVisits++;
-                var svcName = b.service ? (b.service.name || b.service) : null;
-                if (svcName) c.services[svcName] = (c.services[svcName] || 0) + 1;
-                var barberName = b.barber ? (b.barber.name || b.barber) : null;
-                if (barberName && barberName !== 'Any Available Barber') c.barbers[barberName] = (c.barbers[barberName] || 0) + 1;
-                var visitDate = b.date || b.createdAt;
-                if (visitDate < c.firstVisit) c.firstVisit = visitDate;
-                if (visitDate > c.lastVisit) c.lastVisit = visitDate;
-                if (b.service && b.service.price) c.totalSpend += b.service.price;
-            });
 
-            // Compute derived
-            Object.keys(clients).forEach(function(phone) {
-                var c = clients[phone];
-                c.averageSpend = c.totalVisits > 0 ? Math.round(c.totalSpend / c.totalVisits * 100) / 100 : 0;
-                c.preferredService = getTopKey(c.services);
-                c.preferredBarber = getTopKey(c.barbers);
-            });
+                Object.keys(bookings).forEach(function(bookingKey) {
+                    upsertClientFromVisitRecord(clients, buildLegacyVisitFromBooking(bookings[bookingKey]));
+                });
 
-            db.ref('autoManager/clients').set(clients);
-            db.ref('autoManager/meta/clientsBuilt').set(true);
+                db.ref('autoManager/clients').set(clients);
+                db.ref('autoManager/meta/clientsBuilt').set(true);
+            });
         });
     }
 
@@ -857,35 +1019,28 @@
         return keys.reduce(function(a, b) { return obj[a] >= obj[b] ? a : b; });
     }
 
-    // Incremental update from new booking
-    AM.updateClientFromBooking = function(booking) {
-        if (!booking || !booking.phone) return;
-        var normPhone = booking.phone.replace(/[^0-9]/g, '');
+    function updateClientFromVisitRecord(visit) {
+        var phone = getVisitCustomerPhone(visit);
+        if (!phone) return;
+        var normPhone = phone.replace(/[^0-9]/g, '');
         if (normPhone.length < 8) return;
 
         db.ref('autoManager/clients/' + normPhone).once('value', function(snap) {
-            var c = snap.val() || {
-                name: booking.name || 'Unknown', phone: booking.phone, email: booking.email || '',
-                firstVisit: booking.date || booking.createdAt, lastVisit: booking.date || booking.createdAt,
-                totalVisits: 0, totalSpend: 0, services: {}, barbers: {},
-                updatedAt: new Date().toISOString()
-            };
-            c.name = booking.name || c.name;
-            c.email = booking.email || c.email;
-            c.totalVisits = (c.totalVisits || 0) + 1;
-            var svcName = booking.service ? (booking.service.name || booking.service) : null;
-            if (svcName) { if (!c.services) c.services = {}; c.services[svcName] = (c.services[svcName] || 0) + 1; }
-            var barberName = booking.barber ? (booking.barber.name || booking.barber) : null;
-            if (barberName && barberName !== 'Any Available Barber') { if (!c.barbers) c.barbers = {}; c.barbers[barberName] = (c.barbers[barberName] || 0) + 1; }
-            var visitDate = booking.date || booking.createdAt;
-            if (!c.lastVisit || visitDate > c.lastVisit) c.lastVisit = visitDate;
-            if (booking.service && booking.service.price) c.totalSpend = (c.totalSpend || 0) + booking.service.price;
-            c.averageSpend = c.totalVisits > 0 ? Math.round(c.totalSpend / c.totalVisits * 100) / 100 : 0;
-            c.preferredService = getTopKey(c.services);
-            c.preferredBarber = getTopKey(c.barbers);
-            c.updatedAt = new Date().toISOString();
-            db.ref('autoManager/clients/' + normPhone).set(c);
+            var clients = {};
+            if (snap.val()) clients[normPhone] = snap.val();
+            upsertClientFromVisitRecord(clients, visit);
+            db.ref('autoManager/clients/' + normPhone).set(clients[normPhone]);
         });
+    }
+
+    AM.updateClientFromBooking = function(booking) {
+        if (!booking) return;
+        updateClientFromVisitRecord(buildLegacyVisitFromBooking(booking));
+    };
+
+    AM.updateClientFromVisit = function(visit) {
+        if (!visit) return;
+        updateClientFromVisitRecord(visit);
     };
 
     function renderClients() {
@@ -915,7 +1070,7 @@
             .sort(function(a, b) { return (b.totalVisits || 0) - (a.totalVisits || 0); });
 
         if (sorted.length === 0) {
-            listEl.innerHTML = '<div class="am-empty">' + (query ? 'No clients matching "' + query + '"' : 'No client data yet. Clients are added automatically from bookings.') + '</div>';
+            listEl.innerHTML = '<div class="am-empty">' + (query ? 'No clients matching "' + query + '"' : 'No client data yet. Clients are added automatically from visits and bookings.') + '</div>';
             return;
         }
 

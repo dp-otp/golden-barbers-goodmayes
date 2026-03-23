@@ -3906,53 +3906,13 @@
         </div>
     </div>
 
+    <script src="adam-knowledge.js"></script>
     <script>
-        // Adam AI Chatbot Widget - Powered by Google Gemini
+        // Adam chatbot widget - shared deterministic responses
         const adamBtn = document.getElementById('adamChatBtn');
         const adamPopup = document.getElementById('adamChatPopup');
         const adamClose = document.getElementById('adamPopupClose');
         const adamMessages = document.getElementById('adamMessages');
-
-        // Gemini API Key - Get yours free at https://makersuite.google.com/app/apikey
-        const GEMINI_API_KEY = 'AIzaSyBnBU_1tKHy07OlGaTLWJTJj_0i01tAjDM';
-        const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
-
-        // System context for Adam
-        const ADAM_SYSTEM_PROMPT = `You are Adam, the friendly AI assistant for Golden Barbers Goodmayes - a premium barbershop in Ilford, London.
-
-KEY INFO ABOUT GOLDEN BARBERS:
-- Location: 14 Goodmayes Road, Ilford IG3 9UN (near Goodmayes Station)
-- Phone: 020 8598 9920
-- WhatsApp: Available for bookings
-- Hours: Mon-Sat 9:30 AM - 8:00 PM, Sunday 9:30 AM - 6:00 PM
-
-SERVICES & PRICES:
-- Golden Luxury (full package): £45
-- Golden Bundle: £27
-- Skin Fade: £15.95
-- Gents Cut: £13.95
-- Head Shave: £12.95
-- Children Under 12: £8.95
-- Deluxe Hot Towel Shave: £11
-- Beard Trim (Machine): £6.95
-- Turkish Hot Towel: £3
-- Ear & Nose Flaming/Waxing: £6
-- Patterns & Design: £5
-- Colour: £5
-- Head Massage: £5
-- Black or Mud Mask: £5
-
-YOUR PERSONALITY:
-- Friendly, warm, and professional
-- Knowledgeable about haircuts, fades, beards, and men's grooming
-- You can answer ANY question - not just about the barbershop
-- Keep responses concise but helpful (2-3 sentences max for simple questions)
-- Use casual British English
-- If asked about booking, recommend calling, WhatsApp, or walking in
-
-You can discuss anything - sports, weather, general knowledge, advice, etc. Be helpful and conversational like a friendly barber would be!`;
-
-        let conversationHistory = [];
 
         adamBtn.addEventListener('click', () => {
             adamPopup.classList.toggle('active');
@@ -3966,10 +3926,23 @@ You can discuss anything - sports, weather, general knowledge, advice, etc. Be h
             const div = document.createElement('div');
             div.className = `adam-msg ${isUser ? 'user' : 'bot'}`;
             if (isTyping) div.id = 'adamTyping';
-            div.innerHTML = `
-                <div class="adam-msg-avatar">${isUser ? '👤' : '🙋‍♂️'}</div>
-                <div class="adam-msg-content"><p>${text}</p></div>
-            `;
+            const avatar = document.createElement('div');
+            avatar.className = 'adam-msg-avatar';
+            avatar.textContent = isUser ? '👤' : '🙋‍♂️';
+
+            const content = document.createElement('div');
+            content.className = 'adam-msg-content';
+
+            const paragraph = document.createElement('p');
+            if (isUser || isTyping) {
+                paragraph.textContent = text;
+            } else {
+                paragraph.innerHTML = text;
+            }
+
+            content.appendChild(paragraph);
+            div.appendChild(avatar);
+            div.appendChild(content);
             adamMessages.appendChild(div);
             adamMessages.scrollTop = adamMessages.scrollHeight;
             return div;
@@ -3991,41 +3964,13 @@ You can discuss anything - sports, weather, general knowledge, advice, etc. Be h
             // Show typing indicator
             adamAddMsg('Typing...', false, true);
 
-            // Add to conversation history
-            conversationHistory.push({ role: 'user', parts: [{ text: msg }] });
-
-            try {
-                const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [
-                            { role: 'user', parts: [{ text: ADAM_SYSTEM_PROMPT }] },
-                            { role: 'model', parts: [{ text: 'Got it! I\'m Adam from Golden Barbers. Happy to help with anything!' }] },
-                            ...conversationHistory
-                        ],
-                        generationConfig: {
-                            temperature: 0.8,
-                            maxOutputTokens: 256
-                        }
-                    })
-                });
-
-                const data = await response.json();
+            window.setTimeout(() => {
                 removeTypingIndicator();
-
-                if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-                    const reply = data.candidates[0].content.parts[0].text;
-                    conversationHistory.push({ role: 'model', parts: [{ text: reply }] });
-                    adamAddMsg(reply, false);
-                } else {
-                    adamAddMsg("Sorry, I'm having a bit of trouble. Try again or call us at 020 8598 9920!", false);
-                }
-            } catch (error) {
-                console.error('Adam AI Error:', error);
-                removeTypingIndicator();
-                adamAddMsg("Connection issue! Call us at <a href='tel:02085989920'>020 8598 9920</a> or <a href='adam.html'>try the full chat</a>.", false);
-            }
+                const reply = window.GoldenBarbersAdam
+                    ? window.GoldenBarbersAdam.getResponse(msg)
+                    : "Call us at <a href='tel:02085989920'>020 8598 9920</a> or open <a href='adam.html'>the full chat</a>.";
+                adamAddMsg(reply, false);
+            }, 220 + Math.random() * 180);
         }
 
         function adamQuickMsg(msg) {
