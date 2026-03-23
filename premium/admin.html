@@ -6823,6 +6823,8 @@
         function toggleShopStatus() {
             shopStatus.status = shopStatus.status === 'open' ? 'closed' : 'open';
             shopStatus.updatedAt = new Date().toISOString();
+            shopStatus.manualOverride = new Date().toISOString();
+            delete shopStatus.autoManaged;
             saveShopStatus();
             logActivity('settings', 'Shop marked as ' + shopStatus.status);
             showToast('Shop is now ' + shopStatus.status, shopStatus.status === 'open' ? 'success' : 'warning');
@@ -9316,6 +9318,13 @@
             if (shopStatus.status === 'holiday') return;
             // Skip if emergency closed
             if (shopStatus.emergencyClose) return;
+            // Skip if manually overridden in the last 4 hours
+            if (shopStatus.manualOverride) {
+                var overrideAge = Date.now() - new Date(shopStatus.manualOverride).getTime();
+                if (overrideAge < 4 * 60 * 60 * 1000) return;
+                // Override expired — clear it and let auto-management resume
+                delete shopStatus.manualOverride;
+            }
 
             var hours = Object.keys(openingHoursCache || {}).length ? openingHoursCache : mergeHours(JSON.parse(localStorage.getItem('goldenBarbers_hours') || '{}'));
             var now = new Date();
