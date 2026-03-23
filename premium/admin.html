@@ -4863,28 +4863,30 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-visual">
-                            <div class="guide-visual-label">What you see at a glance</div>
+                            <div class="guide-visual-label">Data sources feeding the dashboard</div>
                             <div class="guide-visual-flow">
-                                <div class="guide-visual-node action">Week Revenue</div>
-                                <div class="guide-visual-node action">Today's Revenue</div>
-                                <div class="guide-visual-node action">Staff On</div>
-                                <div class="guide-visual-node action">Active Discounts</div>
+                                <div class="guide-visual-node action">Firebase payments/</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node auto">Real-time listener</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node result">Stats, Feed, Charts</div>
                             </div>
                         </div>
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Stats Bar</strong><p>Five tiles at the top update in real-time: week revenue, today's payment count, today's revenue, staff on duty, active discount codes.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Daily Briefing</strong><p>Morning-style summary: yesterday's takings, booking count, who's working, week total. Glance at it when you open up.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Revenue Goal</strong><p>Tap a preset (&#163;200&#8211;&#163;1000) or type a custom target. The gold progress bar fills as confirmed payments come in.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Smart Alerts</strong><p>Yellow banners auto-appear when something needs attention: pending payments, low stock, unassigned commissions.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">5</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Quick Actions</strong><p><strong>Toggle Shop Status</strong> flips OPEN/CLOSED on the website. <strong>Holiday Mode</strong> blocks all bookings. <strong>Emergency Close</strong> shuts everything instantly.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">6</div><div class="guide-step-content"><strong>Cash Panel</strong><p>Expand to see quick-log buttons (&#163;5&#8211;&#163;100 or custom). Each tap instantly creates a confirmed cash payment record.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Stats Bar &#8212; 5 live tiles</strong><p><strong>Week Revenue</strong> sums all confirmed payments from Monday 00:00 to now. <strong>Payments</strong> counts confirmed payments today only. <strong>Today's Revenue</strong> is the &#163; sum of today's confirmed payments. <strong>Staff On</strong> reads the staff duty status (auto-set when shop opens, or manually toggled). <strong>Active Discounts</strong> counts discount codes where the current date falls between start and end dates. All of these update the instant a Firebase value changes &#8212; no refresh needed.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Daily Briefing</strong><p>Calculated fresh every time you open the panel. <strong>Yesterday's revenue</strong> filters payments by yesterday's date. <strong>Bookings</strong> counts all booking records (not payments). <strong>Staff on duty</strong> pulls from the staff database filtered by those marked as working. <strong>Week total</strong> is the same value as the stats bar but formatted differently. The briefing date shows today's date in "Monday 23 March" format.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Revenue Goal &#8212; how it actually works</strong><p>The goal is stored in Firebase under <em>settings/revenueGoal</em>. When you pick a preset (&#163;200/&#163;300/&#163;500/&#163;750/&#163;1000) or type a custom amount and save, it writes that number. The progress bar calculates: (today's confirmed revenue / goal) &#215; 100. It caps at 100% visually but the actual number can exceed it. The goal resets display each day because it compares against today's revenue only &#8212; the goal amount itself persists until you change it.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Smart Alerts &#8212; what triggers them</strong><p>Alerts are recalculated on every data change. Current triggers: <strong>Pending payments</strong> &#8212; any payment with status "pending" (hasn't been confirmed or rejected). <strong>Low stock</strong> &#8212; any product in Auto-Manager inventory below its reorder threshold. <strong>Unassigned commissions</strong> &#8212; confirmed payments this month that couldn't auto-match to a barber. <strong>Shop closed during business hours</strong> &#8212; if the shop status is "closed" but current time is within your configured opening hours. Each alert includes a description and a link to the relevant section.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">5</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Shop Status &#8212; Open / Closed / Holiday / Emergency</strong><p>Stored in Firebase under <em>shopStatus</em>. <strong>Toggle Shop</strong> flips between "open" and "closed" and sets a manual override flag &#8212; the auto-scheduler won't fight you for 4 hours. <strong>Holiday Mode</strong> sets status to "holiday" which blocks the booking calendar entirely and shows a holiday message on the website. <strong>Emergency Close</strong> sets status to "closed" with a special emergency flag that blocks the auto-scheduler permanently until you manually reopen. The auto-scheduler runs every 5 minutes and opens/closes the shop based on your Settings opening hours &#8212; but only if there's no manual override or emergency flag active.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">6</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Cash Panel &#8212; instant cash logging</strong><p>Tapping a preset (&#163;5/&#163;10/&#163;20/&#163;50/&#163;100) or entering a custom amount creates a new payment record in Firebase with status "confirmed", targetBank "CASH", and a reference like "CASH-M3K9Z". It's immediately counted in all revenue calculations. The payment also triggers Auto-Manager hooks (stock, review, commission) just like a QR payment confirmation would. The button flashes green with a checkmark for 2 seconds as feedback.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">7</div><div class="guide-step-content"><strong>Revenue Hero Card</strong><p>Shows total revenue split into QR (online bank transfers) vs Cash. The <strong>trend indicator</strong> compares this week's revenue to last week's &#8212; shows a green arrow up or red arrow down with the percentage change. <strong>Average spend</strong> divides total confirmed revenue by the number of confirmed payments. <strong>Pending count</strong> is how many payments are waiting for your confirmation. The hourly chart below plots revenue by hour of day so you can see your peak trading times.</p></div></div>
                         </div>
-                        <div class="guide-tip"><strong>Pro Tip</strong><p>The Revenue Hero card breaks down QR vs Cash totals and shows average spend per customer.</p></div>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>The "Insights Strip" beneath the hero card rotates through auto-generated insights like "Busiest hour: 2pm" or "Cash is 60% of revenue". These are calculated from the current week's data and update live.</p></div>
                         <button class="guide-tryit" onclick="navTo('today')">&#9654; Try It &#8212; Go to Dashboard</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="payments pending confirmed verify cash payment feed" data-guide-id="payments">
+                <div class="guide-card" data-guide-search="payments pending confirmed verify cash payment feed QR bank" data-guide-id="payments">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon green">&#128176;</div>
                         <div class="guide-card-title"><h4>Payment Feed</h4><span>Verify, confirm or reject incoming payments</span></div>
@@ -4892,23 +4894,25 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-visual">
-                            <div class="guide-visual-label">Payment lifecycle</div>
+                            <div class="guide-visual-label">Payment lifecycle with data</div>
                             <div class="guide-visual-flow">
-                                <div class="guide-visual-node action">Customer Pays</div>
+                                <div class="guide-visual-node action">Customer scans QR</div>
                                 <div class="guide-visual-arrow">&#8594;</div>
-                                <div class="guide-visual-node auto">Appears Pending</div>
+                                <div class="guide-visual-node auto">Record created (pending)</div>
                                 <div class="guide-visual-arrow">&#8594;</div>
-                                <div class="guide-visual-node action">You Verify Amount</div>
+                                <div class="guide-visual-node action">You enter bank amount</div>
                                 <div class="guide-visual-arrow">&#8594;</div>
-                                <div class="guide-visual-node result">Confirmed</div>
+                                <div class="guide-visual-node result">Status &#8594; confirmed</div>
                             </div>
                         </div>
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Pending Tab</strong><p>New QR payments land here with a yellow badge. The count tells you how many are waiting.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Confirm Payment</strong><p>Tap "Confirm" and enter the exact amount that landed in your bank. Mismatches are blocked to prevent errors.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>What Fires Automatically</strong><p>Three things: product stock decrements, a Google review request queues, and barber commission assigns. Zero manual work.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>How payments arrive</strong><p>When a customer completes payment on the pay page (pay.html), the page writes a record to Firebase <em>payments/</em> with: a unique reference code, a 6-digit verify code, the bank reference, amount, subtotal, list of services (items), any discount applied, target bank account, status "pending", and timestamps. This record appears in your feed instantly because the admin panel has a real-time Firebase listener on <em>payments/</em>.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>The 3 tabs: Pending / Confirmed / All</strong><p><strong>Pending</strong> shows only status "pending" payments with a yellow badge count. These are payments the customer claims to have made but you haven't verified yet. <strong>Confirmed</strong> shows payments you've approved. <strong>All</strong> shows everything including rejected payments. Each payment card displays: the reference, verify code, amount, services purchased, timestamp, and action buttons.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Confirming &#8212; the amount verification step</strong><p>When you tap "Confirm", a prompt asks you to type the exact amount that landed in your bank account. The system compares this to the expected amount. If they differ by more than &#163;0.01, it blocks confirmation and shows both amounts. This exists because a customer could claim they paid &#163;25 when they actually sent &#163;5, or didn't pay at all. Only confirm once you see the money in your actual bank. On successful match, the record updates to status "confirmed" with a confirmedAt timestamp and the verifiedAmount you entered.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>What confirmation triggers (the automation chain)</strong><p>The moment status changes to "confirmed", the <em>AutoManager.onPaymentConfirmed(key)</em> function fires. This does three things in parallel: <strong>(a) Stock</strong> &#8212; reads the payment's service items, looks up which products are linked to those services in inventory, and decrements stock by the configured usage-per-service amount. <strong>(b) Reviews</strong> &#8212; looks for a booking on the same date with a matching service name to find the customer's phone number, then creates a review queue entry with status "awaiting". <strong>(c) Commissions</strong> &#8212; same booking match logic to find which barber did the job, then calculates (payment amount &#215; barber's commission rate) and saves the assignment. All three happen automatically in under a second.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">5</div><div class="guide-step-content"><strong>Rejecting</strong><p>"Reject" marks the payment as "rejected" with a timestamp. This is for suspected fraud or mistakes. Rejected payments don't count toward revenue, don't trigger any automation, and show with a red badge in the All tab. The customer is not automatically notified.</p></div></div>
                         </div>
-                        <div class="guide-warn"><strong>Important</strong><p>Never confirm until money is in your bank. The amount verification exists to catch fraud.</p></div>
+                        <div class="guide-warn"><strong>Important</strong><p>The booking-to-payment matching works by comparing the payment date with booking dates, then checking if any service name in the payment overlaps with the booking's service name. If a customer books "Skin Fade" and pays for "Skin Fade + Beard Trim", the match works because "Skin Fade" appears in both. But if names are spelled differently (e.g. "Fade" vs "Skin Fade"), matching may fail &#8212; the commission and review will need manual handling.</p></div>
                         <button class="guide-tryit" onclick="navTo('today')">&#9654; Try It &#8212; Check Payments</button>
                     </div>
                 </div>
@@ -4926,14 +4930,15 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Period Tabs</strong><p>Switch between This Week, This Month, and All Time to see payment history for different ranges.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Each Entry Shows</strong><p>Payment reference, amount, service items, date/time, and status (confirmed/pending/rejected).</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>What counts as revenue</strong><p>Only payments with status "confirmed" count. Pending and rejected payments are excluded from all revenue totals. Revenue includes both QR bank transfers and cash payments logged via the cash panel. The total is the sum of the <em>verifiedAmount</em> field (what you confirmed landed in your bank), not the original amount the customer was asked to pay.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Period tabs</strong><p><strong>This Week</strong> filters from Monday 00:00 to now. <strong>This Month</strong> from the 1st of the current month. <strong>All Time</strong> shows every confirmed payment ever. Each period shows: total revenue at the top, then individual payment cards sorted newest-first with reference, amount, services, date, and payment method (QR or Cash).</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>How it connects to other systems</strong><p>Revenue data feeds into: the Dashboard stats bar, the Daily Briefing, the Expense Tracker's profit calculation (revenue minus expenses minus commissions), and the Reports section. It's all the same Firebase <em>payments/</em> collection &#8212; different views of the same data.</p></div></div>
                         </div>
                         <button class="guide-tryit" onclick="navTo('transactions')">&#9654; Try It &#8212; View Revenue</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="reports analytics summary weekly monthly performance" data-guide-id="reports">
+                <div class="guide-card" data-guide-search="reports analytics summary weekly monthly performance copy" data-guide-id="reports">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon blue">&#128202;</div>
                         <div class="guide-card-title"><h4>Reports</h4><span>Weekly/monthly summaries you can copy and share</span></div>
@@ -4941,10 +4946,11 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Pick a Period</strong><p>Tap "This Week", "Last Week", or "This Month". The report generates instantly from live payment data.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Copy Report</strong><p>Hit copy to get a clean text summary you can paste into WhatsApp, Notes, or send to your accountant.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>What the report contains</strong><p>Each report calculates from confirmed payments in the selected period: total revenue, number of transactions, average transaction value, payment method breakdown (QR vs Cash with percentages), top services by revenue, busiest day of the period, and a comparison to the previous equivalent period (e.g. this week vs last week shows the % change).</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Copy button format</strong><p>The copy button produces a clean plain-text summary formatted for messaging. It includes the shop name, period dates, all the metrics above, and a formatted list. You can paste this directly into WhatsApp to send to a business partner, into Notes for your records, or email it to an accountant. The format is designed to be readable without any special formatting.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Available periods</strong><p><strong>This Week</strong> (Mon&#8211;now), <strong>Last Week</strong> (previous Mon&#8211;Sun, complete data), <strong>This Month</strong> (1st&#8211;now). Last Week is the most useful for weekly reviews because it's a complete 7-day set, not partial.</p></div></div>
                         </div>
-                        <div class="guide-tip"><strong>Pro Tip</strong><p>Run "This Month" on the last day of each month and save it. Builds a history for month-over-month comparison.</p></div>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>The report doesn't include expenses or profit &#8212; it's revenue only. For profit analysis, use the Expense Tracker in Auto-Manager which subtracts costs and commissions from this same revenue data.</p></div>
                         <button class="guide-tryit" onclick="navTo('transactions')">&#9654; Try It &#8212; Generate Report</button>
                     </div>
                 </div>
@@ -4954,7 +4960,7 @@
             <div class="guide-group" data-guide-group="visits">
                 <div class="guide-group-label">Visits</div>
 
-                <div class="guide-card" data-guide-search="bookings visits appointments customers calendar" data-guide-id="bookings">
+                <div class="guide-card" data-guide-search="bookings visits appointments customers calendar phone" data-guide-id="bookings">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon blue">&#128197;</div>
                         <div class="guide-card-title"><h4>Bookings</h4><span>All online bookings and visit records</span></div>
@@ -4962,14 +4968,16 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Booking List</strong><p>Every online booking sorted newest-first: customer name, phone, service, barber, date and time.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Auto-tracking</strong><p>Each booking automatically updates the client's profile in Auto-Manager: visit count, preferred barber, preferred service.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Where bookings come from</strong><p>When a customer completes the booking form on services.html, a record is written to Firebase <em>bookings/</em> containing: their name, phone, email (optional), chosen service (name + price), preferred barber (or "Any Available"), chosen date and time slot, and a createdAt timestamp. The booking list here shows all of these sorted newest-first.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Bookings vs Payments &#8212; they're separate</strong><p>A booking is an appointment. A payment is money received. They're stored in different Firebase collections with no direct link between them. The system connects them by fuzzy matching: same date + overlapping service name. This means a customer can book without paying (walk-in payment later) or pay without booking (walk-in with no appointment). The match is used for commission auto-assignment and review queue phone lookup.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>How bookings feed Client Intelligence</strong><p>Every time the bookings list updates, the newest booking is passed to <em>AutoManager.updateClientFromBooking()</em>. This extracts the phone number (stripped to digits), creates or updates a client profile keyed by that phone, and increments their visit count, updates last visit date, and tallies which services and barbers they've used. This is how the client database builds itself with zero manual input.</p></div></div>
                         </div>
+                        <div class="guide-warn"><strong>Important</strong><p>Bookings available time slots are controlled by your Settings opening hours. If a day is marked "Closed" in Settings, no slots appear for that day. If you change opening hours, future bookings already made for those times are NOT automatically cancelled &#8212; you'll need to contact those customers.</p></div>
                         <button class="guide-tryit" onclick="navTo('visits')">&#9654; Try It &#8212; View Bookings</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="staff barbers team members add remove" data-guide-id="staff">
+                <div class="guide-card" data-guide-search="staff barbers team members add remove commission booking" data-guide-id="staff">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon purple">&#128119;</div>
                         <div class="guide-card-title"><h4>Staff Management</h4><span>Add barbers, manage your team</span></div>
@@ -4977,22 +4985,22 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Add a Barber</strong><p>Type their name and tap Add. They appear on the booking page and in the commission calculator.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Remove / Edit</strong><p>Use edit and delete buttons. Removing a barber won't delete their historical data.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>What adding a barber does</strong><p>Creates a record in Firebase <em>staff/</em> with their name and role. This name then appears in: the booking page's barber selection dropdown (so customers can request them), the commission calculator's rate list (so you can set their %), and the auto-duty system (which marks them as "on duty" when the shop opens).</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Why exact name matching matters</strong><p>The commission auto-assign system works by finding the barber name in a booking, then looking up that exact name in the staff list to find their commission rate. If the booking says "Mo" but the staff list says "Mohammed", the lookup fails and the payment becomes "unassigned". Either use consistent short names everywhere, or be prepared to manually assign those commissions.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Deleting a barber</strong><p>Removes them from the staff list, booking dropdown, and commission rates. Their historical commission records and bookings remain in Firebase &#8212; nothing is retroactively deleted. They just won't appear in future dropdowns or calculations.</p></div></div>
                         </div>
-                        <div class="guide-warn"><strong>Important</strong><p>Staff names must match exactly. If a barber is "Mo" here, bookings saying "Mohammed" won't auto-assign commissions.</p></div>
                         <button class="guide-tryit" onclick="navTo('visits')">&#9654; Try It &#8212; Manage Staff</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="contacts phone emergency instagram google maps" data-guide-id="contacts">
+                <div class="guide-card" data-guide-search="contacts phone emergency instagram google maps QR pay" data-guide-id="contacts">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon green">&#128222;</div>
                         <div class="guide-card-title"><h4>Contacts</h4><span>Quick-dial emergency numbers and business links</span></div>
                         <span class="guide-card-arrow">&#9660;</span>
                     </div>
                     <div class="guide-card-body">
-                        <p style="color:#999;font-size:13px;">One-tap access to emergency services (999, 101), your Instagram, Google Maps listing, QR admin page, and customer pay page.</p>
+                        <p style="color:#999;font-size:13px;margin-bottom:8px;">One-tap access cards: <strong>999</strong> (emergency), <strong>101</strong> (non-emergency police), <strong>Instagram</strong> (opens your @golden_barbers_goodmayes page), <strong>Google Maps</strong> (your business listing), <strong>QR Admin</strong> (opens admin-qr.html for managing QR codes), <strong>Pay Page</strong> (opens pay.html &#8212; useful for showing a customer on your own device). Each card is a direct link that opens in a new tab or triggers a phone call on mobile.</p>
                         <button class="guide-tryit" onclick="navTo('visits')">&#9654; Try It &#8212; View Contacts</button>
                     </div>
                 </div>
@@ -5002,7 +5010,7 @@
             <div class="guide-group" data-guide-group="website">
                 <div class="guide-group-label">Website</div>
 
-                <div class="guide-card" data-guide-search="prices services haircut beard add-on pricing cost" data-guide-id="prices">
+                <div class="guide-card" data-guide-search="prices services haircut beard add-on pricing cost booking" data-guide-id="prices">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon gold">&#163;</div>
                         <div class="guide-card-title"><h4>Service Prices</h4><span>Set prices for haircuts, beards, and add-ons</span></div>
@@ -5010,15 +5018,15 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Three Categories</strong><p>Haircuts (Skin Fade, Scissors Cut), Beard (Trim, Hot Towel Shave), and Add-ons (Hair Wash, Eyebrows).</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Edit &amp; Save</strong><p>Change any name or price inline, then Save. Changes go live on the booking page immediately.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Three categories stored in Firebase</strong><p>Saved under <em>servicePrices/</em> with three arrays: <strong>haircuts</strong>, <strong>beard</strong>, and <strong>addons</strong>. Each service has an ID, name, and price. These are read by: the booking page (services.html) to show available services, the pay page to calculate totals, and the Auto-Manager to map product stock to services.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>What happens when you save</strong><p>The entire servicePrices object is overwritten in Firebase. The booking page reads this on every load, so changes are live within seconds. Existing confirmed payments keep their original amounts &#8212; a price change doesn't retroactively alter past revenue. Pending payments also keep their original amounts because the amount was locked in when the customer started the payment flow.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Inventory link</strong><p>In Auto-Manager Inventory, when you add a product and link it to services, those service names must match what's in this price list. The system builds a service name &#8594; ID map from this data. If you rename a service here, update any linked products in Inventory too, or the auto-decrement won't match.</p></div></div>
                         </div>
-                        <div class="guide-tip"><strong>Pro Tip</strong><p>Price changes don't affect existing confirmed payments &#8212; only new bookings and the pay page.</p></div>
                         <button class="guide-tryit" onclick="navTo('website')">&#9654; Try It &#8212; Edit Prices</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="gallery photos videos upload images live" data-guide-id="gallery">
+                <div class="guide-card" data-guide-search="gallery photos videos upload images live cloudinary categories" data-guide-id="gallery">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon blue">&#128247;</div>
                         <div class="guide-card-title"><h4>Gallery</h4><span>Upload photos/videos and control what's live on site</span></div>
@@ -5026,15 +5034,16 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Upload</strong><p>Tap the upload area or drag photos/videos onto it. They upload to Cloudinary and appear in the grid.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Make Live</strong><p>Tap "Make Live" and pick a category (Fades, Beards, etc.) so it appears in the right website section.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Manage Visibility</strong><p>Switch between Visible and Hidden tabs. Un-live or delete photos at any time.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Upload pipeline</strong><p>Photos/videos upload to <strong>Cloudinary</strong> (a cloud image hosting service), not to Firebase or your server. The upload widget handles compression and optimisation automatically. Once uploaded, a record is saved to Firebase <em>gallery/</em> containing the Cloudinary URL, thumbnail URL, upload date, and metadata. The actual image bytes live on Cloudinary's CDN &#8212; fast loading worldwide.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>"Make Live" and categories</strong><p>An uploaded photo isn't visible on the website until you "Make Live" it. When you do, you pick one or more categories (Fades, Beards, Styles, etc.). This writes a <em>liveGallery/</em> record in Firebase with the category tags. The website's gallery section reads <em>liveGallery/</em> and groups photos by category. Un-living a photo removes it from <em>liveGallery/</em> but keeps the original in <em>gallery/</em> &#8212; it's hidden, not deleted.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Visible vs Hidden tabs</strong><p><strong>Visible</strong> shows everything currently in <em>liveGallery/</em> (what customers see). <strong>Hidden</strong> shows uploads that exist in <em>gallery/</em> but aren't live. "Clear All Live" removes all photos from the website gallery at once &#8212; useful for a complete refresh.</p></div></div>
                         </div>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>The Replace Photo feature lets you swap a live photo's image without changing its category or position. Useful for updating a haircut photo without re-configuring everything.</p></div>
                         <button class="guide-tryit" onclick="navTo('website')">&#9654; Try It &#8212; Manage Gallery</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="themes seasonal design sticky bar popup overlay" data-guide-id="themes">
+                <div class="guide-card" data-guide-search="themes seasonal design sticky bar popup overlay discount" data-guide-id="themes">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon purple">&#127912;</div>
                         <div class="guide-card-title"><h4>Themes</h4><span>Seasonal overlays, sticky bars, and popups</span></div>
@@ -5042,15 +5051,16 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Apply a Theme</strong><p>Pick from the grid (Eid, Christmas, Summer, etc.). Adds a visual overlay and optional discount to the website.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Sticky Bar</strong><p>A thin banner at the top of every page. Toggle on, type your message, and it's live instantly.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Popup</strong><p>A one-time popup for visitors. Set title, discount code, and display duration. Toggle on/off anytime.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Theme overlays</strong><p>Each theme applies a set of CSS variables and decorative elements to the website: colour scheme changes, seasonal emojis/icons, and optional snowfall/confetti effects. Stored in Firebase <em>settings/activeTheme</em>. Only one theme can be active at a time. "Remove Theme" clears it back to the default gold/black look. "Force Clear" is for when a theme gets stuck (clears both Firebase and localStorage).</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Sticky Bar</strong><p>A narrow bar fixed to the top of every website page. Stored in Firebase <em>settings/stickyBar</em> with fields: enabled (boolean), text (string), and optional styling. The website reads this on every page load and injects the bar if enabled. It persists across page navigations. Use it for: opening hour changes, temporary notices, or promotional messages.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Popup</strong><p>A modal shown to first-time visitors (uses a localStorage flag so it only shows once per browser). Stored in Firebase <em>settings/popup</em> with: enabled, title, discount code, and displayHours (how long after creation it remains active). After the displayHours expire, the popup auto-disables. The discount code shown in the popup should match a real discount code you've created in the Discounts section &#8212; the popup just displays it, it doesn't create one.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><strong>Theme Discount</strong><p>A discount code tied to the active theme. This is separate from regular discount codes. When a theme is applied, you can optionally configure a theme-specific discount with a code, type (percentage/fixed), and value. The website shows this prominently as part of the theme's visual treatment. It's stored under <em>settings/activeTheme/discount</em>.</p></div></div>
                         </div>
                         <button class="guide-tryit" onclick="navTo('website')">&#9654; Try It &#8212; Browse Themes</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="discounts codes coupons promo percentage fixed" data-guide-id="discounts">
+                <div class="guide-card" data-guide-search="discounts codes coupons promo percentage fixed bogo uses" data-guide-id="discounts">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon red">&#127991;</div>
                         <div class="guide-card-title"><h4>Discount Codes</h4><span>Create and manage discount codes</span></div>
@@ -5058,22 +5068,24 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Create a Code</strong><p>Type a code (or auto-generate), pick percentage/fixed, set dates and max uses. Tap Add.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Customer Uses It</strong><p>Customers enter the code on the pay page. Discount applies before payment. Usage counts track automatically.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>How codes work technically</strong><p>Stored in Firebase <em>discounts/</em>. Each code has: code (uppercase string), type (percent or fixed), value (number), startDate, endDate, appliesTo (all services or specific), maxUses (0 = unlimited), and currentUses (incremented each time it's redeemed). The pay page validates the code against this data in real-time: checks the code exists, is within date range, hasn't exceeded max uses, and applies to the selected services.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>What "percentage" vs "fixed" means</strong><p><strong>Percentage</strong> takes that % off the subtotal (e.g. 20% off &#163;25 = &#163;5 discount, customer pays &#163;20). <strong>Fixed</strong> subtracts a flat amount (e.g. &#163;5 off = customer pays &#163;20 regardless of total). The discount is applied before the customer sees their final amount on the pay page. The payment record stores both the original subtotal and the discounted final amount.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Auto-generate</strong><p>The "Generate" button creates a random 8-character code like "GOLD4K2M". It's just a convenience &#8212; you can type any code you want (it's auto-uppercased). Codes are case-insensitive when customers enter them on the pay page.</p></div></div>
                         </div>
+                        <div class="guide-warn"><strong>Important</strong><p>Deleting a discount code is permanent. If customers already have the code (printed flyers, social media), they'll get an "invalid code" error. Consider setting maxUses to 0 or moving the end date to today instead of deleting.</p></div>
                         <button class="guide-tryit" onclick="navTo('website')">&#9654; Try It &#8212; Create Discount</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="announcement banner notice message" data-guide-id="announce">
+                <div class="guide-card" data-guide-search="announcement banner notice message toggle colour" data-guide-id="announce">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon gold">&#128227;</div>
                         <div class="guide-card-title"><h4>Announcements</h4><span>Website-wide announcement banner</span></div>
                         <span class="guide-card-arrow">&#9660;</span>
                     </div>
                     <div class="guide-card-body">
-                        <p style="color:#999;font-size:13px;margin-bottom:8px;">Toggle on, type your message, pick a colour. Displays across the top of the website. Toggle off to remove instantly.</p>
-                        <div class="guide-tip"><strong>Pro Tip</strong><p>Use for temporary info: "Back in 30 mins", "Closed for refurb until Monday", "Walk-ins only today".</p></div>
+                        <p style="color:#999;font-size:13px;margin-bottom:8px;">Stored in Firebase <em>settings/announcement</em> with fields: enabled (boolean), text (string), and color. When enabled, every page on the website reads this and shows a coloured banner at the very top, above all other content. Toggling off sets enabled to false &#8212; the text is preserved so you can re-enable without retyping. The banner pushes page content down slightly, so it's visible without hiding anything.</p>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>Best for time-sensitive info customers need before they come in: "Back in 30 mins", "Cash only today &#8212; card machine down", "Closed for refurb until Monday", or "Walk-ins only, no bookings". Don't use for promotions &#8212; use Themes sticky bar for that, it has better styling.</p></div>
                         <button class="guide-tryit" onclick="switchSection('announce')">&#9654; Try It &#8212; Set Announcement</button>
                     </div>
                 </div>
@@ -5083,7 +5095,7 @@
             <div class="guide-group" data-guide-group="advanced">
                 <div class="guide-group-label">Advanced &#8212; Auto-Manager</div>
 
-                <div class="guide-card" data-guide-search="automation auto-manager engine system backend hook" data-guide-id="automation">
+                <div class="guide-card" data-guide-search="automation auto-manager engine system backend hook payment trigger" data-guide-id="automation">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon gold">&#9881;</div>
                         <div class="guide-card-title"><h4>How Auto-Manager Works</h4><span>The automation engine behind the scenes</span></div>
@@ -5091,24 +5103,26 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-visual">
-                            <div class="guide-visual-label">What happens when you confirm a payment</div>
+                            <div class="guide-visual-label">The master hook: what fires on every payment confirmation</div>
                             <div class="guide-visual-flow">
-                                <div class="guide-visual-node action">Confirm Payment</div>
+                                <div class="guide-visual-node action">confirmPayment() or logCash()</div>
                                 <div class="guide-visual-arrow">&#8594;</div>
-                                <div class="guide-visual-node auto">Stock Decrements</div>
-                                <div class="guide-visual-arrow">&#8594;</div>
-                                <div class="guide-visual-node auto">Review Queues</div>
-                                <div class="guide-visual-arrow">&#8594;</div>
-                                <div class="guide-visual-node auto">Commission Assigns</div>
+                                <div class="guide-visual-node auto">AutoManager.onPaymentConfirmed(key)</div>
                             </div>
                         </div>
-                        <p style="color:#999;font-size:13px;margin:12px 0;">Every payment confirmation triggers three systems at once. You don't lift a finger &#8212; it's all wired into the confirm button.</p>
-                        <div class="guide-tip"><strong>Pro Tip</strong><p>The Engine Status card shows sync health and stale alerts. If something looks off, hit "Backfill &amp; Sync".</p></div>
+                        <div class="guide-flow">
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>The master hook explained</strong><p>Auto-Manager isn't a separate app &#8212; it's code injected into the existing admin panel. When you confirm a QR payment (confirmPayment function) or log a cash payment (logCash function), a single line of code calls <em>AutoManager.onPaymentConfirmed(paymentKey)</em>. This function reads the payment record from Firebase using the key, then calls three sub-functions in parallel: <em>autoDecrementStock()</em>, <em>queueReviewRequest()</em>, and <em>autoAssignCommission()</em>. Each operates independently &#8212; if one fails, the others still complete.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>All data lives under autoManager/ in Firebase</strong><p>Every Auto-Manager system stores its data under the <em>autoManager/</em> prefix: <em>autoManager/inventory/products</em>, <em>autoManager/inventory/stockLog</em>, <em>autoManager/reviews/queue</em>, <em>autoManager/reviews/settings</em>, <em>autoManager/expenses/recurring</em>, <em>autoManager/expenses/oneoff</em>, <em>autoManager/expenses/generated/{month}</em>, <em>autoManager/commissions/settings</em>, <em>autoManager/commissions/assignments</em>, <em>autoManager/clients/{phone}</em>. This keeps it cleanly separated from the main admin data.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Initialisation</strong><p>Auto-Manager loads as a separate JavaScript file (auto-manager.js) after the main admin script. On load, it calls <em>AM.init()</em> which starts Firebase listeners on all the <em>autoManager/</em> paths. Each listener populates local arrays and calls render functions to update the UI. The 500ms delay ensures Firebase is fully initialised before Auto-Manager starts reading data.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>The booking-to-payment matching problem</strong><p>The biggest limitation: bookings and payments have no foreign key linking them. A customer books in one flow and pays in another. Auto-Manager connects them by fuzzy matching: same date + overlapping service name text. This works well for booked customers but fails for walk-ins (no booking to match) and when service names don't overlap exactly. Unmatched items require manual action (assigning a barber, adding a phone for review requests).</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">5</div><div class="guide-step-content"><strong>Engine Status card</strong><p>At the top of the Auto-Manager section. Shows: the current engine mode (Backend Live or Legacy Frontend), last sync timestamp, stale payment count (confirmed payments older than 24h that weren't processed), low stock product count, and data health metrics. <strong>"Backfill &amp; Sync"</strong> reprocesses all historical data &#8212; rebuilds client profiles from all bookings and reruns commission/stock assignments. <strong>"Refresh Metrics"</strong> recalculates the status card numbers without reprocessing data.</p></div></div>
+                        </div>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>"Needs ___" banners appear on tabs that could do more with external services. These are informational &#8212; the tab works fine without them, but connecting (e.g.) WhatsApp Business API would remove the manual "send" step in Reviews.</p></div>
                         <button class="guide-tryit" onclick="navTo('advanced')">&#9654; Try It &#8212; View Auto-Manager</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="inventory stock products supplies reorder threshold barcode" data-guide-id="inventory">
+                <div class="guide-card" data-guide-search="inventory stock products supplies reorder threshold barcode linked services decrement" data-guide-id="inventory">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon green">&#128230;</div>
                         <div class="guide-card-title"><h4>Inventory &amp; Stock</h4><span>Track products, auto-decrement on payment</span></div>
@@ -5116,16 +5130,17 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Add a Product</strong><p>Tap "+ Add Product". Enter name, category, stock count, reorder threshold, cost price, and link to services (e.g. "Styling Gel" linked to "Skin Fade").</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Auto-Decrement</strong><p>Confirming a payment for a linked service automatically drops stock. 1 Skin Fade = 1 gel removed.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Low Stock Alerts</strong><p>Below the reorder threshold? Product turns red, Dashboard smart alert fires.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><strong>Manual Adjust &amp; Restock</strong><p>+/- buttons for quick tweaks. "Restock" for bulk entry when a delivery arrives. Everything logs.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Product data structure</strong><p>Each product in <em>autoManager/inventory/products/</em> stores: name, category (Hair Care, Supplies, Equipment, etc.), currentStock (integer), reorderThreshold (the number below which it's "low"), costPrice (what you paid per unit &#8212; used for stock value calculation), usagePerService (how many units consumed per service, default 1), and linkedServices (array of service names this product is used for).</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>How auto-decrement actually works</strong><p>When <em>autoDecrementStock(paymentKey)</em> fires, it reads the payment's <em>items</em> array (e.g. ["Skin Fade", "Beard Trim"]). For each item, it lowercases the name and checks every product's linkedServices for a match. If "Skin Fade" is linked to "Styling Gel" with usagePerService of 1, it subtracts 1 from currentStock and writes a stockLog entry with type "consumed", the product name, quantity, payment key, and timestamp. If stock drops below reorderThreshold, a toast notification fires immediately.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Stats row</strong><p><strong>Total Products</strong>: count of all products. <strong>Low Stock</strong>: count where currentStock &lt; reorderThreshold (red highlight when &gt; 0). <strong>Stock Value</strong>: sum of (currentStock &#215; costPrice) across all products &#8212; shows how much money is sitting on your shelves.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><strong>Manual controls</strong><p><strong>+/- buttons</strong>: adjust stock by 1 unit with a "manual" log entry. <strong>Restock</strong>: prompts for a quantity and adds that many units with a "restocked" log entry. <strong>Delete (&#215;)</strong>: permanently removes the product and all its stock log entries. The Stock Log at the bottom shows every movement with icons: &#128201; consumed (auto), &#128230; restocked, &#9999; adjusted manually.</p></div></div>
                         </div>
+                        <div class="guide-warn"><strong>Important</strong><p>Linked service names are matched case-insensitively but must be a substring match. "Skin Fade" matches "skin fade" and "Classic Skin Fade" but not "Fade" alone. If you rename a service in Prices, update the linked services in every affected product.</p></div>
                         <button class="guide-tryit" onclick="navTo('advanced')">&#9654; Try It &#8212; Manage Inventory</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="reviews google whatsapp rating feedback nudge" data-guide-id="reviews">
+                <div class="guide-card" data-guide-search="reviews google whatsapp rating feedback nudge template phone matching" data-guide-id="reviews">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon gold">&#11088;</div>
                         <div class="guide-card-title"><h4>Review Engine</h4><span>Auto-queue Google review requests via WhatsApp</span></div>
@@ -5133,28 +5148,27 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-visual">
-                            <div class="guide-visual-label">Review request flow</div>
+                            <div class="guide-visual-label">How the system finds the customer's phone</div>
                             <div class="guide-visual-flow">
-                                <div class="guide-visual-node action">Payment Confirmed</div>
+                                <div class="guide-visual-node action">Payment confirmed</div>
                                 <div class="guide-visual-arrow">&#8594;</div>
-                                <div class="guide-visual-node auto">Queued</div>
+                                <div class="guide-visual-node auto">Match to booking (date + service)</div>
                                 <div class="guide-visual-arrow">&#8594;</div>
-                                <div class="guide-visual-node action">Tap Send</div>
-                                <div class="guide-visual-arrow">&#8594;</div>
-                                <div class="guide-visual-node result">WhatsApp Opens</div>
+                                <div class="guide-visual-node result">Pull phone from booking</div>
                             </div>
                         </div>
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Setup</strong><p>Paste your Google Review URL, write a message template with {name} and {link} placeholders, enable auto-queue.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Auto-Queue</strong><p>Each confirmed payment matches a same-day booking to get the customer's phone. Queues as "Pending".</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>One-Tap Send</strong><p>"Send via WhatsApp" opens WhatsApp with their number and your personalised message pre-filled.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Settings you need to configure first</strong><p><strong>Google Review URL</strong>: Go to your Google Business Profile, find the "Ask for reviews" link (looks like g.page/r/...). Paste the full URL. <strong>Message Template</strong>: Write the WhatsApp message. Use <em>{name}</em> where you want the customer's name inserted and <em>{link}</em> where the review URL goes. Example: "Hi {name}! Thanks for visiting Golden Barbers. We'd really appreciate a Google review: {link}". <strong>Auto-queue toggle</strong>: When on, every confirmed payment automatically creates a review queue entry. When off, nothing queues. <strong>Minimum spend</strong>: Only queue reviews for payments above this amount (e.g. &#163;15 skips small add-on purchases).</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>The phone number problem</strong><p>Payments don't capture customer phone numbers &#8212; only bookings do. So the system queries Firebase <em>bookings/</em> for entries on the same date as the payment, then checks if the booking's service name overlaps with any of the payment's items. If matched, it pulls the phone and name from the booking. If no match is found (walk-in, name mismatch), the review queues as "Walk-in (no contact)" and you'll see an "Add Phone" button to manually enter it.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Queue statuses</strong><p><strong>Awaiting</strong>: queued but not yet sent. Shows "Send via WhatsApp" button. <strong>Sent</strong>: you tapped send, WhatsApp opened with the message. System trusts you actually sent it. Shows "Mark Reviewed" button. <strong>Reviewed</strong>: you confirmed they left a review. <strong>Skipped</strong>: you chose not to request a review from this customer. Stats row shows counts for each status.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><strong>What "Send via WhatsApp" actually does</strong><p>It constructs a WhatsApp URL: <em>wa.me/{phone}?text={encoded message}</em> with {name} and {link} replaced with the actual customer name and your Google Review URL. Opens in a new tab. On mobile, this opens the WhatsApp app directly with the message pre-filled &#8212; you just tap send. On desktop, it opens WhatsApp Web. The system then marks the queue entry as "sent".</p></div></div>
                         </div>
-                        <div class="guide-tip"><strong>Pro Tip</strong><p>Set a minimum spend filter (e.g. &#163;15) so you only request reviews from proper service customers.</p></div>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>The best time to send a review request is within 1-2 hours of the appointment while the experience is fresh. Check your review queue at the end of each day and batch-send.</p></div>
                         <button class="guide-tryit" onclick="navTo('advanced')">&#9654; Try It &#8212; Review Settings</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="expenses profit loss rent bills costs recurring one-off" data-guide-id="expenses">
+                <div class="guide-card" data-guide-search="expenses profit loss rent bills costs recurring one-off generated monthly" data-guide-id="expenses">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon red">&#128184;</div>
                         <div class="guide-card-title"><h4>Expense &amp; Profit Tracker</h4><span>Track costs, see real profit</span></div>
@@ -5162,28 +5176,29 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-visual">
-                            <div class="guide-visual-label">Profit formula</div>
+                            <div class="guide-visual-label">Profit formula (exactly how it's calculated)</div>
                             <div class="guide-visual-flow">
-                                <div class="guide-visual-node auto">Revenue</div>
+                                <div class="guide-visual-node auto">Confirmed payments &#163;</div>
                                 <div class="guide-visual-arrow">&#8722;</div>
-                                <div class="guide-visual-node result">Expenses</div>
+                                <div class="guide-visual-node result">Generated + one-off expenses</div>
                                 <div class="guide-visual-arrow">&#8722;</div>
-                                <div class="guide-visual-node result">Commissions</div>
+                                <div class="guide-visual-node result">Commission assignments</div>
                                 <div class="guide-visual-arrow">=</div>
                                 <div class="guide-visual-node action">Net Profit</div>
                             </div>
                         </div>
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Recurring Expenses</strong><p>Rent, electricity, insurance, subscriptions. Set amount and day of month. Auto-generates entries monthly.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>One-Off Expenses</strong><p>New clippers, repairs, marketing. Pick a date and category.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Profit Hero Card</strong><p>Net profit: revenue minus expenses minus commissions. Green = profit, red = loss. Switch week/month/year.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Recurring expenses &#8212; how auto-generation works</strong><p>When you add a recurring expense (e.g. Rent &#163;2000/month on the 1st), it's saved in <em>autoManager/expenses/recurring/</em>. Each time you open the admin panel, the system checks the current month key (e.g. "2026-03") against <em>autoManager/expenses/generated/{monthKey}</em>. If a recurring expense doesn't have a generated entry for this month, one is created automatically with the configured amount. This is idempotent &#8212; opening the panel 50 times won't create 50 entries. Pausing a recurring expense (toggle) stops it from generating future entries but keeps existing generated ones.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>One-off expenses</strong><p>Stored in <em>autoManager/expenses/oneoff/</em>. Each has: name, amount, date, category (Equipment, Repairs, Marketing, Supplies, Other), and optional notes. These are simple records with no automation &#8212; you log them when they happen. They're included in the profit calculation for whatever period they fall in.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Profit Hero Card calculation</strong><p><strong>Revenue</strong>: sum of all confirmed payment amounts in the selected period (week/month/year). <strong>Expenses</strong>: sum of generated recurring entries + one-off expenses in that period. <strong>Commissions</strong>: sum of all commission assignments in that period (from the Commissions tab). <strong>Profit</strong> = Revenue &#8722; Expenses &#8722; Commissions. Displayed in green if positive, red if negative. The period selector recalculates everything when switched.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><strong>Categories</strong><p>Recurring: Rent, Utilities, Supplies, Insurance, Software, Other. One-off: Equipment, Repairs, Marketing, Supplies, Other. These are for your own organisation &#8212; they don't affect calculations but help you see where money goes when reviewing the expense list.</p></div></div>
                         </div>
-                        <div class="guide-warn"><strong>Important</strong><p>Profit is only accurate if you log ALL expenses. Missing rent makes profit look higher than reality.</p></div>
+                        <div class="guide-warn"><strong>Important</strong><p>Recurring expenses generate per calendar month, not per billing cycle. If your rent is due on the 15th, it still generates an entry for the full month. The system doesn't prorate. For accuracy, set the day-of-month to when the expense actually occurs so it shows up at the right time.</p></div>
                         <button class="guide-tryit" onclick="navTo('advanced')">&#9654; Try It &#8212; Track Expenses</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="commissions barber pay percentage rate staff earnings" data-guide-id="commissions">
+                <div class="guide-card" data-guide-search="commissions barber pay percentage rate staff earnings assignment matching unassigned" data-guide-id="commissions">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon purple">&#128178;</div>
                         <div class="guide-card-title"><h4>Staff Commissions</h4><span>Auto-calculate what each barber earned</span></div>
@@ -5191,16 +5206,17 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Set Rates</strong><p>Default 40%. Override per barber &#8212; Mo at 50%, Jake at 35%, etc. Changes apply to future payments only.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Auto-Assign</strong><p>Payment confirmed &#8594; system matches to booking by date + service &#8594; finds the barber &#8594; calculates commission.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Monthly Summary</strong><p>Each barber's total: services done, revenue generated, commission earned. Use this to pay out at month end.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Rate configuration</strong><p>Stored in <em>autoManager/commissions/settings</em>. There's a <strong>default rate</strong> (starts at 40%) applied to all staff, plus optional <strong>per-barber overrides</strong>. If Mo has a custom rate of 50%, that's stored under <em>staffRates/{moKey}: 50</em>. If no override exists, the default rate applies. Changing a rate only affects future commission assignments &#8212; existing records keep their original rate.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Auto-assign: the full matching logic</strong><p>When <em>autoAssignCommission(paymentKey)</em> fires: (1) Check if this payment already has an assignment &#8212; skip if yes. (2) Read the payment's date and items. (3) Query <em>bookings/</em> for the same date. (4) For each booking, check if the booking's service name appears in the payment's items (case-insensitive substring match). (5) If matched and the booking has a barber (not "Any Available"), look up that barber in the staff list by exact name. (6) Get their commission rate. (7) Calculate: payment amount &#215; (rate / 100). (8) Save to <em>autoManager/commissions/assignments/{paymentKey}</em> with: staffKey, staffName, amount, commission, rate, date, service. (9) Log activity.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Unassigned payments</strong><p>When matching fails (walk-in, barber set to "Any", or name mismatch), the payment has no commission assignment. The summary shows an amber banner: "X unassigned payments". You can manually assign by tapping &#8212; it prompts you to type the barber's name (matching against the staff list), then calculates and saves the commission.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><strong>Monthly summary</strong><p>Groups all commission assignments from the 1st of the current month to now, broken down per barber. Shows: barber name, number of services (assignments), total revenue from their services, and total commission earned. The "Total commissions this month" at the bottom sums across all barbers. Use this to pay barbers at month end &#8212; this is the amount you owe them.</p></div></div>
                         </div>
-                        <div class="guide-tip"><strong>Pro Tip</strong><p>Walk-ins without bookings show as "unassigned". Tap to manually pick the barber who did the job.</p></div>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>Commission amounts are subtracted from profit in the Expense Tracker. If you pay barbers 40% commission and your profit looks wrong, check that all payments are assigned &#8212; unassigned ones have 0% commission which inflates profit.</p></div>
                         <button class="guide-tryit" onclick="navTo('advanced')">&#9654; Try It &#8212; View Commissions</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="clients customers profiles intelligence CRM visits spend preferred" data-guide-id="clients">
+                <div class="guide-card" data-guide-search="clients customers profiles intelligence CRM visits spend preferred phone rebuild migration" data-guide-id="clients">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon blue">&#128101;</div>
                         <div class="guide-card-title"><h4>Client Intelligence</h4><span>Auto-built customer profiles from bookings</span></div>
@@ -5208,22 +5224,25 @@
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-visual">
-                            <div class="guide-visual-label">How client profiles build themselves</div>
+                            <div class="guide-visual-label">How data flows into client profiles</div>
                             <div class="guide-visual-flow">
-                                <div class="guide-visual-node action">Customer Books</div>
+                                <div class="guide-visual-node action">Booking (name + phone)</div>
                                 <div class="guide-visual-arrow">&#8594;</div>
-                                <div class="guide-visual-node auto">Profile Created/Updated</div>
+                                <div class="guide-visual-node auto">Normalise phone (digits only)</div>
                                 <div class="guide-visual-arrow">&#8594;</div>
-                                <div class="guide-visual-node result">Visit Count, Spend, Preferences</div>
+                                <div class="guide-visual-node auto">Create or update profile</div>
+                                <div class="guide-visual-arrow">&#8594;</div>
+                                <div class="guide-visual-node result">autoManager/clients/{phone}</div>
                             </div>
                         </div>
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Zero Manual Input</strong><p>Every booking with a phone number auto-creates or updates a client profile. Phone (digits only) is the unique key.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>What's Tracked</strong><p>Name, phone, email, first visit, last visit, total visits, total spend, average spend, preferred barber, preferred service.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Stats at a Glance</strong><p>Total clients, new this month, and return rate percentage. Tells you how sticky your customer base is.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><strong>Search</strong><p>Type any name or phone number to instantly filter the list. Clients sorted by visit frequency.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>The unique key: normalised phone number</strong><p>Every client profile is keyed by their phone number with all non-digit characters stripped. "07858 232 531" becomes "07858232531". Numbers shorter than 8 digits are ignored (prevents junk data). This means if a customer books twice with the same phone but different names (e.g. "Mo" then "Mohammed"), both bookings update the same profile &#8212; the name updates to the latest one used.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>What each profile stores</strong><p><strong>name</strong>: latest name used in a booking. <strong>phone</strong>: original format. <strong>email</strong>: if ever provided. <strong>firstVisit</strong>: earliest booking date for this phone. <strong>lastVisit</strong>: most recent booking date. <strong>totalVisits</strong>: count of all bookings. <strong>totalSpend</strong>: sum of service prices from bookings (not payments &#8212; this uses the booked service price). <strong>averageSpend</strong>: totalSpend / totalVisits. <strong>services</strong>: object mapping service name &#8594; count (e.g. {"Skin Fade": 5, "Beard Trim": 2}). <strong>barbers</strong>: object mapping barber name &#8594; count. <strong>preferredService</strong>: the service with the highest count. <strong>preferredBarber</strong>: the barber with the highest count.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Initial build vs incremental updates</strong><p>On first ever load, the system checks <em>autoManager/meta/clientsBuilt</em>. If it doesn't exist, it runs a full rebuild: reads ALL bookings from Firebase, processes each one to build client profiles, writes them all at once, then sets the flag. After that, every new booking triggers an incremental update &#8212; only the one new booking is processed and merged into the existing profile. The "Backfill &amp; Sync" button on the Engine Status card forces a full rebuild.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Stats row</strong><p><strong>Total Clients</strong>: unique phone numbers in the database. <strong>New This Month</strong>: clients whose firstVisit date is in the current calendar month (these are genuinely new customers). <strong>Return Rate</strong>: percentage of clients with totalVisits &gt; 1 (customers who came back at least once). A high return rate means strong customer loyalty.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">5</div><div class="guide-step-content"><strong>Search and the client list</strong><p>The search box filters by name or phone (case-insensitive, substring match). The list is sorted by totalVisits descending &#8212; your most loyal customers appear first. Each card shows: name, phone, visit count, total spend, last visit date (formatted), and gold chips for preferred barber and preferred service. The list caps at 50 entries for performance &#8212; use search to find specific clients.</p></div></div>
                         </div>
-                        <div class="guide-warn"><strong>Important</strong><p>Walk-ins without bookings can't build profiles automatically &#8212; they need a name + phone captured. The "Needs" banner on this tab explains this.</p></div>
+                        <div class="guide-warn"><strong>Important</strong><p>Client profiles only build from <strong>bookings</strong>, not payments. A walk-in who pays via QR but never booked online will have a payment record but no client profile. The "Needs: Customer-facing payment identity" banner explains this gap. To capture walk-ins, you'd need a way to collect their name + phone at the point of sale &#8212; which doesn't exist yet.</p></div>
                         <button class="guide-tryit" onclick="navTo('advanced')">&#9654; Try It &#8212; View Clients</button>
                     </div>
                 </div>
@@ -5233,42 +5252,45 @@
             <div class="guide-group" data-guide-group="other">
                 <div class="guide-group-label">System</div>
 
-                <div class="guide-card" data-guide-search="promotions campaigns marketing offers" data-guide-id="promotions">
+                <div class="guide-card" data-guide-search="promotions campaigns marketing offers activate deactivate" data-guide-id="promotions">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon gold">&#11088;</div>
                         <div class="guide-card-title"><h4>Promotions</h4><span>Create and manage marketing campaigns</span></div>
                         <span class="guide-card-arrow">&#9660;</span>
                     </div>
                     <div class="guide-card-body">
-                        <p style="color:#999;font-size:13px;margin-bottom:8px;">Create time-limited campaigns with a title, description, and linked discount. Active ones show on the website. Delete when expired.</p>
+                        <p style="color:#999;font-size:13px;margin-bottom:8px;">Stored in Firebase <em>promotions/</em>. Each promotion has: name, description, type (percent/fixed/bogo/bundle), value, start date, end date, and active status. The status is automatically calculated: "active" if today is between start and end dates and manually activated, "scheduled" if start date is in the future, "expired" if end date has passed. You can manually deactivate an active promo or activate a scheduled one early. Deleting is permanent.</p>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>Promotions are display-only &#8212; they show on the website but don't automatically create a discount code. If your promo offers "20% off with code SUMMER", you need to separately create that discount code in the Discounts section. The promotion advertises it; the discount code enforces it.</p></div>
                         <button class="guide-tryit" onclick="switchSection('promotions')">&#9654; Try It &#8212; Create Promotion</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="activity log history audit trail actions" data-guide-id="activitylog">
+                <div class="guide-card" data-guide-search="activity log history audit trail actions filter timestamp" data-guide-id="activitylog">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon blue">&#128339;</div>
                         <div class="guide-card-title"><h4>Activity Log</h4><span>Audit trail of every admin action</span></div>
                         <span class="guide-card-arrow">&#9660;</span>
                     </div>
                     <div class="guide-card-body">
-                        <p style="color:#999;font-size:13px;margin-bottom:8px;">Every action is logged: payments confirmed, prices changed, staff added, discounts created. Filter by type to find what you need.</p>
-                        <div class="guide-tip"><strong>Pro Tip</strong><p>If something looks wrong, check the activity log to trace exactly what happened and when.</p></div>
+                        <p style="color:#999;font-size:13px;margin-bottom:8px;">Every admin action calls <em>logActivity(type, message)</em> which writes to Firebase <em>activityLog/</em> with: type (payment, booking, staff, settings, expenses, commissions, etc.), message (human-readable description), and timestamp. The log is displayed newest-first. Filter buttons let you show only specific types. The log is never automatically pruned &#8212; it grows indefinitely, which means you have a complete audit trail back to when the panel was first used.</p>
+                        <div class="guide-warn"><strong>Important</strong><p>The activity log records what the admin panel did, not what customers did. Customer actions (booking, paying) create records in their respective Firebase collections but don't write to the activity log. The log is specifically for admin actions: confirming payments, changing prices, adding staff, logging cash, toggling shop status, etc.</p></div>
                         <button class="guide-tryit" onclick="switchSection('activitylog')">&#9654; Try It &#8212; View Activity</button>
                     </div>
                 </div>
 
-                <div class="guide-card" data-guide-search="settings hours opening closing shop business profile" data-guide-id="settings">
+                <div class="guide-card" data-guide-search="settings hours opening closing shop business profile auto-scheduler" data-guide-id="settings">
                     <div class="guide-card-head" onclick="toggleGuideCard(this.parentElement)">
                         <div class="guide-card-icon purple">&#9881;</div>
-                        <div class="guide-card-title"><h4>Settings</h4><span>Opening hours, business profile</span></div>
+                        <div class="guide-card-title"><h4>Settings</h4><span>Opening hours, business profile, auto-scheduler</span></div>
                         <span class="guide-card-arrow">&#9660;</span>
                     </div>
                     <div class="guide-card-body">
                         <div class="guide-flow">
-                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Opening Hours</strong><p>Set open/close times for each day. Tick "Closed" for days off. Controls the booking calendar on the website.</p></div></div>
-                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><strong>Business Profile</strong><p>Shop name, address, contact details. Feeds into receipts, website footer, and automated messages.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Opening Hours &#8212; what they control</strong><p>Stored in Firebase <em>settings/hours</em> with one entry per day: open time (HH:MM), close time (HH:MM), and closed boolean. These control three things: (a) the booking calendar on services.html &#8212; time slots are only generated within these hours, (b) the auto shop open/close scheduler &#8212; every 5 minutes the admin panel checks if the current time is within hours and sets shop status accordingly (unless you manually overrode it), and (c) the "shop closed during business hours" smart alert on the dashboard.</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-line"></div><div class="guide-step-content"><strong>Auto shop scheduler details</strong><p>Runs <em>checkAutoShopStatus()</em> every 5 minutes and once 3 seconds after page load. Compares current time against today's opening hours. If it's within hours and shop isn't open, it auto-opens and sets staff to "on duty". If it's outside hours and shop is open, it auto-closes. This is skipped if: holiday mode is on, emergency close is active, or you manually toggled the shop status in the last 4 hours (the manual override protection).</p></div></div>
+                            <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><strong>Business Profile</strong><p>Shop name, address, phone, and email. Stored in Firebase <em>settings/businessProfile</em>. Currently used for: the daily briefing header, report formatting, and any automated messages that include shop details. Changes save immediately to Firebase.</p></div></div>
                         </div>
+                        <div class="guide-tip"><strong>Pro Tip</strong><p>If you need to stay open late one day without changing your permanent hours, just manually toggle the shop to "Open" &#8212; the 4-hour manual override means the auto-scheduler won't close you until well after your normal closing time.</p></div>
                         <button class="guide-tryit" onclick="switchSection('settings')">&#9654; Try It &#8212; Edit Settings</button>
                     </div>
                 </div>
