@@ -11,6 +11,7 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="auto-manager.js" defer></script>
 
     <style>
         /* Simple Admin Panel Styles */
@@ -3197,6 +3198,122 @@
             .promo-item { padding: 12px; }
         }
 
+        /* ==================== AUTO-MANAGER STYLES ==================== */
+        .am-tabs { display: flex; gap: 6px; padding: 12px 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .am-tab { padding: 8px 16px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #888; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+        .am-tab:hover { background: rgba(212,175,55,0.1); color: #d4af37; }
+        .am-tab.active { background: rgba(212,175,55,0.15); border-color: rgba(212,175,55,0.4); color: #d4af37; }
+        .am-view { display: none; }
+        .am-view.active { display: block; }
+        .am-stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .am-stat { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; text-align: center; }
+        .am-stat-value { font-size: 28px; font-weight: 700; color: #fff; }
+        .am-stat-label { font-size: 12px; color: #888; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .am-stat-green .am-stat-value { color: #4ecb71; }
+        .am-stat-blue .am-stat-value { color: #5ba8ff; }
+        .am-stat-amber .am-stat-value { color: #d4af37; }
+        .am-stat-red .am-stat-value { color: #ff6b6b; }
+
+        .am-needs-banner { background: rgba(255,107,107,0.08); border: 1px solid rgba(255,107,107,0.25); border-radius: 10px; padding: 14px 18px; margin-bottom: 16px; color: #ff8a8a; font-size: 13px; display: flex; align-items: center; gap: 10px; }
+        .am-needs-banner svg { width: 20px; height: 20px; flex-shrink: 0; stroke: #ff8a8a; }
+        .am-needs-banner strong { color: #ff6b6b; }
+
+        .am-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+        .am-card-title { font-size: 16px; font-weight: 700; color: #d4af37; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+        .am-card-title .am-add-btn { padding: 6px 14px; border-radius: 8px; background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.3); color: #d4af37; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+        .am-product-card { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+        .am-product-info { flex: 1; }
+        .am-product-name { font-weight: 600; color: #fff; font-size: 14px; }
+        .am-product-meta { font-size: 12px; color: #888; margin-top: 2px; }
+        .am-product-stock { display: flex; align-items: center; gap: 8px; }
+        .am-product-stock .am-stock-val { font-size: 20px; font-weight: 700; color: #fff; min-width: 32px; text-align: center; }
+        .am-product-stock .am-stock-val.low { color: #ff6b6b; }
+        .am-stock-btn { width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .am-stock-btn:hover { background: rgba(212,175,55,0.2); border-color: rgba(212,175,55,0.4); }
+
+        .am-form { display: none; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+        .am-form.open { display: block; }
+        .am-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+        .am-form-row { display: flex; flex-direction: column; gap: 4px; }
+        .am-form-row label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+        .am-form-row input, .am-form-row select, .am-form-row textarea { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 13px; }
+        .am-form-row input:focus, .am-form-row select:focus { border-color: rgba(212,175,55,0.5); outline: none; }
+        .am-form-actions { display: flex; gap: 8px; justify-content: flex-end; }
+        .am-btn { padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
+        .am-btn-gold { background: linear-gradient(135deg, #d4af37, #b8960c); color: #000; }
+        .am-btn-ghost { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #888; }
+        .am-input-sm { width: 60px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 6px 8px; color: #fff; font-size: 13px; text-align: center; }
+
+        .am-review-item { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+        .am-review-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .am-review-name { font-weight: 600; color: #fff; font-size: 14px; }
+        .am-review-status { font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+        .am-review-status.awaiting { background: rgba(212,175,55,0.15); color: #d4af37; }
+        .am-review-status.sent { background: rgba(78,203,113,0.15); color: #4ecb71; }
+        .am-review-status.skipped { background: rgba(255,255,255,0.08); color: #888; }
+        .am-review-actions { display: flex; gap: 8px; margin-top: 10px; }
+        .am-review-actions .am-btn { padding: 6px 14px; font-size: 12px; }
+
+        .am-expense-item { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+        .am-expense-name { font-weight: 600; color: #fff; font-size: 14px; }
+        .am-expense-meta { font-size: 12px; color: #888; }
+        .am-expense-amount { font-size: 16px; font-weight: 700; color: #ff6b6b; }
+        .am-expense-total { padding: 14px; text-align: right; font-size: 15px; font-weight: 700; color: #d4af37; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 8px; }
+
+        .am-profit-hero { background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(78,203,113,0.05)); border: 1px solid rgba(212,175,55,0.2); border-radius: 14px; padding: 24px; margin-bottom: 20px; text-align: center; }
+        .am-profit-row { display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
+        .am-profit-item { text-align: center; }
+        .am-profit-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+        .am-profit-value { font-size: 24px; font-weight: 700; }
+        .am-profit-value.revenue { color: #4ecb71; }
+        .am-profit-value.expenses { color: #ff6b6b; }
+        .am-profit-value.profit { color: #d4af37; font-size: 32px; }
+        .am-profit-value.loss { color: #ff6b6b; font-size: 32px; }
+        .am-profit-sign { font-size: 20px; color: #555; font-weight: 300; }
+        .am-period-btns { display: flex; gap: 6px; justify-content: center; margin-bottom: 16px; }
+        .am-period-btn { padding: 6px 14px; border-radius: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #888; font-size: 12px; cursor: pointer; }
+        .am-period-btn.active { background: rgba(212,175,55,0.15); border-color: rgba(212,175,55,0.3); color: #d4af37; }
+
+        .am-comm-row { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+        .am-comm-name { font-weight: 600; color: #fff; font-size: 14px; }
+        .am-comm-earned { font-size: 16px; font-weight: 700; color: #4ecb71; }
+        .am-comm-default { margin-bottom: 14px; color: #ccc; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        .am-comm-staff-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .am-comm-staff-name { color: #fff; font-size: 14px; }
+
+        .am-client-card { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 14px; margin-bottom: 8px; }
+        .am-client-main { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .am-client-name { font-weight: 600; color: #fff; font-size: 14px; }
+        .am-client-meta { display: flex; gap: 14px; font-size: 12px; color: #888; }
+        .am-client-prefs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+        .am-chip { padding: 3px 10px; border-radius: 12px; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.2); color: #d4af37; font-size: 11px; font-weight: 600; }
+        .am-client-search { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 16px; color: #fff; font-size: 14px; margin-bottom: 16px; }
+        .am-client-search::placeholder { color: #555; }
+
+        .am-muted { color: #888; font-size: 12px; }
+        .am-empty { text-align: center; padding: 30px; color: #555; font-size: 14px; }
+        .am-log-feed { max-height: 300px; overflow-y: auto; }
+        .am-log-item { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; color: #aaa; display: flex; justify-content: space-between; }
+        .am-log-time { color: #555; font-size: 11px; }
+        .am-toggle { position: relative; width: 40px; height: 22px; background: rgba(255,255,255,0.1); border-radius: 11px; cursor: pointer; transition: background 0.2s; }
+        .am-toggle.on { background: rgba(78,203,113,0.5); }
+        .am-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; background: #fff; border-radius: 50%; transition: transform 0.2s; }
+        .am-toggle.on::after { transform: translateX(18px); }
+        .am-delete-btn { background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px; padding: 4px 8px; opacity: 0.6; }
+        .am-delete-btn:hover { opacity: 1; }
+
+        @media (max-width: 600px) {
+            .am-tabs { gap: 4px; }
+            .am-tab { padding: 6px 12px; font-size: 12px; }
+            .am-stats-row { grid-template-columns: 1fr 1fr; }
+            .am-form-grid { grid-template-columns: 1fr; }
+            .am-profit-row { gap: 10px; }
+            .am-profit-value { font-size: 20px; }
+            .am-profit-value.profit, .am-profit-value.loss { font-size: 26px; }
+            .am-client-meta { flex-direction: column; gap: 2px; }
+        }
+
     </style>
 </head>
 <body>
@@ -3305,6 +3422,7 @@
             <button class="admin-nav-btn" onclick="switchSection('contacts')">Contacts</button>
             <button class="admin-nav-btn" onclick="switchSection('gallery')">Gallery</button>
             <button class="admin-nav-btn" onclick="switchSection('settings')">Settings</button>
+            <button class="admin-nav-btn" onclick="switchSection('automanager')" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.25);color:#d4af37;">Auto-Manager</button>
         </div>
 
         <!-- Sub-navigation strip (for grouped tabs like Money, Team, Content) -->
@@ -4196,6 +4314,241 @@
             </div>
         </div>
 
+        <!-- ==================== AUTO-MANAGER SECTION ==================== -->
+        <div class="admin-section" id="section-automanager">
+            <h2 style="color:#d4af37;margin-bottom:4px;">Auto-Manager</h2>
+            <p style="color:#888;font-size:13px;margin-bottom:16px;">Automated business intelligence — inventory, reviews, expenses, commissions & clients</p>
+
+            <div class="am-tabs">
+                <button class="am-tab active" onclick="AutoManager.switchTab('inventory', this)">Inventory</button>
+                <button class="am-tab" onclick="AutoManager.switchTab('reviews', this)">Reviews</button>
+                <button class="am-tab" onclick="AutoManager.switchTab('expenses', this)">Expenses</button>
+                <button class="am-tab" onclick="AutoManager.switchTab('commissions', this)">Commissions</button>
+                <button class="am-tab" onclick="AutoManager.switchTab('clients', this)">Clients</button>
+            </div>
+
+            <!-- ====== INVENTORY SUB-TAB ====== -->
+            <div class="am-view active" id="am-inventory">
+                <div class="am-needs-banner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <div><strong>Needs: Barcode Scanner</strong> — Connect a barcode scanner for instant stock counting and product lookup</div>
+                </div>
+
+                <div class="am-stats-row" id="am-inv-stats"></div>
+
+                <div class="am-card">
+                    <div class="am-card-title">
+                        Products
+                        <button class="am-add-btn" onclick="AutoManager.toggleAddProductForm()">+ Add Product</button>
+                    </div>
+
+                    <div class="am-form" id="am-add-product-form">
+                        <div class="am-form-grid">
+                            <div class="am-form-row">
+                                <label>Product Name</label>
+                                <input type="text" id="am-prod-name" placeholder="e.g. Styling Gel">
+                            </div>
+                            <div class="am-form-row">
+                                <label>Category</label>
+                                <select id="am-prod-category">
+                                    <option value="hair">Hair Product</option>
+                                    <option value="beard">Beard Product</option>
+                                    <option value="skin">Skin Product</option>
+                                    <option value="tools">Tools/Equipment</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="am-form-row">
+                                <label>Current Stock</label>
+                                <input type="number" id="am-prod-stock" placeholder="0" min="0">
+                            </div>
+                            <div class="am-form-row">
+                                <label>Reorder Threshold</label>
+                                <input type="number" id="am-prod-threshold" placeholder="5" min="0">
+                            </div>
+                            <div class="am-form-row">
+                                <label>Cost Price (£)</label>
+                                <input type="number" id="am-prod-cost" placeholder="0.00" step="0.01" min="0">
+                            </div>
+                            <div class="am-form-row">
+                                <label>Usage Per Service</label>
+                                <input type="number" id="am-prod-usage" placeholder="1" min="0" step="0.1">
+                            </div>
+                        </div>
+                        <div class="am-form-row" style="margin-bottom:12px;">
+                            <label>Linked Services (comma-separated)</label>
+                            <input type="text" id="am-prod-services" placeholder="e.g. Skin Fade, Beard Trim">
+                        </div>
+                        <div class="am-form-actions">
+                            <button class="am-btn am-btn-ghost" onclick="AutoManager.toggleAddProductForm()">Cancel</button>
+                            <button class="am-btn am-btn-gold" onclick="AutoManager.addProduct()">Add Product</button>
+                        </div>
+                    </div>
+
+                    <div id="am-product-list"></div>
+                </div>
+
+                <div class="am-card">
+                    <div class="am-card-title">Stock Log</div>
+                    <div class="am-log-feed" id="am-stock-log"></div>
+                </div>
+            </div>
+
+            <!-- ====== REVIEWS SUB-TAB ====== -->
+            <div class="am-view" id="am-reviews">
+                <div class="am-needs-banner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <div><strong>Needs: WhatsApp Business API</strong> — For fully automated zero-tap review request sending</div>
+                </div>
+                <div class="am-needs-banner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <div><strong>Needs: Google Business API</strong> — For automatic review detection and response tracking</div>
+                </div>
+
+                <div class="am-stats-row" id="am-review-stats"></div>
+
+                <div class="am-card">
+                    <div class="am-card-title">Review Settings</div>
+                    <div class="am-form-row" style="margin-bottom:12px;">
+                        <label>Google Review URL</label>
+                        <input type="text" id="am-review-url" placeholder="https://g.page/r/your-review-link" onchange="AutoManager.saveReviewSettings()">
+                    </div>
+                    <div class="am-form-row" style="margin-bottom:12px;">
+                        <label>Message Template (use {name} and {link})</label>
+                        <textarea id="am-review-template" rows="3" onchange="AutoManager.saveReviewSettings()" placeholder="Hi {name}! Thanks for visiting Golden Barbers. We'd love a quick Google review: {link}"></textarea>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                        <div class="am-toggle" id="am-review-auto-toggle" onclick="AutoManager.toggleAutoReview()"></div>
+                        <span style="color:#ccc;font-size:13px;">Auto-queue review requests on payment</span>
+                    </div>
+                </div>
+
+                <div class="am-card">
+                    <div class="am-card-title">Review Queue</div>
+                    <div id="am-review-list"></div>
+                </div>
+            </div>
+
+            <!-- ====== EXPENSES SUB-TAB ====== -->
+            <div class="am-view" id="am-expenses">
+                <div id="am-profit-hero" class="am-profit-hero"></div>
+
+                <div class="am-period-btns">
+                    <button class="am-period-btn active" onclick="AutoManager.setExpensePeriod('month', this)">This Month</button>
+                    <button class="am-period-btn" onclick="AutoManager.setExpensePeriod('week', this)">This Week</button>
+                    <button class="am-period-btn" onclick="AutoManager.setExpensePeriod('year', this)">This Year</button>
+                </div>
+
+                <div class="am-card">
+                    <div class="am-card-title">
+                        Recurring Expenses
+                        <button class="am-add-btn" onclick="AutoManager.toggleAddExpenseForm('rec')">+ Add</button>
+                    </div>
+                    <div class="am-form" id="am-add-rec-form">
+                        <div class="am-form-grid">
+                            <div class="am-form-row">
+                                <label>Name</label>
+                                <input type="text" id="am-rec-name" placeholder="e.g. Rent">
+                            </div>
+                            <div class="am-form-row">
+                                <label>Amount (£/month)</label>
+                                <input type="number" id="am-rec-amount" step="0.01" min="0">
+                            </div>
+                            <div class="am-form-row">
+                                <label>Category</label>
+                                <select id="am-rec-category">
+                                    <option value="rent">Rent</option>
+                                    <option value="utilities">Utilities</option>
+                                    <option value="supplies">Supplies</option>
+                                    <option value="insurance">Insurance</option>
+                                    <option value="software">Software</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="am-form-row">
+                                <label>Day of Month</label>
+                                <input type="number" id="am-rec-day" value="1" min="1" max="31">
+                            </div>
+                        </div>
+                        <div class="am-form-actions">
+                            <button class="am-btn am-btn-ghost" onclick="AutoManager.toggleAddExpenseForm('rec')">Cancel</button>
+                            <button class="am-btn am-btn-gold" onclick="AutoManager.addRecurring()">Add Expense</button>
+                        </div>
+                    </div>
+                    <div id="am-recurring-list"></div>
+                </div>
+
+                <div class="am-card">
+                    <div class="am-card-title">
+                        One-off Expenses
+                        <button class="am-add-btn" onclick="AutoManager.toggleAddExpenseForm('one')">+ Add</button>
+                    </div>
+                    <div class="am-form" id="am-add-one-form">
+                        <div class="am-form-grid">
+                            <div class="am-form-row">
+                                <label>Name</label>
+                                <input type="text" id="am-one-name" placeholder="e.g. New clippers">
+                            </div>
+                            <div class="am-form-row">
+                                <label>Amount (£)</label>
+                                <input type="number" id="am-one-amount" step="0.01" min="0">
+                            </div>
+                            <div class="am-form-row">
+                                <label>Date</label>
+                                <input type="date" id="am-one-date">
+                            </div>
+                            <div class="am-form-row">
+                                <label>Category</label>
+                                <select id="am-one-category">
+                                    <option value="equipment">Equipment</option>
+                                    <option value="repairs">Repairs</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="supplies">Supplies</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="am-form-row" style="margin-bottom:12px;">
+                            <label>Notes (optional)</label>
+                            <input type="text" id="am-one-notes" placeholder="Any details...">
+                        </div>
+                        <div class="am-form-actions">
+                            <button class="am-btn am-btn-ghost" onclick="AutoManager.toggleAddExpenseForm('one')">Cancel</button>
+                            <button class="am-btn am-btn-gold" onclick="AutoManager.addOneoff()">Log Expense</button>
+                        </div>
+                    </div>
+                    <div id="am-oneoff-list"></div>
+                </div>
+            </div>
+
+            <!-- ====== COMMISSIONS SUB-TAB ====== -->
+            <div class="am-view" id="am-commissions">
+                <div class="am-card">
+                    <div class="am-card-title">Commission Rates</div>
+                    <div id="am-comm-rates"></div>
+                </div>
+
+                <div class="am-card">
+                    <div class="am-card-title">This Month's Commissions</div>
+                    <div id="am-comm-summary"></div>
+                </div>
+            </div>
+
+            <!-- ====== CLIENTS SUB-TAB ====== -->
+            <div class="am-view" id="am-clients">
+                <div class="am-needs-banner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <div><strong>Needs: Customer-facing payment identity</strong> — For tracking walk-ins without bookings</div>
+                </div>
+
+                <div class="am-stats-row" id="am-client-stats"></div>
+
+                <input type="text" class="am-client-search" id="am-client-search" placeholder="Search clients by name or phone..." oninput="AutoManager.searchClients()">
+
+                <div id="am-client-list"></div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Toast Container -->
@@ -4251,6 +4604,10 @@
             <span>Themes</span>
         </button>
         <div class="nav-divider">BUSINESS</div>
+        <button class="bottom-nav-item" onclick="navTo('automanager')" data-section="automanager">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 014 4v1a1 1 0 001 1h1a4 4 0 010 8h-1a1 1 0 00-1 1v1a4 4 0 01-8 0v-1a1 1 0 00-1-1H6a4 4 0 010-8h1a1 1 0 001-1V6a4 4 0 014-4z"/><circle cx="12" cy="12" r="3"/></svg>
+            <span>Auto-Mgr</span>
+        </button>
         <button class="bottom-nav-item" onclick="navTo('reports')" data-section="reports">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             <span>Reports</span>
@@ -4562,6 +4919,10 @@
             // Sort newest first
             allBookings.sort(function(a, b) { return new Date(b.createdAt) - new Date(a.createdAt); });
             renderBookings();
+            // Auto-Manager: update client intelligence from latest booking
+            if (window.AutoManager && allBookings.length > 0) {
+                AutoManager.updateClientFromBooking(allBookings[0]);
+            }
         });
 
         // Update clearAllBookings to use Firebase
@@ -5244,6 +5605,8 @@
                 confirmedAt: new Date().toISOString(),
                 verifiedAmount: received
             });
+            // Auto-Manager hook: stock, reviews, commissions
+            if (window.AutoManager) AutoManager.onPaymentConfirmed(key);
         }
 
         function rejectPayment(key) {
@@ -6557,7 +6920,9 @@
                 date: new Date().toISOString().split('T')[0],
                 isCash: true
             };
-            database.ref('payments').push(paymentData);
+            var cashRef = database.ref('payments').push(paymentData);
+            // Auto-Manager hook: stock, reviews, commissions
+            if (window.AutoManager && cashRef.key) AutoManager.onPaymentConfirmed(cashRef.key);
             logActivity('payment', 'Cash payment logged: ' + name + ' (\u00A3' + amount.toFixed(2) + ')');
             // Flash feedback on the button
             var btns = document.querySelectorAll('.cash-service-btn');
