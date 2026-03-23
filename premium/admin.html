@@ -4812,6 +4812,7 @@
                     <div class="guide-progress-sub"><span id="guideLearnedCount">0</span> of <span id="guideTotalCount">0</span> sections explored</div>
                 </div>
                 <div class="guide-progress-pct" id="guideProgressPct">0%</div>
+                <button onclick="resetGuideProgress()" style="background:rgba(255,80,80,0.15);border:1px solid rgba(255,80,80,0.3);color:#ff6b6b;font-size:11px;padding:5px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;">Reset</button>
             </div>
 
             <!-- Quick Start Checklist -->
@@ -9703,6 +9704,16 @@
                 checks[key] = li.classList.contains('done');
                 localStorage.setItem('guideChecks', JSON.stringify(checks));
             }
+        }
+
+        function resetGuideProgress() {
+            if (!confirm('Reset all guide progress? This clears your explored sections and checklist.')) return;
+            localStorage.removeItem('guideExplored');
+            localStorage.removeItem('guideChecks');
+            document.querySelectorAll('#section-guide .guide-card').forEach(function(c) { c.classList.remove('explored'); });
+            document.querySelectorAll('#guideChecklist li').forEach(function(li) { li.classList.remove('done'); });
+            updateGuideProgress();
+            showToast('Guide progress reset', 'info');
         }
 
         // Restore checklist and progress on load
