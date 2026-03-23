@@ -4880,7 +4880,12 @@
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('adminPanel').classList.add('show');
             document.getElementById('bottomNav').style.display = 'flex';
-            loadData();
+            if (showAdminPanel._loadQueued) return;
+            showAdminPanel._loadQueued = true;
+            setTimeout(function() {
+                showAdminPanel._loadQueued = false;
+                loadData();
+            }, 0);
         }
 
         function logout() {
