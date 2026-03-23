@@ -268,6 +268,7 @@ function shouldQueueReview(visit, payment, reviewSettings) {
   if (!isPaymentSettled(visit, payment)) return false;
   if (!reviewSettings || reviewSettings.autoQueueEnabled === false) return false;
   if (!safeText(reviewSettings.googleReviewUrl)) return false;
+  if (!getPhoneForVisit(visit)) return false;
   return getVisitAmount(visit, payment) >= roundMoney(reviewSettings.minimumSpend || 0);
 }
 

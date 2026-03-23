@@ -74,10 +74,27 @@
         return (visit && (visit.customerEmail || visit.email)) || fallback || '';
     }
 
+    function hasReachableCustomer(visit) {
+        var phone = getVisitCustomerPhone(visit, '').replace(/[^0-9]/g, '');
+        return phone.length >= 8;
+    }
+
     function getVisitServiceSummary(visit, payment) {
         if (visit && visit.serviceSummary) return visit.serviceSummary;
         if (visit && visit.items && visit.items.length) return visit.items.join(', ');
         return payment && payment.items ? payment.items.join(', ') : 'Service';
+    }
+
+    function syncClientMessaging() {
+        var bannerCopy = document.querySelector('#am-clients .am-needs-banner div');
+        if (bannerCopy) {
+            bannerCopy.innerHTML = '<strong>Walk-ins can stay anonymous</strong> — Add a name and phone only when you want repeat history, review follow-up, or direct contact later.';
+        }
+
+        var searchInput = document.getElementById('am-client-search');
+        if (searchInput) {
+            searchInput.placeholder = 'Search known clients by name or phone...';
+        }
     }
 
     function isBackendOwned() {
@@ -574,6 +591,7 @@
                 db.ref('visits/' + paymentKey).once('value', function(vSnap) {
                     var visit = vSnap.val();
                     if (visit) {
+                        if (!hasReachableCustomer(visit)) return;
                         db.ref('autoManager/reviews/queue').push({
                             customerName: getVisitCustomerName(visit, 'Walk-in'),
                             customerPhone: getVisitCustomerPhone(visit, ''),
@@ -607,6 +625,9 @@
                                 }
                             }
                         });
+
+                        var cleanPhone = String(contactInfo.phone || '').replace(/[^0-9]/g, '');
+                        if (cleanPhone.length < 8) return;
 
                         db.ref('autoManager/reviews/queue').push({
                             customerName: contactInfo.name,
@@ -1114,8 +1135,8 @@
         var returnRate = totalClients > 0 ? Math.round(returning / totalClients * 100) : 0;
 
         statsEl.innerHTML =
-            '<div class="am-stat"><div class="am-stat-value">' + totalClients + '</div><div class="am-stat-label">Total Clients</div></div>' +
-            '<div class="am-stat am-stat-green"><div class="am-stat-value">' + newThisMonth + '</div><div class="am-stat-label">New This Month</div></div>' +
+            '<div class="am-stat"><div class="am-stat-value">' + totalClients + '</div><div class="am-stat-label">Known Clients</div></div>' +
+            '<div class="am-stat am-stat-green"><div class="am-stat-value">' + newThisMonth + '</div><div class="am-stat-label">Added This Month</div></div>' +
             '<div class="am-stat am-stat-blue"><div class="am-stat-value">' + returnRate + '%</div><div class="am-stat-label">Return Rate</div></div>';
 
         // Search filter
@@ -1127,7 +1148,7 @@
             .sort(function(a, b) { return (b.totalVisits || 0) - (a.totalVisits || 0); });
 
         if (sorted.length === 0) {
-            listEl.innerHTML = '<div class="am-empty">' + (query ? 'No clients matching "' + query + '"' : 'No client data yet. Clients are added automatically from visits and bookings.') + '</div>';
+            listEl.innerHTML = '<div class="am-empty">' + (query ? 'No clients matching "' + query + '"' : 'No known clients yet. Profiles are created automatically only when a visit includes a phone number.') + '</div>';
             return;
         }
 
@@ -1171,6 +1192,7 @@
     // ================================================================
 
     AM.init = function() {
+        syncClientMessaging();
         loadEngineStatus();
         buildServiceMap();
         loadInventory();
