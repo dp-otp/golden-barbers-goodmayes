@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pay | Golden Barbers</title>
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#000000">
@@ -23,6 +23,7 @@
             --black: #000000;
             --dark: #0a0a0a;
             --dark-card: #111111;
+            --dark-card-2: #161616;
             --white: #ffffff;
             --gray: #888888;
             --gray-dark: #444444;
@@ -42,187 +43,327 @@
             overflow-x: hidden;
         }
 
-        .page-wrap {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 16px 16px 40px;
-            animation: fadeUp 0.5s ease;
-        }
-
+        /* ===== ANIMATIONS ===== */
         @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
         @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
         @keyframes scaleIn { from { opacity:0; transform:scale(0.92); } to { opacity:1; transform:scale(1); } }
-        @keyframes checkPop { 0% { transform:scale(0); } 60% { transform:scale(1.15); } 100% { transform:scale(1); } }
+        @keyframes checkDraw { from { stroke-dashoffset:60; } to { stroke-dashoffset:0; } }
+        @keyframes checkBounce { 0% { transform:scale(0); } 60% { transform:scale(1.12); } 100% { transform:scale(1); } }
         @keyframes spin { to { transform:rotate(360deg); } }
         @keyframes dotPulse { 0%,80%,100% { transform:scale(0.6); opacity:0.4; } 40% { transform:scale(1); opacity:1; } }
-        @keyframes verifyPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.4); } 50% { box-shadow: 0 0 0 12px rgba(212,175,55,0); } }
+        @keyframes processingBar { from { width:0; } to { width:100%; } }
+        @keyframes slideUp { from { transform:translateY(20px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+        @keyframes pulseGlow { 0%,100% { box-shadow:0 0 0 0 rgba(34,197,94,0); } 50% { box-shadow:0 0 24px rgba(34,197,94,0.2); } }
+        @keyframes fieldFlash { 0% { background:rgba(212,175,55,0.2); } 100% { background:transparent; } }
 
-        /* Header */
-        .header { text-align:center; padding:8px 0 20px; }
-        .header-logo { width:60px; height:60px; margin:0 auto 10px; border-radius:50%; object-fit:contain; }
-        .header h1 { font-size:18px; font-weight:700; }
-        .header h1 span { color:var(--gold); }
-        .header-sub { color:var(--gray); font-size:12px; margin-top:2px; }
+        /* ===== PAGE WRAP ===== */
+        .page-wrap {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 20px;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            animation: fadeUp 0.5s ease;
+        }
 
-        /* Amount Hero */
-        .amount-hero {
+        /* ===== LOADING ===== */
+        .loading-screen { text-align:center; padding:60px 20px; flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+        .loading-dots { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:16px; }
+        .loading-dot { width:10px; height:10px; background:var(--gold); border-radius:50%; animation:dotPulse 1.4s ease infinite; }
+        .loading-dot:nth-child(2) { animation-delay:0.2s; }
+        .loading-dot:nth-child(3) { animation-delay:0.4s; }
+        .loading-screen p { color:var(--gray); font-size:14px; }
+
+        /* ===== ERROR ===== */
+        .error-screen { display:none; text-align:center; padding:50px 20px; flex:1; }
+        .error-screen.show { display:flex; flex-direction:column; align-items:center; justify-content:center; }
+        .error-icon { font-size:48px; margin-bottom:16px; }
+        .error-screen h2 { font-size:20px; margin-bottom:8px; }
+        .error-screen p { color:var(--gray); font-size:14px; }
+
+        /* ===== MOMENT 1: ORDER VIEW ===== */
+        #orderView {
+            display:none;
+            flex:1;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
             text-align:center;
-            padding:24px 20px;
-            background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.03));
-            border: 1px solid rgba(212,175,55,0.25);
+            padding: 40px 0;
+            position:relative;
+        }
+        #orderView.show { display:flex; }
+
+        .close-btn {
+            position:absolute; top:16px; right:0;
+            width:40px; height:40px;
+            background:rgba(255,255,255,0.06);
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:50%; color:var(--gray);
+            font-size:18px; cursor:pointer;
+            display:flex; align-items:center; justify-content:center;
+            transition:all 0.2s;
+        }
+        .close-btn:hover { color:var(--white); background:rgba(255,255,255,0.1); }
+
+        .brand-header { margin-bottom:32px; }
+        .brand-header img { width:52px; height:52px; border-radius:50%; object-fit:contain; margin-bottom:8px; }
+        .brand-name { font-size:16px; font-weight:700; }
+        .brand-name span { color:var(--gold); }
+        .brand-location { font-size:12px; color:var(--gray); margin-top:2px; }
+
+        .amount-display {
+            margin-bottom:12px;
+        }
+        .amount-original {
+            font-size:24px; font-weight:600;
+            color:var(--gray); text-decoration:line-through;
+            display:none; margin-bottom:4px;
+        }
+        .amount-value {
+            font-size:52px; font-weight:900;
+            color:var(--gold);
+            line-height:1;
+            font-variant-numeric:tabular-nums;
+            letter-spacing:0.04em;
+        }
+        .amount-savings {
+            display:none;
+            margin-top:8px; padding:5px 14px;
+            background:rgba(34,197,94,0.12);
+            border:1px solid rgba(34,197,94,0.3);
             border-radius:20px;
-            margin-bottom:14px;
+            font-size:12px; font-weight:600;
+            color:var(--green);
         }
-        .amount-label { font-size:12px; color:var(--gray); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px; }
-        .amount-value { font-size:52px; font-weight:900; color:var(--gold); line-height:1; margin-bottom:10px; }
 
-        .services-toggle {
-            display:inline-flex; align-items:center; gap:5px;
-            background:none; border:none; color:var(--gray);
-            font-family:'Outfit',sans-serif; font-size:13px; cursor:pointer;
-            padding:5px 10px; border-radius:16px; transition:color 0.3s;
+        .services-line {
+            font-size:14px; color:var(--gray);
+            margin-bottom:28px; line-height:1.5;
         }
-        .services-toggle:hover { color:var(--white); }
-        .services-toggle svg { width:14px; height:14px; transition:transform 0.3s; }
-        .services-toggle.open svg { transform:rotate(180deg); }
+        .services-line .service-name { color:rgba(255,255,255,0.7); }
+        .services-expand-btn {
+            background:none; border:none; color:var(--gold);
+            font-family:'Outfit',sans-serif; font-size:13px;
+            cursor:pointer; padding:2px 4px;
+        }
+        .services-expand {
+            max-height:0; overflow:hidden;
+            transition:max-height 0.4s ease;
+        }
+        .services-expand.open { max-height:300px; }
+        .services-expand-inner {
+            padding:12px 0;
+        }
+        .service-row {
+            display:flex; justify-content:space-between;
+            padding:6px 0; font-size:13px;
+        }
+        .service-row-name { color:rgba(255,255,255,0.7); }
+        .service-row-price { color:var(--gold); font-weight:600; }
 
-        .services-detail { max-height:0; overflow:hidden; transition:max-height 0.4s ease, margin 0.4s ease; }
-        .services-detail.open { max-height:400px; margin-top:10px; }
-        .services-detail-inner { background:rgba(0,0,0,0.4); border-radius:12px; padding:10px 14px; }
-        .service-line { display:flex; justify-content:space-between; padding:5px 0; font-size:13px; }
-        .service-line-name { color:rgba(255,255,255,0.8); }
-        .service-line-price { color:var(--gold); font-weight:600; }
-
-        /* Card */
-        .card {
+        /* Booking context (online bookings) */
+        .booking-context {
+            display:none;
+            width:100%; max-width:340px;
+            padding:14px 18px;
             background:var(--dark-card);
             border:1px solid rgba(255,255,255,0.07);
-            border-radius:20px;
-            padding:22px 18px;
-            margin-bottom:14px;
+            border-radius:16px;
+            margin-bottom:20px;
+            text-align:left;
         }
+        .booking-context.show { display:block; }
+        .booking-context-title { font-size:13px; font-weight:700; margin-bottom:10px; color:var(--gold); }
+        .booking-context .service-row { border-bottom:1px solid rgba(255,255,255,0.04); }
+        .booking-context .service-row:last-child { border-bottom:none; }
+        .booking-context .service-row-name { font-size:12px; }
+        .booking-context .service-row-price { font-size:12px; color:rgba(255,255,255,0.8); font-weight:500; }
 
-        .card-header { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
-        .card-icon {
-            width:38px; height:38px;
-            background:rgba(212,175,55,0.1);
-            border-radius:11px;
-            display:flex; align-items:center; justify-content:center;
+        /* Discount inline */
+        .discount-row {
+            display:flex; gap:8px;
+            width:100%; max-width:320px;
+            margin-bottom:28px;
         }
-        .card-icon svg { width:18px; height:18px; stroke:var(--gold); fill:none; stroke-width:2; }
-        .card-title { font-size:15px; font-weight:700; }
-        .card-subtitle { font-size:11px; color:var(--gray); }
-
-        /* Bank Details */
-        .bank-detail {
-            display:flex; align-items:center; justify-content:space-between;
-            padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05);
+        .discount-input {
+            flex:1; padding:13px 16px;
+            background:rgba(255,255,255,0.04);
+            border:1.5px solid rgba(255,255,255,0.1);
+            border-radius:14px;
+            color:var(--white);
+            font-family:'Outfit',sans-serif;
+            font-size:14px; font-weight:600;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            outline:none;
+            transition:border-color 0.3s;
         }
-        .bank-detail:last-of-type { border-bottom:none; }
-        .bank-detail-left { flex:1; min-width:0; }
-        .bank-detail-label { font-size:10px; color:var(--gray); text-transform:uppercase; letter-spacing:0.7px; margin-bottom:3px; }
-        .bank-detail-value { font-size:16px; font-weight:700; letter-spacing:0.3px; }
-        .bank-detail-value.gold { color:var(--gold); }
-
-        .copy-btn {
-            padding:7px 14px;
-            background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.2);
-            border-radius:10px; color:var(--gold);
-            font-family:'Outfit',sans-serif; font-size:12px; font-weight:600;
+        .discount-input:focus { border-color:var(--gold); }
+        .discount-input::placeholder { color:var(--gray-dark); font-weight:400; text-transform:none; letter-spacing:0; font-size:13px; }
+        .discount-apply-btn {
+            padding:13px 20px;
+            background:linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color:var(--black); border:none; border-radius:14px;
+            font-family:'Outfit',sans-serif;
+            font-size:13px; font-weight:700;
             cursor:pointer; transition:all 0.2s;
-            min-width:62px; text-align:center;
+            white-space:nowrap;
         }
-        .copy-btn:active { transform:scale(0.95); }
-        .copy-btn.copied { background:var(--green); border-color:var(--green); color:var(--white); }
+        .discount-apply-btn:active { transform:scale(0.96); }
+        .discount-apply-btn:disabled { opacity:0.5; cursor:not-allowed; }
 
-        .copy-all-btn {
-            width:100%; padding:14px; margin-top:14px;
+        .discount-result {
+            width:100%; max-width:320px;
+            margin-top:-18px; margin-bottom:20px;
+            padding:10px 14px;
+            border-radius:10px; font-size:12px; font-weight:600;
+            display:none;
+        }
+        .discount-result.success {
+            display:flex; align-items:center; justify-content:space-between;
+            background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); color:var(--green);
+        }
+        .discount-result.error {
+            display:block;
+            background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); color:var(--red);
+        }
+        .discount-remove {
+            background:none; border:none; color:var(--red);
+            font-family:'Outfit',sans-serif; font-size:11px; font-weight:600;
+            cursor:pointer; padding:2px 6px;
+        }
+
+        .choose-bank-btn {
+            width:100%; max-width:320px;
+            padding:18px 24px;
+            background:linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color:var(--black); border:none;
+            border-radius:50px;
+            font-family:'Outfit',sans-serif;
+            font-size:17px; font-weight:800;
+            cursor:pointer;
+            transition:all 0.3s cubic-bezier(0.32,0.72,0,1);
+            display:flex; align-items:center; justify-content:center; gap:10px;
+            box-shadow:0 8px 30px rgba(212,175,55,0.25);
+        }
+        .choose-bank-btn:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(212,175,55,0.35); }
+        .choose-bank-btn:active { transform:scale(0.97); }
+        .choose-bank-btn svg { width:20px; height:20px; }
+
+        .trust-signal {
+            margin-top:20px;
+            display:flex; align-items:center; justify-content:center; gap:6px;
+            font-size:12px; color:var(--gray);
+        }
+        .trust-signal svg { width:14px; height:14px; stroke:var(--gray); fill:none; stroke-width:2; }
+
+        /* ===== BOTTOM SHEET ===== */
+        .bottom-sheet {
+            position:fixed; inset:0; z-index:1000;
+            pointer-events:none;
+            opacity:0;
+            transition:opacity 0.3s;
+        }
+        .bottom-sheet.active {
+            pointer-events:all;
+            opacity:1;
+        }
+        .sheet-backdrop {
+            position:absolute; inset:0;
+            background:rgba(0,0,0,0.6);
+            -webkit-backdrop-filter:blur(20px);
+            backdrop-filter:blur(20px);
+        }
+        .sheet-content {
+            position:absolute;
+            bottom:0; left:0; right:0;
+            background:var(--dark-card);
+            border-radius:20px 20px 0 0;
+            box-shadow:0 -8px 40px rgba(0,0,0,0.4);
+            transform:translateY(100%);
+            transition:transform 0.5s cubic-bezier(0.32,0.72,0,1);
+            max-height:92vh;
+            overflow-y:auto;
+            overscroll-behavior:contain;
+            -webkit-overflow-scrolling:touch;
+        }
+        .bottom-sheet.active .sheet-content {
+            transform:translateY(0);
+        }
+        .sheet-handle {
+            width:40px; height:4px;
+            background:rgba(255,255,255,0.2);
+            border-radius:2px;
+            margin:12px auto 0;
+        }
+
+        /* ===== BANK SELECTION VIEW ===== */
+        #bankSelectView { display:none; padding:24px 20px 40px; }
+        #bankSelectView.show { display:block; }
+
+        .bank-select-title {
+            font-size:18px; font-weight:800;
+            margin-bottom:20px;
+            text-align:center;
+        }
+
+        .favourite-bank {
+            display:none;
+            padding:16px;
             background:rgba(212,175,55,0.06);
-            border:1.5px dashed rgba(212,175,55,0.3);
-            border-radius:14px; color:var(--gold);
-            font-family:'Outfit',sans-serif; font-size:14px; font-weight:600;
-            cursor:pointer; transition:all 0.3s;
-            display:flex; align-items:center; justify-content:center; gap:8px;
+            border:1.5px solid rgba(212,175,55,0.25);
+            border-left:3px solid var(--gold);
+            border-radius:16px;
+            margin-bottom:16px;
+            cursor:pointer;
+            transition:all 0.2s;
         }
-        .copy-all-btn:hover { background:rgba(212,175,55,0.12); border-color:var(--gold); }
-        .copy-all-btn:active { transform:scale(0.98); }
-        .copy-all-btn.copied { background:rgba(34,197,94,0.12); border-color:var(--green); border-style:solid; color:var(--green); }
-        .copy-all-btn svg { width:16px; height:16px; }
+        .favourite-bank.show { display:flex; align-items:center; gap:14px; }
+        .favourite-bank:active { transform:scale(0.97); }
+        .favourite-bank-logo {
+            width:44px; height:44px; border-radius:12px;
+            background:#1a1a1a; overflow:hidden;
+            display:flex; align-items:center; justify-content:center;
+            flex-shrink:0;
+        }
+        .favourite-bank-logo img { width:32px; height:32px; border-radius:8px; object-fit:contain; }
+        .favourite-bank-text { flex:1; }
+        .favourite-bank-name { font-size:15px; font-weight:700; }
+        .favourite-bank-sub { font-size:12px; color:var(--gold); margin-top:2px; }
+        .favourite-bank-star { font-size:18px; color:var(--gold); }
 
-        /* ===== BANK SELECTOR ===== */
         .banks-grid {
             display:grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns:repeat(3,1fr);
             gap:10px;
         }
-
-        .bank-btn {
-            display:flex;
-            align-items:center;
-            gap:14px;
-            padding:16px;
+        .bank-item {
+            display:flex; flex-direction:column;
+            align-items:center; gap:8px;
+            padding:16px 8px;
             background:rgba(255,255,255,0.03);
             border:1.5px solid rgba(255,255,255,0.08);
             border-radius:16px;
             cursor:pointer;
-            transition:all 0.25s;
-            text-decoration:none;
-            position:relative;
-            overflow:hidden;
+            transition:all 0.2s;
+            text-align:center;
         }
-
-        .bank-btn:active { transform:scale(0.96); background:rgba(255,255,255,0.07); }
-        .bank-btn:hover { border-color:rgba(255,255,255,0.18); background:rgba(255,255,255,0.05); }
-
-        .bank-btn-logo {
-            width:42px; height:42px;
-            border-radius:12px;
+        .bank-item:active { transform:scale(0.95); background:rgba(255,255,255,0.07); }
+        .bank-item:hover { border-color:rgba(255,255,255,0.18); }
+        .bank-item-logo {
+            width:40px; height:40px; border-radius:10px;
+            background:#1a1a1a; overflow:hidden;
             display:flex; align-items:center; justify-content:center;
-            flex-shrink:0;
-            overflow:hidden;
-            background:#1a1a1a;
         }
+        .bank-item-logo img { width:30px; height:30px; border-radius:6px; object-fit:contain; }
+        .bank-item-name { font-size:12px; font-weight:600; color:var(--white); line-height:1.2; }
 
-        .bank-btn-logo img {
-            width:32px; height:32px;
-            border-radius:8px;
-            object-fit:contain;
-        }
-
-        .bank-btn-logo svg {
-            width:24px; height:24px;
-        }
-
-        .bank-btn-text {
-            flex:1; min-width:0;
-        }
-
-        .bank-btn-name {
-            font-size:14px;
-            font-weight:600;
-            color:var(--white);
-            line-height:1.2;
-        }
-
-        .bank-btn-type {
-            font-size:11px;
-            color:var(--gray);
-            margin-top:2px;
-        }
-
-        .bank-btn-arrow {
-            width:16px; height:16px;
-            color:var(--gray);
-            flex-shrink:0;
-            transition:transform 0.2s;
-        }
-
-        .bank-btn:hover .bank-btn-arrow { transform:translateX(2px); color:var(--white); }
-
-        /* More banks */
         .more-banks-toggle {
             display:flex; align-items:center; justify-content:center; gap:6px;
-            width:100%; padding:12px; margin-top:12px;
+            width:100%; padding:14px; margin-top:14px;
             background:none;
             border:1px solid rgba(255,255,255,0.08);
             border-radius:12px; color:var(--gray);
@@ -232,209 +373,260 @@
         .more-banks-toggle:hover { color:var(--white); border-color:rgba(255,255,255,0.15); }
         .more-banks-toggle svg { width:14px; height:14px; transition:transform 0.3s; }
         .more-banks-toggle.open svg { transform:rotate(180deg); }
-
         .more-banks { display:none; margin-top:10px; }
-        .more-banks.open { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; animation:fadeIn 0.3s ease; }
+        .more-banks.open { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; animation:fadeIn 0.3s; }
 
-        /* Routing toast */
-        .routing-toast {
-            position:fixed; top:0; left:0; right:0;
-            background:linear-gradient(135deg, #111, #1a1a1a);
-            border-bottom:1px solid rgba(212,175,55,0.3);
-            padding:16px 20px; z-index:1000;
-            transform:translateY(-100%);
-            transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+        /* ===== TRANSFER CARD VIEW ===== */
+        #transferCardView { display:none; padding:20px 24px 36px; }
+        #transferCardView.show { display:block; animation:fadeIn 0.3s; }
+
+        .tc-header {
             display:flex; align-items:center; gap:12px;
+            margin-bottom:24px;
+            padding-bottom:16px;
+            border-bottom:1px solid rgba(255,255,255,0.06);
         }
-        .routing-toast.show { transform:translateY(0); }
-        .routing-toast-logo { width:36px; height:36px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
-        .routing-toast-logo img { width:100%; height:100%; object-fit:contain; padding:4px; }
-        .routing-toast-text { flex:1; }
-        .routing-toast-title { font-size:14px; font-weight:700; }
-        .routing-toast-sub { font-size:12px; color:var(--green); }
-        .routing-toast-loader { width:22px; height:22px; border:2px solid rgba(212,175,55,0.2); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; }
-
-        /* ===== VERIFICATION FLOW ===== */
-        .verify-overlay {
-            display:none;
-            position:fixed; top:0; left:0; right:0; bottom:0;
-            background:rgba(0,0,0,0.92);
-            z-index:2000;
-            align-items:center; justify-content:center;
-            padding:20px;
-        }
-        .verify-overlay.show { display:flex; }
-
-        .verify-card {
-            width:100%; max-width:400px;
-            background:var(--dark-card);
-            border:1px solid rgba(212,175,55,0.2);
-            border-radius:24px;
-            padding:30px 24px;
-            text-align:center;
-            animation:scaleIn 0.4s ease;
-        }
-
-        .verify-icon {
-            width:60px; height:60px;
-            background:rgba(212,175,55,0.1);
-            border:2px solid rgba(212,175,55,0.3);
-            border-radius:50%;
+        .tc-bank-logo {
+            width:40px; height:40px; border-radius:10px;
+            background:#1a1a1a; overflow:hidden;
             display:flex; align-items:center; justify-content:center;
-            margin:0 auto 18px;
-            animation:verifyPulse 2s ease infinite;
+            flex-shrink:0;
         }
-        .verify-icon svg { width:28px; height:28px; stroke:var(--gold); fill:none; stroke-width:2; }
+        .tc-bank-logo img { width:30px; height:30px; border-radius:6px; object-fit:contain; }
+        .tc-bank-name { font-size:15px; font-weight:700; flex:1; }
+        .tc-close {
+            width:32px; height:32px;
+            background:rgba(255,255,255,0.06);
+            border:none; border-radius:50%;
+            color:var(--gray); font-size:16px;
+            cursor:pointer; display:flex; align-items:center; justify-content:center;
+            transition:all 0.2s;
+        }
+        .tc-close:hover { color:var(--white); background:rgba(255,255,255,0.1); }
 
-        .verify-title { font-size:20px; font-weight:800; margin-bottom:6px; }
-        .verify-sub { font-size:13px; color:var(--gray); margin-bottom:24px; line-height:1.5; }
+        /* Transfer Card Zones */
+        .tc-zone {
+            padding:16px 0;
+            border-bottom:1px solid rgba(255,255,255,0.06);
+        }
+        .tc-zone:last-of-type { border-bottom:none; }
 
-        .verify-input-wrap { margin-bottom:20px; }
-
-        .verify-label { font-size:11px; color:var(--gray); text-transform:uppercase; letter-spacing:0.7px; margin-bottom:8px; text-align:left; }
-
-        .verify-input {
-            width:100%; padding:16px;
-            background:rgba(0,0,0,0.4);
-            border:1.5px solid rgba(255,255,255,0.12);
-            border-radius:14px;
+        .tc-zone-label {
+            font-size:11px; font-weight:600;
+            letter-spacing:0.12em; text-transform:uppercase;
+            color:var(--gray); margin-bottom:6px;
+        }
+        .tc-payee-name {
+            font-size:20px; font-weight:700;
             color:var(--white);
-            font-family:'Outfit',sans-serif;
-            font-size:18px; font-weight:600;
+        }
+
+        .tc-details-row {
+            display:flex; gap:24px;
+        }
+        .tc-detail-block { flex:1; }
+        .tc-detail-value {
+            font-size:28px; font-weight:600;
+            color:var(--white);
+            font-variant-numeric:tabular-nums;
+            letter-spacing:0.08em;
+            cursor:pointer;
+            padding:4px 0;
+            border-radius:8px;
+            transition:background 0.3s;
+        }
+        .tc-detail-value:active { background:rgba(212,175,55,0.15); }
+        .tc-detail-value.flash { animation:fieldFlash 0.4s ease; }
+
+        .tc-amount-section { text-align:center; padding:20px 0 16px; }
+        .tc-amount {
+            font-size:48px; font-weight:900;
+            color:var(--gold);
+            font-variant-numeric:tabular-nums;
+            letter-spacing:0.06em;
+            cursor:pointer;
+            padding:4px 8px;
+            border-radius:12px;
+            transition:background 0.3s;
+            display:inline-block;
+        }
+        .tc-amount:active { background:rgba(212,175,55,0.15); }
+        .tc-amount.flash { animation:fieldFlash 0.4s ease; }
+        .tc-amount-hint {
+            font-size:13px; color:var(--gray);
+            margin-top:6px;
+        }
+
+        /* Return customer simplified view */
+        .tc-return-hint {
             text-align:center;
-            letter-spacing:2px;
-            outline:none;
-            transition:border-color 0.3s;
+            font-size:14px; color:rgba(255,255,255,0.6);
+            margin-bottom:20px;
         }
-        .verify-input:focus { border-color:var(--gold); }
-        .verify-input::placeholder { color:var(--gray-dark); font-weight:400; letter-spacing:0; font-size:14px; }
-
-        .verify-error {
-            font-size:12px; color:var(--red);
-            margin-top:8px; min-height:18px;
-            text-align:left;
-        }
-
-        .verify-hint {
-            font-size:12px; color:var(--gray);
-            margin-bottom:20px; line-height:1.5;
-            background:rgba(255,255,255,0.03);
-            border-radius:10px;
-            padding:12px;
-            text-align:left;
-        }
-        .verify-hint strong { color:rgba(255,255,255,0.7); }
-
-        .verify-submit {
-            width:100%; padding:16px;
-            background:linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color:var(--black); border:none; border-radius:14px;
-            font-family:'Outfit',sans-serif;
-            font-size:16px; font-weight:700;
-            cursor:pointer; transition:all 0.3s;
-            display:flex; align-items:center; justify-content:center; gap:8px;
-        }
-        .verify-submit:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(212,175,55,0.3); }
-        .verify-submit:active { transform:scale(0.98); }
-        .verify-submit:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
-        .verify-submit svg { width:18px; height:18px; }
-        .verify-submit .spinner { width:18px; height:18px; border:2px solid transparent; border-top-color:var(--black); border-radius:50%; animation:spin 0.8s linear infinite; display:none; }
-        .verify-submit.loading .spinner { display:block; }
-        .verify-submit.loading .btn-label { display:none; }
-
-        .verify-cancel {
-            margin-top:14px;
+        .tc-show-details-btn {
             background:none; border:none;
-            color:var(--gray); font-family:'Outfit',sans-serif;
+            color:var(--gold); font-family:'Outfit',sans-serif;
             font-size:13px; cursor:pointer;
             padding:8px 16px;
-            transition:color 0.2s;
+            display:block; margin:0 auto;
         }
-        .verify-cancel:hover { color:var(--white); }
+        .tc-full-details { display:none; }
+        .tc-full-details.show { display:block; animation:slideUp 0.3s ease; }
 
-        /* Confirm button */
-        .confirm-section { margin-bottom:14px; }
+        /* Action buttons */
+        .tc-actions {
+            display:flex; gap:10px;
+            margin-top:20px; margin-bottom:12px;
+        }
+        .tc-btn-copy, .tc-btn-open {
+            flex:1; padding:16px 12px;
+            border-radius:14px;
+            font-family:'Outfit',sans-serif;
+            font-size:14px; font-weight:700;
+            cursor:pointer; transition:all 0.2s;
+            display:flex; align-items:center; justify-content:center; gap:8px;
+        }
+        .tc-btn-copy {
+            background:rgba(255,255,255,0.06);
+            border:1.5px solid rgba(255,255,255,0.15);
+            color:var(--white);
+        }
+        .tc-btn-copy:active { transform:scale(0.96); }
+        .tc-btn-copy.copied { background:rgba(34,197,94,0.15); border-color:var(--green); color:var(--green); }
+        .tc-btn-copy svg, .tc-btn-open svg { width:18px; height:18px; }
 
-        .confirm-btn {
+        .tc-btn-open {
+            background:linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border:none; color:var(--black);
+        }
+        .tc-btn-open:active { transform:scale(0.96); }
+
+        .tc-btn-sent {
             width:100%; padding:18px;
             background:linear-gradient(135deg, var(--green), var(--green-dark));
-            color:var(--white); border:none; border-radius:16px;
-            font-size:17px; font-weight:700;
+            color:var(--white); border:none;
+            border-radius:16px;
             font-family:'Outfit',sans-serif;
+            font-size:16px; font-weight:800;
             cursor:pointer; transition:all 0.3s;
             display:flex; align-items:center; justify-content:center; gap:10px;
             box-shadow:0 6px 25px rgba(34,197,94,0.3);
+            position:relative; overflow:hidden;
         }
-        .confirm-btn:hover { transform:translateY(-2px); box-shadow:0 10px 35px rgba(34,197,94,0.4); }
-        .confirm-btn:active { transform:scale(0.98); }
-        .confirm-btn svg { width:20px; height:20px; }
-        .confirm-note { text-align:center; font-size:11px; color:var(--gray); margin-top:8px; }
-
-        /* Success */
-        .success-screen { display:none; text-align:center; padding:40px 20px; animation:scaleIn 0.5s ease; }
-        .success-screen.show { display:block; }
-
-        .success-circle {
-            width:90px; height:90px;
-            background:rgba(34,197,94,0.12); border:3px solid var(--green);
-            border-radius:50%; display:flex; align-items:center; justify-content:center;
-            margin:0 auto 20px; animation:checkPop 0.6s ease;
+        .tc-btn-sent:hover { transform:translateY(-2px); box-shadow:0 10px 35px rgba(34,197,94,0.4); }
+        .tc-btn-sent:active { transform:scale(0.98); }
+        .tc-btn-sent svg { width:20px; height:20px; }
+        .tc-btn-sent .processing-bar {
+            position:absolute; bottom:0; left:0;
+            height:3px; background:rgba(255,255,255,0.4);
+            width:0;
         }
-        .success-circle svg { width:44px; height:44px; stroke:var(--green); stroke-width:3; fill:none; }
+        .tc-btn-sent.processing .btn-label { opacity:0.6; }
+        .tc-btn-sent.processing .processing-bar { animation:processingBar 1.2s ease-out forwards; }
 
-        .success-screen h2 { font-size:24px; font-weight:800; margin-bottom:6px; }
-        .success-screen .success-sub { color:var(--gray); font-size:14px; margin-bottom:20px; }
-        .success-amount { font-size:42px; font-weight:900; color:var(--gold); margin-bottom:6px; }
-        .success-ref { font-size:13px; color:var(--gray); margin-bottom:28px; }
-        .success-ref span { color:var(--white); font-weight:600; font-family:monospace; }
-
-        .success-badge {
-            display:inline-flex; align-items:center; gap:8px;
-            padding:12px 24px;
-            background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3);
-            border-radius:50px; color:var(--green); font-size:14px; font-weight:600;
-        }
-        .success-badge svg { width:16px; height:16px; }
-
-        .success-show-staff {
-            margin-top:24px; padding:16px;
-            background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.2);
-            border-radius:14px; font-size:14px; color:var(--gold); font-weight:600;
+        .tc-trust {
+            text-align:center;
+            font-size:12px; color:var(--gray);
+            margin-top:16px; line-height:1.5;
+            padding:0 12px;
         }
 
-        .success-verify-code {
-            margin-top:16px; padding:14px;
+        /* ===== RECEIPT VIEW (Moment 3) ===== */
+        #receiptView { display:none; padding:32px 24px 40px; text-align:center; }
+        #receiptView.show { display:block; animation:fadeIn 0.4s; }
+
+        .receipt-check {
+            width:80px; height:80px;
+            background:rgba(34,197,94,0.1);
+            border:2.5px solid var(--green);
+            border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            margin:0 auto 20px;
+            animation:checkBounce 0.6s cubic-bezier(0.32,0.72,0,1);
+        }
+        .receipt-check svg {
+            width:38px; height:38px;
+            stroke:var(--green); fill:none;
+            stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round;
+        }
+        .receipt-check svg path {
+            stroke-dasharray:60;
+            stroke-dashoffset:60;
+            animation:checkDraw 0.5s 0.3s ease forwards;
+        }
+
+        .receipt-title { font-size:22px; font-weight:800; margin-bottom:4px; }
+        .receipt-subtitle { font-size:14px; color:var(--gray); margin-bottom:24px; }
+
+        .receipt-code-box {
+            padding:20px;
             background:rgba(255,255,255,0.04);
-            border-radius:12px;
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:16px;
+            margin-bottom:20px;
         }
-        .success-verify-label { font-size:11px; color:var(--gray); text-transform:uppercase; letter-spacing:0.7px; margin-bottom:6px; }
-        .success-verify-value { font-size:28px; font-weight:900; letter-spacing:6px; color:var(--white); font-family:monospace; }
+        .receipt-code-label {
+            font-size:11px; color:var(--gray);
+            text-transform:uppercase; letter-spacing:0.1em;
+            margin-bottom:10px;
+        }
+        .receipt-code-value {
+            font-size:32px; font-weight:900;
+            letter-spacing:8px;
+            color:var(--white);
+            font-family:'Outfit',monospace;
+        }
+        .receipt-code-instruction {
+            font-size:14px; color:var(--gold);
+            font-weight:600; margin-top:10px;
+        }
 
-        /* Error */
-        .error-screen { display:none; text-align:center; padding:50px 20px; }
-        .error-screen.show { display:block; }
-        .error-icon { font-size:48px; margin-bottom:16px; }
-        .error-screen h2 { font-size:20px; margin-bottom:8px; }
-        .error-screen p { color:var(--gray); font-size:14px; }
+        .receipt-details {
+            font-size:13px; color:var(--gray);
+            line-height:1.6;
+            margin-bottom:24px;
+        }
 
-        /* Loading */
-        .loading-screen { text-align:center; padding:60px 20px; }
-        .loading-dots { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:16px; }
-        .loading-dot { width:10px; height:10px; background:var(--gold); border-radius:50%; animation:dotPulse 1.4s ease infinite; }
-        .loading-dot:nth-child(2) { animation-delay:0.2s; }
-        .loading-dot:nth-child(3) { animation-delay:0.4s; }
-        .loading-screen p { color:var(--gray); font-size:14px; }
+        .receipt-home-btn {
+            padding:16px 32px;
+            background:rgba(255,255,255,0.06);
+            border:1.5px solid rgba(255,255,255,0.15);
+            border-radius:50px;
+            color:var(--white);
+            font-family:'Outfit',sans-serif;
+            font-size:15px; font-weight:700;
+            cursor:pointer; transition:all 0.2s;
+            display:inline-flex; align-items:center; gap:8px;
+        }
+        .receipt-home-btn:hover { background:rgba(255,255,255,0.1); }
+        .receipt-home-btn:active { transform:scale(0.97); }
 
-        .payment-content { display:none; }
-        .payment-content.show { display:block; }
+        .remember-bank-prompt {
+            display:none;
+            margin-top:20px; padding:14px 18px;
+            background:rgba(212,175,55,0.06);
+            border:1px solid rgba(212,175,55,0.2);
+            border-radius:14px;
+            animation:slideUp 0.4s ease;
+        }
+        .remember-bank-prompt.show { display:block; }
+        .remember-bank-text { font-size:13px; color:var(--gray); margin-bottom:10px; }
+        .remember-bank-actions { display:flex; gap:8px; justify-content:center; }
+        .remember-bank-yes, .remember-bank-no {
+            padding:8px 20px;
+            border-radius:10px;
+            font-family:'Outfit',sans-serif;
+            font-size:13px; font-weight:600;
+            cursor:pointer; transition:all 0.2s;
+        }
+        .remember-bank-yes {
+            background:var(--gold); border:none; color:var(--black);
+        }
+        .remember-bank-no {
+            background:none; border:1px solid rgba(255,255,255,0.1); color:var(--gray);
+        }
 
-        /* Footer */
-        .footer { text-align:center; padding:16px 0 8px; font-size:11px; color:var(--gray); }
-        .footer a { color:var(--gold); text-decoration:none; }
-        .secure-line { display:flex; align-items:center; justify-content:center; gap:5px; margin-bottom:4px; }
-        .secure-line svg { width:12px; height:12px; stroke:var(--gray); fill:none; stroke-width:2; }
-
-        /* Toast */
+        /* ===== TOAST ===== */
         .toast {
             position:fixed; bottom:30px; left:50%;
             transform:translateX(-50%) translateY(80px);
@@ -448,339 +640,29 @@
         .toast.show { transform:translateX(-50%) translateY(0); }
         .toast svg { width:16px; height:16px; stroke:var(--green); }
 
-        /* Discount Code */
-        .discount-section { margin-bottom:14px; }
-        .discount-input-row {
-            display:flex; gap:8px;
-        }
-        .discount-input {
-            flex:1; padding:14px 16px;
-            background:rgba(0,0,0,0.4);
-            border:1.5px solid rgba(255,255,255,0.1);
-            border-radius:14px;
-            color:var(--white);
-            font-family:'Outfit',sans-serif;
-            font-size:15px; font-weight:600;
-            text-transform:uppercase;
-            letter-spacing:1px;
-            outline:none;
-            transition:border-color 0.3s;
-        }
-        .discount-input:focus { border-color:var(--gold); }
-        .discount-input::placeholder { color:var(--gray-dark); font-weight:400; text-transform:none; letter-spacing:0; font-size:13px; }
-        .discount-apply-btn {
-            padding:14px 20px;
-            background:linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color:var(--black); border:none; border-radius:14px;
-            font-family:'Outfit',sans-serif;
-            font-size:14px; font-weight:700;
-            cursor:pointer; transition:all 0.2s;
-            white-space:nowrap;
-        }
-        .discount-apply-btn:active { transform:scale(0.96); }
-        .discount-apply-btn:disabled { opacity:0.5; cursor:not-allowed; }
-        .discount-result {
-            margin-top:10px; padding:12px 16px;
-            border-radius:12px; font-size:13px; font-weight:600;
-            display:none;
-        }
-        .discount-result.success {
-            display:flex; align-items:center; justify-content:space-between;
-            background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); color:var(--green);
-        }
-        .discount-result.error {
-            display:block;
-            background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); color:var(--red);
-        }
-        .discount-remove {
-            background:none; border:none; color:var(--red);
-            font-family:'Outfit',sans-serif; font-size:12px; font-weight:600;
-            cursor:pointer; padding:4px 8px;
-        }
-        /* discount-banner removed – codes only shown on main site, not pay page */
-
-        /* Savings line in amount hero */
-        .savings-line {
-            display:inline-block;
-            margin-top:6px; padding:4px 12px;
-            background:rgba(34,197,94,0.12);
-            border:1px solid rgba(34,197,94,0.3);
-            border-radius:20px;
-            font-size:12px; font-weight:600;
-            color:var(--green);
-        }
-        .original-price {
-            text-decoration:line-through;
-            color:var(--gray);
-            font-size:28px;
-            font-weight:600;
-            margin-bottom:4px;
+        /* ===== CONFETTI CANVAS ===== */
+        #confettiCanvas {
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            pointer-events:none; z-index:2000;
         }
 
-        /* ===== AUTO-PAY OVERLAY ===== */
-        .autopay-overlay {
-            display:none;
-            position:fixed; top:0; left:0; right:0; bottom:0;
-            background:rgba(0,0,0,0.97);
-            z-index:2000;
-            padding:20px;
-            overflow-y:auto;
-            flex-direction:column;
-            align-items:center;
-            justify-content:flex-start;
-            padding-top:40px;
-            padding-bottom:40px;
-        }
-        .autopay-overlay.show { display:flex; }
-
-        .autopay-bank-info { text-align:center; margin-bottom:16px; }
-        .autopay-bank-logo { width:52px; height:52px; border-radius:14px; background:#1a1a1a; object-fit:contain; padding:6px; }
-        .autopay-bank-name { font-size:16px; font-weight:700; margin-top:8px; }
-
-        .autopay-current-box {
-            width:100%; max-width:340px;
-            padding:20px;
-            background:rgba(212,175,55,0.06);
-            border:2px solid rgba(212,175,55,0.4);
-            border-radius:18px;
-            text-align:center;
-            margin-bottom:14px;
-            animation:autopayGlow 2s ease infinite;
-        }
-        .autopay-current-box.done-all {
-            border-color:rgba(34,197,94,0.4);
-            background:rgba(34,197,94,0.06);
-            animation:none;
-        }
-        .autopay-field-label {
-            font-size:11px; color:var(--gold); text-transform:uppercase;
-            letter-spacing:1.5px; margin-bottom:6px; font-weight:600;
-        }
-        .autopay-field-value {
-            font-size:28px; font-weight:900; color:var(--white);
-            margin-bottom:8px; letter-spacing:1px;
-            word-break:break-word; overflow-wrap:break-word;
-        }
-        .autopay-copied-badge {
-            display:inline-flex; align-items:center; gap:6px;
-            padding:6px 16px; background:rgba(34,197,94,0.15);
-            border:1px solid rgba(34,197,94,0.3); border-radius:20px;
-            color:var(--green); font-size:13px; font-weight:700;
-        }
-        .autopay-copied-badge svg { width:16px; height:16px; }
-
-        .autopay-instruction {
-            font-size:14px; color:var(--gray); text-align:center;
-            margin-bottom:18px; line-height:1.6; max-width:340px;
-        }
-        .autopay-instruction strong { color:var(--white); }
-
-        .autopay-progress {
-            width:100%; max-width:340px; margin-bottom:18px;
-            background:rgba(255,255,255,0.02);
-            border:1px solid rgba(255,255,255,0.06);
-            border-radius:14px; padding:12px 14px;
-        }
-        .autopay-step {
-            display:flex; align-items:center; gap:10px;
-            padding:7px 0;
-        }
-        .autopay-step + .autopay-step { border-top:1px solid rgba(255,255,255,0.04); }
-        .autopay-step-icon {
-            width:22px; height:22px; border-radius:50%;
-            display:flex; align-items:center; justify-content:center;
-            font-size:11px; font-weight:700; flex-shrink:0;
-        }
-        .autopay-step-icon.done { background:rgba(34,197,94,0.2); color:var(--green); }
-        .autopay-step-icon.next { background:rgba(212,175,55,0.2); color:var(--gold); }
-        .autopay-step-icon.wait { background:rgba(255,255,255,0.05); color:var(--gray-dark); }
-        .autopay-step-name { flex:1; font-size:13px; }
-        .autopay-step-name.done { color:var(--green); }
-        .autopay-step-name.next { color:var(--white); font-weight:600; }
-        .autopay-step-name.wait { color:var(--gray); }
-        .autopay-step-val { font-size:12px; font-weight:600; font-family:monospace; max-width:140px; text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .autopay-step-val.done { color:var(--green); }
-        .autopay-step-val.next { color:var(--gold); }
-        .autopay-step-val.wait { color:var(--gray-dark); }
-
-        .autopay-btn {
-            width:100%; max-width:340px; padding:16px;
-            background:linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color:var(--black); border:none; border-radius:14px;
-            font-family:'Outfit',sans-serif; font-size:15px; font-weight:700;
-            cursor:pointer; transition:all 0.2s;
-            display:flex; align-items:center; justify-content:center; gap:8px;
-            margin-bottom:8px;
-        }
-        .autopay-btn:active { transform:scale(0.97); }
-        .autopay-btn.green {
-            background:linear-gradient(135deg, var(--green), var(--green-dark));
-            color:var(--white);
-        }
-        .autopay-cancel-btn {
-            background:none; border:none; color:var(--gray);
-            font-family:'Outfit',sans-serif; font-size:13px;
-            cursor:pointer; padding:10px 16px;
-        }
-        .autopay-recopy {
-            background:none; border:1px solid rgba(212,175,55,0.3);
-            border-radius:8px; color:var(--gold); padding:5px 14px;
-            font-family:'Outfit',sans-serif; font-size:12px; font-weight:600;
-            cursor:pointer; margin-top:10px;
-        }
-        .autopay-recopy:active { transform:scale(0.95); }
-
-        @keyframes autopayGlow {
-            0%, 100% { border-color:rgba(212,175,55,0.3); box-shadow:0 0 0 0 rgba(212,175,55,0); }
-            50% { border-color:rgba(212,175,55,0.6); box-shadow:0 0 20px rgba(212,175,55,0.1); }
-        }
-
-        @media (max-width: 440px) {
+        /* ===== RESPONSIVE ===== */
+        @media (max-width:380px) {
             .amount-value { font-size:42px; }
-            .banks-grid { grid-template-columns: 1fr; }
-            .more-banks.open { grid-template-columns: 1fr; }
-            .autopay-field-value { font-size:22px; }
-            .autopay-current-box { max-width:100%; }
+            .tc-detail-value { font-size:24px; }
+            .tc-amount { font-size:40px; }
+            .banks-grid { grid-template-columns:repeat(2,1fr); }
+            .more-banks.open { grid-template-columns:repeat(2,1fr); }
+            .receipt-code-value { font-size:26px; letter-spacing:6px; }
         }
     </style>
 </head>
 <body>
     <div class="page-wrap">
-        <div class="header">
-            <img src="../logo-removebg-preview.png" alt="Golden Barbers" class="header-logo" onerror="this.style.display='none'">
-            <h1><span>Golden</span> Barbers</h1>
-            <div class="header-sub">Goodmayes, Ilford</div>
-        </div>
-
+        <!-- Loading -->
         <div id="loadingScreen" class="loading-screen">
             <div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
             <p>Loading your order...</p>
-        </div>
-
-        <div id="paymentContent" class="payment-content">
-            <!-- Amount -->
-            <div class="amount-hero">
-                <div class="amount-label">Amount Due</div>
-                <div class="original-price" id="originalPrice" style="display:none;"></div>
-                <div class="amount-value" id="totalAmount">&pound;0.00</div>
-                <div class="savings-line" id="savingsLine" style="display:none;"></div>
-                <button class="services-toggle" id="servicesToggle" onclick="toggleServices()">
-                    <span id="servicesSummary">1 service</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-                </button>
-                <div class="services-detail" id="servicesDetail">
-                    <div class="services-detail-inner" id="servicesDetailInner"></div>
-                </div>
-            </div>
-
-            <div class="card" id="bookingContextCard" style="display:none;">
-                <div class="card-header">
-                    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3 6h18M7 2v4M17 2v4M5 22h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div>
-                    <div><div class="card-title" id="bookingContextTitle">Booking Details</div><div class="card-subtitle" id="bookingContextSubtitle">Pulled from your booking request</div></div>
-                </div>
-                <div id="bookingContextBody"></div>
-            </div>
-
-            <!-- Discount Code -->
-            <div class="card discount-section">
-                <div class="card-header">
-                    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
-                    <div><div class="card-title">Discount Code</div><div class="card-subtitle">Got a code? Apply it here</div></div>
-                </div>
-                <div class="discount-input-row">
-                    <input type="text" class="discount-input" id="discountInput" placeholder="Enter discount code" maxlength="20">
-                    <button class="discount-apply-btn" id="discountApplyBtn" onclick="applyDiscountCode()">Apply</button>
-                </div>
-                <div class="discount-result" id="discountResult"></div>
-            </div>
-
-            <!-- Bank Details -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg></div>
-                    <div><div class="card-title">Payment Details</div><div class="card-subtitle">Send to this account</div></div>
-                </div>
-                <div class="bank-detail">
-                    <div class="bank-detail-left"><div class="bank-detail-label">Account Name</div><div class="bank-detail-value" id="bankAccName">GOLDEN BARBERS</div></div>
-                </div>
-                <div class="bank-detail">
-                    <div class="bank-detail-left"><div class="bank-detail-label">Sort Code</div><div class="bank-detail-value" id="bankSortCode">30-98-97</div></div>
-                    <button class="copy-btn" onclick="copyText(BANK.sortCodeRaw,this)">Copy</button>
-                </div>
-                <div class="bank-detail">
-                    <div class="bank-detail-left"><div class="bank-detail-label">Account Number</div><div class="bank-detail-value" id="bankAccNum">58413368</div></div>
-                    <button class="copy-btn" onclick="copyText(BANK.accountNumber,this)">Copy</button>
-                </div>
-                <div class="bank-detail">
-                    <div class="bank-detail-left"><div class="bank-detail-label">Amount</div><div class="bank-detail-value gold" id="bankAmount">&pound;0.00</div></div>
-                    <button class="copy-btn" onclick="copyAmount(this)">Copy</button>
-                </div>
-                <div class="bank-detail">
-                    <div class="bank-detail-left"><div class="bank-detail-label">Reference</div><div class="bank-detail-value" id="bankRef">-</div></div>
-                    <button class="copy-btn" onclick="copyRef(this)">Copy</button>
-                </div>
-                <button class="copy-all-btn" id="copyAllBtn" onclick="copyAll(this)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                    Copy All Details
-                </button>
-                <div style="margin-top:12px;padding:10px 14px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:10px;font-size:12px;color:#f87171;text-align:center;line-height:1.5;">
-                    <span id="paymentReviewNote">
-                    The exact amount will be verified by staff before your service. Incorrect amounts will be rejected.
-                    </span>
-                </div>
-            </div>
-
-            <!-- Banks -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-                    <div><div class="card-title">Open Your Bank</div><div class="card-subtitle">Details fill automatically</div></div>
-                </div>
-
-                <div class="banks-grid" id="mainBanks"></div>
-
-                <button class="more-banks-toggle" id="moreBanksToggle" onclick="toggleMoreBanks()">
-                    <span id="moreBanksText">Show more banks</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-                </button>
-
-                <div class="more-banks" id="moreBanks"></div>
-            </div>
-
-            <!-- Confirm -->
-            <div class="confirm-section">
-                <button class="confirm-btn" onclick="startVerification()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-                    Verify Payment
-                </button>
-                <div class="confirm-note">You'll need your bank's payment reference to confirm</div>
-            </div>
-
-            <div class="footer">
-                <div class="secure-line">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-                    Secure bank transfer &middot; No card needed
-                </div>
-                <p>Questions? Call <a href="tel:02085989920">020 8598 9920</a></p>
-            </div>
-        </div>
-
-        <!-- Success -->
-        <div id="successScreen" class="success-screen">
-            <div class="success-circle"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
-            <h2 id="successTitle">Payment Submitted</h2>
-            <p class="success-sub" id="successSubtitle">Your payment has been sent for review</p>
-            <div class="success-amount" id="successAmount">&pound;0.00</div>
-            <div class="success-ref">Ref: <span id="successRef">-</span></div>
-            <div class="success-badge">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-                <span id="successBadgeText">Pending Review</span>
-            </div>
-            <div class="success-verify-code">
-                <div class="success-verify-label">Verification Code</div>
-                <div class="success-verify-value" id="successCode">-</div>
-            </div>
-            <div class="success-show-staff" id="successInstructions">Show this screen to your barber so the payment can be confirmed.</div>
         </div>
 
         <!-- Error -->
@@ -789,50 +671,138 @@
             <h2>Invalid Payment Link</h2>
             <p>This link has expired or is invalid.<br>Ask your barber to generate a new QR code.</p>
         </div>
-    </div>
 
-    <!-- Verification Overlay -->
-    <div class="verify-overlay" id="verifyOverlay">
-        <div class="verify-card">
-            <div class="verify-icon">
-                <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>
-            </div>
-            <div class="verify-title">Confirm Payment</div>
-            <div class="verify-sub">Enter the payment reference or confirmation code from your banking app to verify.</div>
+        <!-- MOMENT 1: Order View -->
+        <div id="orderView">
+            <button class="close-btn" onclick="window.location.href='../index.html'" aria-label="Close">&times;</button>
 
-            <div class="verify-input-wrap">
-                <div class="verify-label">Bank payment reference</div>
-                <input type="text" class="verify-input" id="verifyInput" placeholder="e.g. FP-123456789" autocomplete="off" maxlength="30">
-                <div class="verify-error" id="verifyError"></div>
+            <div class="brand-header">
+                <img src="../logo-removebg-preview.png" alt="Golden Barbers" onerror="this.style.display='none'">
+                <div class="brand-name"><span>Golden</span> Barbers</div>
+                <div class="brand-location">Goodmayes, Ilford</div>
             </div>
 
-            <div class="verify-hint">
-                <strong>Where to find this:</strong><br>
-                Open your banking app &rarr; Recent payments &rarr; Copy the reference or confirmation number shown for this payment.
+            <div class="amount-display">
+                <div class="amount-original" id="amountOriginal"></div>
+                <div class="amount-value" id="amountValue">&pound;0.00</div>
+                <div class="amount-savings" id="amountSavings"></div>
             </div>
 
-            <button class="verify-submit" id="verifySubmit" onclick="submitVerification()">
-                <div class="spinner"></div>
-                <span class="btn-label">Verify &amp; Confirm</span>
+            <div class="services-line" id="servicesLine"></div>
+
+            <div id="bookingContext" class="booking-context">
+                <div class="booking-context-title">Booking Details</div>
+                <div id="bookingContextBody"></div>
+            </div>
+
+            <div class="discount-row" id="discountRow">
+                <input type="text" class="discount-input" id="discountInput" placeholder="Discount code?" maxlength="20">
+                <button class="discount-apply-btn" id="discountApplyBtn" onclick="applyDiscountCode()">Apply</button>
+            </div>
+            <div class="discount-result" id="discountResult"></div>
+
+            <button class="choose-bank-btn" id="chooseBankBtn" onclick="openBankSelection()">
+                Choose Your Bank
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
             </button>
 
-            <button class="verify-cancel" onclick="cancelVerification()">Cancel</button>
+            <div class="trust-signal">
+                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                Direct bank transfer &middot; No card needed
+            </div>
         </div>
     </div>
 
-    <!-- Auto-Pay Overlay -->
-    <div class="autopay-overlay" id="autoPayOverlay">
-        <div id="autoPayContent"></div>
-    </div>
+    <!-- BOTTOM SHEET -->
+    <div id="bottomSheet" class="bottom-sheet">
+        <div class="sheet-backdrop" onclick="closeSheet()"></div>
+        <div class="sheet-content">
+            <div class="sheet-handle"></div>
 
-    <!-- Routing Toast -->
-    <div class="routing-toast" id="routingToast">
-        <div class="routing-toast-logo" id="routingToastLogo"></div>
-        <div class="routing-toast-text">
-            <div class="routing-toast-title" id="routingToastTitle">Opening bank...</div>
-            <div class="routing-toast-sub">Payment details copied to clipboard</div>
+            <!-- Bank Selection -->
+            <div id="bankSelectView">
+                <div class="bank-select-title">Which bank do you use?</div>
+
+                <div class="favourite-bank" id="favouriteBank" onclick="selectFavouriteBank()">
+                    <div class="favourite-bank-logo" id="favouriteBankLogo"></div>
+                    <div class="favourite-bank-text">
+                        <div class="favourite-bank-name" id="favouriteBankName"></div>
+                        <div class="favourite-bank-sub">Your usual bank</div>
+                    </div>
+                    <div class="favourite-bank-star">&#9733;</div>
+                </div>
+
+                <div class="banks-grid" id="mainBanksGrid"></div>
+
+                <button class="more-banks-toggle" id="moreBanksToggle" onclick="toggleMoreBanks()">
+                    <span id="moreBanksText">More banks</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="more-banks" id="moreBanksGrid"></div>
+            </div>
+
+            <!-- Transfer Card -->
+            <div id="transferCardView">
+                <div class="tc-header">
+                    <div class="tc-bank-logo" id="tcBankLogo"></div>
+                    <div class="tc-bank-name" id="tcBankName"></div>
+                    <button class="tc-close" onclick="backToBankSelect()" aria-label="Close">&times;</button>
+                </div>
+
+                <div id="tcContent"></div>
+
+                <div class="tc-actions">
+                    <button class="tc-btn-copy" id="tcCopyBtn" onclick="copyAllDetails()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                        <span id="tcCopyLabel">Copy All</span>
+                    </button>
+                    <button class="tc-btn-open" id="tcOpenBtn" onclick="openBankApp()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        <span id="tcOpenLabel">Open Bank</span>
+                    </button>
+                </div>
+
+                <button class="tc-btn-sent" id="tcSentBtn" onclick="onSentPayment()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                    <span class="btn-label">I've Sent the Payment</span>
+                    <div class="processing-bar"></div>
+                </button>
+
+                <div class="tc-trust">
+                    You're sending a Faster Payment directly from your bank. We never see your login details.
+                </div>
+            </div>
+
+            <!-- Receipt -->
+            <div id="receiptView">
+                <div class="receipt-check">
+                    <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                <div class="receipt-title" id="receiptTitle">Payment Sent</div>
+                <div class="receipt-subtitle" id="receiptSubtitle"></div>
+
+                <div class="receipt-code-box">
+                    <div class="receipt-code-label">Your verification code</div>
+                    <div class="receipt-code-value" id="receiptCode"></div>
+                    <div class="receipt-code-instruction">Show this to your barber</div>
+                </div>
+
+                <div class="receipt-details" id="receiptDetails"></div>
+
+                <button class="receipt-home-btn" onclick="window.location.href='../index.html'">
+                    Back to Home
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+
+                <div class="remember-bank-prompt" id="rememberPrompt">
+                    <div class="remember-bank-text">Remember your bank for faster payments next time?</div>
+                    <div class="remember-bank-actions">
+                        <button class="remember-bank-yes" onclick="saveFavouriteBank()">Yes</button>
+                        <button class="remember-bank-no" onclick="dismissRemember()">No thanks</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="routing-toast-loader"></div>
     </div>
 
     <!-- Toast -->
@@ -841,9 +811,12 @@
         <span id="toastText">Copied!</span>
     </div>
 
+    <!-- Confetti Canvas -->
+    <canvas id="confettiCanvas"></canvas>
+
     <script>
         // ============================================
-        // SERVICES
+        // SERVICES & BANK ACCOUNTS
         // ============================================
         var services = {
             'golden-luxury': { name: 'Golden Luxury', price: 45 },
@@ -863,13 +836,13 @@
         };
 
         var BANK_ACCOUNTS = {
-            'golden-barbers': { name:'GOLDEN BARBERS', sortCode:'30-98-97', sortCodeRaw:'309897', accountNumber:'58413368' },
-            'luxury-hijama': { name:'LUXURY HIJAMA', sortCode:'30-99-50', sortCodeRaw:'309950', accountNumber:'26771762' }
+            'golden-barbers': { name:'GOLDEN BARBERS', sortCode:'30-98-97', sortCodeRaw:'309897', sortCodeSpaced:'30 98 97', accountNumber:'58413368', accountSpaced:'5841 3368' },
+            'luxury-hijama': { name:'LUXURY HIJAMA', sortCode:'30-99-50', sortCodeRaw:'309950', sortCodeSpaced:'30 99 50', accountNumber:'26771762', accountSpaced:'2677 1762' }
         };
         var BANK = BANK_ACCOUNTS['golden-barbers'];
 
         // ============================================
-        // FIREBASE - live payment logging
+        // FIREBASE
         // ============================================
         var firebaseApp = firebase.initializeApp({
             apiKey: "AIzaSyA3eVAdYntGPTsvhAZn0sezj7aYTR9qLC4",
@@ -882,28 +855,15 @@
         });
         var db = firebase.database();
 
-        // Load active bank account from Firebase
         var bankLoaded = false;
-        db.ref('settings/activeBank').once('value').then(function(snapshot) {
-            var val = snapshot.val();
-            if (val && BANK_ACCOUNTS[val]) {
-                BANK = BANK_ACCOUNTS[val];
-            }
+        db.ref('settings/activeBank').once('value').then(function(snap) {
+            var val = snap.val();
+            if (val && BANK_ACCOUNTS[val]) BANK = BANK_ACCOUNTS[val];
             bankLoaded = true;
-            updateBankDisplay();
-        }).catch(function() {
-            bankLoaded = true;
-        });
-
-        function updateBankDisplay() {
-            var el;
-            el = document.getElementById('bankAccName'); if (el) el.textContent = BANK.name;
-            el = document.getElementById('bankSortCode'); if (el) el.textContent = BANK.sortCode;
-            el = document.getElementById('bankAccNum'); if (el) el.textContent = BANK.accountNumber;
-        }
+        }).catch(function() { bankLoaded = true; });
 
         // ============================================
-        // BANK DEFINITIONS - real logos from Google Favicons
+        // BANK DEFINITIONS
         // ============================================
         var BANKS_MAIN = [
             { id:'barclays', name:'Barclays', domain:'barclays.co.uk', ios:'barclays-mobile-banking://', android:'com.barclays.android.barclaysmobilebanking', web:'https://bank.barclays.co.uk' },
@@ -931,37 +891,142 @@
             return 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=128';
         }
 
+        // ============================================
+        // STATE
+        // ============================================
         var orderTotal = 0;
+        var baseTotal = 0;
+        var smartAmount = 0;
+        var smartPennies = 0;
         var orderItems = [];
         var reference = '';
         var verifyCode = '';
         var appliedDiscount = null;
         var checkoutSource = '';
         var checkoutContext = null;
+        var selectedBank = null;
+        var isRepeatCustomer = false;
 
         // ============================================
-        // LOAD LIVE PRICES FROM FIREBASE
+        // SMART AMOUNT SYSTEM
+        // ============================================
+        function generateSmartAmount(total) {
+            // Generate deterministic unique pennies (01-99) from timestamp
+            var ts = Date.now();
+            var hash = 0;
+            var seed = ts.toString() + '-' + Math.random().toString(36).substring(2, 8);
+            for (var i = 0; i < seed.length; i++) {
+                hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+                hash |= 0;
+            }
+            var pennies = (Math.abs(hash) % 99) + 1; // 1-99
+            smartPennies = pennies;
+            smartAmount = Math.floor(total) + (pennies / 100);
+            // Round to 2 decimal places
+            smartAmount = Math.round(smartAmount * 100) / 100;
+            return smartAmount;
+        }
+
+        // ============================================
+        // LOAD LIVE PRICES
         // ============================================
         var pricesLoaded = false;
-        db.ref('servicePrices').once('value').then(function(snapshot) {
-            var data = snapshot.val();
+        db.ref('servicePrices').once('value').then(function(snap) {
+            var data = snap.val();
             if (data) {
                 ['haircuts', 'beard', 'addons'].forEach(function(cat) {
                     if (!data[cat]) return;
-                    data[cat].forEach(function(fbService) {
-                        if (services[fbService.id] && fbService.price !== undefined) {
-                            services[fbService.id].price = fbService.price;
-                        }
+                    data[cat].forEach(function(fb) {
+                        if (services[fb.id] && fb.price !== undefined) services[fb.id].price = fb.price;
                     });
                 });
             }
             pricesLoaded = true;
-        }).catch(function() {
-            pricesLoaded = true; // continue with hardcoded prices if Firebase fails
-        });
+        }).catch(function() { pricesLoaded = true; });
 
         // ============================================
-        // INIT
+        // DISCOUNT CODES
+        // ============================================
+        var availableDiscounts = [];
+        var siteDiscountData = null;
+
+        db.ref('discounts').on('value', function(snap) {
+            var d = snap.val();
+            availableDiscounts = d ? Object.keys(d).map(function(k) { var disc = d[k]; disc._key = k; return disc; }) : [];
+        });
+        db.ref('siteDiscount').on('value', function(snap) { siteDiscountData = snap.val(); });
+
+        function applyDiscountCode() {
+            var input = document.getElementById('discountInput').value.trim().toUpperCase();
+            var result = document.getElementById('discountResult');
+            if (!input) return;
+
+            if (siteDiscountData && siteDiscountData.active && siteDiscountData.code && siteDiscountData.code.toUpperCase() === input) {
+                appliedDiscount = { code: siteDiscountData.code, type: siteDiscountData.type || 'percent', value: siteDiscountData.value || 0, source: 'siteDiscount' };
+                showDiscountApplied(result);
+                recalculateTotal();
+                return;
+            }
+
+            var now = new Date();
+            var match = availableDiscounts.find(function(d) {
+                return d.code === input && d.active && new Date(d.start) <= now && new Date(d.end) >= now && (d.maxUses === 0 || d.usedCount < d.maxUses);
+            });
+
+            if (match) {
+                appliedDiscount = { code: match.code, type: match.type, value: match.value, source: 'discount', _key: match._key };
+                showDiscountApplied(result);
+                recalculateTotal();
+                db.ref('discounts/' + match._key + '/usedCount').set((match.usedCount || 0) + 1);
+            } else {
+                result.className = 'discount-result error';
+                result.textContent = 'Invalid or expired discount code.';
+            }
+        }
+
+        function showDiscountApplied(result) {
+            var label = appliedDiscount.type === 'percent' ? appliedDiscount.value + '% OFF' : '\u00a3' + appliedDiscount.value + ' OFF';
+            result.className = 'discount-result success';
+            result.innerHTML = '<span>' + appliedDiscount.code + ' \u2014 ' + label + '</span><button class="discount-remove" onclick="removeDiscount()">Remove</button>';
+            document.getElementById('discountInput').disabled = true;
+            document.getElementById('discountApplyBtn').disabled = true;
+        }
+
+        function removeDiscount() {
+            appliedDiscount = null;
+            document.getElementById('discountResult').className = 'discount-result';
+            document.getElementById('discountResult').innerHTML = '';
+            document.getElementById('discountInput').disabled = false;
+            document.getElementById('discountInput').value = '';
+            document.getElementById('discountApplyBtn').disabled = false;
+            recalculateTotal();
+        }
+
+        function recalculateTotal() {
+            var subtotal = orderItems.reduce(function(s, i) { return s + i.price; }, 0);
+            var discountAmt = 0;
+            if (appliedDiscount) {
+                discountAmt = appliedDiscount.type === 'percent' ? subtotal * (appliedDiscount.value / 100) : appliedDiscount.value;
+                discountAmt = Math.min(discountAmt, subtotal);
+            }
+            orderTotal = subtotal - discountAmt;
+            baseTotal = orderTotal;
+            smartAmount = generateSmartAmount(orderTotal);
+
+            document.getElementById('amountValue').textContent = '\u00a3' + smartAmount.toFixed(2);
+            if (appliedDiscount && discountAmt > 0) {
+                document.getElementById('amountOriginal').textContent = '\u00a3' + subtotal.toFixed(2);
+                document.getElementById('amountOriginal').style.display = 'block';
+                document.getElementById('amountSavings').textContent = 'You save \u00a3' + discountAmt.toFixed(2) + '!';
+                document.getElementById('amountSavings').style.display = 'inline-block';
+            } else {
+                document.getElementById('amountOriginal').style.display = 'none';
+                document.getElementById('amountSavings').style.display = 'none';
+            }
+        }
+
+        // ============================================
+        // HELPERS
         // ============================================
         function generateReference() {
             var now = new Date();
@@ -983,189 +1048,17 @@
         }
 
         function getCheckoutSource() {
-            if (window.GBVisitSystem) {
-                return window.GBVisitSystem.getSourceFromUrl() || 'direct_payment';
-            }
-            var params = new URLSearchParams(window.location.search);
-            return params.get('source') || 'direct_payment';
+            if (window.GBVisitSystem) return window.GBVisitSystem.getSourceFromUrl() || 'direct_payment';
+            return new URLSearchParams(window.location.search).get('source') || 'direct_payment';
         }
 
-        function escapeHtml(value) {
-            return String(value == null ? '' : value)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
+        function escapeHtml(v) {
+            return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
         }
-
-        function renderBookingContext() {
-            var card = document.getElementById('bookingContextCard');
-            var body = document.getElementById('bookingContextBody');
-            var title = document.getElementById('bookingContextTitle');
-            var subtitle = document.getElementById('bookingContextSubtitle');
-            var note = document.getElementById('paymentReviewNote');
-
-            if (!card || !body) return;
-
-            if (checkoutSource === 'online_booking' && checkoutContext) {
-                card.style.display = 'block';
-                title.textContent = 'Booking Request';
-                subtitle.textContent = 'These details will be attached to the online booking';
-                body.innerHTML =
-                    '<div class="service-line"><span class="service-line-name">Name</span><span class="service-line-price">' + escapeHtml(checkoutContext.customerName || 'Guest') + '</span></div>' +
-                    '<div class="service-line"><span class="service-line-name">Phone</span><span class="service-line-price">' + escapeHtml(checkoutContext.customerPhone || 'Not provided') + '</span></div>' +
-                    '<div class="service-line"><span class="service-line-name">Preferred date</span><span class="service-line-price">' + escapeHtml(checkoutContext.preferredDate || 'To be confirmed') + '</span></div>' +
-                    '<div class="service-line"><span class="service-line-name">Preferred time</span><span class="service-line-price">' + escapeHtml(checkoutContext.preferredTime || 'To be confirmed') + '</span></div>' +
-                    (checkoutContext.preferredBarber ? '<div class="service-line"><span class="service-line-name">Preferred barber</span><span class="service-line-price">' + escapeHtml(checkoutContext.preferredBarber) + '</span></div>' : '');
-                if (note) {
-                    note.textContent = 'The manager reviews the transfer before the booking is confirmed. Incorrect amounts or missing references will be rejected.';
-                }
-                return;
-            }
-
-            if (checkoutSource === 'qr_walkin') {
-                card.style.display = 'block';
-                title.textContent = 'In-Shop QR Payment';
-                subtitle.textContent = 'This payment is for a completed in-shop service';
-                body.innerHTML =
-                    '<div class="service-line"><span class="service-line-name">Flow</span><span class="service-line-price">Pay after service</span></div>' +
-                    '<div class="service-line"><span class="service-line-name">Confirmation</span><span class="service-line-price">Show the code to staff</span></div>';
-                if (note) {
-                    note.textContent = 'The exact amount is checked by staff before the payment is accepted.';
-                }
-                return;
-            }
-
-            card.style.display = 'none';
-            if (note) {
-                note.textContent = 'The exact amount will be verified by staff before your service. Incorrect amounts will be rejected.';
-            }
-        }
-
-        function updateSuccessCopy() {
-            var title = document.getElementById('successTitle');
-            var subtitle = document.getElementById('successSubtitle');
-            var badge = document.getElementById('successBadgeText');
-            var instructions = document.getElementById('successInstructions');
-
-            if (checkoutSource === 'online_booking') {
-                title.textContent = 'Booking Request Submitted';
-                subtitle.textContent = 'Your payment and booking details have been sent for manager review';
-                badge.textContent = 'Awaiting Confirmation';
-                instructions.textContent = 'The manager will confirm your booking after checking the transfer.';
-                return;
-            }
-
-            title.textContent = 'Payment Submitted';
-            subtitle.textContent = 'Your payment has been sent for staff review';
-            badge.textContent = 'Pending Review';
-            instructions.textContent = 'Show this screen to your barber so the payment can be confirmed.';
-        }
-
-        function showSuccessScreen() {
-            updateSuccessCopy();
-            document.getElementById('paymentContent').classList.remove('show');
-            var s = document.getElementById('successScreen');
-            s.classList.add('show');
-            document.getElementById('successAmount').textContent = '\u00a3' + orderTotal.toFixed(2);
-            document.getElementById('successRef').textContent = reference;
-            document.getElementById('successCode').textContent = verifyCode;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function init() {
-            reference = generateReference();
-            verifyCode = generateVerifyCode();
-            checkoutSource = getCheckoutSource();
-            checkoutContext = window.GBVisitSystem ? window.GBVisitSystem.getCheckoutContext() : null;
-            var servicesStr = getServicesFromUrl();
-
-            if (checkoutSource === 'online_booking' && checkoutContext && checkoutContext.items && checkoutContext.items.length) {
-                orderItems = checkoutContext.items.map(function(item) {
-                    return {
-                        id: item.id,
-                        name: item.name,
-                        price: item.price
-                    };
-                });
-                orderTotal = orderItems.reduce(function(sum, item) {
-                    return sum + (item.price || 0);
-                }, 0);
-            } else if (servicesStr.indexOf('amt:') === 0) {
-                var customAmt = parseFloat(servicesStr.substring(4));
-                if (customAmt > 0) {
-                    orderItems.push({ id: 'custom', name: 'Custom Amount', price: customAmt });
-                    orderTotal = customAmt;
-                }
-            } else {
-                var serviceIds = servicesStr ? servicesStr.split(',') : [];
-                serviceIds.forEach(function(id) {
-                    var service = services[id.trim()];
-                    if (service) {
-                        orderItems.push({ id:id.trim(), name:service.name, price:service.price });
-                        orderTotal += service.price;
-                    }
-                });
-            }
-
-            if (orderItems.length === 0) {
-                document.getElementById('loadingScreen').style.display = 'none';
-                document.getElementById('errorScreen').classList.add('show');
-                return;
-            }
-
-            renderOrder();
-            renderBanks();
-            renderBookingContext();
-
-            document.getElementById('loadingScreen').style.display = 'none';
-            document.getElementById('paymentContent').classList.add('show');
-        }
-
-        function renderOrder() {
-            var t = '\u00a3' + orderTotal.toFixed(2);
-            document.getElementById('totalAmount').textContent = t;
-            document.getElementById('servicesSummary').textContent = orderItems.length + ' service' + (orderItems.length > 1 ? 's' : '');
-            document.getElementById('servicesDetailInner').innerHTML = orderItems.map(function(i) {
-                return '<div class="service-line"><span class="service-line-name">'+i.name+'</span><span class="service-line-price">\u00a3'+i.price.toFixed(2)+'</span></div>';
-            }).join('');
-            document.getElementById('bankAmount').textContent = t;
-            document.getElementById('bankRef').textContent = reference;
-        }
-
-        function renderBanks() {
-            document.getElementById('mainBanks').innerHTML = BANKS_MAIN.map(bankHtml).join('');
-            document.getElementById('moreBanks').innerHTML = BANKS_MORE.map(bankHtml).join('');
-        }
-
-        function bankHtml(b) {
-            var logoUrl = getBankLogo(b.domain);
-            return '<button class="bank-btn" onclick="routeToBank(\''+b.id+'\')">' +
-                '<div class="bank-btn-logo">' +
-                    '<img src="'+logoUrl+'" alt="'+b.name+'" onerror="this.onerror=null;this.style.display=\'none\';this.parentElement.style.background=\'var(--gray-dark)\';this.parentElement.innerHTML=\'<span style=font-size:16px;font-weight:800;color:white>'+b.name.charAt(0)+'</span>\'">' +
-                '</div>' +
-                '<div class="bank-btn-text">' +
-                    '<div class="bank-btn-name">'+b.name+'</div>' +
-                    '<div class="bank-btn-type">Tap \u2014 auto-fills details</div>' +
-                '</div>' +
-                '<svg class="bank-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>' +
-            '</button>';
-        }
-
-        // ============================================
-        // AUTO-PAY SYSTEM — fully automatic clipboard cycling
-        // Copies each detail (sort code → account → amount → ref)
-        // automatically every time user returns from bank app
-        // ============================================
-        var autoPayState = { active: false, bank: null, step: 0, fields: [] };
 
         function safelyCopy(text) {
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                return navigator.clipboard.writeText(text).catch(function() {
-                    fallbackCopy(text);
-                    return Promise.resolve();
-                });
+                return navigator.clipboard.writeText(text).catch(function() { fallbackCopy(text); return Promise.resolve(); });
             }
             fallbackCopy(text);
             return Promise.resolve();
@@ -1176,46 +1069,301 @@
             ta.value = text;
             ta.style.cssText = 'position:fixed;left:-9999px;opacity:0;';
             document.body.appendChild(ta);
-            ta.focus();
-            ta.select();
+            ta.focus(); ta.select();
             try { document.execCommand('copy'); } catch(e) {}
             document.body.removeChild(ta);
         }
 
-        function routeToBank(bankId) {
-            var bank = BANKS_MAIN.concat(BANKS_MORE).find(function(b){ return b.id === bankId; });
-            if (!bank) return;
-
-            // Init autopay state
-            autoPayState.active = true;
-            autoPayState.bank = bank;
-            autoPayState.step = 0;
-            autoPayState.fields = [
-                { label: 'Account Name', value: BANK.name, copyValue: BANK.name, done: false },
-                { label: 'Sort Code', value: BANK.sortCode, copyValue: BANK.sortCodeRaw, done: false },
-                { label: 'Account Number', value: BANK.accountNumber, copyValue: BANK.accountNumber, done: false },
-                { label: 'Amount', value: '\u00a3' + orderTotal.toFixed(2), copyValue: orderTotal.toFixed(2), done: false },
-                { label: 'Reference', value: reference, copyValue: reference, done: false }
-            ];
-
-            // Copy first field immediately
-            safelyCopy(autoPayState.fields[0].copyValue);
-            autoPayState.fields[0].done = true;
-            autoPayState.step = 1;
-            if (navigator.vibrate) navigator.vibrate(50);
-
-            // Show full-screen overlay
-            renderAutoPay();
-            document.getElementById('autoPayOverlay').classList.add('show');
-
-            // Open bank app after brief delay so user sees the overlay
-            setTimeout(function() { openBankApp(); }, 900);
+        function showToast(text) {
+            var t = document.getElementById('toast');
+            document.getElementById('toastText').textContent = text;
+            t.classList.add('show');
+            clearTimeout(showToast._t);
+            showToast._t = setTimeout(function() { t.classList.remove('show'); }, 2500);
         }
 
-        function openBankApp() {
-            var bank = autoPayState.bank;
-            if (!bank) return;
+        // ============================================
+        // RETURNING CUSTOMER
+        // ============================================
+        function getFavouriteBank() {
+            try { return localStorage.getItem('gb_favourite_bank'); } catch(e) { return null; }
+        }
 
+        function setFavouriteBank(bankId) {
+            try {
+                localStorage.setItem('gb_favourite_bank', bankId);
+                localStorage.setItem('gb_has_paid_before', 'true');
+                localStorage.setItem('gb_last_payment_date', new Date().toISOString());
+            } catch(e) {}
+        }
+
+        function checkRepeatCustomer() {
+            try {
+                if (localStorage.getItem('gb_has_paid_before') !== 'true') return false;
+                var lastDate = localStorage.getItem('gb_last_payment_date');
+                if (!lastDate) return false;
+                var days = (Date.now() - new Date(lastDate).getTime()) / 86400000;
+                return days < 90;
+            } catch(e) { return false; }
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        function init() {
+            reference = generateReference();
+            verifyCode = generateVerifyCode();
+            checkoutSource = getCheckoutSource();
+            checkoutContext = window.GBVisitSystem ? window.GBVisitSystem.getCheckoutContext() : null;
+            isRepeatCustomer = checkRepeatCustomer();
+
+            var servicesStr = getServicesFromUrl();
+
+            if (checkoutSource === 'online_booking' && checkoutContext && checkoutContext.items && checkoutContext.items.length) {
+                orderItems = checkoutContext.items.map(function(item) {
+                    return { id: item.id, name: item.name, price: item.price };
+                });
+                orderTotal = orderItems.reduce(function(sum, item) { return sum + (item.price || 0); }, 0);
+            } else if (servicesStr.indexOf('amt:') === 0) {
+                var customAmt = parseFloat(servicesStr.substring(4));
+                if (customAmt > 0) {
+                    orderItems.push({ id:'custom', name:'Custom Amount', price:customAmt });
+                    orderTotal = customAmt;
+                }
+            } else {
+                var serviceIds = servicesStr ? servicesStr.split(',') : [];
+                serviceIds.forEach(function(id) {
+                    var svc = services[id.trim()];
+                    if (svc) {
+                        orderItems.push({ id:id.trim(), name:svc.name, price:svc.price });
+                        orderTotal += svc.price;
+                    }
+                });
+            }
+
+            if (orderItems.length === 0) {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('errorScreen').classList.add('show');
+                return;
+            }
+
+            baseTotal = orderTotal;
+            smartAmount = generateSmartAmount(orderTotal);
+            renderMoment1();
+            renderBankSelection();
+
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('orderView').classList.add('show');
+        }
+
+        // ============================================
+        // MOMENT 1: ORDER VIEW
+        // ============================================
+        function renderMoment1() {
+            document.getElementById('amountValue').textContent = '\u00a3' + smartAmount.toFixed(2);
+
+            // Services line
+            var sl = document.getElementById('servicesLine');
+            if (orderItems.length <= 3) {
+                sl.innerHTML = orderItems.map(function(i) { return '<span class="service-name">' + escapeHtml(i.name) + '</span>'; }).join(' &middot; ');
+            } else {
+                sl.innerHTML = '<span class="service-name">' + orderItems.length + ' services</span> <button class="services-expand-btn" onclick="toggleServicesExpand()">Show all</button>';
+                sl.innerHTML += '<div class="services-expand" id="servicesExpand"><div class="services-expand-inner">' +
+                    orderItems.map(function(i) { return '<div class="service-row"><span class="service-row-name">' + escapeHtml(i.name) + '</span><span class="service-row-price">\u00a3' + i.price.toFixed(2) + '</span></div>'; }).join('') +
+                    '</div></div>';
+            }
+
+            // Booking context
+            if (checkoutSource === 'online_booking' && checkoutContext) {
+                var ctx = document.getElementById('bookingContext');
+                ctx.classList.add('show');
+                document.getElementById('bookingContextBody').innerHTML =
+                    '<div class="service-row"><span class="service-row-name">Name</span><span class="service-row-price">' + escapeHtml(checkoutContext.customerName || 'Guest') + '</span></div>' +
+                    '<div class="service-row"><span class="service-row-name">Date</span><span class="service-row-price">' + escapeHtml(checkoutContext.preferredDate || 'TBC') + '</span></div>' +
+                    '<div class="service-row"><span class="service-row-name">Time</span><span class="service-row-price">' + escapeHtml(checkoutContext.preferredTime || 'TBC') + '</span></div>' +
+                    (checkoutContext.preferredBarber ? '<div class="service-row"><span class="service-row-name">Barber</span><span class="service-row-price">' + escapeHtml(checkoutContext.preferredBarber) + '</span></div>' : '');
+            }
+        }
+
+        function toggleServicesExpand() {
+            var el = document.getElementById('servicesExpand');
+            if (el) el.classList.toggle('open');
+        }
+
+        // ============================================
+        // BANK SELECTION
+        // ============================================
+        function renderBankSelection() {
+            // Favourite bank
+            var favId = getFavouriteBank();
+            if (favId && isRepeatCustomer) {
+                var favBank = BANKS_MAIN.concat(BANKS_MORE).find(function(b) { return b.id === favId; });
+                if (favBank) {
+                    var favEl = document.getElementById('favouriteBank');
+                    favEl.classList.add('show');
+                    document.getElementById('favouriteBankLogo').innerHTML = '<img src="' + getBankLogo(favBank.domain) + '" alt="' + favBank.name + '" onerror="this.style.display=\'none\'">';
+                    document.getElementById('favouriteBankName').textContent = favBank.name;
+                }
+            }
+
+            // Main banks grid
+            document.getElementById('mainBanksGrid').innerHTML = BANKS_MAIN.map(function(b) {
+                return '<button class="bank-item" onclick="selectBank(\'' + b.id + '\')">' +
+                    '<div class="bank-item-logo"><img src="' + getBankLogo(b.domain) + '" alt="' + b.name + '" onerror="this.onerror=null;this.style.display=\'none\';this.parentElement.innerHTML=\'<span style=font-size:14px;font-weight:800;color:white>' + b.name.charAt(0) + '</span>\'"></div>' +
+                    '<div class="bank-item-name">' + b.name + '</div>' +
+                '</button>';
+            }).join('');
+
+            // More banks
+            document.getElementById('moreBanksGrid').innerHTML = BANKS_MORE.map(function(b) {
+                return '<button class="bank-item" onclick="selectBank(\'' + b.id + '\')">' +
+                    '<div class="bank-item-logo"><img src="' + getBankLogo(b.domain) + '" alt="' + b.name + '" onerror="this.onerror=null;this.style.display=\'none\';this.parentElement.innerHTML=\'<span style=font-size:14px;font-weight:800;color:white>' + b.name.charAt(0) + '</span>\'"></div>' +
+                    '<div class="bank-item-name">' + b.name + '</div>' +
+                '</button>';
+            }).join('');
+        }
+
+        function openBankSelection() {
+            var sheet = document.getElementById('bottomSheet');
+            document.getElementById('bankSelectView').classList.add('show');
+            document.getElementById('transferCardView').classList.remove('show');
+            document.getElementById('receiptView').classList.remove('show');
+            sheet.classList.add('active');
+        }
+
+        function selectFavouriteBank() {
+            var favId = getFavouriteBank();
+            if (favId) selectBank(favId);
+        }
+
+        function selectBank(bankId) {
+            var bank = BANKS_MAIN.concat(BANKS_MORE).find(function(b) { return b.id === bankId; });
+            if (!bank) return;
+            selectedBank = bank;
+
+            if (navigator.vibrate) navigator.vibrate(30);
+
+            // Transition: bank select → transfer card
+            document.getElementById('bankSelectView').classList.remove('show');
+            document.getElementById('transferCardView').classList.add('show');
+
+            // Populate transfer card
+            document.getElementById('tcBankLogo').innerHTML = '<img src="' + getBankLogo(bank.domain) + '" alt="' + bank.name + '" onerror="this.style.display=\'none\'">';
+            document.getElementById('tcBankName').textContent = bank.name;
+            document.getElementById('tcOpenLabel').textContent = 'Open ' + bank.name;
+
+            renderTransferCard();
+        }
+
+        function renderTransferCard() {
+            var content = document.getElementById('tcContent');
+            var isReturn = isRepeatCustomer && getFavouriteBank() === (selectedBank ? selectedBank.id : null);
+
+            if (isReturn) {
+                // Simplified return customer view
+                content.innerHTML =
+                    '<div class="tc-return-hint">Send to ' + escapeHtml(BANK.name) + '</div>' +
+                    '<div class="tc-amount-section">' +
+                        '<div class="tc-amount" onclick="copyField(\'amount\',\'' + smartAmount.toFixed(2) + '\')" id="tcAmountEl">\u00a3' + smartAmount.toFixed(2) + '</div>' +
+                        '<div class="tc-amount-hint">Send this exact amount</div>' +
+                    '</div>' +
+                    '<button class="tc-show-details-btn" onclick="toggleFullDetails()">Show full bank details &darr;</button>' +
+                    '<div class="tc-full-details" id="tcFullDetails">' + buildFullDetailsHtml() + '</div>';
+            } else {
+                // Full first-time view
+                content.innerHTML = buildFullDetailsHtml() +
+                    '<div class="tc-amount-section">' +
+                        '<div class="tc-amount" onclick="copyField(\'amount\',\'' + smartAmount.toFixed(2) + '\')" id="tcAmountEl">\u00a3' + smartAmount.toFixed(2) + '</div>' +
+                        '<div class="tc-amount-hint">Send this exact amount</div>' +
+                    '</div>';
+            }
+        }
+
+        function buildFullDetailsHtml() {
+            return '<div class="tc-zone">' +
+                '<div class="tc-zone-label">Pay</div>' +
+                '<div class="tc-payee-name">' + escapeHtml(BANK.name) + '</div>' +
+            '</div>' +
+            '<div class="tc-zone">' +
+                '<div class="tc-details-row">' +
+                    '<div class="tc-detail-block">' +
+                        '<div class="tc-zone-label">Sort Code</div>' +
+                        '<div class="tc-detail-value" onclick="copyField(\'sort code\',\'' + BANK.sortCodeRaw + '\')" id="tcSortEl">' + BANK.sortCodeSpaced + '</div>' +
+                    '</div>' +
+                    '<div class="tc-detail-block">' +
+                        '<div class="tc-zone-label">Account</div>' +
+                        '<div class="tc-detail-value" onclick="copyField(\'account\',\'' + BANK.accountNumber + '\')" id="tcAccEl">' + BANK.accountSpaced + '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }
+
+        function toggleFullDetails() {
+            var el = document.getElementById('tcFullDetails');
+            if (el) el.classList.toggle('show');
+        }
+
+        function toggleMoreBanks() {
+            var el = document.getElementById('moreBanksGrid');
+            var btn = document.getElementById('moreBanksToggle');
+            var isOpen = el.classList.toggle('open');
+            btn.classList.toggle('open');
+            document.getElementById('moreBanksText').textContent = isOpen ? 'Fewer banks' : 'More banks';
+        }
+
+        function backToBankSelect() {
+            document.getElementById('transferCardView').classList.remove('show');
+            document.getElementById('bankSelectView').classList.add('show');
+        }
+
+        function closeSheet() {
+            document.getElementById('bottomSheet').classList.remove('active');
+            setTimeout(function() {
+                document.getElementById('bankSelectView').classList.remove('show');
+                document.getElementById('transferCardView').classList.remove('show');
+                document.getElementById('receiptView').classList.remove('show');
+            }, 500);
+        }
+
+        // ============================================
+        // COPY FUNCTIONS
+        // ============================================
+        function copyField(name, value) {
+            safelyCopy(value).then(function() {
+                if (navigator.vibrate) navigator.vibrate(30);
+                showToast(name.charAt(0).toUpperCase() + name.slice(1) + ' copied');
+                // Flash the element
+                var elMap = { 'sort code':'tcSortEl', 'account':'tcAccEl', 'amount':'tcAmountEl' };
+                var el = document.getElementById(elMap[name]);
+                if (el) {
+                    el.classList.add('flash');
+                    setTimeout(function() { el.classList.remove('flash'); }, 400);
+                }
+            });
+        }
+
+        function copyAllDetails() {
+            var text = BANK.name + '\n' + BANK.sortCodeSpaced + '\n' + BANK.accountSpaced + '\n\u00a3' + smartAmount.toFixed(2);
+            safelyCopy(text).then(function() {
+                if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
+                var btn = document.getElementById('tcCopyBtn');
+                var label = document.getElementById('tcCopyLabel');
+                btn.classList.add('copied');
+                label.textContent = 'Copied \u2713';
+                showToast('All details copied');
+                setTimeout(function() {
+                    btn.classList.remove('copied');
+                    label.textContent = 'Copy All';
+                }, 2500);
+            });
+        }
+
+        // ============================================
+        // DEEP LINK
+        // ============================================
+        function openBankApp() {
+            if (!selectedBank) return;
+            var bank = selectedBank;
             var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
             var isAndroid = /android/i.test(navigator.userAgent);
 
@@ -1233,178 +1381,27 @@
             }
         }
 
-        function renderAutoPay() {
-            var s = autoPayState;
-            var fields = s.fields;
-            var allDone = s.step >= fields.length;
-            var bank = s.bank;
-            var logoUrl = getBankLogo(bank.domain);
-            var h = '';
-
-            // Bank logo + name
-            h += '<div class="autopay-bank-info">';
-            h += '<img src="' + logoUrl + '" class="autopay-bank-logo" onerror="this.style.display=\'none\'">';
-            h += '<div class="autopay-bank-name">' + bank.name + '</div>';
-            h += '</div>';
-
-            if (allDone) {
-                h += '<div class="autopay-current-box done-all">';
-                h += '<div class="autopay-field-label" style="color:var(--green)">Payment Ready</div>';
-                h += '<div class="autopay-field-value" style="font-size:40px;color:var(--green);">\u2713</div>';
-                h += '<div class="autopay-copied-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> All 5 details copied</div>';
-                h += '</div>';
-                h += '<div class="autopay-instruction">Finish the transfer in <strong>' + bank.name + '</strong> and press <strong>Send</strong>. Then come back to verify your payment.</div>';
-            } else {
-                // Show the field that's currently in clipboard
-                var current = fields[s.step - 1];
-                h += '<div class="autopay-current-box">';
-                h += '<div class="autopay-field-label">' + current.label + '</div>';
-                h += '<div class="autopay-field-value">' + current.value + '</div>';
-                h += '<div class="autopay-copied-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Copied to clipboard</div>';
-                h += '<button class="autopay-recopy" onclick="recopyCurrent()">Tap to re-copy</button>';
-                h += '</div>';
-                h += '<div class="autopay-instruction">Paste <strong>' + current.label + '</strong> in ' + bank.name + ', then come back here.<br>The next detail copies <strong>automatically</strong>.</div>';
-            }
-
-            // Progress tracker — each step tappable to copy
-            h += '<div class="autopay-progress">';
-            for (var i = 0; i < fields.length; i++) {
-                var isDone = fields[i].done;
-                var isNext = (i === s.step && !allDone);
-                var cls = isDone ? 'done' : (isNext ? 'next' : 'wait');
-                h += '<div class="autopay-step" style="cursor:pointer" onclick="copyStep(' + i + ')">';
-                h += '<div class="autopay-step-icon ' + cls + '">' + (isDone ? '\u2713' : (i + 1)) + '</div>';
-                h += '<div class="autopay-step-name ' + cls + '">' + fields[i].label + '</div>';
-                h += '<div class="autopay-step-val ' + cls + '">' + fields[i].value + '</div>';
-                h += '</div>';
-            }
-            h += '</div>';
-
-            // Copy All button
-            h += '<button class="autopay-btn" style="background:rgba(255,255,255,0.08);color:var(--white);border:1px solid rgba(255,255,255,0.15);" onclick="copyAllAutoPay()">';
-            h += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
-            h += 'Copy All Details</button>';
-
-            // Action buttons
-            if (allDone) {
-                h += '<button class="autopay-btn green" onclick="closeAutoPay();startVerification();">';
-                h += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>';
-                h += 'Verify Payment</button>';
-                h += '<button class="autopay-btn" onclick="openBankApp()">';
-                h += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
-                h += 'Back to ' + bank.name + '</button>';
-            } else {
-                h += '<button class="autopay-btn" onclick="openBankApp()">';
-                h += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
-                h += 'Open ' + bank.name + '</button>';
-            }
-
-            h += '<button class="autopay-cancel-btn" onclick="closeAutoPay()">' + (allDone ? 'Close' : 'Cancel') + '</button>';
-
-            document.getElementById('autoPayContent').innerHTML = h;
-        }
-
-        function recopyCurrent() {
-            var s = autoPayState;
-            if (s.step > 0 && s.step <= s.fields.length) {
-                var field = s.fields[s.step - 1];
-                safelyCopy(field.copyValue);
-                if (navigator.vibrate) navigator.vibrate(50);
-                showToast(field.label + ' re-copied');
-            }
-        }
-
-        function copyStep(index) {
-            var field = autoPayState.fields[index];
-            if (!field) return;
-            safelyCopy(field.copyValue);
-            if (navigator.vibrate) navigator.vibrate(50);
-            showToast(field.label + ' copied');
-        }
-
-        function copyAllAutoPay() {
-            var t = BANK.name + '\n' + BANK.sortCode + '\n' + BANK.accountNumber + '\n' + orderTotal.toFixed(2) + '\n' + reference;
-            safelyCopy(t).then(function() {
-                autoPayState.fields.forEach(function(f) { f.done = true; });
-                autoPayState.step = autoPayState.fields.length;
-                if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
-                renderAutoPay();
-                showToast('All details copied');
-            });
-        }
-
-        function closeAutoPay() {
-            autoPayState.active = false;
-            document.getElementById('autoPayOverlay').classList.remove('show');
-        }
-
-        // Auto-copy next field every time user switches back from bank app
-        var _apDebounce = 0;
-        function autoCopyNext() {
-            if (!autoPayState.active || document.hidden) return;
-            var now = Date.now();
-            if (now - _apDebounce < 800) return;
-            _apDebounce = now;
-
-            var idx = autoPayState.step;
-            if (idx < autoPayState.fields.length && !autoPayState.fields[idx].done) {
-                setTimeout(function() {
-                    var i = autoPayState.step;
-                    if (i >= autoPayState.fields.length || autoPayState.fields[i].done) return;
-                    safelyCopy(autoPayState.fields[i].copyValue);
-                    autoPayState.fields[i].done = true;
-                    autoPayState.step = i + 1;
-                    if (navigator.vibrate) navigator.vibrate(50);
-                    renderAutoPay();
-                    showToast(autoPayState.fields[i].label + ' copied \u2014 paste it now');
-                }, 400);
-            }
-        }
-
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden) autoCopyNext();
-        });
-        window.addEventListener('focus', autoCopyNext);
-
         // ============================================
-        // VERIFICATION FLOW
+        // MOMENT 3: PAYMENT SUBMISSION & RECEIPT
         // ============================================
-        function startVerification() {
-            document.getElementById('verifyOverlay').classList.add('show');
-            document.getElementById('verifyInput').value = '';
-            document.getElementById('verifyError').textContent = '';
-            setTimeout(function() { document.getElementById('verifyInput').focus(); }, 300);
-        }
+        function onSentPayment() {
+            var btn = document.getElementById('tcSentBtn');
+            if (btn.classList.contains('processing')) return;
+            btn.classList.add('processing');
 
-        function cancelVerification() {
-            document.getElementById('verifyOverlay').classList.remove('show');
-        }
-
-        function submitVerification() {
-            var input = document.getElementById('verifyInput').value.trim();
-            var errorEl = document.getElementById('verifyError');
-            var btn = document.getElementById('verifySubmit');
-
-            if (input.length < 3) {
-                errorEl.textContent = 'Please enter a valid payment reference from your banking app.';
-                return;
-            }
-
-            errorEl.textContent = '';
-            btn.classList.add('loading');
-            btn.disabled = true;
-
-            // Log payment to Firebase (REAL - shows in admin panel)
-            var subtotal = orderItems.reduce(function(sum, i) { return sum + i.price; }, 0);
+            // Create payment record in Firebase
+            var subtotal = orderItems.reduce(function(s, i) { return s + i.price; }, 0);
             var paymentData = {
-                reference: reference,
+                reference: reference + '-' + smartPennies,
                 verifyCode: verifyCode,
-                bankReference: input,
-                amount: orderTotal,
+                bankReference: null,
+                amount: smartAmount,
+                baseAmount: baseTotal,
+                smartPennies: smartPennies,
                 subtotal: subtotal,
                 items: orderItems.map(function(i) { return i.name; }),
-                itemsDetail: orderItems.map(function(i) { return { name: i.name, price: i.price }; }),
-                discount: appliedDiscount ? { code: appliedDiscount.code, type: appliedDiscount.type, value: appliedDiscount.value, saved: (subtotal - orderTotal).toFixed(2) } : null,
+                itemsDetail: orderItems.map(function(i) { return { name:i.name, price:i.price }; }),
+                discount: appliedDiscount ? { code:appliedDiscount.code, type:appliedDiscount.type, value:appliedDiscount.value, saved:(subtotal - orderTotal).toFixed(2) } : null,
                 targetBank: BANK.name,
                 source: checkoutSource || 'direct_payment',
                 paymentMethod: 'bank_transfer',
@@ -1417,6 +1414,7 @@
                 createdAt: new Date().toISOString(),
                 date: new Date().toISOString().split('T')[0]
             };
+
             var paymentRef = db.ref('payments').push();
             var visitRecord = window.GBVisitSystem ? window.GBVisitSystem.buildVisitRecord({
                 paymentKey: paymentRef.key,
@@ -1435,218 +1433,168 @@
                             title: 'New online booking request',
                             body: (checkoutContext && checkoutContext.customerName ? checkoutContext.customerName : 'Customer') + ' requested ' + (checkoutContext && checkoutContext.preferredDate ? checkoutContext.preferredDate : 'a booking') + (checkoutContext && checkoutContext.preferredTime ? ' at ' + checkoutContext.preferredTime : ''),
                             paymentKey: paymentRef.key,
-                            amount: orderTotal,
+                            amount: smartAmount,
                             customerName: checkoutContext && checkoutContext.customerName ? checkoutContext.customerName : '',
-                            data: {
-                                source: checkoutSource,
-                                serviceSummary: visitRecord.serviceSummary
-                            }
+                            data: { source: checkoutSource, serviceSummary: visitRecord.serviceSummary }
                         }));
                     }
                 }
-                return Promise.all(followUps).catch(function(error) {
-                    console.warn('Payment was saved but visit follow-up tasks failed.', error);
-                    return null;
-                });
+                return Promise.all(followUps).catch(function() { return null; });
             }).then(function() {
-                btn.classList.remove('loading');
-                btn.disabled = false;
-                document.getElementById('verifyOverlay').classList.remove('show');
-                if (window.GBVisitSystem) {
-                    window.GBVisitSystem.clearCheckoutContext();
+                if (window.GBVisitSystem) window.GBVisitSystem.clearCheckoutContext();
+                // 1.2s delay for the processing bar animation
+                setTimeout(function() { morphToReceipt(); }, 1200);
+            }).catch(function(err) {
+                console.error('Payment submission failed:', err);
+                btn.classList.remove('processing');
+                showToast('Failed to submit. Please try again.');
+            });
+        }
+
+        function morphToReceipt() {
+            // Transition transfer card → receipt
+            document.getElementById('transferCardView').classList.remove('show');
+            document.getElementById('receiptView').classList.add('show');
+
+            // Populate receipt
+            var isBooking = checkoutSource === 'online_booking';
+            document.getElementById('receiptTitle').textContent = isBooking ? 'Booking Request Submitted' : 'Payment Sent';
+            document.getElementById('receiptSubtitle').textContent = isBooking
+                ? 'Your payment and booking details have been sent for manager review'
+                : '\u00a3' + smartAmount.toFixed(2) + ' to ' + BANK.name;
+            document.getElementById('receiptCode').textContent = verifyCode;
+            document.getElementById('receiptDetails').textContent = isBooking
+                ? 'The manager will confirm your booking after verifying the transfer.'
+                : 'Payment is pending review. Staff will confirm once the transfer arrives (usually within minutes).';
+
+            // Celebration sequence
+            setTimeout(function() {
+                playSuccessSound();
+                triggerConfetti();
+                if (navigator.vibrate) navigator.vibrate([80, 50, 80]);
+            }, 400);
+
+            // Show "remember bank" prompt for first-timers
+            if (!isRepeatCustomer && selectedBank) {
+                setTimeout(function() {
+                    document.getElementById('rememberPrompt').classList.add('show');
+                }, 2500);
+            }
+
+            // Scroll sheet to top
+            document.querySelector('.sheet-content').scrollTop = 0;
+        }
+
+        // ============================================
+        // SUCCESS SOUND (Web Audio API)
+        // ============================================
+        function playSuccessSound() {
+            try {
+                var ctx = new (window.AudioContext || window.webkitAudioContext)();
+                if (ctx.state === 'suspended') { ctx.close(); return; }
+
+                // Two-note chime: C5 (523Hz) then E5 (659Hz)
+                var now = ctx.currentTime;
+                [523.25, 659.25].forEach(function(freq, i) {
+                    var osc = ctx.createOscillator();
+                    var gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0, now + i * 0.12);
+                    gain.gain.linearRampToValueAtTime(0.15, now + i * 0.12 + 0.03);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.3);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + i * 0.12);
+                    osc.stop(now + i * 0.12 + 0.35);
+                });
+
+                setTimeout(function() { ctx.close(); }, 800);
+            } catch(e) {}
+        }
+
+        // ============================================
+        // CONFETTI
+        // ============================================
+        function triggerConfetti() {
+            var canvas = document.getElementById('confettiCanvas');
+            var ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            var colors = ['#d4af37', '#f5d778', '#22c55e', '#ffffff', '#a88a2d'];
+            var particles = [];
+            for (var i = 0; i < 35; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: -20 - Math.random() * 80,
+                    w: 4 + Math.random() * 4,
+                    h: 8 + Math.random() * 8,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    vx: (Math.random() - 0.5) * 3,
+                    vy: 2 + Math.random() * 3,
+                    rot: Math.random() * Math.PI * 2,
+                    vr: (Math.random() - 0.5) * 0.15,
+                    opacity: 1
+                });
+            }
+
+            var startTime = Date.now();
+            function animate() {
+                var elapsed = Date.now() - startTime;
+                if (elapsed > 2500) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    return;
                 }
-                showSuccessScreen();
-            }).catch(function(error) {
-                console.error('Failed to submit payment verification.', error);
-                btn.classList.remove('loading');
-                btn.disabled = false;
-                errorEl.textContent = 'We could not submit your payment right now. Please try again or show staff.';
-            });
-        }
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(function(p) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.rot += p.vr;
+                    p.vy += 0.05; // gravity
+                    if (elapsed > 1800) p.opacity = Math.max(0, 1 - (elapsed - 1800) / 700);
 
-        // Enter key on verify input
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('verifyInput').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') submitVerification();
-            });
-        });
-
-        // ============================================
-        // UI
-        // ============================================
-        function toggleServices() {
-            document.getElementById('servicesToggle').classList.toggle('open');
-            document.getElementById('servicesDetail').classList.toggle('open');
-        }
-
-        function toggleMoreBanks() {
-            var el = document.getElementById('moreBanks');
-            var btn = document.getElementById('moreBanksToggle');
-            var isOpen = el.classList.toggle('open');
-            btn.classList.toggle('open');
-            document.getElementById('moreBanksText').textContent = isOpen ? 'Show fewer' : 'Show more banks';
-        }
-
-        function showToast(text) {
-            var t = document.getElementById('toast');
-            document.getElementById('toastText').textContent = text;
-            t.classList.add('show');
-            clearTimeout(showToast._t);
-            showToast._t = setTimeout(function(){t.classList.remove('show');}, 2500);
-        }
-
-        function copyText(text, btn) {
-            safelyCopy(text).then(function(){ doCopied(btn); });
-        }
-
-        function doCopied(btn) {
-            var o=btn.textContent; btn.textContent='Copied!'; btn.classList.add('copied');
-            showToast('Copied to clipboard');
-            setTimeout(function(){btn.textContent=o;btn.classList.remove('copied');},2000);
-        }
-
-        function copyAmount(btn){copyText(orderTotal.toFixed(2),btn);}
-        function copyRef(btn){copyText(reference,btn);}
-
-        function copyAll(btn) {
-            var t='Payment Details\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nAccount: '+BANK.name+'\nSort Code: '+BANK.sortCode+'\nAccount No: '+BANK.accountNumber+'\nAmount: \u00a3'+orderTotal.toFixed(2)+'\nReference: '+reference;
-            safelyCopy(t).then(function(){
-                btn.classList.add('copied');
-                btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> All Details Copied!';
-                showToast('All payment details copied');
-                setTimeout(function(){
-                    btn.classList.remove('copied');
-                    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy All Details';
-                },3000);
-            });
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot);
+                    ctx.globalAlpha = p.opacity;
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+                    ctx.restore();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
         }
 
         // ============================================
-        // DISCOUNT CODES - validate against Firebase
+        // REMEMBER BANK PROMPT
         // ============================================
-        var availableDiscounts = [];
-        var siteDiscountData = null;
-
-        // Load discount codes from Firebase
-        db.ref('discounts').on('value', function(snapshot) {
-            var data = snapshot.val();
-            availableDiscounts = data ? Object.keys(data).map(function(k) { var d = data[k]; d._key = k; return d; }) : [];
-        });
-
-        // Load site discount data from Firebase (for code validation only, no banner shown)
-        db.ref('siteDiscount').on('value', function(snapshot) {
-            siteDiscountData = snapshot.val();
-        });
-
-        function applyDiscountCode() {
-            var input = document.getElementById('discountInput').value.trim().toUpperCase();
-            var result = document.getElementById('discountResult');
-            if (!input) return;
-
-            // Check site discount first
-            if (siteDiscountData && siteDiscountData.active && siteDiscountData.code && siteDiscountData.code.toUpperCase() === input) {
-                appliedDiscount = {
-                    code: siteDiscountData.code,
-                    type: siteDiscountData.type || 'percent',
-                    value: siteDiscountData.value || 0,
-                    source: 'siteDiscount'
-                };
-                showDiscountApplied(result);
-                recalculateTotal();
-                return;
-            }
-
-            // Check regular discount codes
-            var now = new Date();
-            var match = availableDiscounts.find(function(d) {
-                return d.code === input && d.active && new Date(d.start) <= now && new Date(d.end) >= now && (d.maxUses === 0 || d.usedCount < d.maxUses);
-            });
-
-            if (match) {
-                appliedDiscount = {
-                    code: match.code,
-                    type: match.type,
-                    value: match.value,
-                    source: 'discount',
-                    _key: match._key
-                };
-                showDiscountApplied(result);
-                recalculateTotal();
-
-                // Increment usage count
-                db.ref('discounts/' + match._key + '/usedCount').set((match.usedCount || 0) + 1);
-            } else {
-                result.className = 'discount-result error';
-                result.textContent = 'Invalid or expired discount code.';
-            }
+        function saveFavouriteBank() {
+            if (selectedBank) setFavouriteBank(selectedBank.id);
+            document.getElementById('rememberPrompt').classList.remove('show');
+            showToast(selectedBank.name + ' saved for next time');
         }
 
-        function showDiscountApplied(result) {
-            var label = appliedDiscount.type === 'percent' ? appliedDiscount.value + '% OFF' : '\u00a3' + appliedDiscount.value + ' OFF';
-            result.className = 'discount-result success';
-            result.innerHTML = '<span>' + appliedDiscount.code + ' \u2014 ' + label + ' applied!</span>' +
-                '<button class="discount-remove" onclick="removeDiscount()">Remove</button>';
-            document.getElementById('discountInput').disabled = true;
-            document.getElementById('discountApplyBtn').disabled = true;
+        function dismissRemember() {
+            document.getElementById('rememberPrompt').classList.remove('show');
         }
 
-        function removeDiscount() {
-            appliedDiscount = null;
-            var result = document.getElementById('discountResult');
-            result.className = 'discount-result';
-            result.innerHTML = '';
-            document.getElementById('discountInput').disabled = false;
-            document.getElementById('discountInput').value = '';
-            document.getElementById('discountApplyBtn').disabled = false;
-            recalculateTotal();
-        }
-
-        function recalculateTotal() {
-            var subtotal = orderItems.reduce(function(sum, i) { return sum + i.price; }, 0);
-            var discountAmount = 0;
-
-            if (appliedDiscount) {
-                if (appliedDiscount.type === 'percent') {
-                    discountAmount = subtotal * (appliedDiscount.value / 100);
-                } else {
-                    discountAmount = appliedDiscount.value;
-                }
-                discountAmount = Math.min(discountAmount, subtotal);
-            }
-
-            orderTotal = subtotal - discountAmount;
-
-            // Update displays
-            var t = '\u00a3' + orderTotal.toFixed(2);
-            document.getElementById('totalAmount').textContent = t;
-            document.getElementById('bankAmount').textContent = t;
-
-            if (appliedDiscount && discountAmount > 0) {
-                document.getElementById('originalPrice').textContent = '\u00a3' + subtotal.toFixed(2);
-                document.getElementById('originalPrice').style.display = 'block';
-                document.getElementById('savingsLine').textContent = 'You save \u00a3' + discountAmount.toFixed(2) + '!';
-                document.getElementById('savingsLine').style.display = 'inline-block';
-            } else {
-                document.getElementById('originalPrice').style.display = 'none';
-                document.getElementById('savingsLine').style.display = 'none';
-            }
-        }
-
-        // Enter key on discount input
+        // ============================================
+        // DISCOUNT INPUT ENTER KEY
+        // ============================================
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('discountInput').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') applyDiscountCode();
             });
         });
 
-        // Wait for Firebase prices + bank before init
+        // ============================================
+        // WAIT FOR FIREBASE & INIT
+        // ============================================
         function waitAndInit() {
-            if (pricesLoaded && bankLoaded) {
-                updateBankDisplay();
-                init();
-            } else {
-                setTimeout(waitAndInit, 50);
-            }
+            if (pricesLoaded && bankLoaded) init();
+            else setTimeout(waitAndInit, 50);
         }
         setTimeout(waitAndInit, 350);
     </script>
