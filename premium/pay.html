@@ -531,6 +531,50 @@
             padding:0 12px;
         }
 
+        /* ===== WAITING VIEW ===== */
+        #waitingView { display:none; padding:40px 24px; text-align:center; }
+        #waitingView.show { display:block; animation:fadeIn 0.4s; }
+
+        .waiting-pulse {
+            width:80px; height:80px;
+            border-radius:50%;
+            border:3px solid rgba(212,175,55,0.3);
+            border-top-color:var(--gold);
+            margin:0 auto 24px;
+            animation:waitingSpin 1s linear infinite;
+        }
+        @keyframes waitingSpin { to { transform:rotate(360deg); } }
+
+        .waiting-title { font-size:22px; font-weight:800; margin-bottom:6px; }
+        .waiting-subtitle { font-size:14px; color:var(--gray); margin-bottom:24px; line-height:1.5; }
+        .waiting-amount { font-size:36px; font-weight:900; color:var(--gold); margin-bottom:16px; font-variant-numeric:tabular-nums; }
+        .waiting-timer { font-size:13px; color:var(--gray); margin-bottom:8px; }
+        .waiting-hint { font-size:12px; color:rgba(255,255,255,0.3); margin-top:16px; }
+
+        /* ===== EXPIRED VIEW ===== */
+        #expiredView { display:none; padding:40px 24px; text-align:center; }
+        #expiredView.show { display:block; animation:fadeIn 0.4s; }
+
+        .expired-icon {
+            width:80px; height:80px;
+            border-radius:50%;
+            border:2.5px solid var(--red, #ef4444);
+            display:flex; align-items:center; justify-content:center;
+            margin:0 auto 20px;
+            font-size:36px; font-weight:900; color:var(--red, #ef4444);
+        }
+        .expired-title { font-size:22px; font-weight:800; margin-bottom:6px; }
+        .expired-subtitle { font-size:14px; color:var(--gray); margin-bottom:24px; line-height:1.5; }
+        .expired-retry-btn {
+            padding:16px 32px;
+            background:linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border:none; border-radius:50px;
+            color:var(--black); font-family:'Outfit',sans-serif;
+            font-size:15px; font-weight:700;
+            cursor:pointer; transition:all 0.2s;
+        }
+        .expired-retry-btn:active { transform:scale(0.97); }
+
         /* ===== RECEIPT VIEW (Moment 3) ===== */
         #receiptView { display:none; padding:32px 24px 40px; text-align:center; }
         #receiptView.show { display:block; animation:fadeIn 0.4s; }
@@ -773,12 +817,22 @@
                 </div>
             </div>
 
-            <!-- Receipt -->
+            <!-- Waiting for Confirmation -->
+            <div id="waitingView">
+                <div class="waiting-pulse"></div>
+                <div class="waiting-title">Verifying Payment</div>
+                <div class="waiting-subtitle">We're checking for your transfer. This usually takes under a minute.</div>
+                <div class="waiting-amount" id="waitingAmount"></div>
+                <div class="waiting-timer" id="waitingTimer">Checking...</div>
+                <div class="waiting-hint">You can close this page — we'll update automatically.</div>
+            </div>
+
+            <!-- Receipt (shown only after real confirmation) -->
             <div id="receiptView">
                 <div class="receipt-check">
                     <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
                 </div>
-                <div class="receipt-title" id="receiptTitle">Payment Sent</div>
+                <div class="receipt-title" id="receiptTitle">Payment Confirmed</div>
                 <div class="receipt-subtitle" id="receiptSubtitle"></div>
 
                 <div class="receipt-code-box">
@@ -801,6 +855,18 @@
                         <button class="remember-bank-no" onclick="dismissRemember()">No thanks</button>
                     </div>
                 </div>
+            </div>
+
+            <!-- Expired -->
+            <div id="expiredView">
+                <div class="expired-icon">!</div>
+                <div class="expired-title">Payment Not Detected</div>
+                <div class="expired-subtitle">We didn't receive the transfer within 15 minutes. If you've sent it, it may still be processing.</div>
+                <button class="expired-retry-btn" onclick="retryWaiting()">Check Again</button>
+                <button class="receipt-home-btn" onclick="window.location.href='../index.html'" style="margin-top:12px;">
+                    Back to Home
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
             </div>
         </div>
     </div>
@@ -1384,6 +1450,12 @@
         // ============================================
         // MOMENT 3: PAYMENT SUBMISSION & RECEIPT
         // ============================================
+        var activePaymentKey = null;
+        var paymentListener = null;
+        var waitingStartTime = null;
+        var waitingTimerInterval = null;
+        var EXPIRY_MS = 15 * 60 * 1000; // 15 minutes
+
         function onSentPayment() {
             var btn = document.getElementById('tcSentBtn');
             if (btn.classList.contains('processing')) return;
@@ -1416,6 +1488,8 @@
             };
 
             var paymentRef = db.ref('payments').push();
+            activePaymentKey = paymentRef.key;
+
             var visitRecord = window.GBVisitSystem ? window.GBVisitSystem.buildVisitRecord({
                 paymentKey: paymentRef.key,
                 source: checkoutSource || 'direct_payment',
@@ -1442,8 +1516,8 @@
                 return Promise.all(followUps).catch(function() { return null; });
             }).then(function() {
                 if (window.GBVisitSystem) window.GBVisitSystem.clearCheckoutContext();
-                // 1.2s delay for the processing bar animation
-                setTimeout(function() { morphToReceipt(); }, 1200);
+                // Show waiting screen after processing bar animation
+                setTimeout(function() { showWaitingScreen(); }, 1200);
             }).catch(function(err) {
                 console.error('Payment submission failed:', err);
                 btn.classList.remove('processing');
@@ -1451,21 +1525,95 @@
             });
         }
 
+        function showWaitingScreen() {
+            // Transition transfer card → waiting
+            document.getElementById('transferCardView').classList.remove('show');
+            document.getElementById('waitingView').classList.add('show');
+            document.getElementById('waitingAmount').textContent = '\u00a3' + smartAmount.toFixed(2);
+            document.querySelector('.sheet-content').scrollTop = 0;
+
+            // Start timer display
+            waitingStartTime = Date.now();
+            updateWaitingTimer();
+            waitingTimerInterval = setInterval(updateWaitingTimer, 1000);
+
+            // Listen for real-time status change from Firebase
+            listenForConfirmation();
+        }
+
+        function updateWaitingTimer() {
+            var elapsed = Date.now() - waitingStartTime;
+            var secs = Math.floor(elapsed / 1000);
+            var mins = Math.floor(secs / 60);
+            secs = secs % 60;
+            var timerEl = document.getElementById('waitingTimer');
+
+            if (elapsed >= EXPIRY_MS) {
+                // Payment expired — not detected in 15 minutes
+                clearInterval(waitingTimerInterval);
+                if (paymentListener) paymentListener();
+                showExpiredScreen();
+                return;
+            }
+
+            if (mins > 0) {
+                timerEl.textContent = 'Checking... ' + mins + 'm ' + (secs < 10 ? '0' : '') + secs + 's';
+            } else {
+                timerEl.textContent = 'Checking... ' + secs + 's';
+            }
+        }
+
+        function listenForConfirmation() {
+            if (!activePaymentKey) return;
+            // Real-time listener on this specific payment's status
+            var ref = db.ref('payments/' + activePaymentKey + '/status');
+            paymentListener = ref.on('value', function(snap) {
+                var status = snap.val();
+                if (status === 'confirmed') {
+                    // Payment confirmed! Show success
+                    clearInterval(waitingTimerInterval);
+                    ref.off('value', paymentListener);
+                    morphToReceipt();
+                } else if (status === 'rejected') {
+                    clearInterval(waitingTimerInterval);
+                    ref.off('value', paymentListener);
+                    showExpiredScreen();
+                    document.querySelector('.expired-title').textContent = 'Payment Rejected';
+                    document.querySelector('.expired-subtitle').textContent = 'The transfer could not be verified. Please speak to a member of staff.';
+                }
+            });
+        }
+
+        function showExpiredScreen() {
+            document.getElementById('waitingView').classList.remove('show');
+            document.getElementById('expiredView').classList.add('show');
+            document.querySelector('.sheet-content').scrollTop = 0;
+        }
+
+        function retryWaiting() {
+            document.getElementById('expiredView').classList.remove('show');
+            document.getElementById('waitingView').classList.add('show');
+            waitingStartTime = Date.now();
+            waitingTimerInterval = setInterval(updateWaitingTimer, 1000);
+            listenForConfirmation();
+        }
+
         function morphToReceipt() {
-            // Transition transfer card → receipt
+            // Transition waiting → receipt
+            document.getElementById('waitingView').classList.remove('show');
             document.getElementById('transferCardView').classList.remove('show');
             document.getElementById('receiptView').classList.add('show');
 
             // Populate receipt
             var isBooking = checkoutSource === 'online_booking';
-            document.getElementById('receiptTitle').textContent = isBooking ? 'Booking Request Submitted' : 'Payment Sent';
+            document.getElementById('receiptTitle').textContent = isBooking ? 'Booking Confirmed' : 'Payment Confirmed';
             document.getElementById('receiptSubtitle').textContent = isBooking
-                ? 'Your payment and booking details have been sent for manager review'
-                : '\u00a3' + smartAmount.toFixed(2) + ' to ' + BANK.name;
+                ? 'Your booking has been confirmed'
+                : '\u00a3' + smartAmount.toFixed(2) + ' received by ' + BANK.name;
             document.getElementById('receiptCode').textContent = verifyCode;
             document.getElementById('receiptDetails').textContent = isBooking
-                ? 'The manager will confirm your booking after verifying the transfer.'
-                : 'Payment is pending review. Staff will confirm once the transfer arrives (usually within minutes).';
+                ? 'Your appointment is locked in. See you soon!'
+                : 'Payment verified. You\'re all set.';
 
             // Celebration sequence
             setTimeout(function() {

@@ -6533,6 +6533,21 @@
             }
         }
 
+        function notifyAutoConfirmed(amount, customerName) {
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100]);
+            showToast('\u00A3' + amount.toFixed(2) + ' auto-verified' + (customerName ? ' — ' + customerName : ''), 'success');
+            if (!('Notification' in window)) return;
+            if (Notification.permission === 'granted') {
+                var n = new Notification('Payment Auto-Verified: \u00A3' + amount.toFixed(2), {
+                    body: (customerName || 'Customer') + ' — payment confirmed automatically.',
+                    icon: 'images/logo.png',
+                    tag: 'gb-auto-verify',
+                    renotify: true
+                });
+                n.onclick = function() { window.focus(); n.close(); };
+            }
+        }
+
         function notifyOpsEvent(title, body) {
             showToast(title, 'success');
             if (!('Notification' in window) || Notification.permission !== 'granted') return;
@@ -6573,6 +6588,16 @@
                         // This is a brand new pending payment
                         playPaymentSound();
                         notifyNewPayment(currentPending[key].amount || 0);
+                    }
+                });
+                // Detect auto-confirmed payments (were pending, now confirmed via auto-verify)
+                Object.keys(_prevPendingKeys).forEach(function(key) {
+                    if (!currentPending[key]) {
+                        var found = livePayments.find(function(p) { return p._key === key; });
+                        if (found && found.status === 'confirmed' && found.verificationMethod === 'auto') {
+                            playPaymentSound();
+                            notifyAutoConfirmed(found.amount || 0, found.customerName || '');
+                        }
                     }
                 });
             }
@@ -6695,7 +6720,7 @@
                     '<div class="feed-right">' +
                         '<span class="feed-badge ' + (isCash ? 'cash' : 'qr') + '">' + (isCash ? 'CASH' : 'QR') + '</span>' +
                         '<span class="feed-status ' + (isPending ? 'pending-status' : 'confirmed') + '">' +
-                            (isPending ? '\u23F3 Pending' : '\u2713 ' + (p.confirmedAt ? new Date(p.confirmedAt).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) : 'Done')) +
+                            (isPending ? '\u23F3 Pending' : (p.verificationMethod === 'auto' ? '\u2713 Auto-verified' : '\u2713 ' + (p.confirmedAt ? new Date(p.confirmedAt).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) : 'Done'))) +
                         '</span>' +
                     '</div>' +
                 '</div>';

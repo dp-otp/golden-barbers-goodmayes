@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
 
@@ -6,7 +7,10 @@ admin.initializeApp();
 const db = admin.database();
 const REGION = 'europe-west1';
 const TIME_ZONE = 'Europe/London';
-const ENGINE_VERSION = '2026.03.23.1';
+const ENGINE_VERSION = '2026.03.27.1';
+const DEFAULT_WHATSAPP_API_VERSION = 'v23.0';
+const GOOGLE_BUSINESS_API_BASE = 'https://mybusiness.googleapis.com/v4';
+const GOOGLE_REVIEW_SYNC_LIMIT = 50;
 
 const DELIVERED_STATUSES = new Set(['completed', 'completed_pending_payment']);
 const SETTLED_PAYMENT_STATUSES = new Set(['confirmed', 'paid']);
@@ -28,8 +32,108 @@ function safeArray(value) {
   return Array.isArray(value) ? value : [];
 }
 
+function envText(name, fallback) {
+  const value = safeText(process.env[name]);
+  return value || safeText(fallback);
+}
+
+function envBool(name, fallback) {
+  const value = safeText(process.env[name]).toLowerCase();
+  if (!value) return !!fallback;
+  if (['1', 'true', 'yes', 'on'].includes(value)) return true;
+  if (['0', 'false', 'no', 'off'].includes(value)) return false;
+  return !!fallback;
+}
+
 function normalizePhone(value) {
   return safeText(value).replace(/[^0-9]/g, '');
+}
+
+function formatWhatsappDestinationPhone(value) {
+  let digits = normalizePhone(value);
+  if (!digits) return '';
+  if (digits.startsWith('00')) digits = digits.slice(2);
+  if (digits.startsWith('44')) return digits;
+  if (digits.startsWith('0') && digits.length >= 10) return `44${digits.slice(1)}`;
+  return digits;
+}
+
+function getIntegrationStatus() {
+  return {
+    whatsappApiConfigured: !!(envText('WHATSAPP_ACCESS_TOKEN') && envText('WHATSAPP_PHONE_NUMBER_ID')),
+    whatsappWebhookConfigured: !!envText('WHATSAPP_WEBHOOK_VERIFY_TOKEN'),
+    googleBusinessConfigured: !!(
+      envText('GOOGLE_BUSINESS_CLIENT_ID') &&
+      envText('GOOGLE_BUSINESS_CLIENT_SECRET') &&
+      envText('GOOGLE_BUSINESS_REFRESH_TOKEN') &&
+      envText('GOOGLE_BUSINESS_LOCATION_NAME')
+    )
+  };
+}
+
+function getWhatsappApiVersion() {
+  return envText('WHATSAPP_API_VERSION', DEFAULT_WHATSAPP_API_VERSION);
+}
+
+function createStableKey(value) {
+  return crypto.createHash('sha1').update(safeText(value)).digest('hex');
+}
+
+function normalizeComparableText(value) {
+  return safeText(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function tokenizeComparableText(value) {
+  return normalizeComparableText(value)
+    .split(' ')
+    .map((part) => safeText(part))
+    .filter(Boolean);
+}
+
+function nameMatchScore(left, right) {
+  const leftNormalized = normalizeComparableText(left);
+  const rightNormalized = normalizeComparableText(right);
+
+  if (!leftNormalized || !rightNormalized) return 0;
+  if (leftNormalized === rightNormalized) return 100;
+
+  const shorter = leftNormalized.length <= rightNormalized.length ? leftNormalized : rightNormalized;
+  const longer = shorter === leftNormalized ? rightNormalized : leftNormalized;
+  if (shorter.length >= 4 && longer.includes(shorter)) return 85;
+
+  const leftTokens = tokenizeComparableText(left);
+  const rightTokens = tokenizeComparableText(right);
+  const overlaps = leftTokens.filter((token) => rightTokens.includes(token));
+  if (!overlaps.length) return 0;
+
+  const longestSharedToken = overlaps.reduce((best, token) => Math.max(best, token.length), 0);
+  if (overlaps.length >= 2) return 80 + overlaps.length;
+  if (overlaps.length === 1 && longestSharedToken >= 5 && (leftTokens.length <= 2 || rightTokens.length <= 2)) {
+    return 72;
+  }
+  return 0;
+}
+
+function parseGoogleStarRating(value) {
+  const lookup = {
+    ONE: 1,
+    TWO: 2,
+    THREE: 3,
+    FOUR: 4,
+    FIVE: 5
+  };
+  if (typeof value === 'number') return value;
+  return lookup[safeText(value).toUpperCase()] || 0;
+}
+
+function unixSecondsToIso(value) {
+  const timestamp = parseInt(value, 10);
+  if (!timestamp) return nowIso();
+  const date = new Date(timestamp * 1000);
+  return Number.isNaN(date.getTime()) ? nowIso() : date.toISOString();
 }
 
 function dayKey(value) {
@@ -294,6 +398,7 @@ async function updateEngineStatus(patch) {
         mode: 'backend',
         version: ENGINE_VERSION,
         region: REGION,
+        integrations: getIntegrationStatus(),
         updatedAt: nowIso()
       },
       patch || {}
@@ -302,12 +407,13 @@ async function updateEngineStatus(patch) {
 }
 
 async function refreshEngineMetrics() {
-  const [reviewSnap, clientSnap, commissionSnap, lowStockSnap, pendingSnap] = await Promise.all([
+  const [reviewSnap, clientSnap, commissionSnap, lowStockSnap, pendingSnap, googleSummarySnap] = await Promise.all([
     db.ref('autoManager/reviews/queue').once('value'),
     db.ref('autoManager/clients').once('value'),
     db.ref('autoManager/commissions/assignments').once('value'),
     db.ref('automationV2/alerts/lowStock').once('value'),
-    db.ref('automationV2/alerts/pendingPayments').once('value')
+    db.ref('automationV2/alerts/pendingPayments').once('value'),
+    db.ref('automationV2/googleBusiness/summary').once('value')
   ]);
 
   const reviewQueue = reviewSnap.val() || {};
@@ -318,6 +424,7 @@ async function refreshEngineMetrics() {
   const totalAssignments = Object.keys(commissionSnap.val() || {}).length;
   const lowStockAlerts = Object.keys(lowStockSnap.val() || {}).length;
   const stalePendingPayments = Object.keys(pendingSnap.val() || {}).length;
+  const googleSummary = googleSummarySnap.val() || {};
 
   await db.ref('automationV2/system/metrics').set({
     pendingReviews,
@@ -327,6 +434,8 @@ async function refreshEngineMetrics() {
     totalAssignments,
     lowStockAlerts,
     stalePendingPayments,
+    googleReviewCount: parseInt(googleSummary.totalReviewCount, 10) || 0,
+    googleAverageRating: parseFloat(googleSummary.averageRating) || 0,
     lastComputedAt: nowIso()
   });
 }
@@ -339,6 +448,452 @@ async function pushOpsNotification(type, title, body, data) {
     createdAt: nowIso(),
     data: data || {}
   });
+}
+
+function buildReviewMessage(reviewItem, reviewSettings) {
+  const template = safeText(
+    (reviewSettings && reviewSettings.messageTemplate) ||
+      'Thanks for visiting Golden Barbers. We would really appreciate a quick review: {link}'
+  );
+
+  return template
+    .replace(/\{name\}/gi, safeText(reviewItem && reviewItem.customerName) || 'there')
+    .replace(/\{link\}/gi, safeText(reviewSettings && reviewSettings.googleReviewUrl));
+}
+
+function extractApiError(payload, fallback) {
+  if (!payload || typeof payload !== 'object') return safeText(fallback);
+  if (payload.error && payload.error.message) return safeText(payload.error.message);
+  if (payload.error_description) return safeText(payload.error_description);
+  if (payload.message) return safeText(payload.message);
+  return safeText(fallback);
+}
+
+async function fetchJson(url, options) {
+  const response = await fetch(url, options);
+  const raw = await response.text();
+  let payload = null;
+
+  if (raw) {
+    try {
+      payload = JSON.parse(raw);
+    } catch (error) {
+      payload = null;
+    }
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      extractApiError(payload, `${safeText(options && options.method) || 'GET'} ${url} failed with ${response.status}`)
+    );
+  }
+
+  return payload || {};
+}
+
+async function sendWhatsappTextMessage(to, body) {
+  if (!getIntegrationStatus().whatsappApiConfigured) {
+    throw new Error('WhatsApp API credentials are missing');
+  }
+
+  const phoneNumberId = envText('WHATSAPP_PHONE_NUMBER_ID');
+  const accessToken = envText('WHATSAPP_ACCESS_TOKEN');
+  const apiVersion = getWhatsappApiVersion();
+
+  return fetchJson(`https://graph.facebook.com/${apiVersion}/${phoneNumberId}/messages`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to,
+      type: 'text',
+      text: {
+        preview_url: true,
+        body
+      }
+    })
+  });
+}
+
+async function sendReviewRequest(queueKey) {
+  const reviewRef = db.ref(`autoManager/reviews/queue/${queueKey}`);
+  const [reviewSnap, reviewSettingsSnap] = await Promise.all([
+    reviewRef.once('value'),
+    db.ref('autoManager/reviews/settings').once('value')
+  ]);
+
+  if (!reviewSnap.exists()) {
+    throw new Error(`Review queue item ${queueKey} was not found`);
+  }
+
+  const item = reviewSnap.val() || {};
+  const reviewSettings = reviewSettingsSnap.val() || {};
+  const currentStatus = safeText(item.status).toLowerCase();
+
+  if (currentStatus === 'reviewed') {
+    return { skipped: true, reason: 'already_reviewed', queueKey };
+  }
+
+  if (currentStatus === 'skipped') {
+    return { skipped: true, reason: 'already_skipped', queueKey };
+  }
+
+  const destination = formatWhatsappDestinationPhone(item.customerPhone);
+  if (!destination) {
+    throw new Error('Review request is missing a valid WhatsApp phone number');
+  }
+
+  const message = buildReviewMessage(item, reviewSettings);
+  if (!message) {
+    throw new Error('Review request message is empty');
+  }
+
+  await reviewRef.update({
+    lastSendAttemptAt: nowIso(),
+    deliveryError: null,
+    backendUpdatedAt: nowIso()
+  });
+
+  const response = await sendWhatsappTextMessage(destination, message);
+  const messageId = safeText(response && response.messages && response.messages[0] && response.messages[0].id);
+  const recipientWaId = safeText(response && response.contacts && response.contacts[0] && response.contacts[0].wa_id);
+
+  await reviewRef.update({
+    status: 'sent',
+    sentAt: nowIso(),
+    sentVia: 'whatsapp_api',
+    whatsappMessageId: messageId,
+    whatsappRecipientWaId: recipientWaId,
+    deliveryStatus: 'accepted',
+    lastSentMessage: message,
+    deliveryError: null,
+    backendUpdatedAt: nowIso()
+  });
+
+  if (messageId) {
+    await db.ref(`automationV2/index/whatsappMessageReviews/${messageId}`).set(queueKey);
+  }
+
+  await refreshEngineMetrics();
+
+  return {
+    queueKey,
+    messageId,
+    recipientWaId,
+    destination
+  };
+}
+
+function verifyWhatsappSignature(request) {
+  const appSecret = envText('WHATSAPP_APP_SECRET');
+  if (!appSecret) return true;
+
+  const signatureHeader = safeText(request.headers['x-hub-signature-256']);
+  if (!signatureHeader.startsWith('sha256=')) return false;
+
+  const expected = `sha256=${crypto.createHmac('sha256', appSecret).update(request.rawBody || '').digest('hex')}`;
+  const actualBuffer = Buffer.from(signatureHeader);
+  const expectedBuffer = Buffer.from(expected);
+
+  if (actualBuffer.length !== expectedBuffer.length) return false;
+  return crypto.timingSafeEqual(actualBuffer, expectedBuffer);
+}
+
+async function recordWhatsappStatusEvent(status) {
+  const messageId = safeText(status && status.id);
+  const queueKey = messageId
+    ? safeText((await db.ref(`automationV2/index/whatsappMessageReviews/${messageId}`).once('value')).val())
+    : '';
+  const statusValue = safeText(status && status.status).toLowerCase();
+  const eventTimestamp = unixSecondsToIso(status && status.timestamp);
+  const errorText = safeArray(status && status.errors)
+    .map((entry) => safeText(entry && (entry.title || entry.message || (entry.error_data && entry.error_data.details))))
+    .filter(Boolean)
+    .join('; ');
+
+  const eventPayload = {
+    messageId,
+    queueKey,
+    status: statusValue,
+    timestamp: eventTimestamp,
+    recipientId: safeText(status && status.recipient_id),
+    conversationId: safeText(status && status.conversation && status.conversation.id),
+    pricingCategory: safeText(status && status.pricing && status.pricing.category),
+    error: errorText,
+    receivedAt: nowIso()
+  };
+
+  await db.ref(`automationV2/integrations/whatsapp/statusEvents/${createStableKey(`${messageId}:${statusValue}:${eventTimestamp}`)}`).set(
+    eventPayload
+  );
+
+  if (!queueKey) return;
+
+  const reviewPatch = {
+    deliveryStatus: statusValue,
+    whatsappConversationId: eventPayload.conversationId,
+    whatsappStatusUpdatedAt: nowIso(),
+    backendUpdatedAt: nowIso()
+  };
+
+  if (statusValue === 'sent') reviewPatch.sentAt = eventTimestamp;
+  if (statusValue === 'delivered') reviewPatch.deliveredAt = eventTimestamp;
+  if (statusValue === 'read') reviewPatch.readAt = eventTimestamp;
+  if (statusValue === 'failed') {
+    reviewPatch.failedAt = eventTimestamp;
+    reviewPatch.deliveryError = errorText || 'WhatsApp delivery failed';
+  }
+
+  await db.ref(`autoManager/reviews/queue/${queueKey}`).update(reviewPatch);
+}
+
+async function recordWhatsappInboundMessage(message, changeValue) {
+  const messageId = safeText(message && message.id) || createStableKey(JSON.stringify(message || {}));
+  await db.ref(`automationV2/integrations/whatsapp/inbound/${messageId}`).set({
+    messageId,
+    from: safeText(message && message.from),
+    timestamp: unixSecondsToIso(message && message.timestamp),
+    type: safeText(message && message.type),
+    text: safeText(message && message.text && message.text.body),
+    contextMessageId: safeText(message && message.context && message.context.id),
+    phoneNumberId: safeText(changeValue && changeValue.metadata && changeValue.metadata.phone_number_id),
+    profileName: safeText(
+      changeValue &&
+        changeValue.contacts &&
+        changeValue.contacts[0] &&
+        changeValue.contacts[0].profile &&
+        changeValue.contacts[0].profile.name
+    ),
+    receivedAt: nowIso(),
+    raw: message || {}
+  });
+}
+
+async function getGoogleBusinessAccessToken() {
+  if (!getIntegrationStatus().googleBusinessConfigured) {
+    throw new Error('Google Business API credentials are missing');
+  }
+
+  const tokenResponse = await fetchJson('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({
+      client_id: envText('GOOGLE_BUSINESS_CLIENT_ID'),
+      client_secret: envText('GOOGLE_BUSINESS_CLIENT_SECRET'),
+      refresh_token: envText('GOOGLE_BUSINESS_REFRESH_TOKEN'),
+      grant_type: 'refresh_token'
+    }).toString()
+  });
+
+  const accessToken = safeText(tokenResponse.access_token);
+  if (!accessToken) throw new Error('Google Business access token exchange did not return an access token');
+  return accessToken;
+}
+
+async function updateGoogleBusinessStatus(patch) {
+  await db.ref('automationV2/googleBusiness/status').update(
+    Object.assign(
+      {
+        configured: getIntegrationStatus().googleBusinessConfigured,
+        updatedAt: nowIso()
+      },
+      patch || {}
+    )
+  );
+}
+
+function buildGoogleReviewRecord(review) {
+  const reviewName = safeText(review && review.name);
+  const reviewId = safeText(review && review.reviewId) || createStableKey(reviewName);
+  const reviewer = (review && review.reviewer) || {};
+
+  return {
+    reviewId,
+    name: reviewName,
+    reviewerName: safeText(reviewer.displayName || reviewer.display_name || 'Anonymous'),
+    reviewerPhotoUrl: safeText(reviewer.profilePhotoUrl),
+    starRating: parseGoogleStarRating(review && review.starRating),
+    comment: safeText(review && review.comment),
+    createTime: safeText(review && review.createTime),
+    updateTime: safeText(review && review.updateTime) || safeText(review && review.createTime),
+    replyComment: safeText(review && review.reviewReply && review.reviewReply.comment),
+    replyUpdateTime: safeText(review && review.reviewReply && review.reviewReply.updateTime),
+    hasReply: !!safeText(review && review.reviewReply && review.reviewReply.comment),
+    pulledAt: nowIso()
+  };
+}
+
+function findBestReviewQueueMatch(review, queueItems) {
+  const reviewTimestamp = new Date(review.updateTime || review.createTime || 0).getTime();
+  if (Number.isNaN(reviewTimestamp)) return null;
+
+  let bestMatch = null;
+  let bestScore = 0;
+  let scoreTied = false;
+
+  queueItems.forEach((item) => {
+    if (!item || item.matched) return;
+    if (safeText(item.status).toLowerCase() !== 'sent') return;
+    if (safeText(item.googleReviewId)) return;
+
+    const sentTimestamp = new Date(item.sentAt || item.queuedAt || 0).getTime();
+    if (Number.isNaN(sentTimestamp)) return;
+    if (reviewTimestamp + 12 * 60 * 60 * 1000 < sentTimestamp) return;
+    if (reviewTimestamp - sentTimestamp > 90 * 24 * 60 * 60 * 1000) return;
+
+    const score = nameMatchScore(item.customerName, review.reviewerName);
+    if (score < 70) return;
+
+    if (score > bestScore) {
+      bestMatch = item;
+      bestScore = score;
+      scoreTied = false;
+      return;
+    }
+
+    if (score === bestScore) scoreTied = true;
+  });
+
+  if (!bestMatch || scoreTied) return null;
+  return bestMatch;
+}
+
+async function matchGoogleBusinessReviews(reviewRecords) {
+  const reviewQueueSnap = await db.ref('autoManager/reviews/queue').once('value');
+  const reviewQueue = reviewQueueSnap.val() || {};
+  const queueItems = Object.keys(reviewQueue).map((key) =>
+    Object.assign(
+      {
+        _key: key
+      },
+      reviewQueue[key] || {}
+    )
+  );
+  const usedGoogleReviewIds = new Set(
+    queueItems.map((item) => safeText(item.googleReviewId)).filter(Boolean)
+  );
+
+  let matchedCount = 0;
+
+  for (const review of reviewRecords
+    .slice()
+    .sort((left, right) => new Date(left.createTime || left.updateTime || 0) - new Date(right.createTime || right.updateTime || 0))) {
+    if (!review.reviewId || usedGoogleReviewIds.has(review.reviewId)) continue;
+
+    const match = findBestReviewQueueMatch(review, queueItems);
+    if (!match) continue;
+
+    await db.ref(`autoManager/reviews/queue/${match._key}`).update({
+      status: 'reviewed',
+      reviewedAt: review.updateTime || review.createTime || nowIso(),
+      googleReviewId: review.reviewId,
+      googleReviewName: review.name,
+      googleReviewerName: review.reviewerName,
+      googleReviewMatchedAt: nowIso(),
+      reviewSource: 'google_business_api',
+      backendUpdatedAt: nowIso()
+    });
+
+    match.matched = true;
+    usedGoogleReviewIds.add(review.reviewId);
+    matchedCount += 1;
+  }
+
+  return matchedCount;
+}
+
+async function syncGoogleBusinessReviewsData() {
+  if (!getIntegrationStatus().googleBusinessConfigured) {
+    throw new Error('Google Business API credentials are missing');
+  }
+
+  const locationName = envText('GOOGLE_BUSINESS_LOCATION_NAME');
+  const accessToken = await getGoogleBusinessAccessToken();
+  const reviewsResponse = await fetchJson(
+    `${GOOGLE_BUSINESS_API_BASE}/${locationName}/reviews?pageSize=${GOOGLE_REVIEW_SYNC_LIMIT}&orderBy=${encodeURIComponent('updateTime desc')}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }
+  );
+
+  const reviewRecords = safeArray(reviewsResponse && reviewsResponse.reviews).map(buildGoogleReviewRecord);
+  const reviewMap = {};
+  reviewRecords.forEach((review) => {
+    reviewMap[review.reviewId] = review;
+  });
+
+  await db.ref('automationV2/googleBusiness/reviews').set(reviewMap);
+
+  const matchedCount = await matchGoogleBusinessReviews(reviewRecords);
+  const summary = {
+    locationName,
+    averageRating: parseFloat(reviewsResponse.averageRating) || 0,
+    totalReviewCount: parseInt(reviewsResponse.totalReviewCount, 10) || reviewRecords.length,
+    latestReviewAt: safeText(reviewRecords[0] && (reviewRecords[0].updateTime || reviewRecords[0].createTime)),
+    lastSyncAt: nowIso()
+  };
+
+  await db.ref('automationV2/googleBusiness/summary').set(summary);
+  await updateGoogleBusinessStatus({
+    configured: true,
+    lastSyncAt: nowIso(),
+    lastErrorAt: null,
+    lastErrorMessage: '',
+    pulledReviewCount: reviewRecords.length,
+    matchedCount,
+    locationName
+  });
+
+  await refreshEngineMetrics();
+  await updateEngineStatus({
+    lastGoogleBusinessSyncAt: nowIso(),
+    googleBusinessMatchedCount: matchedCount
+  });
+
+  return {
+    pulledReviewCount: reviewRecords.length,
+    matchedCount,
+    averageRating: summary.averageRating,
+    totalReviewCount: summary.totalReviewCount
+  };
+}
+
+async function replyToGoogleBusinessReview(reviewName, comment) {
+  if (!getIntegrationStatus().googleBusinessConfigured) {
+    throw new Error('Google Business API credentials are missing');
+  }
+
+  const reviewResourceName = safeText(reviewName);
+  const replyComment = safeText(comment);
+  if (!reviewResourceName) throw new Error('Google review name is required');
+  if (!replyComment) throw new Error('Review reply cannot be empty');
+
+  const accessToken = await getGoogleBusinessAccessToken();
+  await fetchJson(`${GOOGLE_BUSINESS_API_BASE}/${reviewResourceName}/reply`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      comment: replyComment
+    })
+  });
+
+  await syncGoogleBusinessReviewsData();
+
+  return {
+    reviewName: reviewResourceName,
+    replied: true
+  };
 }
 
 async function syncClientProjection(visitId, before, after, payment) {
@@ -686,6 +1241,90 @@ exports.buildDailyAutomationSummary = functions
     return null;
   });
 
+exports.syncGoogleBusinessReviews = functions
+  .region(REGION)
+  .pubsub.schedule('every 30 minutes')
+  .timeZone(TIME_ZONE)
+  .onRun(async () => {
+    if (!getIntegrationStatus().googleBusinessConfigured || !envBool('GOOGLE_BUSINESS_AUTO_SYNC', true)) {
+      await updateGoogleBusinessStatus({
+        configured: getIntegrationStatus().googleBusinessConfigured,
+        lastSkippedAt: nowIso(),
+        lastSkipReason: getIntegrationStatus().googleBusinessConfigured ? 'auto_sync_disabled' : 'missing_configuration'
+      });
+      await updateEngineStatus({ lastGoogleBusinessSyncAt: nowIso() });
+      return null;
+    }
+
+    try {
+      await syncGoogleBusinessReviewsData();
+    } catch (error) {
+      await updateGoogleBusinessStatus({
+        lastErrorAt: nowIso(),
+        lastErrorMessage: error.message
+      });
+      throw error;
+    }
+
+    return null;
+  });
+
+exports.whatsappWebhook = functions
+  .region(REGION)
+  .runWith({ timeoutSeconds: 60, memory: '256MB' })
+  .https.onRequest(async (request, response) => {
+    if (request.method === 'GET') {
+      const mode = safeText(request.query['hub.mode']);
+      const verifyToken = safeText(request.query['hub.verify_token']);
+      const challenge = safeText(request.query['hub.challenge']);
+
+      if (mode === 'subscribe' && verifyToken && verifyToken === envText('WHATSAPP_WEBHOOK_VERIFY_TOKEN')) {
+        response.status(200).send(challenge);
+        return;
+      }
+
+      response.status(403).send('Forbidden');
+      return;
+    }
+
+    if (request.method !== 'POST') {
+      response.status(405).send('Method not allowed');
+      return;
+    }
+
+    if (!verifyWhatsappSignature(request)) {
+      response.status(403).send('Invalid signature');
+      return;
+    }
+
+    const body = request.body || {};
+    const receivedAt = nowIso();
+    await db.ref('automationV2/integrations/whatsapp/webhooks').push({
+      receivedAt,
+      payload: body
+    });
+
+    const entries = safeArray(body && body.entry);
+    for (const entry of entries) {
+      const changes = safeArray(entry && entry.changes);
+      for (const change of changes) {
+        const value = (change && change.value) || {};
+        const statuses = safeArray(value && value.statuses);
+        const messages = safeArray(value && value.messages);
+
+        for (const status of statuses) {
+          await recordWhatsappStatusEvent(status);
+        }
+
+        for (const message of messages) {
+          await recordWhatsappInboundMessage(message, value);
+        }
+      }
+    }
+
+    response.status(200).send('EVENT_RECEIVED');
+  });
+
 exports.processAutomationCommand = functions
   .region(REGION)
   .runWith({ timeoutSeconds: 540, memory: '512MB' })
@@ -715,6 +1354,14 @@ exports.processAutomationCommand = functions
       } else if (type === 'audit_pending_payments') {
         await auditPendingPayments();
         result = { audited: true };
+      } else if (type === 'send_review_request') {
+        result = await sendReviewRequest(
+          safeText(command.reviewKey || command.queueKey || command.visitKey || context.params.commandId)
+        );
+      } else if (type === 'sync_google_business_reviews') {
+        result = await syncGoogleBusinessReviewsData();
+      } else if (type === 'reply_google_review') {
+        result = await replyToGoogleBusinessReview(command.reviewName, command.comment);
       } else {
         throw new Error(`Unsupported command type: ${type || 'unknown'}`);
       }
@@ -731,12 +1378,14 @@ exports.processAutomationCommand = functions
         lastCommandStatus: 'completed'
       });
 
-      await pushOpsNotification(
-        'automation_command_completed',
-        'Automation command completed',
-        `${type.replace(/_/g, ' ')} finished successfully.`,
-        { commandId: context.params.commandId, type, result }
-      );
+      if (!['send_review_request', 'sync_google_business_reviews', 'reply_google_review'].includes(type)) {
+        await pushOpsNotification(
+          'automation_command_completed',
+          'Automation command completed',
+          `${type.replace(/_/g, ' ')} finished successfully.`,
+          { commandId: context.params.commandId, type, result }
+        );
+      }
     } catch (error) {
       await commandRef.update({
         status: 'failed',
@@ -761,4 +1410,132 @@ exports.processAutomationCommand = functions
 
       throw error;
     }
+  });
+
+// ============================================
+// PAYMENT VERIFICATION WEBHOOK
+// ============================================
+// Called by Option A (Starling/Revolut bank webhook) or Option B (email parser)
+// Receives an incoming bank transfer amount and auto-confirms the matching pending payment
+exports.verifyIncomingPayment = functions
+  .region(REGION)
+  .runWith({ timeoutSeconds: 30, memory: '256MB' })
+  .https.onRequest(async (request, response) => {
+    // CORS headers
+    response.set('Access-Control-Allow-Origin', '*');
+    response.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    response.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (request.method === 'OPTIONS') { response.status(204).send(''); return; }
+
+    if (request.method !== 'POST') {
+      response.status(405).json({ error: 'Method not allowed' });
+      return;
+    }
+
+    // Verify API key
+    const apiKey = safeText(request.headers['x-api-key'] || request.query.key);
+    const expectedKey = envText('PAYMENT_VERIFY_API_KEY');
+    if (!expectedKey || apiKey !== expectedKey) {
+      response.status(403).json({ error: 'Invalid API key' });
+      return;
+    }
+
+    const body = request.body || {};
+    const incomingAmount = roundMoney(body.amount);
+    const incomingReference = safeText(body.reference);
+    const incomingTimestamp = safeText(body.timestamp) || nowIso();
+
+    if (!incomingAmount || incomingAmount <= 0) {
+      response.status(400).json({ error: 'Missing or invalid amount' });
+      return;
+    }
+
+    // Find pending payments that match this amount (smart penny matching)
+    const paymentsSnap = await db.ref('payments')
+      .orderByChild('status')
+      .equalTo('pending')
+      .once('value');
+
+    const pending = paymentsSnap.val() || {};
+    const matches = [];
+    const twoHoursMs = 2 * 60 * 60 * 1000;
+    const now = Date.now();
+
+    Object.keys(pending).forEach(key => {
+      const p = pending[key];
+      const paymentAmount = roundMoney(p.amount);
+      const paymentAge = now - new Date(p.createdAt || nowIso()).getTime();
+
+      // Match: same amount (smart pennies make this unique) + within 2 hour window
+      if (Math.abs(paymentAmount - incomingAmount) < 0.005 && paymentAge < twoHoursMs) {
+        matches.push({ key, payment: p, age: paymentAge });
+      }
+    });
+
+    if (matches.length === 0) {
+      // Log unmatched payment for manual review
+      await db.ref('automationV2/unmatchedPayments').push({
+        amount: incomingAmount,
+        reference: incomingReference,
+        receivedAt: incomingTimestamp,
+        loggedAt: nowIso()
+      });
+      response.status(200).json({ matched: false, reason: 'No matching pending payment found' });
+      return;
+    }
+
+    // Pick the best match (oldest pending payment with this amount — FIFO)
+    matches.sort((a, b) => b.age - a.age);
+    const match = matches[0];
+    const confirmedAt = nowIso();
+
+    // Auto-confirm the payment
+    await db.ref('payments/' + match.key).update({
+      status: 'confirmed',
+      confirmedAt: confirmedAt,
+      verifiedAmount: incomingAmount,
+      verificationMethod: 'auto',
+      bankReference: incomingReference || null
+    });
+
+    // Update visit record if exists
+    const visitSnap = await db.ref('visits/' + match.key).once('value');
+    const visit = visitSnap.val();
+    if (visit) {
+      const nextStatus = visit.source === 'online_booking' ? 'confirmed' : 'completed';
+      await db.ref('visits/' + match.key).update({
+        paymentStatus: 'confirmed',
+        visitStatus: nextStatus,
+        verifiedAmount: incomingAmount,
+        confirmedAt: confirmedAt,
+        verificationMethod: 'auto',
+        requiresManagerVerification: false
+      });
+    }
+
+    // Push notification
+    await pushOpsNotification(
+      'payment_auto_confirmed',
+      'Payment auto-verified',
+      `£${incomingAmount.toFixed(2)} matched to ${safeText(match.payment.customerName || 'walk-in')} (${match.payment.items ? match.payment.items.join(', ') : 'services'})`,
+      { paymentKey: match.key, amount: incomingAmount }
+    );
+
+    // Fire automation hook
+    if (matches.length > 1) {
+      await db.ref('automationV2/logs/smartAmountCollisions').push({
+        amount: incomingAmount,
+        matchCount: matches.length,
+        selectedKey: match.key,
+        loggedAt: nowIso()
+      });
+    }
+
+    response.status(200).json({
+      matched: true,
+      paymentKey: match.key,
+      amount: incomingAmount,
+      customerName: safeText(match.payment.customerName),
+      items: match.payment.items || []
+    });
   });
