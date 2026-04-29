@@ -1413,18 +1413,118 @@ exports.processAutomationCommand = functions
   });
 
 // ============================================
-// PAYMENT VERIFICATION WEBHOOK
+// SHARED PAYMENT MATCHER
 // ============================================
-// Called by Option A (Starling/Revolut bank webhook) or Option B (email parser)
-// Receives an incoming bank transfer amount and auto-confirms the matching pending payment
+// Used by both verifyIncomingPayment (manual/email path) and revolutWebhook
+// (Revolut Business API path). Smart-amount + 2-hour window matching.
+async function processIncomingPayment({ amount, reference, timestamp, source, externalTransactionId }) {
+  const incomingAmount = roundMoney(amount);
+  const incomingReference = safeText(reference);
+  const incomingTimestamp = safeText(timestamp) || nowIso();
+  const verificationSource = safeText(source) || 'unknown';
+
+  if (!incomingAmount || incomingAmount <= 0) {
+    return { matched: false, reason: 'invalid_amount' };
+  }
+
+  const paymentsSnap = await db.ref('payments')
+    .orderByChild('status')
+    .equalTo('pending')
+    .once('value');
+
+  const pending = paymentsSnap.val() || {};
+  const matches = [];
+  const twoHoursMs = 2 * 60 * 60 * 1000;
+  const now = Date.now();
+
+  Object.keys(pending).forEach((key) => {
+    const p = pending[key];
+    const paymentAmount = roundMoney(p.amount);
+    const paymentAge = now - new Date(p.createdAt || nowIso()).getTime();
+    if (Math.abs(paymentAmount - incomingAmount) < 0.005 && paymentAge < twoHoursMs) {
+      matches.push({ key, payment: p, age: paymentAge });
+    }
+  });
+
+  if (matches.length === 0) {
+    await db.ref('automationV2/unmatchedPayments').push({
+      amount: incomingAmount,
+      reference: incomingReference,
+      receivedAt: incomingTimestamp,
+      loggedAt: nowIso(),
+      source: verificationSource,
+      externalTransactionId: externalTransactionId || null
+    });
+    return { matched: false, reason: 'no_matching_pending_payment', amount: incomingAmount };
+  }
+
+  // FIFO — oldest pending wins
+  matches.sort((a, b) => b.age - a.age);
+  const match = matches[0];
+  const confirmedAt = nowIso();
+
+  await db.ref('payments/' + match.key).update({
+    status: 'confirmed',
+    confirmedAt,
+    verifiedAmount: incomingAmount,
+    verificationMethod: 'auto',
+    verificationSource,
+    bankReference: incomingReference || null,
+    externalTransactionId: externalTransactionId || null
+  });
+
+  const visitSnap = await db.ref('visits/' + match.key).once('value');
+  const visit = visitSnap.val();
+  if (visit) {
+    const nextStatus = visit.source === 'online_booking' ? 'confirmed' : 'completed';
+    await db.ref('visits/' + match.key).update({
+      paymentStatus: 'confirmed',
+      visitStatus: nextStatus,
+      verifiedAmount: incomingAmount,
+      confirmedAt,
+      verificationMethod: 'auto',
+      verificationSource,
+      requiresManagerVerification: false
+    });
+  }
+
+  await pushOpsNotification(
+    'payment_auto_confirmed',
+    'Payment auto-verified',
+    `£${incomingAmount.toFixed(2)} matched to ${safeText(match.payment.customerName || 'walk-in')} via ${verificationSource}`,
+    { paymentKey: match.key, amount: incomingAmount, source: verificationSource }
+  );
+
+  if (matches.length > 1) {
+    await db.ref('automationV2/logs/smartAmountCollisions').push({
+      amount: incomingAmount,
+      matchCount: matches.length,
+      selectedKey: match.key,
+      source: verificationSource,
+      loggedAt: nowIso()
+    });
+  }
+
+  return {
+    matched: true,
+    paymentKey: match.key,
+    amount: incomingAmount,
+    customerName: safeText(match.payment.customerName),
+    items: match.payment.items || []
+  };
+}
+
+// ============================================
+// PAYMENT VERIFICATION WEBHOOK (manual / email parser path)
+// ============================================
+// POST { amount, reference?, timestamp? } with x-api-key header
 exports.verifyIncomingPayment = functions
   .region(REGION)
   .runWith({ timeoutSeconds: 30, memory: '256MB' })
   .https.onRequest(async (request, response) => {
-    // CORS headers
     response.set('Access-Control-Allow-Origin', '*');
     response.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    response.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    response.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-api-key');
     if (request.method === 'OPTIONS') { response.status(204).send(''); return; }
 
     if (request.method !== 'POST') {
@@ -1432,7 +1532,6 @@ exports.verifyIncomingPayment = functions
       return;
     }
 
-    // Verify API key
     const apiKey = safeText(request.headers['x-api-key'] || request.query.key);
     const expectedKey = envText('PAYMENT_VERIFY_API_KEY');
     if (!expectedKey || apiKey !== expectedKey) {
@@ -1441,101 +1540,124 @@ exports.verifyIncomingPayment = functions
     }
 
     const body = request.body || {};
-    const incomingAmount = roundMoney(body.amount);
-    const incomingReference = safeText(body.reference);
-    const incomingTimestamp = safeText(body.timestamp) || nowIso();
+    const result = await processIncomingPayment({
+      amount: body.amount,
+      reference: body.reference,
+      timestamp: body.timestamp,
+      source: safeText(body.source) || 'manual_webhook',
+      externalTransactionId: safeText(body.transactionId)
+    });
 
-    if (!incomingAmount || incomingAmount <= 0) {
-      response.status(400).json({ error: 'Missing or invalid amount' });
+    if (result.matched) {
+      response.status(200).json(result);
+    } else {
+      response.status(200).json({ matched: false, reason: result.reason });
+    }
+  });
+
+// ============================================
+// REVOLUT BUSINESS WEBHOOK
+// ============================================
+// Configure in Revolut Business: Settings → APIs → Webhooks
+//   URL: https://<region>-<project>.cloudfunctions.net/revolutWebhook
+//   Events: TransactionCreated, TransactionStateChanged
+// Set REVOLUT_WEBHOOK_SECRET env var to the signing secret Revolut gives you.
+// Signature scheme: HMAC-SHA256(secret, "<timestamp>.<raw_body>")
+//   Header: Revolut-Request-Timestamp
+//   Header: Revolut-Signature: v1=<hex>[,v1=<hex>] (multiple during rotation)
+exports.revolutWebhook = functions
+  .region(REGION)
+  .runWith({ timeoutSeconds: 30, memory: '256MB' })
+  .https.onRequest(async (request, response) => {
+    if (request.method !== 'POST') {
+      response.status(405).json({ error: 'Method not allowed' });
       return;
     }
 
-    // Find pending payments that match this amount (smart penny matching)
-    const paymentsSnap = await db.ref('payments')
-      .orderByChild('status')
-      .equalTo('pending')
-      .once('value');
-
-    const pending = paymentsSnap.val() || {};
-    const matches = [];
-    const twoHoursMs = 2 * 60 * 60 * 1000;
-    const now = Date.now();
-
-    Object.keys(pending).forEach(key => {
-      const p = pending[key];
-      const paymentAmount = roundMoney(p.amount);
-      const paymentAge = now - new Date(p.createdAt || nowIso()).getTime();
-
-      // Match: same amount (smart pennies make this unique) + within 2 hour window
-      if (Math.abs(paymentAmount - incomingAmount) < 0.005 && paymentAge < twoHoursMs) {
-        matches.push({ key, payment: p, age: paymentAge });
-      }
-    });
-
-    if (matches.length === 0) {
-      // Log unmatched payment for manual review
-      await db.ref('automationV2/unmatchedPayments').push({
-        amount: incomingAmount,
-        reference: incomingReference,
-        receivedAt: incomingTimestamp,
-        loggedAt: nowIso()
-      });
-      response.status(200).json({ matched: false, reason: 'No matching pending payment found' });
+    const webhookSecret = envText('REVOLUT_WEBHOOK_SECRET');
+    if (!webhookSecret) {
+      console.error('REVOLUT_WEBHOOK_SECRET not configured');
+      response.status(500).json({ error: 'Webhook secret not configured' });
       return;
     }
 
-    // Pick the best match (oldest pending payment with this amount — FIFO)
-    matches.sort((a, b) => b.age - a.age);
-    const match = matches[0];
-    const confirmedAt = nowIso();
+    const signatureHeader = safeText(request.headers['revolut-signature']);
+    const timestampHeader = safeText(request.headers['revolut-request-timestamp']);
 
-    // Auto-confirm the payment
-    await db.ref('payments/' + match.key).update({
-      status: 'confirmed',
-      confirmedAt: confirmedAt,
-      verifiedAmount: incomingAmount,
-      verificationMethod: 'auto',
-      bankReference: incomingReference || null
-    });
-
-    // Update visit record if exists
-    const visitSnap = await db.ref('visits/' + match.key).once('value');
-    const visit = visitSnap.val();
-    if (visit) {
-      const nextStatus = visit.source === 'online_booking' ? 'confirmed' : 'completed';
-      await db.ref('visits/' + match.key).update({
-        paymentStatus: 'confirmed',
-        visitStatus: nextStatus,
-        verifiedAmount: incomingAmount,
-        confirmedAt: confirmedAt,
-        verificationMethod: 'auto',
-        requiresManagerVerification: false
-      });
+    if (!signatureHeader || !timestampHeader) {
+      response.status(401).json({ error: 'Missing signature headers' });
+      return;
     }
 
-    // Push notification
-    await pushOpsNotification(
-      'payment_auto_confirmed',
-      'Payment auto-verified',
-      `£${incomingAmount.toFixed(2)} matched to ${safeText(match.payment.customerName || 'walk-in')} (${match.payment.items ? match.payment.items.join(', ') : 'services'})`,
-      { paymentKey: match.key, amount: incomingAmount }
-    );
-
-    // Fire automation hook
-    if (matches.length > 1) {
-      await db.ref('automationV2/logs/smartAmountCollisions').push({
-        amount: incomingAmount,
-        matchCount: matches.length,
-        selectedKey: match.key,
-        loggedAt: nowIso()
-      });
+    // Replay protection: reject timestamps older than 5 minutes
+    const timestampMs = parseInt(timestampHeader, 10);
+    if (!timestampMs || Math.abs(Date.now() - timestampMs) > 5 * 60 * 1000) {
+      response.status(401).json({ error: 'Stale or invalid timestamp' });
+      return;
     }
 
-    response.status(200).json({
-      matched: true,
-      paymentKey: match.key,
-      amount: incomingAmount,
-      customerName: safeText(match.payment.customerName),
-      items: match.payment.items || []
+    const rawBody = (request.rawBody || Buffer.from(JSON.stringify(request.body || {}))).toString('utf8');
+    const expectedSignature = 'v1=' + crypto.createHmac('sha256', webhookSecret)
+      .update(timestampHeader + '.' + rawBody)
+      .digest('hex');
+
+    const providedSignatures = signatureHeader.split(',').map((sig) => sig.trim()).filter(Boolean);
+    const signatureMatches = providedSignatures.some((sig) => {
+      const a = Buffer.from(sig);
+      const b = Buffer.from(expectedSignature);
+      if (a.length !== b.length) return false;
+      try { return crypto.timingSafeEqual(a, b); } catch (_) { return false; }
     });
+
+    if (!signatureMatches) {
+      response.status(401).json({ error: 'Invalid signature' });
+      return;
+    }
+
+    const body = request.body || {};
+    const event = safeText(body.event);
+    const data = body.data || {};
+
+    // Audit every accepted webhook
+    await db.ref('automationV2/integrations/revolut/webhooks').push({
+      event,
+      transactionId: safeText(data.id),
+      state: safeText(data.state),
+      receivedAt: nowIso(),
+      payload: body
+    });
+
+    // Only process completed transaction events
+    if (event !== 'TransactionCreated' && event !== 'TransactionStateChanged') {
+      response.status(200).json({ ignored: true, reason: 'event_not_relevant' });
+      return;
+    }
+
+    if (safeText(data.state).toLowerCase() !== 'completed') {
+      response.status(200).json({ ignored: true, reason: 'transaction_not_completed' });
+      return;
+    }
+
+    // Find an incoming GBP leg (positive amount). Outgoing sweeps to Barclays
+    // will have negative amounts and be ignored automatically.
+    const legs = safeArray(data.legs);
+    const incomingLeg = legs.find((leg) => {
+      return roundMoney(leg && leg.amount) > 0
+        && safeText(leg && leg.currency).toUpperCase() === 'GBP';
+    });
+
+    if (!incomingLeg) {
+      response.status(200).json({ ignored: true, reason: 'no_incoming_gbp_leg' });
+      return;
+    }
+
+    const result = await processIncomingPayment({
+      amount: roundMoney(incomingLeg.amount),
+      reference: safeText(data.reference || incomingLeg.description),
+      timestamp: safeText(data.completed_at) || nowIso(),
+      source: 'revolut_webhook',
+      externalTransactionId: safeText(data.id)
+    });
+
+    response.status(200).json(result);
   });
