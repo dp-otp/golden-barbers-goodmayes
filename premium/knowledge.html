@@ -476,19 +476,35 @@
         }
 
         /* =============================================================
-           ULTRAWIDE LAYOUT — fill the viewport edge-to-edge, only tiny
-           strategic gaps between cards/photos. NO centred max-width
-           caps (those create dead side gutters). Address proportion
-           issues per-chapter where photos/text would otherwise break.
+           ULTRAWIDE LAYOUT — fill viewport edge-to-edge, only tiny
+           strategic gaps between cards/photos. Surgical per-chapter
+           fixes for proportions that break at 21:9.
            ============================================================= */
         @media (min-width: 1600px) {
-            /* Ch3 (fades): blur the slide-bg so it reads as a soft texture, not a literal photo
-               sitting behind text. Scale slightly to avoid blur edge artefacts. */
+            /* CH3 (FADES) ------------------------------------------------ */
+            /* Blur slide-bg: reads as soft texture, not literal photo behind text */
             #slide-fades .slide-bg img {
                 filter: blur(18px) saturate(1.05);
                 transform: scale(1.06);
             }
-            /* Ch3: bottom feature strip is now a 2-photo grid that fills the glass card edge-to-edge */
+            /* Force photo grid into 2 equal rows that fit the viewport so the
+               bottom feature strip stops pushing top photos off-screen and clipping titles */
+            #slide-fades .slide-content > div[style*="flex:1;display:grid"] {
+                height: calc(100vh - 180px) !important;
+                grid-template-rows: 1fr 1fr !important;
+                align-content: stretch !important;
+                padding: 110px 16px 70px !important;
+            }
+            /* Top 4 cells: drop 1:1 aspect, let row sizing dominate */
+            #slide-fades .slide-content > div[style*="flex:1;display:grid"] > div:not(.fade-feature-card) {
+                aspect-ratio: auto !important;
+            }
+            /* Feature card: drop 16/7 aspect, fill the bottom row */
+            #slide-fades .fade-feature-card {
+                aspect-ratio: auto !important;
+                height: 100% !important;
+            }
+            /* 2-photo pair inside the glass strip fills it edge-to-edge */
             .fade-feature-pair {
                 position: absolute;
                 inset: 0;
@@ -503,19 +519,59 @@
                 object-fit: cover;
                 display: block;
             }
-            /* Ch7 (treatments): photo strip was 380px fixed — let it grow to fill vertical */
+
+            /* CH2 (HAIRCUTS) + CH4 (BEARD) ------------------------------ */
+            /* Direct 1fr 1fr grid: photos left, text right. Photos fill 50%
+               edge-to-edge. Cap text content max-width inside right column
+               so reading line stays comfortable on ultrawide. */
+            #slide-haircuts > div > div:last-child > .slide-tag,
+            #slide-haircuts > div > div:last-child > .slide-title,
+            #slide-haircuts > div > div:last-child > .slide-body,
+            #slide-beard > div > div:last-child > .slide-tag,
+            #slide-beard > div > div:last-child > .slide-title,
+            #slide-beard > div > div:last-child > .slide-body,
+            #slide-beard > div > div:last-child > .chip-row,
+            #slide-beard > div > div:last-child > .slide-cta {
+                max-width: 760px;
+            }
+
+            /* CH7 (TREATMENTS) ------------------------------------------ */
+            /* Photo strip was 380px fixed; fill vertical */
             #slide-treatments .slide-content > div[style*="flex:1;display:grid"] {
                 height: calc(100vh - 240px) !important;
             }
-            /* Ch11 (lineup): switch to 4-column row so face-portrait cells stay tall, not squashed wide */
+
+            /* CH9 (PRODUCTS) -------------------------------------------- */
+            /* 3-col grid made each card ~1100px wide. Switch to 5-col so
+               cards stay sensibly sized and product images aren't huge. */
+            #slide-products .product-grid {
+                grid-template-columns: repeat(5, 1fr) !important;
+            }
+
+            /* CH10 (HAIR HEALTH) ---------------------------------------- */
+            /* Photo column was stacked vertically with redundant padding-top.
+               Switch to row layout: 3 photos side-by-side at sensible size. */
+            #slide-hairhealth .slide-content > div[style*="flex:1;display:flex"] {
+                flex-direction: row !important;
+                padding-top: 0 !important;
+                height: calc(100vh - 220px) !important;
+                align-items: stretch !important;
+            }
+            #slide-hairhealth .slide-content > div[style*="flex:1;display:flex"] .photo-cell {
+                flex: 1 !important;
+                aspect-ratio: auto !important;
+            }
+
+            /* CH11 (LINEUP) --------------------------------------------- */
+            /* 4-column row so face-portrait cells stay tall, not squashed wide */
             #slide-lineup .slide-content > div[style*="flex:1;display:grid"] {
                 grid-template-columns: repeat(4, 1fr) !important;
                 grid-template-rows: 1fr !important;
                 height: calc(100vh - 160px) !important;
                 gap: 6px !important;
             }
-            /* Ch11 bg: lift framing higher onto the hairline */
-            #lineup-bg { object-position: center 32% !important; }
+            /* Lift bg framing onto the hairline */
+            #lineup-bg { object-position: center 22% !important; }
         }
     </style>
     <script>
