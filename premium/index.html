@@ -4047,8 +4047,8 @@
             });
             var db = firebase.database();
 
-            // SHOP STATUS — overlay shows for holiday or any closed state (manual toggle / emergency).
-            // Auto-close from opening-hours has been disabled in admin so this can't fire by itself.
+            // SHOP STATUS — overlay shows for holiday or manual/emergency close.
+            // autoManaged:true closures are ignored (legacy stale data from when auto-close was active).
             db.ref('shopStatus').on('value', function(snapshot) {
                 var data = snapshot.val();
                 var overlay = document.getElementById('gbShopClosed');
@@ -4059,7 +4059,7 @@
                     document.getElementById('gbClosedTitle').textContent = "We're On Holiday";
                     document.getElementById('gbClosedMsg').textContent = "Golden Barbers is currently on holiday. We'll be back refreshed and ready! Call 020 8598 9920 for updates.";
                     overlay.classList.add('show');
-                } else if (data.status === 'closed') {
+                } else if (data.status === 'closed' && data.autoManaged !== true) {
                     document.getElementById('gbClosedEmoji').textContent = '🔒';
                     document.getElementById('gbClosedTitle').textContent = "We're Currently Closed";
                     document.getElementById('gbClosedMsg').textContent = "We'll be back soon! Check our opening hours or give us a call at 020 8598 9920.";

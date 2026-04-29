@@ -6897,9 +6897,20 @@
         var shopStatus = { status: 'open' };
 
         // Load shop status from Firebase
+        var _autoManagedCleanupDone = false;
         database.ref('shopStatus').on('value', function(snapshot) {
             var data = snapshot.val();
             shopStatus = data || { status: 'open' };
+            // One-time cleanup: auto-close is disabled, so any autoManaged:true closure
+            // is legacy stale data. Force back to open and clear the flag.
+            if (!_autoManagedCleanupDone && shopStatus.autoManaged === true && shopStatus.status === 'closed') {
+                _autoManagedCleanupDone = true;
+                shopStatus.status = 'open';
+                delete shopStatus.autoManaged;
+                shopStatus.updatedAt = new Date().toISOString();
+                database.ref('shopStatus').set(shopStatus);
+                return; // Will re-fire with cleaned data
+            }
             updateShopStatusUI();
         });
 
