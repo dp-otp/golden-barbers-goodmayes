@@ -476,48 +476,46 @@
         }
 
         /* =============================================================
-           ULTRAWIDE LAYOUT CAP — designed for 21:9 / 32:9 monitors.
-           Prevents single-column flex layouts from stretching photo
-           grids and text columns absurdly wide. Background images stay
-           full-bleed (immersive); content sits centred inside a cap.
+           ULTRAWIDE LAYOUT — fill the viewport edge-to-edge, only tiny
+           strategic gaps between cards/photos. NO centred max-width
+           caps (those create dead side gutters). Address proportion
+           issues per-chapter where photos/text would otherwise break.
            ============================================================= */
         @media (min-width: 1600px) {
-            .slide-content { max-width: 1600px; margin-left: auto; margin-right: auto; }
-            .slide-split   { max-width: 1600px; margin-left: auto; margin-right: auto; }
-            /* Chapters 2 & 4: direct 1fr 1fr grids inside .slide (photo + text split) */
-            .slide > div[style*="grid-template-columns:1fr 1fr"] {
-                max-width: 1700px;
-                margin-left: auto;
-                margin-right: auto;
+            /* Ch3 (fades): blur the slide-bg so it reads as a soft texture, not a literal photo
+               sitting behind text. Scale slightly to avoid blur edge artefacts. */
+            #slide-fades .slide-bg img {
+                filter: blur(18px) saturate(1.05);
+                transform: scale(1.06);
             }
-            /* Chapter 7 (treatments): photo strip was 380px fixed — too thin on wide */
+            /* Ch3: bottom feature strip is now a 2-photo grid that fills the glass card edge-to-edge */
+            .fade-feature-pair {
+                position: absolute;
+                inset: 0;
+                z-index: 2;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 4px;
+            }
+            .fade-feature-pair img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+            /* Ch7 (treatments): photo strip was 380px fixed — let it grow to fill vertical */
             #slide-treatments .slide-content > div[style*="flex:1;display:grid"] {
-                height: calc(100vh - 280px) !important;
-                max-height: 620px !important;
+                height: calc(100vh - 240px) !important;
             }
-            /* Chapter 3 (fades): bottom feature card aspect was 16/7 → still too wide; tighten */
-            .fade-feature-card { aspect-ratio: 16 / 6; }
-            /* Chapter 11 (lineup): photo grid height calc — give it a sensible cap */
+            /* Ch11 (lineup): switch to 4-column row so face-portrait cells stay tall, not squashed wide */
             #slide-lineup .slide-content > div[style*="flex:1;display:grid"] {
-                max-height: 720px;
+                grid-template-columns: repeat(4, 1fr) !important;
+                grid-template-rows: 1fr !important;
+                height: calc(100vh - 160px) !important;
+                gap: 6px !important;
             }
-        }
-
-        @media (min-width: 2000px) {
-            .slide-content { max-width: 1780px; }
-            .slide-split   { max-width: 1780px; }
-            /* Slightly increase side padding for breathing room on very wide screens */
-            .slide-content[style*="flex-direction:row"] { gap: 56px !important; }
-        }
-
-        @media (min-width: 2400px) {
-            .slide-content { max-width: 1920px; }
-            .slide-split   { max-width: 1920px; }
-        }
-
-        @media (min-width: 2800px) {
-            .slide-content { max-width: 2080px; }
-            .slide-split   { max-width: 2080px; }
+            /* Ch11 bg: lift framing higher onto the hairline */
+            #lineup-bg { object-position: center 32% !important; }
         }
     </style>
     <script>
@@ -723,8 +721,9 @@
                 <div class="fade-feature-card">
                     <img class="fade-feature-bg" src="download (21).jpg" alt="" aria-hidden="true">
                     <div class="fade-feature-shade"></div>
-                    <div class="fade-feature-inner">
-                        <img class="fade-feature-image" src="download (21).jpg" alt="Taper fade">
+                    <div class="fade-feature-pair">
+                        <img src="SnapInsta.to_66620431_493779438090103_5926486896537980734_n.jpg" alt="Fade detail">
+                        <img src="download (21).jpg" alt="Taper fade">
                     </div>
                     <div class="fade-feature-label">Taper Fade</div>
                 </div>
