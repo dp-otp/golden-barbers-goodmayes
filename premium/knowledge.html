@@ -410,32 +410,8 @@
            ============================================================= */
         @media (min-width: 1600px) {
             /* CH3 (FADES) ------------------------------------------------ */
-            /* Blur slide-bg: reads as soft texture, not literal photo behind text */
-            #slide-fades .slide-bg img {
-                filter: blur(18px) saturate(1.05);
-                transform: scale(1.06);
-            }
-            /* Text column: 30vw wide so the layout keeps laptop-like proportions
-               on ultrawide. Photo grid then takes the remaining 70vw, which
-               keeps top cells near-square and bottom cells at ~2:1 instead of
-               the 2.45:1 trash they were at fixed 380px text col. */
-            #slide-fades .slide-content > div:first-child {
-                background: linear-gradient(to right, rgba(0,0,0,0.96), rgba(0,0,0,0.88)) !important;
-                z-index: 3 !important;
-                position: relative !important;
-                flex: 0 0 30vw !important;
-                padding: 116px 60px 90px !important;
-            }
-            /* Cap text content max-width so paragraphs don't run absurdly wide
-               inside a 30vw column on a 3440 viewport */
-            #slide-fades .slide-content > div:first-child > .slide-tag,
-            #slide-fades .slide-content > div:first-child > .slide-title,
-            #slide-fades .slide-content > div:first-child > .slide-body {
-                max-width: 760px;
-            }
-            /* Photo grid: 2 rows. Top: 4 fade types (1 col each). Bottom:
-               2 simple photo-cells (each spans 2 cols). All cells fill
-               grid row, no aspect-ratio fighting the row sizing. */
+            /* Photo grid only: 2 rows. Top: 4 fade types. Bottom: 2 photo-cells
+               each spanning 2 cols. Text col + slide-bg left at original styling. */
             #slide-fades .slide-content > div[style*="flex:1;display:grid"] {
                 height: calc(100vh - 80px) !important;
                 grid-template-rows: 1fr 1fr !important;
