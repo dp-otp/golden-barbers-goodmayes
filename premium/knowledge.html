@@ -496,11 +496,11 @@
                 flex: 0 0 380px !important;
                 padding: 116px 36px 90px !important;
             }
-            /* Photo grid: top row dominant (62%), bottom feature strip shorter (38%).
-               Tightened padding so grid fills full slide height with no bottom dead band. */
+            /* Photo grid: 50/50 row split. Bottom row tall enough (~625px on
+               1440 viewport) for portrait photos to crop sensibly with cover. */
             #slide-fades .slide-content > div[style*="flex:1;display:grid"] {
                 height: calc(100vh - 80px) !important;
-                grid-template-rows: 1.6fr 1fr !important;
+                grid-template-rows: 1fr 1fr !important;
                 align-content: stretch !important;
                 padding: 80px 16px 30px !important;
             }
@@ -508,29 +508,35 @@
             #slide-fades .slide-content > div[style*="flex:1;display:grid"] > div:not(.fade-feature-card) {
                 aspect-ratio: auto !important;
             }
-            /* Feature card: drop 16/7 aspect, fill the bottom row */
+            /* Feature card: now just the container for 2 distinct cells —
+               drop the blurred backdrop + shade since photos use cover */
             #slide-fades .fade-feature-card {
                 aspect-ratio: auto !important;
                 height: 100% !important;
+                background: transparent !important;
             }
-            /* 2-photo pair inside the glass strip — object-fit:contain so the
-               full photo shows against the blurred backdrop instead of being
-               sliced into a thin landscape strip. Letterbox top/bottom is
-               acceptable; the glass card's blurred bg fills it. */
+            #slide-fades .fade-feature-bg,
+            #slide-fades .fade-feature-shade {
+                display: none !important;
+            }
+            /* Bottom row: 2 distinct cells side-by-side with intentional gap,
+               cover with object-position calibrated to upper-mid so heads/faces
+               are inside the crop frame, not white background corners. */
             .fade-feature-pair {
                 position: absolute;
                 inset: 0;
                 z-index: 2;
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 4px;
+                gap: 6px;
             }
             .fade-feature-pair img {
                 width: 100%;
                 height: 100%;
-                object-fit: contain;
-                object-position: center;
+                object-fit: cover;
+                object-position: center 30%;
                 display: block;
+                border-radius: 6px;
             }
 
             /* CH2 (HAIRCUTS) + CH4 (BEARD) ------------------------------ */
