@@ -487,13 +487,22 @@
                 filter: blur(18px) saturate(1.05);
                 transform: scale(1.06);
             }
-            /* Force photo grid into 2 equal rows that fit the viewport so the
-               bottom feature strip stops pushing top photos off-screen and clipping titles */
+            /* Text column: force unmissable dark backdrop + z-index so it's
+               visible regardless of what the bg overlay is doing */
+            #slide-fades .slide-content > div:first-child {
+                background: linear-gradient(to right, rgba(0,0,0,0.96), rgba(0,0,0,0.88)) !important;
+                z-index: 3 !important;
+                position: relative !important;
+                flex: 0 0 380px !important;
+                padding: 116px 36px 90px !important;
+            }
+            /* Photo grid: top row dominant (62%), bottom feature strip shorter (38%).
+               Tightened padding so grid fills full slide height with no bottom dead band. */
             #slide-fades .slide-content > div[style*="flex:1;display:grid"] {
-                height: calc(100vh - 180px) !important;
-                grid-template-rows: 1fr 1fr !important;
+                height: calc(100vh - 80px) !important;
+                grid-template-rows: 1.6fr 1fr !important;
                 align-content: stretch !important;
-                padding: 110px 16px 70px !important;
+                padding: 80px 16px 30px !important;
             }
             /* Top 4 cells: drop 1:1 aspect, let row sizing dominate */
             #slide-fades .slide-content > div[style*="flex:1;display:grid"] > div:not(.fade-feature-card) {
@@ -504,7 +513,9 @@
                 aspect-ratio: auto !important;
                 height: 100% !important;
             }
-            /* 2-photo pair inside the glass strip fills it edge-to-edge */
+            /* 2-photo pair inside the glass strip fills it edge-to-edge.
+               object-position center 28% focuses on heads/faces in portrait
+               photos that get cropped into a wider strip aspect. */
             .fade-feature-pair {
                 position: absolute;
                 inset: 0;
@@ -517,6 +528,7 @@
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
+                object-position: center 28%;
                 display: block;
             }
 
