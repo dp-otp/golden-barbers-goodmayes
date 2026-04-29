@@ -542,10 +542,10 @@
             }
 
             /* CH9 (PRODUCTS) -------------------------------------------- */
-            /* 3-col grid made each card ~1100px wide. Switch to 5-col so
-               cards stay sensibly sized and product images aren't huge. */
+            /* 6 product cards. 6-col on ultrawide so the row fills cleanly
+               with no orphan cells at the bottom (rule: no orphan rows). */
             #slide-products .product-grid {
-                grid-template-columns: repeat(5, 1fr) !important;
+                grid-template-columns: repeat(6, 1fr) !important;
             }
 
             /* CH10 (HAIR HEALTH) ---------------------------------------- */
