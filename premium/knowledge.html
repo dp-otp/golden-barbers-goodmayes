@@ -542,10 +542,23 @@
             }
 
             /* CH9 (PRODUCTS) -------------------------------------------- */
-            /* 6 product cards. 6-col on ultrawide so the row fills cleanly
-               with no orphan cells at the bottom (rule: no orphan rows). */
+            /* 6 product cards in single row (6-col, no orphan cells).
+               Make the grid grow to fill vertical space and override the
+               1:1 image aspect so cards fill the full slide height. */
             #slide-products .product-grid {
                 grid-template-columns: repeat(6, 1fr) !important;
+                grid-template-rows: 1fr !important;
+                flex: 1 1 0 !important;
+                height: auto !important;
+                align-items: stretch !important;
+            }
+            #slide-products .product-grid .product-card {
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            #slide-products .product-grid .product-img {
+                flex: 1 1 0 !important;
+                aspect-ratio: auto !important;
             }
 
             /* CH10 (HAIR HEALTH) ---------------------------------------- */
