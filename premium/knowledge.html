@@ -410,11 +410,13 @@
            ============================================================= */
         @media (min-width: 1600px) {
             /* CH3 (FADES) ------------------------------------------------ */
-            /* Photo grid only: 2 rows. Top: 4 fade types. Bottom: 2 photo-cells
-               each spanning 2 cols. Text col + slide-bg left at original styling. */
+            /* Photo grid: 5 cells in single row (4 fade types + Long Curl).
+               Override the inline 4-col template, drop 1:1 aspect on cells
+               so they fill the row height as tall portrait cells. */
             #slide-fades .slide-content > div[style*="flex:1;display:grid"] {
                 height: calc(100vh - 80px) !important;
-                grid-template-rows: 1fr 1fr !important;
+                grid-template-columns: repeat(5, 1fr) !important;
+                grid-template-rows: 1fr !important;
                 align-content: stretch !important;
                 padding: 80px 16px 30px !important;
             }
@@ -689,11 +691,7 @@
                         <div style="font-size:0.68rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">Burst Fade</div>
                     </div>
                 </div>
-                <div class="photo-cell" style="border-radius:10px;grid-column:span 2;">
-                    <img src="SnapInsta.to_66620431_493779438090103_5926486896537980734_n.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;" alt="Taper fade">
-                    <div class="photo-label">Taper Fade</div>
-                </div>
-                <div class="photo-cell" style="border-radius:10px;grid-column:span 2;">
+                <div class="photo-cell" style="border-radius:10px;">
                     <img src="download (21).jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;" alt="Long curl fade">
                     <div class="photo-label">Long Curl</div>
                 </div>
