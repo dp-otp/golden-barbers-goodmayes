@@ -487,14 +487,23 @@
                 filter: blur(18px) saturate(1.05);
                 transform: scale(1.06);
             }
-            /* Text column: force unmissable dark backdrop + z-index so it's
-               visible regardless of what the bg overlay is doing */
+            /* Text column: 30vw wide so the layout keeps laptop-like proportions
+               on ultrawide. Photo grid then takes the remaining 70vw, which
+               keeps top cells near-square and bottom cells at ~2:1 instead of
+               the 2.45:1 trash they were at fixed 380px text col. */
             #slide-fades .slide-content > div:first-child {
                 background: linear-gradient(to right, rgba(0,0,0,0.96), rgba(0,0,0,0.88)) !important;
                 z-index: 3 !important;
                 position: relative !important;
-                flex: 0 0 380px !important;
-                padding: 116px 36px 90px !important;
+                flex: 0 0 30vw !important;
+                padding: 116px 60px 90px !important;
+            }
+            /* Cap text content max-width so paragraphs don't run absurdly wide
+               inside a 30vw column on a 3440 viewport */
+            #slide-fades .slide-content > div:first-child > .slide-tag,
+            #slide-fades .slide-content > div:first-child > .slide-title,
+            #slide-fades .slide-content > div:first-child > .slide-body {
+                max-width: 760px;
             }
             /* Photo grid: 50/50 row split. Bottom row tall enough (~625px on
                1440 viewport) for portrait photos to crop sensibly with cover. */

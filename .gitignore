@@ -16,3 +16,5 @@ Thumbs.db
 # Don't upload these
 node_modules/
 .env
+verify-screenshots/
+verify-ch3.py
