@@ -67,6 +67,7 @@ class BookingSystem {
             email: "",
             phone: ""
         };
+        this.shopState = { status: 'open' };
         this.init();
     }
 
@@ -75,6 +76,54 @@ class BookingSystem {
         this.loadServices();
         this.loadBarbers();
         this.setupDatePicker();
+        this.subscribeShopStatus();
+    }
+
+    subscribeShopStatus() {
+        try {
+            if (typeof firebase !== 'undefined' && firebase.database) {
+                firebase.database().ref('shopStatus').on('value', (snap) => {
+                    const data = snap.val() || {};
+                    this.shopState = { status: data.status || 'open' };
+                    this.applyShopStateToUI();
+                });
+            }
+        } catch (e) { /* Firebase unavailable — fail open, customer can still book */ }
+    }
+
+    isShopBookingBlocked() {
+        return this.shopState && (this.shopState.status === 'closed' || this.shopState.status === 'holiday');
+    }
+
+    applyShopStateToUI() {
+        const blocked = this.isShopBookingBlocked();
+        const submitBtn = document.getElementById('submitBookingBtn');
+        if (submitBtn) {
+            submitBtn.disabled = blocked;
+            submitBtn.style.opacity = blocked ? '0.45' : '';
+            submitBtn.style.cursor = blocked ? 'not-allowed' : '';
+            submitBtn.title = blocked
+                ? "Online bookings paused — please call 020 8598 9920."
+                : '';
+        }
+        const formHost = document.getElementById('booking-form');
+        let notice = document.getElementById('booking-shop-closed-notice');
+        if (blocked) {
+            if (!notice && formHost) {
+                notice = document.createElement('div');
+                notice.id = 'booking-shop-closed-notice';
+                notice.style.cssText = 'background:linear-gradient(135deg,#3a1212,#5a1a1a);color:#fff;padding:14px 18px;border-radius:10px;margin:0 0 18px 0;font-size:14px;line-height:1.5;text-align:center;border:1px solid rgba(255,215,0,0.25);box-shadow:0 4px 14px rgba(0,0,0,0.3)';
+                formHost.insertBefore(notice, formHost.firstChild);
+            }
+            if (notice) {
+                notice.innerHTML = this.shopState.status === 'holiday'
+                    ? "🏖️ <strong>We're on holiday</strong> — online bookings are paused. Please call <a href='tel:02085989920' style='color:#ffd700;text-decoration:underline'>020 8598 9920</a> for updates."
+                    : "🔒 <strong>We're currently closed</strong> — online bookings are paused. Please call <a href='tel:02085989920' style='color:#ffd700;text-decoration:underline'>020 8598 9920</a>.";
+                notice.style.display = '';
+            }
+        } else if (notice) {
+            notice.style.display = 'none';
+        }
     }
 
     setupEventListeners() {
@@ -392,6 +441,13 @@ class BookingSystem {
     }
 
     submitBooking() {
+        // Hard-stop if shop is closed or on holiday — admin's manual signal is authoritative.
+        if (this.isShopBookingBlocked()) {
+            const reason = this.shopState.status === 'holiday' ? 'on holiday' : 'currently closed';
+            alert("Sorry — we're " + reason + " and online bookings are paused. Please call 020 8598 9920.");
+            return;
+        }
+
         // Generate booking reference
         const reference = this.generateBookingReference();
 

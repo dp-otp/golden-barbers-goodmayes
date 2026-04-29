@@ -4047,22 +4047,22 @@
             });
             var db = firebase.database();
 
-            // ============================================
-            // SHOP STATUS - show closed/holiday notice
-            // ============================================
+            // SHOP STATUS — overlay shows for holiday or any closed state (manual toggle / emergency).
+            // Auto-close from opening-hours has been disabled in admin so this can't fire by itself.
             db.ref('shopStatus').on('value', function(snapshot) {
                 var data = snapshot.val();
-                if (!data) return;
                 var overlay = document.getElementById('gbShopClosed');
-                if (data.status === 'closed') {
-                    document.getElementById('gbClosedEmoji').textContent = '🔒';
-                    document.getElementById('gbClosedTitle').textContent = "We're Currently Closed";
-                    document.getElementById('gbClosedMsg').textContent = "We'll be back soon! Check our opening hours or give us a call at 020 8598 9920.";
-                    overlay.classList.add('show');
-                } else if (data.status === 'holiday') {
+                if (!overlay) return;
+                if (!data) { overlay.classList.remove('show'); return; }
+                if (data.status === 'holiday') {
                     document.getElementById('gbClosedEmoji').textContent = '🏖️';
                     document.getElementById('gbClosedTitle').textContent = "We're On Holiday";
                     document.getElementById('gbClosedMsg').textContent = "Golden Barbers is currently on holiday. We'll be back refreshed and ready! Call 020 8598 9920 for updates.";
+                    overlay.classList.add('show');
+                } else if (data.status === 'closed') {
+                    document.getElementById('gbClosedEmoji').textContent = '🔒';
+                    document.getElementById('gbClosedTitle').textContent = "We're Currently Closed";
+                    document.getElementById('gbClosedMsg').textContent = "We'll be back soon! Check our opening hours or give us a call at 020 8598 9920.";
                     overlay.classList.add('show');
                 } else {
                     overlay.classList.remove('show');

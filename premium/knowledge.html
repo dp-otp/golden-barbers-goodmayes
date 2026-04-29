@@ -474,6 +474,51 @@
         @media(max-width:420px){
             .slide-title { font-size:1.35rem !important; }
         }
+
+        /* =============================================================
+           ULTRAWIDE LAYOUT CAP — designed for 21:9 / 32:9 monitors.
+           Prevents single-column flex layouts from stretching photo
+           grids and text columns absurdly wide. Background images stay
+           full-bleed (immersive); content sits centred inside a cap.
+           ============================================================= */
+        @media (min-width: 1600px) {
+            .slide-content { max-width: 1600px; margin-left: auto; margin-right: auto; }
+            .slide-split   { max-width: 1600px; margin-left: auto; margin-right: auto; }
+            /* Chapters 2 & 4: direct 1fr 1fr grids inside .slide (photo + text split) */
+            .slide > div[style*="grid-template-columns:1fr 1fr"] {
+                max-width: 1700px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            /* Chapter 7 (treatments): photo strip was 380px fixed — too thin on wide */
+            #slide-treatments .slide-content > div[style*="flex:1;display:grid"] {
+                height: calc(100vh - 280px) !important;
+                max-height: 620px !important;
+            }
+            /* Chapter 3 (fades): bottom feature card aspect was 16/7 → still too wide; tighten */
+            .fade-feature-card { aspect-ratio: 16 / 6; }
+            /* Chapter 11 (lineup): photo grid height calc — give it a sensible cap */
+            #slide-lineup .slide-content > div[style*="flex:1;display:grid"] {
+                max-height: 720px;
+            }
+        }
+
+        @media (min-width: 2000px) {
+            .slide-content { max-width: 1780px; }
+            .slide-split   { max-width: 1780px; }
+            /* Slightly increase side padding for breathing room on very wide screens */
+            .slide-content[style*="flex-direction:row"] { gap: 56px !important; }
+        }
+
+        @media (min-width: 2400px) {
+            .slide-content { max-width: 1920px; }
+            .slide-split   { max-width: 1920px; }
+        }
+
+        @media (min-width: 2800px) {
+            .slide-content { max-width: 2080px; }
+            .slide-split   { max-width: 2080px; }
+        }
     </style>
     <script>
         (function () {

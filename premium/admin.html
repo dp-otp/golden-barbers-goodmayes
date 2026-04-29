@@ -9559,8 +9559,9 @@
             // Auto-set daily goal from historical average
             setTimeout(autoSetDailyGoal, 2000);
 
-            // Auto shop open/close check
-            setTimeout(checkAutoShopStatus, 3000);
+            // Auto shop open/close DISABLED by request — shop status is manual-only.
+            // checkAutoShopStatus() function preserved below in case you want to re-enable later.
+            // setTimeout(checkAutoShopStatus, 3000);
 
             // Periodically refresh briefing, alerts, and auto shop status
             setInterval(function() {
@@ -9568,8 +9569,7 @@
                 updateSmartAlerts();
             }, 60000);
 
-            // Check shop status every 5 minutes
-            setInterval(checkAutoShopStatus, 300000);
+            // setInterval(checkAutoShopStatus, 300000); // disabled with auto-close
         }
 
         // Hook into the existing init
