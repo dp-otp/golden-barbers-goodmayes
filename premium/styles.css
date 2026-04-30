@@ -1,6 +1,7 @@
 /* ============================================
-   GOLDEN BARBERS - ULTRA PREMIUM FUTURISTIC DESIGN
-   $10,000+ Agency-Level Website
+   GOLDEN BARBERS — AFTER HOURS
+   Brand system documented in /BRAND.md.
+   Restraint over flash. Material weight over motion.
    ============================================ */
 
 /* ============================================
@@ -13,34 +14,64 @@
 }
 
 :root {
-    /* Brand Colors - Enhanced */
-    --gold: #d4af37;
-    --gold-dark: #b8941f;
-    --gold-light: #f4d976;
-    --gold-glow: rgba(212, 175, 55, 0.5);
-    --gold-neon: #ffd700;
-    --dark-bg: #050505;
-    --dark-card: #0d0d0d;
-    --dark-elevated: #111111;
-    --dark-glass: rgba(15, 15, 15, 0.7);
-    --text-primary: #ffffff;
-    --text-secondary: #b0b0b0;
-    --text-muted: #666666;
+    /* ----- Surfaces ------------------------------------------------ */
+    --surface-base: #0A0A0A;          /* Eerie Black — page bg, never #000 */
+    --surface-elevated: #141414;       /* Onyx — cards, modals */
+    --surface-quiet: #1C1C1C;          /* Slate Smoke — subtle stratification */
+    --surface-glass: rgba(20, 20, 20, 0.72);
 
-    /* Cyberpunk Accents */
-    --cyber-blue: #00f0ff;
-    --cyber-purple: #bf00ff;
-    --cyber-pink: #ff0080;
+    /* ----- Brass (the matured gold) ------------------------------- */
+    --brass: #B8895C;                  /* Antique Brass — primary brand metal */
+    --brass-light: #D4A878;            /* Hover states only */
+    --brass-deep: #8B6440;             /* Pressed states */
+    --brass-glow: rgba(184, 137, 92, 0.32);
+    --brass-whisper: rgba(184, 137, 92, 0.10);
 
-    /* Spacing System */
+    /* ----- Surprise warm secondary -------------------------------- */
+    --wine: #5C1A1A;                   /* Dried Wine — sparing accent only */
+    --wine-deep: #3D0F0F;
+
+    /* ----- Bone (text on dark, never pure white) ----------------- */
+    --bone: #E8DDD0;                   /* Primary text */
+    --bone-soft: #B8AFA3;              /* Secondary / body */
+    --bone-whisper: #6B6259;           /* Tertiary, captions */
+    --hairline: rgba(232, 221, 208, 0.08);
+    --hairline-strong: rgba(232, 221, 208, 0.16);
+
+    /* ----- Strategic neon (admin + alerts only) ------------------ */
+    --alert: #FFD700;                  /* Restricted use — emergency, payment-failed */
+
+    /* ----- Legacy aliases (kept so existing class refs don't crash) */
+    --gold: var(--brass);
+    --gold-dark: var(--brass-deep);
+    --gold-light: var(--brass-light);
+    --gold-glow: var(--brass-glow);
+    --gold-neon: var(--alert);
+    --dark-bg: var(--surface-base);
+    --dark-card: var(--surface-elevated);
+    --dark-elevated: var(--surface-quiet);
+    --dark-glass: var(--surface-glass);
+    --text-primary: var(--bone);
+    --text-secondary: var(--bone-soft);
+    --text-muted: var(--bone-whisper);
+
+    /* Cyberpunk accents — DEPRECATED, kept as alias to brass so any legacy
+       reference loses its glow rather than crashing. Audit + remove uses. */
+    --cyber-blue: var(--brass);
+    --cyber-purple: var(--brass);
+    --cyber-pink: var(--brass);
+
+    /* ----- Spatial system (8px rhythm) --------------------------- */
     --space-xs: 0.5rem;
     --space-sm: 1rem;
     --space-md: 2rem;
     --space-lg: 4rem;
     --space-xl: 6rem;
     --space-2xl: 8rem;
+    --section-y: clamp(64px, 8vw, 128px);
+    --section-x: clamp(24px, 5vw, 80px);
 
-    /* Typography Scale */
+    /* ----- Typography scale (modular, ratio 1.25) ---------------- */
     --text-xs: 0.75rem;
     --text-sm: 0.875rem;
     --text-base: 1rem;
@@ -54,24 +85,38 @@
     --text-7xl: 5rem;
     --text-8xl: 6rem;
 
-    /* Animation Timing */
-    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --text-display-1: clamp(2.5rem, 5vw, 5rem);
+    --text-display-2: clamp(2rem, 4vw, 3.75rem);
+    --text-h1: clamp(1.75rem, 3vw, 2.5rem);
+    --text-h2: clamp(1.375rem, 2.2vw, 1.875rem);
+    --text-h3: clamp(1.125rem, 1.6vw, 1.375rem);
+    --text-mono-tag: 0.7rem;
+
+    /* ----- Type families ----------------------------------------- */
+    --font-display: 'Fraunces', 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+
+    /* ----- Motion ------------------------------------------------- */
+    --ease-quiet: cubic-bezier(0.7, 0, 0.3, 1);    /* Signature — slow-out-slow-in */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);     /* Decelerated reveals */
+    --ease-smooth: var(--ease-quiet);              /* Legacy alias */
+    --ease-bounce: var(--ease-quiet);              /* Spring → quiet (no bounce) */
+    --ease-expo: var(--ease-out);                  /* Legacy alias */
     --transition-fast: 0.2s;
-    --transition-base: 0.3s;
-    --transition-slow: 0.6s;
+    --transition-base: 0.4s;
+    --transition-slow: 0.7s;
     --transition-ultra: 1s;
 
-    /* Effects */
-    --blur-subtle: blur(20px);
-    --blur-strong: blur(40px);
-    --blur-glass: blur(30px);
-    --shadow-subtle: 0 2px 10px rgba(0, 0, 0, 0.3);
-    --shadow-medium: 0 10px 40px rgba(0, 0, 0, 0.5);
-    --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.7);
-    --shadow-gold: 0 10px 40px rgba(212, 175, 55, 0.3);
-    --shadow-neon: 0 0 30px var(--gold-glow), 0 0 60px var(--gold-glow);
+    /* ----- Effects ----------------------------------------------- */
+    --blur-subtle: blur(16px);
+    --blur-strong: blur(32px);
+    --blur-glass: blur(24px);
+    --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.55);
+    --shadow-strong: 0 24px 64px rgba(0, 0, 0, 0.72);
+    --shadow-gold: 0 8px 28px var(--brass-glow);
+    --shadow-neon: 0 1px 0 var(--hairline-strong);  /* Glow killed — use hairline instead */
 }
 
 html {
@@ -80,20 +125,31 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    background: var(--dark-bg);
-    color: var(--text-primary);
+    font-family: var(--font-body);
+    background: var(--surface-base);
+    color: var(--bone);
     line-height: 1.6;
     font-size: var(--text-base);
+    font-weight: 400;
+    letter-spacing: -0.005em;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-feature-settings: "ss01", "ss02";
+    color: var(--bone);
+}
+
 /* Custom Selection */
 ::selection {
-    background: var(--gold);
-    color: var(--dark-bg);
+    background: var(--brass);
+    color: var(--surface-base);
 }
 
 /* Custom Scrollbar */
@@ -106,9 +162,259 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, var(--gold), var(--gold-dark));
+    background: var(--brass-deep);
     border-radius: 4px;
 }
+::-webkit-scrollbar-thumb:hover { background: var(--brass); }
+
+/* ============================================
+   Editorial typography rules (After Hours)
+   ============================================ */
+.display-1 { font-family: var(--font-display); font-size: var(--text-display-1); font-weight: 600; line-height: 1.02; letter-spacing: -0.025em; }
+.display-2 { font-family: var(--font-display); font-size: var(--text-display-2); font-weight: 600; line-height: 1.04; letter-spacing: -0.02em; }
+.display-italic { font-style: italic; font-feature-settings: "ss01"; }
+
+.label-mono {
+    font-family: var(--font-mono);
+    font-size: var(--text-mono-tag);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--brass);
+}
+
+.editorial-body {
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--bone-soft);
+    max-width: 65ch;
+    font-weight: 400;
+}
+
+.dropcap::first-letter {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 4.2em;
+    float: left;
+    line-height: 0.85;
+    margin: 0.08em 0.12em 0 -0.04em;
+    color: var(--brass);
+    font-style: italic;
+}
+
+/* Roman numerals as section dividers */
+.section-numeral {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    color: var(--brass);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.section-numeral::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--hairline-strong);
+}
+
+/* ============================================
+   HERO — EDITORIAL (After Hours)
+   Asymmetric grid. Type-led. No blobs, no glitch,
+   no gradient overlays. Brass replaces neon.
+   ============================================ */
+.hero-editorial {
+    min-height: 100vh;
+    background: var(--surface-base);
+    color: var(--bone);
+    position: relative;
+    padding: clamp(120px, 14vh, 180px) clamp(28px, 5vw, 88px) clamp(48px, 6vh, 80px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    isolation: isolate;
+}
+.hero-editorial::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(80% 60% at 78% 50%, rgba(184, 137, 92, 0.045), transparent 70%),
+        linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.35) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(48px, 6vw, 112px);
+    align-items: center;
+    flex: 1;
+}
+
+.hero-numeral {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin-bottom: clamp(28px, 4vh, 44px);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.hero-numeral::after {
+    content: '';
+    width: 56px;
+    height: 1px;
+    background: var(--brass);
+    opacity: 0.55;
+}
+
+.hero-display {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 6.4vw, 5.75rem);
+    font-weight: 600;
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    color: var(--bone);
+    margin-bottom: clamp(24px, 3.5vh, 40px);
+    font-feature-settings: "ss01", "ss02";
+}
+.hero-display em {
+    color: var(--brass);
+    font-style: italic;
+    font-weight: 600;
+}
+
+.hero-lede {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.05vw, 1.0625rem);
+    line-height: 1.72;
+    color: var(--bone-soft);
+    max-width: 50ch;
+    margin-bottom: clamp(32px, 4.5vh, 56px);
+    font-weight: 400;
+    letter-spacing: -0.005em;
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: clamp(20px, 3vw, 40px);
+    flex-wrap: wrap;
+}
+
+.btn-aged {
+    background: var(--brass);
+    color: var(--surface-base);
+    padding: 18px 38px;
+    border-radius: 0;
+    border: 1px solid var(--brass);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.875rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background 0.5s var(--ease-quiet), color 0.5s var(--ease-quiet), border-color 0.5s var(--ease-quiet);
+    display: inline-block;
+    cursor: pointer;
+}
+.btn-aged:hover {
+    background: var(--brass-light);
+    border-color: var(--brass-light);
+}
+
+.btn-quiet {
+    color: var(--bone);
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--hairline-strong);
+    padding: 0 0 6px;
+    transition: color 0.5s var(--ease-quiet), border-color 0.5s var(--ease-quiet);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+.btn-quiet:hover {
+    color: var(--brass);
+    border-color: var(--brass);
+}
+.btn-quiet .arrow {
+    transition: transform 0.4s var(--ease-quiet);
+}
+.btn-quiet:hover .arrow {
+    transform: translateX(4px);
+}
+
+.hero-frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    max-height: 78vh;
+    background: var(--surface-elevated);
+    overflow: hidden;
+    border-radius: 0;
+    box-shadow: var(--shadow-strong);
+}
+.hero-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.3) 100%);
+    pointer-events: none;
+}
+.hero-frame video,
+.hero-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: contrast(1.05) saturate(0.92);
+}
+
+.hero-meta {
+    display: flex;
+    align-items: center;
+    gap: clamp(16px, 2vw, 28px);
+    margin-top: clamp(40px, 5vh, 64px);
+    padding-top: 28px;
+    border-top: 1px solid var(--hairline);
+    flex-wrap: wrap;
+}
+.hero-meta-item {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--bone-whisper);
+}
+.hero-meta-item strong {
+    color: var(--bone);
+    font-weight: 500;
+}
+.hero-meta-divider {
+    color: var(--brass-deep);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+}
+
+@media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+    .hero-frame { max-height: 56vh; aspect-ratio: 4/5; order: 2; }
+    .hero-text { order: 1; }
+    .hero-meta { gap: 12px; }
+}
+
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--gold-light);
