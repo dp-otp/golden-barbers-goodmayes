@@ -195,17 +195,17 @@ body {
   z-index: 3;
 }
 
-/* ── User's lipstick-kiss CSS · verbatim ── */
+/* ── lipstick imprint raster · scaled up because it's the poster's statement piece ── */
 .lipstick-kiss {
-  width: 100px;
-  height: 100px;
-  opacity: 0.85;
-  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.1));
+  width: clamp(180px, 22vh, 320px);
+  height: auto;
+  opacity: 1;
+  mix-blend-mode: multiply;             /* lets cream paper + grain show through */
+  filter: drop-shadow(2px 3px 6px rgba(0,0,0,0.12));
   transition: transform 0.3s ease;
 }
-
 .lipstick-kiss:hover {
-  transform: scale(1.1) rotate(5deg);
+  transform: scale(1.04) rotate(2deg);
 }
 
 /* ════════════════════════════════════════════════════════════════════
@@ -401,22 +401,9 @@ body {
     <span class="name"><b>Maïa</b> Sølberg</span>
   </div>
 
-  <!-- Lipstick Kiss Mark SVG · user's verbatim code -->
+  <!-- Lipstick imprint · Flux-generated raster, cream paper · v1 -->
   <div class="kiss-stage" aria-hidden="true">
-    <svg viewBox="0 0 100 100" class="lipstick-kiss" xmlns="http://w3.org">
-      <path d="M20,45 C25,35 45,32 50,42 C55,32 75,35 80,45 C85,60 70,75 50,75 C30,75 15,60 20,45 Z
-               M30,48 C35,45 45,45 50,48 C55,45 65,45 70,48 C65,55 35,55 30,48 Z"
-            fill="#C0022F"
-            style="filter: url(#smudge);" />
-
-      <!-- Optional filter for a realistic 'smudged' texture -->
-      <defs>
-        <filter id="smudge">
-          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
-        </filter>
-      </defs>
-    </svg>
+    <img src="assets/img/poster/kiss-v1.png" class="lipstick-kiss" alt="">
   </div>
 
   <!-- ink-dot imperfections scattered around -->
