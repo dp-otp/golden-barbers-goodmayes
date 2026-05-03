@@ -385,36 +385,50 @@ body {
 /* WAX SEAL · cinnabar wax stamp with cursive A (Aurora), in the LEFT GAP.
    Round counterpoint to the organic kiss shape on the right.
    Smaller than the kiss so it supports without competing. NEVER overlaps. */
+/* CSS-drawn red wax disc · no paper background, no border, just the seal.
+   "M" inside ties to Mon amour and to the director's Maïa initial. */
 .wax-seal {
   position: absolute;
-  top: 18%;
-  left: 7%;
+  top: 19%;
+  left: 9%;
   z-index: 4;
-  width: clamp(108px, 13.5vh, 195px);
+  width: clamp(96px, 12vh, 170px);
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  border: 1.2px solid var(--ink-soft);
-  overflow: hidden;
-  transform: rotate(-5deg);
-  filter: drop-shadow(2px 4px 6px rgba(14, 9, 7, 0.16));
-  background: var(--bone);
+  background:
+    radial-gradient(circle at 36% 32%,
+      #C72A3D 0%,
+      #A11E2C 55%,
+      #6F0E18 100%);
+  display: grid;
+  place-items: center;
+  transform: rotate(-6deg);
+  filter: drop-shadow(2px 4px 7px rgba(14, 9, 7, 0.28));
+  box-shadow:
+    inset 0 0 18px rgba(60, 8, 14, 0.55),
+    inset 0 -5px 12px rgba(0, 0, 0, 0.30),
+    inset 0 5px 10px rgba(255, 200, 180, 0.15);
 }
-.wax-seal img {
-  width: 112%;
-  height: 112%;
-  margin: -6%;
-  object-fit: cover;
-  mix-blend-mode: multiply;
+.wax-seal .seal-mark {
+  font-family: 'Stardom', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 5.4vh, 4.6rem);
+  color: #F2E0BE;
+  line-height: 1;
+  text-shadow:
+    1px 1px 0 rgba(60, 8, 14, 0.45),
+    -1px -1px 0 rgba(255, 220, 180, 0.18);
+  transform: translateY(-2%);
 }
-/* faint inner ring for the printed-paper register */
-.wax-seal::after {
+/* faint inner ring · the impression's edge from the seal stamp */
+.wax-seal::before {
   content: '';
   position: absolute;
-  inset: 5px;
-  border: 1px dashed var(--rule);
+  inset: 8%;
   border-radius: 50%;
+  border: 1px dashed rgba(245, 226, 192, 0.22);
   pointer-events: none;
-  opacity: 0.6;
 }
 .title-mast .title {
   font-family: 'Britney', cursive;
@@ -648,9 +662,9 @@ body {
     <i style="--s: 3px; top: 64%; left: 56%; opacity: 0.4;"></i>
   </div>
 
-  <!-- WAX SEAL · cinnabar A (Aurora), pairs with the kiss across the upper band -->
+  <!-- WAX SEAL · CSS-drawn cinnabar disc, M for Mon amour / Maïa, no paper -->
   <div class="wax-seal" aria-hidden="true">
-    <img src="assets/img/poster/letter-v3.png" alt="">
+    <span class="seal-mark">M</span>
   </div>
 
   <!-- TITLE · Britney script · displaced rotation + oversized cinnabar full-stop -->
