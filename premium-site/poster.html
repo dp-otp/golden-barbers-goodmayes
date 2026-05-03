@@ -208,9 +208,9 @@ body {
   mix-blend-mode: multiply;
   /* contrast push drops the outer background fully into the poster cream */
   filter: contrast(1.25) brightness(1.06);
-  /* softer mask · keeps more of the torn paper, gentler fade to edges */
-  -webkit-mask-image: radial-gradient(ellipse 56% 58% at 50% 50%, #000 84%, transparent 100%);
-          mask-image: radial-gradient(ellipse 56% 58% at 50% 50%, #000 84%, transparent 100%);
+  /* slightly softened mask · just less corner fade than before */
+  -webkit-mask-image: radial-gradient(ellipse 50% 52% at 50% 50%, #000 76%, transparent 97%);
+          mask-image: radial-gradient(ellipse 50% 52% at 50% 50%, #000 76%, transparent 97%);
 }
 .paper-card .wax-inside {
   position: absolute;
@@ -273,9 +273,9 @@ body {
   filter: contrast(1.55) brightness(1.08) drop-shadow(2px 3px 6px rgba(0, 0, 0, 0.14));
   transition: transform 0.3s ease;
   display: block;
-  /* mask hugs the lip with a softer fade — less aggressive edge cut */
-  -webkit-mask-image: radial-gradient(ellipse 44% 36% at 50% 53%, #000 88%, transparent 100%);
-          mask-image: radial-gradient(ellipse 44% 36% at 50% 53%, #000 88%, transparent 100%);
+  /* tight mask hugs only the lip — torn paper edges are entirely cut out */
+  -webkit-mask-image: radial-gradient(ellipse 36% 28% at 50% 53%, #000 78%, transparent 98%);
+          mask-image: radial-gradient(ellipse 36% 28% at 50% 53%, #000 78%, transparent 98%);
 }
 
 /* ════════════════════════════════════════════════════════════════════
