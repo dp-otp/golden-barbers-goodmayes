@@ -382,51 +382,39 @@ body {
   width: 70%;
   z-index: 5;
 }
-/* PULL-QUOTE · in the LEFT GAP only (clear of the kiss on the right).
-   Vertical position is offset from the kiss's vertical centre — its own y-axis role.
-   Slight rotation gives the hand-placed personality. NEVER overlaps the kiss. */
-.pull-quote {
+/* WAX SEAL · cinnabar wax stamp with cursive A (Aurora), in the LEFT GAP.
+   Round counterpoint to the organic kiss shape on the right.
+   Smaller than the kiss so it supports without competing. NEVER overlaps. */
+.wax-seal {
   position: absolute;
-  top: 22%;
-  left: 5%;
-  width: 46%;
-  z-index: 5;
-  text-align: center;
-  font-family: 'Boska', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: clamp(1.25rem, 2.5vh, 2.2rem);
-  line-height: 1;
-  letter-spacing: -0.006em;
-  color: var(--ink);
-  transform: rotate(-0.8deg);
-  transform-origin: center center;
+  top: 18%;
+  left: 7%;
+  z-index: 4;
+  width: clamp(108px, 13.5vh, 195px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: 1.2px solid var(--ink-soft);
+  overflow: hidden;
+  transform: rotate(-5deg);
+  filter: drop-shadow(2px 4px 6px rgba(14, 9, 7, 0.16));
+  background: var(--bone);
 }
-.pull-quote .quotemark {
-  font-family: 'Stardom', serif;
-  color: var(--red);
-  font-size: 1.55em;
-  line-height: 0;
-  vertical-align: -0.18em;
-  margin: 0 0.16em;
-  font-style: italic;
-  font-weight: 400;
+.wax-seal img {
+  width: 112%;
+  height: 112%;
+  margin: -6%;
+  object-fit: cover;
+  mix-blend-mode: multiply;
 }
-.pull-quote em {
-  font-style: italic;
-  color: var(--red);
-  font-weight: 400;
-}
-/* hairline rule below the quote · printed register, centred on its own axis */
-.pull-quote::after {
+/* faint inner ring for the printed-paper register */
+.wax-seal::after {
   content: '';
   position: absolute;
-  bottom: -1.6vh;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 14%;
-  height: 1px;
-  background: var(--rule);
+  inset: 5px;
+  border: 1px dashed var(--rule);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.6;
 }
 .title-mast .title {
   font-family: 'Britney', cursive;
@@ -660,10 +648,10 @@ body {
     <i style="--s: 3px; top: 64%; left: 56%; opacity: 0.4;"></i>
   </div>
 
-  <!-- PULL-QUOTE · centered, off-axis, lives on its own y-axis above the title -->
-  <p class="pull-quote">
-    <span class="quotemark">«</span>Une lettre <em>suffit.</em><span class="quotemark">»</span>
-  </p>
+  <!-- WAX SEAL · cinnabar A (Aurora), pairs with the kiss across the upper band -->
+  <div class="wax-seal" aria-hidden="true">
+    <img src="assets/img/poster/letter-v3.png" alt="">
+  </div>
 
   <!-- TITLE · Britney script · displaced rotation + oversized cinnabar full-stop -->
   <div class="title-mast">
