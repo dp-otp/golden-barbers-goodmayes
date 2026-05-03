@@ -263,12 +263,13 @@ body {
   height: auto;
   opacity: 1;
   mix-blend-mode: multiply;
-  filter: drop-shadow(2px 3px 6px rgba(0, 0, 0, 0.14));
+  /* contrast push: cream → near-white (invisible after multiply), lip stays red */
+  filter: contrast(1.55) brightness(1.08) drop-shadow(2px 3px 6px rgba(0, 0, 0, 0.14));
   transition: transform 0.3s ease;
   display: block;
-  /* extract just the lip · radial mask fades out torn paper edges */
-  -webkit-mask-image: radial-gradient(ellipse 52% 42% at 50% 52%, #000 55%, transparent 92%);
-          mask-image: radial-gradient(ellipse 52% 42% at 50% 52%, #000 55%, transparent 92%);
+  /* tight mask hugs only the lip — torn paper edges are entirely cut out */
+  -webkit-mask-image: radial-gradient(ellipse 36% 28% at 50% 53%, #000 78%, transparent 98%);
+          mask-image: radial-gradient(ellipse 36% 28% at 50% 53%, #000 78%, transparent 98%);
 }
 
 /* ════════════════════════════════════════════════════════════════════
