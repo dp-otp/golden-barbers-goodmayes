@@ -377,10 +377,25 @@ body {
    ════════════════════════════════════════════════════════════════════ */
 .title-mast {
   position: absolute;
-  top: 38%;
+  top: 36%;
   left: 5%;
   width: 70%;
   z-index: 5;
+}
+/* small editorial note above the title — "based on the novel by" */
+.title-mast .over-title {
+  font-family: 'Boska', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(0.78rem, 1.25vh, 1.05rem);
+  letter-spacing: 0.01em;
+  color: var(--smoke);
+  margin: 0 0 1.2vh 0;
+  padding-left: 4px;
+}
+.title-mast .over-title b {
+  font-weight: 400;
+  color: var(--ink-soft);
 }
 .title-mast .title {
   font-family: 'Britney', cursive;
@@ -616,6 +631,7 @@ body {
 
   <!-- TITLE · Britney script · displaced rotation + oversized cinnabar full-stop -->
   <div class="title-mast">
+    <p class="over-title">D'après le roman de <b>Solveig Aronsson</b></p>
     <h1 class="title">
       <span class="l1">Mon</span>
       <span class="l2">amour<span class="dot">.</span></span>
