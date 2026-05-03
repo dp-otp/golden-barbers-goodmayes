@@ -187,26 +187,27 @@ body {
    3. THE KISS · the statement piece
        SVG silhouette · halftone overlay · slight rotation
    ════════════════════════════════════════════════════════════════════ */
-/* positioning wrapper for the kiss · does not touch the SVG's own styles */
+/* positioning wrapper for the kiss — tilted, off-axis, statement piece */
 .kiss-stage {
   position: absolute;
-  top: 16%;
-  right: 8%;
+  top: 18%;
+  right: 6%;
   z-index: 3;
+  transform: rotate(-9deg);
+  transform-origin: center center;
 }
 
-/* ── lipstick imprint raster · scaled up because it's the poster's statement piece ── */
+/* lipstick imprint raster · multiply blend drops cream background into poster paper */
 .lipstick-kiss {
-  width: clamp(180px, 22vh, 320px);
+  width: clamp(220px, 30vh, 380px);
   height: auto;
   opacity: 1;
-  mix-blend-mode: multiply;             /* lets cream paper + grain show through */
-  filter: drop-shadow(2px 3px 6px rgba(0,0,0,0.12));
-  transition: transform 0.3s ease;
+  mix-blend-mode: multiply;
+  filter: drop-shadow(3px 4px 8px rgba(0,0,0,0.10));
+  transition: transform 0.4s ease;
+  display: block;
 }
-.lipstick-kiss:hover {
-  transform: scale(1.04) rotate(2deg);
-}
+.kiss-stage:hover { transform: rotate(-6deg) scale(1.03); }
 
 /* ════════════════════════════════════════════════════════════════════
    4. TITLE · "Mon amour" in Britney script · the romantic mast
@@ -403,7 +404,7 @@ body {
 
   <!-- Lipstick imprint · Flux-generated raster, cream paper · v1 -->
   <div class="kiss-stage" aria-hidden="true">
-    <img src="assets/img/poster/kiss-mid-v2.png" class="lipstick-kiss" alt="">
+    <img src="assets/img/poster/kiss-iso-v1.png" class="lipstick-kiss" alt="">
   </div>
 
   <!-- ink-dot imperfections scattered around -->
