@@ -256,11 +256,13 @@ body {
   z-index: 4;
 }
 
-/* RIGHT · kiss mark, no paper backdrop, tilted opposite to balance */
+/* RIGHT · kiss mark, no paper backdrop, tilted opposite to balance.
+   right: 0% places the visible-lip centre at the geometric centre of the
+   right half of the poster — proper breathing room from the right edge. */
 .kiss-stage {
   position: absolute;
   top: 14%;
-  right: -8%;
+  right: 0%;
   z-index: 4;
   transform: rotate(6deg);
 }
