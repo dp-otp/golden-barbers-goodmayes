@@ -385,50 +385,53 @@ body {
 /* WAX SEAL · cinnabar wax stamp with cursive A (Aurora), in the LEFT GAP.
    Round counterpoint to the organic kiss shape on the right.
    Smaller than the kiss so it supports without competing. NEVER overlaps. */
-/* CSS-drawn red wax disc · no paper background, no border, just the seal.
-   "M" inside ties to Mon amour and to the director's Maïa initial. */
+/* WAX SEAL · photographic wax texture (paper cropped out by zooming the img),
+   with two tilted hearts at different sizes inside */
 .wax-seal {
   position: absolute;
   top: 19%;
   left: 9%;
   z-index: 4;
-  width: clamp(96px, 12vh, 170px);
+  width: clamp(108px, 13.5vh, 195px);
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 36% 32%,
-      #C72A3D 0%,
-      #A11E2C 55%,
-      #6F0E18 100%);
-  display: grid;
-  place-items: center;
-  transform: rotate(-6deg);
-  filter: drop-shadow(2px 4px 7px rgba(14, 9, 7, 0.28));
-  box-shadow:
-    inset 0 0 18px rgba(60, 8, 14, 0.55),
-    inset 0 -5px 12px rgba(0, 0, 0, 0.30),
-    inset 0 5px 10px rgba(255, 200, 180, 0.15);
+  overflow: hidden;
+  transform: rotate(-5deg);
+  filter: drop-shadow(2px 4px 7px rgba(14, 9, 7, 0.22));
 }
-.wax-seal .seal-mark {
-  font-family: 'Stardom', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(2.4rem, 5.4vh, 4.6rem);
-  color: #F2E0BE;
-  line-height: 1;
-  text-shadow:
-    1px 1px 0 rgba(60, 8, 14, 0.45),
-    -1px -1px 0 rgba(255, 220, 180, 0.18);
-  transform: translateY(-2%);
-}
-/* faint inner ring · the impression's edge from the seal stamp */
-.wax-seal::before {
-  content: '';
+.wax-seal img {
   position: absolute;
-  inset: 8%;
-  border-radius: 50%;
-  border: 1px dashed rgba(245, 226, 192, 0.22);
+  inset: 0;
+  width: 142%;
+  height: 142%;
+  margin: -21%;
+  object-fit: cover;
+  object-position: center 48%;
+}
+/* two hearts overlay · cream-gold, different sizes & tilts */
+.wax-seal .heart {
+  position: absolute;
+  color: #F2E0BE;
   pointer-events: none;
+}
+.wax-seal .heart svg { width: 100%; height: 100%; display: block; }
+.wax-seal .heart-1 {
+  width: 52%;
+  height: 52%;
+  top: 18%;
+  left: 14%;
+  transform: rotate(-13deg);
+  filter: drop-shadow(1px 1.4px 0 rgba(60, 8, 14, 0.55));
+  z-index: 3;
+}
+.wax-seal .heart-2 {
+  width: 34%;
+  height: 34%;
+  top: 40%;
+  left: 50%;
+  transform: rotate(20deg);
+  filter: drop-shadow(0.6px 1px 0 rgba(60, 8, 14, 0.5));
+  z-index: 4;
 }
 .title-mast .title {
   font-family: 'Britney', cursive;
@@ -662,9 +665,19 @@ body {
     <i style="--s: 3px; top: 64%; left: 56%; opacity: 0.4;"></i>
   </div>
 
-  <!-- WAX SEAL · CSS-drawn cinnabar disc, M for Mon amour / Maïa, no paper -->
+  <!-- WAX SEAL · photographic wax texture restored, two tilted hearts inside -->
   <div class="wax-seal" aria-hidden="true">
-    <span class="seal-mark">M</span>
+    <img src="assets/img/poster/seal-blank-v1.png" alt="">
+    <span class="heart heart-1">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50,86 C20,66 6,42 23,24 C36,12 49,22 50,38 C51,22 64,12 77,24 C94,42 80,66 50,86 Z" fill="currentColor"/>
+      </svg>
+    </span>
+    <span class="heart heart-2">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50,86 C20,66 6,42 23,24 C36,12 49,22 50,38 C51,22 64,12 77,24 C94,42 80,66 50,86 Z" fill="currentColor"/>
+      </svg>
+    </span>
   </div>
 
   <!-- TITLE · Britney script · displaced rotation + oversized cinnabar full-stop -->
