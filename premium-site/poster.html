@@ -52,7 +52,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4vh 0;
+  padding: 2vh 0;
   background:
     radial-gradient(800px 600px at 50% 50%, rgba(255, 220, 180, 0.04), transparent 70%),
     #1B1614;
@@ -65,8 +65,9 @@ body {
 .poster {
   position: relative;
   background: var(--bone);
-  width: min(94vh / 1.414, 88vw);
+  width: min(92vh / 1.414, 90vw);
   aspect-ratio: 1 / 1.414;
+  max-height: 96vh;
   box-shadow:
     0 1px 0 rgba(255, 235, 200, 0.10) inset,
     0 30px 80px -20px rgba(0, 0, 0, 0.78),
@@ -184,28 +185,191 @@ body {
 }
 
 /* ════════════════════════════════════════════════════════════════════
-   3. THE KISS · the statement piece
-       SVG silhouette · halftone overlay · slight rotation
+   3. THE KISS · the statement piece (untouched — already a statement)
    ════════════════════════════════════════════════════════════════════ */
-/* positioning wrapper for the kiss · does not touch the SVG's own styles */
 .kiss-stage {
   position: absolute;
   top: 16%;
   right: 8%;
-  z-index: 3;
+  z-index: 4;
 }
-
-/* ── lipstick imprint raster · scaled up because it's the poster's statement piece ── */
 .lipstick-kiss {
   width: clamp(180px, 22vh, 320px);
   height: auto;
   opacity: 1;
-  mix-blend-mode: multiply;             /* lets cream paper + grain show through */
+  mix-blend-mode: multiply;
   filter: drop-shadow(2px 3px 6px rgba(0,0,0,0.12));
   transition: transform 0.3s ease;
 }
 .lipstick-kiss:hover {
   transform: scale(1.04) rotate(2deg);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   3b. PHOTOGRAPHIC ANCHOR · riso-treated Marseille harbor
+       Lifts the dead mid-zone behind the title — never touches the kiss
+   ════════════════════════════════════════════════════════════════════ */
+.photo-anchor {
+  position: absolute;
+  top: 71%;
+  left: 4%;
+  right: 4%;
+  height: 14%;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%),
+                      linear-gradient(to right,  transparent 0%, #000  4%, #000 96%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%),
+                      linear-gradient(to right,  transparent 0%, #000  4%, #000 96%, transparent 100%);
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
+}
+.photo-anchor img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 65%;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  filter: contrast(1.05) saturate(0.92);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   3c. BINDING HAIRLINE · single thin vertical rule, book-page register
+   ════════════════════════════════════════════════════════════════════ */
+.binding-rule {
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  left: 3.4%;
+  width: 1px;
+  background: var(--rule-soft);
+  z-index: 5;
+}
+.binding-rule::before,
+.binding-rule::after {
+  content: '';
+  position: absolute;
+  left: -3px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--rule-soft);
+  border-radius: 50%;
+  background: var(--bone);
+}
+.binding-rule::before { top: -4px; }
+.binding-rule::after  { bottom: -4px; }
+
+/* ════════════════════════════════════════════════════════════════════
+   3d. POSTAGE STAMP · marginalia, hand-stamped Aurora Editions mark
+   ════════════════════════════════════════════════════════════════════ */
+.postage {
+  position: absolute;
+  top: 64%;
+  right: 5%;
+  z-index: 6;
+  width: clamp(72px, 10vh, 110px);
+  aspect-ratio: 1 / 1.18;
+  transform: rotate(-7deg);
+  background: var(--bone);
+  border: 1px solid var(--ink);
+  outline: 1px dashed var(--smoke);
+  outline-offset: 3px;
+  padding: 8% 6% 6%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  font-family: 'Mono', monospace;
+  text-align: center;
+  filter: drop-shadow(1px 2px 0 rgba(14,9,7,0.18));
+}
+.postage .top {
+  font-size: clamp(6px, 0.62vh, 8px);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.postage .num {
+  font-family: 'Tanker', sans-serif;
+  font-size: clamp(1.4rem, 3.4vh, 2.6rem);
+  line-height: 1;
+  color: var(--red);
+  align-self: center;
+}
+.postage .bot {
+  font-size: clamp(5.5px, 0.55vh, 7px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--smoke);
+}
+
+/* circular postmark over the stamp · adds the "cancelled" feel */
+.postmark {
+  position: absolute;
+  top: 60%;
+  right: 11%;
+  width: clamp(108px, 14.5vh, 168px);
+  height: clamp(108px, 14.5vh, 168px);
+  border: 2.2px solid var(--red-deep);
+  border-radius: 50%;
+  z-index: 7;
+  transform: rotate(-14deg);
+  display: grid;
+  place-items: center;
+  font-family: 'Mono', monospace;
+  font-size: clamp(7.5px, 0.78vh, 11px);
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--red-deep);
+  font-weight: 700;
+  opacity: 0.92;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.postmark::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 1.4px dashed var(--red-deep);
+  border-radius: 50%;
+  opacity: 0.7;
+}
+.postmark span { display: block; line-height: 1.2; text-align: center; }
+.postmark span.bar { letter-spacing: 0.32em; }
+
+/* ════════════════════════════════════════════════════════════════════
+   3e. HAND SCRIBBLE · pencil-marginalia in the bottom margin
+   ════════════════════════════════════════════════════════════════════ */
+.scribble {
+  position: absolute;
+  bottom: 7%;
+  right: 38%;
+  z-index: 6;
+  font-family: 'Britney', cursive;
+  font-size: clamp(0.85rem, 1.4vh, 1.2rem);
+  color: var(--ink-soft);
+  opacity: 0.58;
+  transform: rotate(-3deg);
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+.scribble svg {
+  display: block;
+  width: clamp(70px, 10vh, 120px);
+  height: auto;
+  margin-top: 2px;
+  opacity: 0.72;
+}
+
+/* ink-dot specks · scattered printer's imperfections */
+.ink-dots i {
+  position: absolute;
+  width: var(--s, 4px);
+  height: var(--s, 4px);
+  background: var(--ink);
+  border-radius: 50%;
+  opacity: 0.5;
+  z-index: 5;
 }
 
 /* ════════════════════════════════════════════════════════════════════
@@ -221,28 +385,54 @@ body {
 .title-mast .title {
   font-family: 'Britney', cursive;
   font-weight: 400;
-  font-size: clamp(4.5rem, 17vh, 19rem);
-  line-height: 0.86;
+  font-size: clamp(3.6rem, 13.5vh, 14rem);
+  line-height: 0.88;
   letter-spacing: -0.02em;
   color: var(--ink);
   margin: 0;
   text-rendering: geometricPrecision;
+  position: relative;
 }
-.title-mast .title .l1 { display: block; padding-left: 0; }
-.title-mast .title .l2 { display: block; padding-left: 8%; color: var(--red); margin-top: -0.06em; }
+.title-mast .title .l1 {
+  display: block;
+  padding-left: 0;
+  transform: rotate(-1.2deg);
+  transform-origin: left bottom;
+  position: relative;
+}
+.title-mast .title .l2 {
+  display: block;
+  padding-left: 12%;
+  color: var(--red);
+  margin-top: -0.04em;
+  transform: rotate(0.5deg);
+  transform-origin: left bottom;
+}
+/* oversized cinnabar period — the romantic full-stop, drops below baseline */
+.title-mast .title .l2 .dot {
+  display: inline-block;
+  font-family: 'Boska', serif;
+  font-size: 1.05em;
+  color: var(--red);
+  margin-left: -0.06em;
+  transform: translateY(0.16em);
+  text-shadow: 2px 3px 0 rgba(120, 18, 23, 0.18);
+}
 
 .title-mast .subtitle {
-  margin-top: 3vh;
+  margin-top: 2vh;
   font-family: 'Boska', serif;
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(1rem, 1.95vh, 1.6rem);
-  line-height: 1.32;
+  font-size: clamp(0.95rem, 1.7vh, 1.4rem);
+  line-height: 1.3;
   letter-spacing: -0.014em;
   color: var(--ink);
-  max-width: 40ch;
-  padding-top: 1.2vh;
+  max-width: 32ch;
+  padding-top: 1vh;
   border-top: 1px solid var(--rule-soft);
+  position: relative;
+  z-index: 6;
 }
 .title-mast .subtitle em {
   font-style: italic;
@@ -384,6 +574,14 @@ body {
 
 <article class="poster">
 
+  <!-- BINDING HAIRLINE · book-page register, single thin rule in left margin -->
+  <div class="binding-rule" aria-hidden="true"></div>
+
+  <!-- PHOTOGRAPHIC ANCHOR · riso-treated Marseille harbor, behind the title -->
+  <div class="photo-anchor" aria-hidden="true">
+    <img src="assets/img/poster/anchor-v2.png" alt="">
+  </div>
+
   <!-- LAURELS top-left -->
   <header class="laurels">
     <span class="first"><span class="star">★</span> Selected · Quinzaine des Cinéastes — Cannes 2026</span>
@@ -416,11 +614,11 @@ body {
     <i style="--s: 3px; top: 64%; left: 56%; opacity: 0.4;"></i>
   </div>
 
-  <!-- TITLE · Britney script -->
+  <!-- TITLE · Britney script · displaced rotation + oversized cinnabar full-stop -->
   <div class="title-mast">
     <h1 class="title">
       <span class="l1">Mon</span>
-      <span class="l2">amour.</span>
+      <span class="l2">amour<span class="dot">.</span></span>
     </h1>
     <p class="subtitle">
       Une lettre, deux hivers, et la <em>distance entre Marseille et Reykjavík</em>.
@@ -431,6 +629,29 @@ body {
   <div class="stamp">
     <span class="yr">2026</span>
     <span class="lbl">Première · 17 May</span>
+  </div>
+
+  <!-- POSTAGE STAMP · marginalia, edition-numbered, hand-stamped feel -->
+  <div class="postage" aria-hidden="true">
+    <span class="top">Aurora · Postes</span>
+    <span class="num">14</span>
+    <span class="bot">Édition · 240</span>
+  </div>
+
+  <!-- CIRCULAR POSTMARK · cancellation mark over the stamp, in cinnabar -->
+  <div class="postmark" aria-hidden="true">
+    <span>Reykjavík</span>
+    <span class="bar">— · —</span>
+    <span>03 · V · 26</span>
+  </div>
+
+  <!-- HAND SCRIBBLE · pencil marginalia in the bottom margin -->
+  <div class="scribble" aria-hidden="true">
+    Épreuve d'auteur
+    <svg viewBox="0 0 100 18" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2,9 C 14,3 22,15 32,8 C 42,2 52,14 62,9 C 72,5 80,12 88,8 C 92,6 94,9 98,7"
+            stroke="currentColor" stroke-width="1.1" fill="none" stroke-linecap="round" opacity="0.65"/>
+    </svg>
   </div>
 
   <!-- CAST · bottom-left -->
