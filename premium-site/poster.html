@@ -266,6 +266,9 @@ body {
   filter: drop-shadow(2px 3px 6px rgba(0, 0, 0, 0.14));
   transition: transform 0.3s ease;
   display: block;
+  /* extract just the lip · radial mask fades out torn paper edges */
+  -webkit-mask-image: radial-gradient(ellipse 52% 42% at 50% 52%, #000 55%, transparent 92%);
+          mask-image: radial-gradient(ellipse 52% 42% at 50% 52%, #000 55%, transparent 92%);
 }
 
 /* ════════════════════════════════════════════════════════════════════
@@ -696,7 +699,7 @@ body {
 
   <!-- RIGHT · kiss imprint, lips only (no paper card), tilted +6deg -->
   <div class="kiss-stage" aria-hidden="true">
-    <img src="assets/img/poster/kiss-clean.png" class="lipstick-kiss" alt="">
+    <img src="assets/img/poster/kiss-mid-v2.png" class="lipstick-kiss" alt="">
   </div>
 
   <!-- TITLE · Britney script · displaced rotation + oversized cinnabar full-stop -->
