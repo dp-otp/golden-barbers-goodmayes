@@ -187,23 +187,85 @@ body {
 /* ════════════════════════════════════════════════════════════════════
    3. THE KISS · the statement piece (untouched — already a statement)
    ════════════════════════════════════════════════════════════════════ */
-.kiss-stage {
+/* LEFT · torn paper card with wax seal + hearts NESTED inside */
+.paper-card {
   position: absolute;
   top: 19%;
   left: 9%;
   z-index: 4;
+  width: clamp(200px, 24vh, 340px);
+  aspect-ratio: 1 / 1.05;
   transform: rotate(-5deg);
+  filter: drop-shadow(2px 4px 8px rgba(14, 9, 7, 0.18));
+}
+.paper-card .paper-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: multiply;
+}
+.paper-card .wax-inside {
+  position: absolute;
+  top: 22%;
+  left: 22%;
+  width: 56%;
+  height: 56%;
+  border-radius: 50%;
+  overflow: hidden;
+  filter: drop-shadow(1px 2px 4px rgba(14, 9, 7, 0.22));
+}
+.paper-card .wax-inside img {
+  position: absolute;
+  inset: 0;
+  width: 142%;
+  height: 142%;
+  margin: -21%;
+  object-fit: cover;
+  object-position: center 48%;
+}
+.paper-card .heart {
+  position: absolute;
+  color: #F2E0BE;
+  pointer-events: none;
+}
+.paper-card .heart svg { width: 100%; height: 100%; display: block; }
+.paper-card .heart-1 {
+  width: 30%;
+  height: 30%;
+  top: 30%;
+  left: 27%;
+  transform: rotate(-13deg);
+  filter: drop-shadow(0.6px 1px 0 rgba(60, 8, 14, 0.55));
+  z-index: 3;
+}
+.paper-card .heart-2 {
+  width: 19%;
+  height: 19%;
+  top: 42%;
+  left: 53%;
+  transform: rotate(20deg);
+  filter: drop-shadow(0.4px 0.6px 0 rgba(60, 8, 14, 0.5));
+  z-index: 4;
+}
+
+/* RIGHT · kiss mark, no paper backdrop, tilted opposite to balance */
+.kiss-stage {
+  position: absolute;
+  top: 14%;
+  right: 7%;
+  z-index: 4;
+  transform: rotate(6deg);
 }
 .lipstick-kiss {
-  width: clamp(180px, 22vh, 320px);
+  width: clamp(150px, 19vh, 280px);
   height: auto;
   opacity: 1;
   mix-blend-mode: multiply;
-  filter: drop-shadow(2px 3px 6px rgba(0,0,0,0.12));
+  filter: drop-shadow(2px 3px 6px rgba(0, 0, 0, 0.14));
   transition: transform 0.3s ease;
-}
-.lipstick-kiss:hover {
-  transform: scale(1.04) rotate(2deg);
+  display: block;
 }
 
 /* ════════════════════════════════════════════════════════════════════
@@ -386,54 +448,7 @@ body {
 /* WAX SEAL · cinnabar wax stamp with cursive A (Aurora), in the LEFT GAP.
    Round counterpoint to the organic kiss shape on the right.
    Smaller than the kiss so it supports without competing. NEVER overlaps. */
-/* WAX SEAL · photographic wax texture (paper cropped out by zooming the img),
-   with two tilted hearts at different sizes inside */
-.wax-seal {
-  position: absolute;
-  top: 16%;
-  right: 8%;
-  z-index: 4;
-  width: clamp(108px, 13.5vh, 195px);
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  overflow: hidden;
-  transform: rotate(-5deg);
-  filter: drop-shadow(2px 4px 7px rgba(14, 9, 7, 0.22));
-}
-.wax-seal img {
-  position: absolute;
-  inset: 0;
-  width: 142%;
-  height: 142%;
-  margin: -21%;
-  object-fit: cover;
-  object-position: center 48%;
-}
-/* two hearts overlay · cream-gold, different sizes & tilts */
-.wax-seal .heart {
-  position: absolute;
-  color: #F2E0BE;
-  pointer-events: none;
-}
-.wax-seal .heart svg { width: 100%; height: 100%; display: block; }
-.wax-seal .heart-1 {
-  width: 52%;
-  height: 52%;
-  top: 18%;
-  left: 14%;
-  transform: rotate(-13deg);
-  filter: drop-shadow(1px 1.4px 0 rgba(60, 8, 14, 0.55));
-  z-index: 3;
-}
-.wax-seal .heart-2 {
-  width: 34%;
-  height: 34%;
-  top: 40%;
-  left: 50%;
-  transform: rotate(20deg);
-  filter: drop-shadow(0.6px 1px 0 rgba(60, 8, 14, 0.5));
-  z-index: 4;
-}
+/* (wax seal styling now lives nested under .paper-card above) */
 .title-mast .title {
   font-family: 'Britney', cursive;
   font-weight: 400;
@@ -651,9 +666,22 @@ body {
     <span class="name"><b>Maïa</b> Sølberg</span>
   </div>
 
-  <!-- Lipstick imprint · Flux-generated raster, cream paper · v1 -->
-  <div class="kiss-stage" aria-hidden="true">
-    <img src="assets/img/poster/kiss-mid-v2.png" class="lipstick-kiss" alt="">
+  <!-- LEFT · torn paper card with wax seal + two tilted hearts nested inside -->
+  <div class="paper-card" aria-hidden="true">
+    <img class="paper-bg" src="assets/img/poster/paper-card.png" alt="">
+    <div class="wax-inside">
+      <img src="assets/img/poster/seal-blank-v1.png" alt="">
+    </div>
+    <span class="heart heart-1">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50,86 C20,66 6,42 23,24 C36,12 49,22 50,38 C51,22 64,12 77,24 C94,42 80,66 50,86 Z" fill="currentColor"/>
+      </svg>
+    </span>
+    <span class="heart heart-2">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50,86 C20,66 6,42 23,24 C36,12 49,22 50,38 C51,22 64,12 77,24 C94,42 80,66 50,86 Z" fill="currentColor"/>
+      </svg>
+    </span>
   </div>
 
   <!-- ink-dot imperfections scattered around -->
@@ -666,19 +694,9 @@ body {
     <i style="--s: 3px; top: 64%; left: 56%; opacity: 0.4;"></i>
   </div>
 
-  <!-- WAX SEAL · photographic wax texture restored, two tilted hearts inside -->
-  <div class="wax-seal" aria-hidden="true">
-    <img src="assets/img/poster/seal-blank-v1.png" alt="">
-    <span class="heart heart-1">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <path d="M50,86 C20,66 6,42 23,24 C36,12 49,22 50,38 C51,22 64,12 77,24 C94,42 80,66 50,86 Z" fill="currentColor"/>
-      </svg>
-    </span>
-    <span class="heart heart-2">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <path d="M50,86 C20,66 6,42 23,24 C36,12 49,22 50,38 C51,22 64,12 77,24 C94,42 80,66 50,86 Z" fill="currentColor"/>
-      </svg>
-    </span>
+  <!-- RIGHT · kiss imprint, lips only (no paper card), tilted +6deg -->
+  <div class="kiss-stage" aria-hidden="true">
+    <img src="assets/img/poster/kiss-clean.png" class="lipstick-kiss" alt="">
   </div>
 
   <!-- TITLE · Britney script · displaced rotation + oversized cinnabar full-stop -->
