@@ -1,0 +1,101 @@
+/* ============================================
+   GOLDEN BARBERS — REBRAND FOUNDATION
+   Phase 1 · Substrate only (no visual section overrides)
+   Display: Stardom · Body: Switzer · Mono: Azeret Mono
+   ============================================ */
+
+/* ---- @font-face ---------------------------------------- */
+
+@font-face {
+    font-family: 'Stardom';
+    src: url('assets/fonts/Stardom-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Switzer';
+    src: url('assets/fonts/Switzer-Variable.woff2') format('woff2-variations'),
+         url('assets/fonts/Switzer-Variable.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Switzer';
+    src: url('assets/fonts/Switzer-VariableItalic.woff2') format('woff2-variations'),
+         url('assets/fonts/Switzer-VariableItalic.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Azeret Mono';
+    src: url('assets/fonts/AzeretMono-Variable.woff2') format('woff2-variations'),
+         url('assets/fonts/AzeretMono-Variable.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ---- design tokens (dormant — applied by future overrides) -- */
+
+:root {
+    /* type stack */
+    --rb-display: 'Stardom', 'Times New Roman', serif;
+    --rb-body:    'Switzer', system-ui, -apple-system, sans-serif;
+    --rb-mono:    'Azeret Mono', 'JetBrains Mono', monospace;
+
+    /* GB palette kept verbatim — listed for tokens, not redeclared */
+    --rb-ink         : #0A0A0A;
+    --rb-ink-2       : #141414;
+    --rb-gold        : #d4af37;
+    --rb-gold-light  : #f5d778;
+    --rb-gold-dark   : #a88a2d;
+    --rb-gold-glow   : rgba(212, 175, 55, 0.6);
+    --rb-rule        : rgba(212, 175, 55, 0.18);
+    --rb-rule-strong : rgba(212, 175, 55, 0.32);
+    --rb-paper       : #f4ede0;
+
+    /* spacing register */
+    --rb-track-tight : -0.02em;
+    --rb-track-wide  : 0.20em;
+    --rb-track-xwide : 0.32em;
+}
+
+/* ---- utility primitives (opt-in via class — not applied globally) -- */
+
+.rb-grain {
+    position: relative;
+    isolation: isolate;
+}
+
+.rb-grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+    opacity: 0.18;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+    background-size: 240px 240px;
+}
+
+.rb-rule {
+    display: block;
+    background: var(--rb-rule-strong);
+    border: 0;
+}
+
+.rb-rule.is-h { width: 100%; height: 1px; }
+.rb-rule.is-v { width: 1px;  height: 100%; }
+
+/* ---- specimen-only test classes (used to verify font load, not for production) -- */
+
+.rb-test-display { font-family: var(--rb-display); }
+.rb-test-body    { font-family: var(--rb-body); }
+.rb-test-mono    { font-family: var(--rb-mono); }
