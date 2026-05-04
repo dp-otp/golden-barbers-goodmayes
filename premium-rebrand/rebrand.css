@@ -99,3 +99,45 @@
 .rb-test-display { font-family: var(--rb-display); }
 .rb-test-body    { font-family: var(--rb-body); }
 .rb-test-mono    { font-family: var(--rb-mono); }
+
+/* ============================================
+   PHASE 1A · BRAND SPINE — surgical overrides
+   Hero title + nav wordmark to Stardom (display)
+   Hero badge to Azeret Mono (editorial marginalia)
+   Rest of the site stays in Outfit until later phases.
+   ============================================ */
+
+/* nav wordmark — both desktop and mobile occurrences inherit via the span */
+.nav-logo span {
+    font-family: var(--rb-display) !important;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    /* preserve existing colour + size from inline styles */
+}
+
+/* hero title — high-contrast Didone replaces Outfit Black */
+.hero-title,
+.hero-title .hero-title-line,
+.hero-title .hero-title-line span,
+.hero-title .glitch-text {
+    font-family: var(--rb-display) !important;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 0.94;
+}
+
+/* glitch-text pseudo-elements need to inherit the new face too */
+.hero-title .glitch-text::before,
+.hero-title .glitch-text::after {
+    font-family: var(--rb-display) !important;
+    letter-spacing: -0.025em;
+}
+
+/* hero badge — pinned to mono, all-caps, wide-tracked editorial register */
+.hero-badge,
+.hero-badge span {
+    font-family: var(--rb-mono) !important;
+    font-weight: 500;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+}
