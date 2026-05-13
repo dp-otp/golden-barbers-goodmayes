@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
+const { google } = require('googleapis');
 
 admin.initializeApp();
 
@@ -1271,7 +1272,7 @@ exports.syncGoogleBusinessReviews = functions
 
 exports.whatsappWebhook = functions
   .region(REGION)
-  .runWith({ timeoutSeconds: 60, memory: '256MB' })
+  .runWith({ timeoutSeconds: 60, memory: '256MB', maxInstances: 10 })
   .https.onRequest(async (request, response) => {
     if (request.method === 'GET') {
       const mode = safeText(request.query['hub.mode']);
@@ -1417,6 +1418,11 @@ exports.processAutomationCommand = functions
 // ============================================
 // Used by both verifyIncomingPayment (manual/email path) and revolutWebhook
 // (Revolut Business API path). Smart-amount + 2-hour window matching.
+//
+// IDEMPOTENCY: every call must carry an externalTransactionId (or we derive a
+// fingerprint). We check automationV2/processedTransactions before doing any
+// work — Pub/Sub at-least-once delivery + bank webhook retries mean the same
+// event can land 2-5 times. Returns 'already_processed' on dupes.
 async function processIncomingPayment({ amount, reference, timestamp, source, externalTransactionId }) {
   const incomingAmount = roundMoney(amount);
   const incomingReference = safeText(reference);
@@ -1425,6 +1431,23 @@ async function processIncomingPayment({ amount, reference, timestamp, source, ex
 
   if (!incomingAmount || incomingAmount <= 0) {
     return { matched: false, reason: 'invalid_amount' };
+  }
+
+  const dedupId = safeText(externalTransactionId)
+    || createStableKey(`${verificationSource}:${incomingAmount}:${incomingReference}:${incomingTimestamp}`);
+
+  const dedupRef = db.ref(`automationV2/processedTransactions/${dedupId}`);
+  const dedupSnap = await dedupRef.once('value');
+  if (dedupSnap.exists()) {
+    const prior = dedupSnap.val() || {};
+    return {
+      matched: prior.matched === true,
+      reason: 'already_processed',
+      paymentKey: safeText(prior.paymentKey) || null,
+      amount: incomingAmount,
+      duplicateOf: dedupId,
+      firstSeenAt: safeText(prior.processedAt)
+    };
   }
 
   const paymentsSnap = await db.ref('payments')
@@ -1454,6 +1477,14 @@ async function processIncomingPayment({ amount, reference, timestamp, source, ex
       loggedAt: nowIso(),
       source: verificationSource,
       externalTransactionId: externalTransactionId || null
+    });
+    await dedupRef.set({
+      matched: false,
+      reason: 'no_matching_pending_payment',
+      amount: incomingAmount,
+      reference: incomingReference,
+      source: verificationSource,
+      processedAt: nowIso()
     });
     return { matched: false, reason: 'no_matching_pending_payment', amount: incomingAmount };
   }
@@ -1505,6 +1536,15 @@ async function processIncomingPayment({ amount, reference, timestamp, source, ex
     });
   }
 
+  await dedupRef.set({
+    matched: true,
+    paymentKey: match.key,
+    amount: incomingAmount,
+    reference: incomingReference,
+    source: verificationSource,
+    processedAt: nowIso()
+  });
+
   return {
     matched: true,
     paymentKey: match.key,
@@ -1520,7 +1560,7 @@ async function processIncomingPayment({ amount, reference, timestamp, source, ex
 // POST { amount, reference?, timestamp? } with x-api-key header
 exports.verifyIncomingPayment = functions
   .region(REGION)
-  .runWith({ timeoutSeconds: 30, memory: '256MB' })
+  .runWith({ timeoutSeconds: 30, memory: '256MB', maxInstances: 10 })
   .https.onRequest(async (request, response) => {
     response.set('Access-Control-Allow-Origin', '*');
     response.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -1567,7 +1607,7 @@ exports.verifyIncomingPayment = functions
 //   Header: Revolut-Signature: v1=<hex>[,v1=<hex>] (multiple during rotation)
 exports.revolutWebhook = functions
   .region(REGION)
-  .runWith({ timeoutSeconds: 30, memory: '256MB' })
+  .runWith({ timeoutSeconds: 30, memory: '256MB', maxInstances: 10 })
   .https.onRequest(async (request, response) => {
     if (request.method !== 'POST') {
       response.status(405).json({ error: 'Method not allowed' });
@@ -1660,4 +1700,286 @@ exports.revolutWebhook = functions
     });
 
     response.status(200).json(result);
+  });
+
+// ============================================
+// GMAIL PUSH PIPELINE
+// ============================================
+// When new mail arrives in goldenbarbers.payments@gmail.com, Gmail's Push API
+// publishes to Pub/Sub topic gmail-payments. This function consumes the push,
+// fetches the new message(s) via Gmail API using a stored OAuth refresh token,
+// parses the Barclays "money in" template, and routes through the shared
+// processIncomingPayment matcher. Idempotency by Gmail message ID guarantees
+// push + Apps Script polling cannot double-confirm the same payment.
+
+function getGmailOAuth2Client() {
+  const oauth2 = new google.auth.OAuth2(
+    envText('GMAIL_OAUTH_CLIENT_ID'),
+    envText('GMAIL_OAUTH_CLIENT_SECRET'),
+    envText('GMAIL_OAUTH_REDIRECT_URI')
+  );
+  oauth2.setCredentials({ refresh_token: envText('GMAIL_OAUTH_REFRESH_TOKEN') });
+  return oauth2;
+}
+
+function decodeGmailBody(message) {
+  const chunks = [];
+  function visit(part) {
+    if (!part) return;
+    if (part.mimeType === 'text/plain' && part.body && part.body.data) {
+      chunks.push(Buffer.from(part.body.data, 'base64').toString('utf-8'));
+    }
+    safeArray(part.parts).forEach(visit);
+  }
+  visit(message && message.payload);
+  return chunks.join('\n');
+}
+
+function extractAmountFromEmailBody(body) {
+  const text = safeText(body);
+  const patterns = [
+    /(?:Amount|Received|You have received|paid in|credited)[^\d£]*£\s*([\d,]+\.\d{2})/i,
+    /£\s*([\d,]+\.\d{2})\s+(?:has been credited|received|paid in|landed|deposited)/i,
+    /£\s*([\d,]+\.\d{2})/
+  ];
+  for (const re of patterns) {
+    const m = text.match(re);
+    if (m) {
+      const val = parseFloat(m[1].replace(/,/g, ''));
+      if (Number.isFinite(val) && val > 0) return val;
+    }
+  }
+  return null;
+}
+
+function extractReferenceFromEmailBody(body) {
+  const text = safeText(body);
+  const patterns = [
+    /Reference[:\s]+([A-Z0-9\-_ ]{2,40})/i,
+    /Ref\.?[:\s]+([A-Z0-9\-_ ]{2,40})/i,
+    /From[:\s]+([^\n\r]{2,60})/i
+  ];
+  for (const re of patterns) {
+    const m = text.match(re);
+    if (m) return safeText(m[1]);
+  }
+  return '';
+}
+
+async function processGmailMessage(gmail, messageId) {
+  const result = { messageId, status: 'unprocessed' };
+  try {
+    const { data: msg } = await gmail.users.messages.get({
+      userId: 'me',
+      id: messageId,
+      format: 'full'
+    });
+
+    const headers = (msg.payload && msg.payload.headers) || [];
+    const fromHeader = (headers.find((h) => h.name && h.name.toLowerCase() === 'from') || {}).value || '';
+
+    const acceptAnySender = envBool('GMAIL_PUSH_ACCEPT_ANY_SENDER', false);
+    if (!acceptAnySender && !/barclays/i.test(fromHeader)) {
+      result.status = 'skipped_not_barclays';
+      result.from = fromHeader;
+      return result;
+    }
+
+    const body = decodeGmailBody(msg);
+    const amount = extractAmountFromEmailBody(body);
+    const reference = extractReferenceFromEmailBody(body);
+
+    if (!amount) {
+      result.status = 'unparsed';
+      result.bodyPreview = body.slice(0, 400);
+      await db.ref('automationV2/gmailPush/unparsed').push({
+        messageId,
+        from: fromHeader,
+        bodyPreview: body.slice(0, 400),
+        at: nowIso()
+      });
+      return result;
+    }
+
+    const internalDate = parseInt(msg.internalDate, 10);
+    const timestamp = Number.isFinite(internalDate) ? new Date(internalDate).toISOString() : nowIso();
+
+    const matchResult = await processIncomingPayment({
+      amount,
+      reference,
+      timestamp,
+      source: 'gmail_push',
+      externalTransactionId: 'gmail:' + messageId
+    });
+
+    result.amount = amount;
+    result.reference = reference;
+    result.status = 'processed';
+    result.match = matchResult;
+    return result;
+  } catch (err) {
+    result.status = 'error';
+    result.error = err && err.message;
+    console.error('processGmailMessage error', messageId, err && err.message);
+    return result;
+  }
+}
+
+exports.processBarclaysEmail = functions
+  .region(REGION)
+  .runWith({ timeoutSeconds: 120, memory: '256MB', maxInstances: 5 })
+  .pubsub.topic('gmail-payments')
+  .onPublish(async (message) => {
+    let payload = {};
+    try {
+      const dataStr = Buffer.from(message.data || '', 'base64').toString('utf-8');
+      if (dataStr) payload = JSON.parse(dataStr);
+    } catch (err) {
+      console.error('Could not parse Pub/Sub message', err && err.message);
+      return null;
+    }
+
+    const historyId = safeText(payload.historyId);
+    const emailAddress = safeText(payload.emailAddress);
+
+    console.log('Gmail Push notification', { emailAddress, historyId });
+
+    if (!historyId) {
+      console.error('No historyId in Pub/Sub payload');
+      return null;
+    }
+
+    const oauth2 = getGmailOAuth2Client();
+    const gmail = google.gmail({ version: 'v1', auth: oauth2 });
+
+    const lastSnap = await db.ref('automationV2/gmailPush/lastHistoryId').once('value');
+    const lastHistoryId = safeText(lastSnap.val()) || historyId;
+
+    let history;
+    try {
+      const resp = await gmail.users.history.list({
+        userId: 'me',
+        startHistoryId: lastHistoryId,
+        labelId: 'INBOX',
+        historyTypes: ['messageAdded']
+      });
+      history = resp.data;
+    } catch (err) {
+      console.error('history.list failed', err && err.message);
+      await db.ref('automationV2/gmailPush/lastError').set({
+        error: err && err.message,
+        at: nowIso(),
+        context: 'history.list'
+      });
+      await db.ref('automationV2/gmailPush/lastHistoryId').set(historyId);
+      return null;
+    }
+
+    const messageIds = new Set();
+    safeArray(history.history).forEach((entry) => {
+      safeArray(entry.messagesAdded).forEach((added) => {
+        if (added.message && added.message.id) messageIds.add(added.message.id);
+      });
+    });
+
+    const results = [];
+    for (const id of messageIds) {
+      results.push(await processGmailMessage(gmail, id));
+    }
+
+    await db.ref('automationV2/gmailPush/lastHistoryId').set(historyId);
+    await db.ref('automationV2/gmailPush/lastRun').set({
+      at: nowIso(),
+      messagesSeen: messageIds.size,
+      processed: results.filter((r) => r.status === 'processed').length,
+      results: results.slice(0, 10)
+    });
+
+    return null;
+  });
+
+async function callGmailWatch() {
+  const oauth2 = getGmailOAuth2Client();
+  const gmail = google.gmail({ version: 'v1', auth: oauth2 });
+  const { data } = await gmail.users.watch({
+    userId: 'me',
+    requestBody: {
+      topicName: envText('GMAIL_PUBSUB_TOPIC'),
+      labelIds: ['INBOX']
+    }
+  });
+
+  const watchRecord = {
+    historyId: data.historyId,
+    expiration: data.expiration,
+    expirationIso: new Date(parseInt(data.expiration, 10)).toISOString(),
+    renewedAt: nowIso()
+  };
+  await db.ref('automationV2/gmailPush/watchStatus').set(watchRecord);
+  await db.ref('automationV2/gmailPush/lastHistoryId').set(data.historyId);
+  return watchRecord;
+}
+
+exports.setupGmailWatch = functions
+  .region(REGION)
+  .runWith({ timeoutSeconds: 60, memory: '256MB', maxInstances: 2 })
+  .https.onRequest(async (request, response) => {
+    const apiKey = safeText(request.headers['x-api-key'] || request.query.key);
+    const expectedKey = envText('PAYMENT_VERIFY_API_KEY');
+    if (!expectedKey || apiKey !== expectedKey) {
+      response.status(403).json({ error: 'Invalid API key' });
+      return;
+    }
+
+    try {
+      const record = await callGmailWatch();
+      response.status(200).json({ success: true, watch: record });
+    } catch (err) {
+      console.error('Watch setup failed', err && err.message);
+      response.status(500).json({ error: err && err.message });
+    }
+  });
+
+exports.renewGmailWatch = functions
+  .region(REGION)
+  .pubsub.schedule('every 144 hours')
+  .timeZone(TIME_ZONE)
+  .onRun(async () => {
+    try {
+      const record = await callGmailWatch();
+      console.log('Watch renewed, expires', record.expirationIso);
+    } catch (err) {
+      console.error('Watch renewal failed', err && err.message);
+      await db.ref('automationV2/gmailPush/lastError').set({
+        error: err && err.message,
+        at: nowIso(),
+        context: 'renewGmailWatch'
+      });
+      await pushOpsNotification(
+        'gmail_watch_renewal_failed',
+        'Gmail Push watch renewal failed',
+        'Push will go dark until you re-run the OAuth flow + setupGmailWatch. Polling backup still active.',
+        { error: err && err.message }
+      );
+    }
+    return null;
+  });
+
+exports.sendReconsentReminder = functions
+  .region(REGION)
+  .pubsub.schedule('every monday 09:00')
+  .timeZone(TIME_ZONE)
+  .onRun(async () => {
+    const watchSnap = await db.ref('automationV2/gmailPush/watchStatus').once('value');
+    const watch = watchSnap.val() || {};
+    await pushOpsNotification(
+      'gmail_reconsent_due',
+      'Weekly Gmail OAuth re-consent reminder',
+      'Refresh token in Testing-mode app expires every 7 days. Run scripts/oauth-capture.ps1 to refresh, then redeploy or restart setupGmailWatch to resume Push.',
+      {
+        currentExpirationIso: watch.expirationIso || null,
+        renewedAt: watch.renewedAt || null
+      }
+    );
+    return null;
   });

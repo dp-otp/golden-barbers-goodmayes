@@ -16,5 +16,12 @@ Thumbs.db
 # Don't upload these
 node_modules/
 .env
+.env.*
 verify-screenshots/
 verify-ch3.py
+
+# Credentials must never be committed
+client_secret_*.json
+*.serviceaccount.json
+**/credentials.json
+.tmp-screenshot.png
